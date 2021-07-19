@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/layout_tabs"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/pink"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_chat"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_chat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="联系人"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/img_chat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/close_icon" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_news"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_news"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="消息"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/img_news"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/close_icon" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_fragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_fragment_end"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="6"
+        android:background="@color/gray"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+</LinearLayout>
