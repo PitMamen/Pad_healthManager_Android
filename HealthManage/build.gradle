@@ -3,16 +3,29 @@
 buildscript {
 
     repositories {
-        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+//        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+//        maven { url 'https://jitpack.io' }
+//        jcenter()
+//        google()
+//        mavenCentral()
+
+        // 阿里云云效仓库，提升编译速度：https://maven.aliyun.com/mvn/guide
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        // 友盟仓库：https://bintray.com/umsdk/release
+        maven { url 'https://dl.bintray.com/umsdk/release' }
         jcenter()
         google()
+        mavenCentral()
     }
 
     // Studio 插件推荐：https://github.com/getActivity/StudioPlugins
     dependencies {
         // noinspection GradleDependency
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:3.5.4'
         // AOP 配置插件：https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx
         classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.10'
     }
@@ -25,10 +38,15 @@ allprojects {
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
         maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         // 友盟仓库：https://bintray.com/umsdk/release
         maven { url 'https://dl.bintray.com/umsdk/release' }
+        flatDir {
+            dirs 'libs'
+        }
         jcenter()
         google()
+        mavenCentral()
     }
 
     tasks.withType(JavaCompile) {

@@ -15,7 +15,10 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
 
     <!-- 拍照权限 -->
+<!--    <uses-permisproguard-rules.prosion android:name="android.permission.CAMERA" />-->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.Camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <!-- 安装权限 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -57,7 +60,7 @@
         <!-- 闪屏页 -->
         <activity
             android:name=".ui.activity.HomeActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/SplashTheme">
 

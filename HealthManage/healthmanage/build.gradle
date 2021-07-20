@@ -1,6 +1,6 @@
-apply plugin : 'com.android.application'
-apply plugin : 'android-aspectjx'
-apply from : '../config.gradle'
+apply plugin: 'com.android.application'
+apply plugin: 'android-aspectjx'
+apply from: '../config.gradle'
 
 // Android 代码规范文档：https://github.com/getActivity/AndroidCodeStandard
 android {
@@ -54,7 +54,7 @@ android {
             // 测试服务器的主机地址
             buildConfigField('String', 'HOST_URL', '"https://www.test.baidu.com/"')
             // 设置清单占位符
-            manifestPlaceholders = ['app_name' : '健康管理']
+            manifestPlaceholders = ['app_name': '健康管理']
             // 调试模式下只保留一种架构的 so 库，提升打包速度
             ndk {
                 abiFilters 'armeabi-v7a'
@@ -65,7 +65,7 @@ android {
         preview {
             applicationIdSuffix ''
             // 设置清单占位符
-            manifestPlaceholders = ['app_name' : '健康管理']
+            manifestPlaceholders = ['app_name': '健康管理']
         }
 
         release {
@@ -87,7 +87,7 @@ android {
             // 正式服务器的主机地址
             buildConfigField('String', 'HOST_URL', '"https://www.baidu.com/"')
             // 设置清单占位符
-            manifestPlaceholders = ['app_name' : '@string/app_name']
+            manifestPlaceholders = ['app_name': '@string/app_name']
             // 仅保留两种架构的 so 库，根据 Bugly 统计得出
             ndk {
                 // armeabi：万金油架构平台（占用率：0%）
@@ -129,12 +129,14 @@ android {
 
 // api 与 implementation 的区别：https://www.jianshu.com/p/8962d6ba936e
 dependencies {
+    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     // 基类封装
     implementation project(':base')
     // 控件封装
     implementation project(':widget')
     // 友盟封装
     implementation project(':umeng')
+    implementation project(':mclouds-collab-sdk')
 
     // 权限请求框架：https://github.com/getActivity/XXPermissions
     implementation 'com.hjq:xxpermissions:9.8'
@@ -208,4 +210,11 @@ dependencies {
     // 第三方支付：https://github.com/Cuieney/RxPay
     // 多渠道打包：https://github.com/Meituan-Dianping/walle
     // 设备唯一标识：http://msa-alliance.cn/col.jsp?id=120
+
+//    api(name: 'imsdk-plus-5.5.892', ext: 'aar')
+//    implementation(name: 'imsdk-plus-5.5.892', ext: 'aar')
+//    implementation(name: 'AliyunPlayer-4.5.0-full', ext: 'aar')
+//    api 'com.tencent.imsdk:imsdk-plus:5.5.892'
+//    api 'com.tencent.imsdk:imsdk-plus:5.5.892'
+    implementation project(':mclouds-collab-sdk')
 }
