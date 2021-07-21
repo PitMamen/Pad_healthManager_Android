@@ -15,7 +15,9 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.multidex.MultiDex;
 
+import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.DebugLog;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
@@ -27,6 +29,10 @@ import com.bitvalue.healthmanage.other.CrashHandler;
 import com.bitvalue.healthmanage.other.DebugLoggerTree;
 import com.bitvalue.healthmanage.other.SmartBallPulseFooter;
 import com.bitvalue.healthmanage.other.ToastInterceptor;
+import com.bitvalue.sdk.collab.TUIKit;
+import com.bitvalue.sdk.collab.base.TUIKitListenerManager;
+import com.bitvalue.sdk.collab.config.ConfigHelper;
+import com.bitvalue.sdk.collab.helper.HelloChatController;
 import com.hjq.bar.TitleBar;
 import com.hjq.bar.initializer.LightBarInitializer;
 import com.hjq.http.EasyConfig;
@@ -52,12 +58,18 @@ import timber.log.Timber;
  * desc   : 应用入口
  */
 public final class AppApplication extends Application {
-
+    private static AppApplication instance;
     @DebugLog("启动耗时")
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
+        MultiDex.install(this);//配置app方法数无限制
         initSdk(this);
+    }
+
+    public static AppApplication instance() {
+        return instance;
     }
 
     @Override
@@ -77,7 +89,7 @@ public final class AppApplication extends Application {
     /**
      * 初始化一些第三方框架
      */
-    public static void initSdk(Application application) {
+    public void initSdk(Application application) {
         // 设置调试模式
         XXPermissions.setDebugMode(AppConfig.isDebug());
 
@@ -188,7 +200,10 @@ public final class AppApplication extends Application {
         initTencentIM(application);
     }
 
-    private static void initTencentIM(Application application) {
+    private void initTencentIM(Application application) {
+        TUIKit.init(this, Constants.IM_APPId, new ConfigHelper().getConfigs());
+        registerCustomListeners();
+
         // 1. 从 IM 控制台获取应用 SDKAppID，详情请参考 SDKAppID。
 // 2. 初始化 config 对象
         V2TIMSDKConfig config = new V2TIMSDKConfig();
@@ -196,9 +211,8 @@ public final class AppApplication extends Application {
         config.setLogLevel(V2TIMSDKConfig.V2TIM_LOG_INFO);
 // 4. 初始化 SDK 并设置 V2TIMSDKListener 的监听对象。
 // initSDK 后 SDK 会自动连接网络，网络连接状态可以在 V2TIMSDKListener 回调里面监听。
-        int sdkAppID = 1400548652;
-//        String secretKey = "e3f3f2db3fa1ebb73d1fa009f774c668e93577ce8f15492409582cd041b6e712";
-        V2TIMManager.getInstance().initSDK(application, sdkAppID, config, new V2TIMSDKListener() {
+
+        V2TIMManager.getInstance().initSDK(application, Constants.IM_APPId, config, new V2TIMSDKListener() {
             @Override
             public void onKickedOffline() {
                 super.onKickedOffline();
@@ -237,5 +251,10 @@ public final class AppApplication extends Application {
                 ToastUtils.show("腾讯云连接失败");
             }
         });
+    }
+
+    private static void registerCustomListeners() {
+        TUIKitListenerManager.getInstance().addChatListener(new HelloChatController());
+        TUIKitListenerManager.getInstance().addConversationListener(new HelloChatController.HelloConversationController());
     }
 }

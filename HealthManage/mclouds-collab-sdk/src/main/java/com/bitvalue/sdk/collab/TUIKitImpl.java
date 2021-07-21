@@ -109,6 +109,7 @@ public class TUIKitImpl {
 
             @Override
             public void onSuccess() {
+                //登录IM之后登录直播
                 loginTUIKitLive(TUIKitConfigs.getConfigs().getGeneralConfig().getSDKAppId(),
                         userid,
                         usersig);
@@ -442,6 +443,7 @@ public class TUIKitImpl {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static void loginTUIKitLive(int sdkAppid, String userId, String userSig) {
         try {
             Class<?> classz = Class.forName("com.tencent.qcloud.tim.tuikit.live.TUIKitLive");
