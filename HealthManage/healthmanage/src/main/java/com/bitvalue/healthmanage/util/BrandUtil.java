@@ -2,10 +2,6 @@ package com.bitvalue.healthmanage.util;
 
 import android.os.Build;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.tencent.qcloud.tim.demo.DemoApplication;
-
 public class BrandUtil {
     /**
      * 判断是否为小米设备
@@ -57,9 +53,9 @@ public class BrandUtil {
      *
      * @return
      */
-    public static boolean isGoogleServiceSupport() {
-        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(DemoApplication.instance());
-        return resultCode == ConnectionResult.SUCCESS;
-    }
+//    public static boolean isGoogleServiceSupport() {
+//        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+//        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(AppApplication.instance());
+//        return resultCode == ConnectionResult.SUCCESS;
+//    }
 }

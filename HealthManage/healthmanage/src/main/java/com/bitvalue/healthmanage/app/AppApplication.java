@@ -197,11 +197,11 @@ public final class AppApplication extends Application {
             });
         }
 
-        initTencentIM(application);
+//        initTencentIM(application);//TODO 现在改到登录初始化
     }
 
     private void initTencentIM(Application application) {
-        TUIKit.init(this, Constants.IM_APPId, new ConfigHelper().getConfigs());
+        TUIKit.init(application, Constants.IM_APPId, new ConfigHelper().getConfigs());
         registerCustomListeners();
 
         // 1. 从 IM 控制台获取应用 SDKAppID，详情请参考 SDKAppID。

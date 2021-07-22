@@ -219,4 +219,6 @@ dependencies {
 //    api 'com.tencent.imsdk:imsdk-plus:5.5.892'
 //    api 'com.tencent.imsdk:imsdk-plus:5.5.892'
     implementation project(':mclouds-collab-sdk')
+//    implementation 'com.hgDendi:expandable-recyclerview-adapter:1.0.1'
+    implementation 'com.thoughtbot:expandablerecyclerview:1.0'
 }

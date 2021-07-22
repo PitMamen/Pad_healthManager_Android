@@ -1,12 +1,8 @@
 package com.bitvalue.healthmanage.ui.activity;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.SingleClick;
@@ -14,20 +10,15 @@ import com.bitvalue.healthmanage.app.AppActivity;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
-import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
+import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewsFragment;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends AppActivity {
 
     private static final int chat_index = 0;
     private static final int news_index = 1;
     private NewsFragment newsFragment;
-    private ChatFragment chatFragment;
+    private ContactsFragment contactsFragment;
     private AppFragment[] fragments;
     private int tabPosition = -1;
     private TextView tv_news, tv_chat;
@@ -55,9 +46,9 @@ public class HomeActivity extends AppActivity {
     }
 
     private void initFragments(int index) {
-        chatFragment = ChatFragment.getInstance(false);
+        contactsFragment = ContactsFragment.getInstance(false);
         newsFragment = NewsFragment.getInstance(false);
-        fragments = new AppFragment[]{chatFragment, newsFragment};
+        fragments = new AppFragment[]{contactsFragment, newsFragment};
         getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment,fragments[0]).commitAllowingStateLoss();
         getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment,fragments[1]).commitAllowingStateLoss();
         afterTabSelect(index);
