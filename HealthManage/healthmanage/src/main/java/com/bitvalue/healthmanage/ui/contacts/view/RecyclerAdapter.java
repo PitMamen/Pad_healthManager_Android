@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactsGroupBean;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
+import com.hjq.toast.ToastUtils;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
@@ -48,6 +50,8 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapt
             @Override
             public void onClick(View v) {
                 //TODO 跳转事件
+                ToastUtils.show("点击了" + child.getName());
+//                ToastUtil.toastLongMessage("点击了" + child.getName());
             }
         });
     }

@@ -7,15 +7,16 @@
 
     <ImageView
         android:id="@+id/iv_trait_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/arrow_right" />
 
     <TextView
         android:id="@+id/tv_trait_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="10dp"
         android:text="第一级" />
 
 </LinearLayout>

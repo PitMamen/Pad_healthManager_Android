@@ -5,6 +5,7 @@ public class Constants {
     //公司的  腾讯IM SDKAppID和秘钥
     public static final int IM_APPId =1400547247;
     public static final String IM_PRIVATE_KEY ="ecaa6c9a3ffa3c93837f0fedf36ff93af28631a82c921027d1323ccf6f1e3616";
+    public static final String KEY_REMEMBER_PSD = "key_remember_psd";
 
 //    //自己的
 //    public static final int IM_APPId =1400548652;

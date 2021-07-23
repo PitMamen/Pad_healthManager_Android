@@ -197,6 +197,8 @@ public final class AppApplication extends Application {
             });
         }
 
+        ToastUtils.init(instance);
+
 //        initTencentIM(application);//TODO 现在改到登录初始化
     }
 
