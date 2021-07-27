@@ -66,7 +66,9 @@ public abstract class AppFragment<A extends AppActivity> extends BaseFragment<A>
 
     @Override
     public void onFail(Exception e) {
-        toast(e.getMessage());
+        if (!e.getMessage().isEmpty()){
+            toast(e.getMessage());
+        }
     }
 
     @Override

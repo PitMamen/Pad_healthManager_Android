@@ -21,6 +21,7 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.DebugLog;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
+import com.bitvalue.healthmanage.http.interceptor.ExceptionInterceptor;
 import com.bitvalue.healthmanage.http.model.RequestHandler;
 import com.bitvalue.healthmanage.http.model.RequestServer;
 import com.bitvalue.healthmanage.manager.ActivityManager;
@@ -29,6 +30,7 @@ import com.bitvalue.healthmanage.other.CrashHandler;
 import com.bitvalue.healthmanage.other.DebugLoggerTree;
 import com.bitvalue.healthmanage.other.SmartBallPulseFooter;
 import com.bitvalue.healthmanage.other.ToastInterceptor;
+import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.TUIKitListenerManager;
 import com.bitvalue.sdk.collab.config.ConfigHelper;
@@ -36,6 +38,9 @@ import com.bitvalue.sdk.collab.helper.HelloChatController;
 import com.hjq.bar.TitleBar;
 import com.hjq.bar.initializer.LightBarInitializer;
 import com.hjq.http.EasyConfig;
+import com.hjq.http.config.IRequestInterceptor;
+import com.hjq.http.model.HttpHeaders;
+import com.hjq.http.model.HttpParams;
 import com.hjq.permissions.XXPermissions;
 import com.hjq.toast.ToastUtils;
 import com.hjq.toast.style.ToastBlackStyle;
@@ -47,8 +52,23 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMSDKConfig;
 import com.tencent.imsdk.v2.V2TIMSDKListener;
 import com.tencent.imsdk.v2.V2TIMUserFullInfo;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.log.LoggerInterceptor;
 
+import java.io.IOException;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+
+import okhttp3.FormBody;
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+import okio.BufferedSink;
 import timber.log.Timber;
 
 /**
@@ -59,6 +79,7 @@ import timber.log.Timber;
  */
 public final class AppApplication extends Application {
     private static AppApplication instance;
+
     @DebugLog("启动耗时")
     @Override
     public void onCreate() {
@@ -157,6 +178,11 @@ public final class AppApplication extends Application {
 
         // 网络请求框架初始化
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(20000L, TimeUnit.MILLISECONDS)
+                .readTimeout(20000L, TimeUnit.MILLISECONDS)
+                .addInterceptor(new LoggerInterceptor("OkHttp",true))
+                .addInterceptor(new ExceptionInterceptor())
+                //其他配置
                 .build();
 
         EasyConfig.with(okHttpClient)
@@ -164,6 +190,12 @@ public final class AppApplication extends Application {
                 .setLogEnabled(AppConfig.isLogEnable())
                 // 设置服务器配置
                 .setServer(new RequestServer())
+                .setInterceptor(new IRequestInterceptor() {
+                    @Override
+                    public void intercept(String url, String tag, HttpParams params, HttpHeaders headers) {
+
+                    }
+                })
                 // 设置请求处理策略
                 .setHandler(new RequestHandler(application))
                 // 设置请求重试次数
@@ -199,7 +231,65 @@ public final class AppApplication extends Application {
 
         ToastUtils.init(instance);
 
+//        initHttpUtils();
+
 //        initTencentIM(application);//TODO 现在改到登录初始化
+    }
+
+    private void initHttpUtils() {
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request.Builder builder = chain.request().newBuilder();
+                Request request = builder.build();
+                request.newBuilder()
+                        .post(new RequestBody() {
+                            @Override
+                            public MediaType contentType() {
+                                return MediaType.parse("application/json");
+                            }
+
+
+                            @Override
+                            public void writeTo(BufferedSink sink) throws IOException {
+
+
+                            }
+                        })
+                        .header("Authorization", SharedPreManager.getString(Constants.KEY_TOKEN))
+                        .build();
+
+
+                return chain.proceed(request);
+            }
+        })
+                .connectTimeout(20000L, TimeUnit.MILLISECONDS)
+                .readTimeout(20000L, TimeUnit.MILLISECONDS)
+                .addInterceptor(new LoggerInterceptor("OkHttp"))
+                //其他配置
+                .build();
+        OkHttpUtils.initClient(okHttpClient);
+
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.put("commonHeaderKey1", "commonHeaderValue1");    //所有的 header 都 不支持 中文
+//        headers.put("commonHeaderKey2", "commonHeaderValue2");
+//        HttpParams params = new HttpParams();
+//        params.put("commonParamsKey1", "commonParamsValue1");     //所有的 params 都 支持 中文
+//        params.put("commonParamsKey2", "这里支持中文参数");
+//
+//        //必须调用初始化
+//        OkHttpUtils.init(this);
+//        //以下都不是必须的，根据需要自行选择
+//        OkHttpUtils.getInstance()
+//                .debug("OkHttpUtils")                                              //是否打开调试
+//                .setConnectTimeout(OkHttpUtils.DEFAULT_MILLISECONDS)               //全局的连接超时时间
+//                .setReadTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)                  //全局的读取超时时间
+//                .setWriteTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)                 //全局的写入超时时间
+//                //.setCookieStore(new MemoryCookieStore())                           //cookie使用内存缓存（app退出后，cookie消失）
+//                //.setCookieStore(new PersistentCookieStore())                       //cookie持久化存储，如果cookie不过期，则一直有效
+//                .addCommonHeaders(headers)                                         //设置全局公共头
+//                .addCommonParams(params);
     }
 
     private void initTencentIM(Application application) {

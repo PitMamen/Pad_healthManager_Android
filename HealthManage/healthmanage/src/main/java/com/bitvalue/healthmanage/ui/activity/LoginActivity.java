@@ -4,17 +4,33 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.core.view.GravityCompat;
 
+import com.bitvalue.healthmanage.BuildConfig;
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppActivity;
-import com.bitvalue.sdk.base.VerifyHelper;
-import com.bitvalue.sdk.base.util.net.CheckCallBack;
-import com.bitvalue.sdk.base.util.sp.SharedPreManager;
+//import com.bitvalue.sdk.base.VerifyHelper;
+//import com.bitvalue.sdk.base.util.net.CheckCallBack;
+//import com.bitvalue.sdk.base.util.sp.SharedPreManager;
+import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.myhttp.RequestConstants;
+import com.bitvalue.healthmanage.http.myhttp.RequestUtil;
+import com.bitvalue.healthmanage.http.request.LoginApi;
+import com.bitvalue.healthmanage.http.response.LoginBean;
+import com.bitvalue.healthmanage.util.SharedPreManager;
+import com.google.gson.Gson;
+import com.hjq.http.EasyConfig;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
+import okhttp3.Request;
 
 public class LoginActivity extends AppActivity {
 
@@ -34,7 +50,6 @@ public class LoginActivity extends AppActivity {
         et_work_no = findViewById(R.id.et_work_no);
         et_psd = findViewById(R.id.et_psd);
         setOnClickListener(R.id.layout_remember, R.id.btn_login);
-
     }
 
     @Override
@@ -56,17 +71,62 @@ public class LoginActivity extends AppActivity {
             case R.id.btn_login:
                 String userId = et_work_no.getText().toString();
                 String passWord = et_psd.getText().toString();
-                if (userId.isEmpty()){
-                    ToastUtils.show("请输入工号");
+                if (userId.isEmpty()) {
+//                    ToastUtils.show("请输入工号");
+                    Toast.makeText(this, "请输入工号", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (passWord.isEmpty()){
-                    ToastUtils.show("请输入密码");
+                if (passWord.isEmpty()) {
+                    Toast.makeText(this, "请输入密码", Toast.LENGTH_LONG).show();
+//                    ToastUtils.show("请输入密码");
                     return;
                 }
-                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                goLogin();
+//                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                 break;
         }
+    }
+
+    private void goLogin() {
+        EasyHttp.post(this)
+                .api(new LoginApi()
+                        .setUsername(et_work_no.getText().toString())
+                        .setPassword(et_psd.getText().toString()))
+                .request(new HttpCallback<HttpData<LoginBean>>(this) {
+
+                    @Override
+                    public void onStart(Call call) {
+//                        mCommitView.showProgress();
+                    }
+
+                    @Override
+                    public void onEnd(Call call) {
+                    }
+
+                    @Override
+                    public void onSucceed(HttpData<LoginBean> data) {
+                        // 更新 Token
+//                        EasyConfig.getInstance().addParam("token", data.getData().getToken());
+                        EasyConfig.getInstance().addHeader("Authorization", data.getData().getToken());
+                        SharedPreManager.putString(Constants.KEY_TOKEN, data.getData().getToken());
+                        SharedPreManager.putObject(Constants.KYE_USER_BEAN,data.getData());
+
+                        // 跳转到首页
+                        // HomeActivity.start(getContext(), MeFragment.class);
+                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                        finish();
+
+                    }
+
+                    @Override
+                    public void onFail(Exception e) {
+                        super.onFail(e);
+                        postDelayed(() -> {
+//                            mCommitView.showError(3000);
+                        }, 1000);
+                    }
+                });
+
     }
 
     /**

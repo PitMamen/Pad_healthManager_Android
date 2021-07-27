@@ -16,8 +16,8 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppActivity;
+import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.healthmanage.util.Utils;
-import com.bitvalue.sdk.base.util.sp.SharedPreManager;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.toast.ToastUtils;
 
@@ -50,11 +50,10 @@ public class SplashActivity extends AppActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_jump:
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
                 if (runnable != null) {
                     handler.removeCallbacks(runnable);
                 }
+                jumpActivity();
                 break;
         }
     }
@@ -114,13 +113,21 @@ public class SplashActivity extends AppActivity {
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
+            jumpActivity();
+        }
+    };
+
+    private void jumpActivity() {
+        if (SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty()) {
             //从闪屏界面跳转到首界面
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             startActivity(intent);
-            finish();
-
+        } else {
+            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+            startActivity(intent);
         }
-    };
+        finish();
+    }
 
     private TimerTask task = new TimerTask() {
         @Override
@@ -141,11 +148,10 @@ public class SplashActivity extends AppActivity {
     };
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(handler!=null){
+        if (handler != null) {
             handler.removeCallbacks(runnable);
         }
     }

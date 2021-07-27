@@ -195,7 +195,7 @@ public abstract class AppActivity extends BaseActivity
 
     @Override
     public void onSucceed(Object result) {
-        if (result instanceof HttpData) {
+        if (result instanceof HttpData) {//TODO 接口弹toast
             toast(((HttpData<?>) result).getMessage());
         }
     }

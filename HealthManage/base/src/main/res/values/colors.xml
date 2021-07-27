@@ -69,6 +69,8 @@
     <!-- 橙色 -->
     <color name="orange">#FFFFA500</color>
     <color name="main_blue">#398CF7</color>
+    <color name="home_blue">#0088F4</color>
+    <color name="home_blue_dark">#006DC3</color>
     <color name="main_blue_little">#398CCC</color>
     <color name="text_main">#333333</color>
     <color name="text_desc">#CCCCCC</color>

@@ -7,15 +7,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
+import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.request.ClientsApi;
+import com.bitvalue.healthmanage.http.request.TestApi;
+import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactsGroupBean;
 import com.bitvalue.healthmanage.ui.contacts.view.RecyclerAdapter;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.HttpCallback;
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener;
 import com.thoughtbot.expandablerecyclerview.listeners.OnGroupClickListener;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
 
 public class ContactsFragment extends AppFragment {
     private boolean is_need_toast;
@@ -63,6 +71,30 @@ public class ContactsFragment extends AppFragment {
             }
         });
         contact_list.setAdapter(adapter);
+
+        geMyClients();
+    }
+
+    private void geMyClients() {
+        EasyHttp.get(this).api(new ClientsApi()).request(new HttpCallback<HttpData<ClientsResultBean>>(this) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<ClientsResultBean> result) {
+                super.onSucceed(result);
+                if (true){
+
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
     }
 
     private void getDatas() {
