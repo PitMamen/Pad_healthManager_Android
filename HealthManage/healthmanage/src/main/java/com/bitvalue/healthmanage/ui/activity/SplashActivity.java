@@ -24,6 +24,8 @@ import com.hjq.toast.ToastUtils;
 import java.util.Timer;
 import java.util.TimerTask;
 
+//import butterknife.OnClick;
+
 public class SplashActivity extends AppActivity {
 
     private TextView tv_jump;

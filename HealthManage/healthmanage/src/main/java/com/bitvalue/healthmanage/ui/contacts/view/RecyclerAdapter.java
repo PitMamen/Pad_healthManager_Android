@@ -1,6 +1,7 @@
 package com.bitvalue.healthmanage.ui.contacts.view;
 
 import android.app.Activity;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.healthmanage.app.AppApplication;
+import com.bitvalue.healthmanage.http.glide.GlideApp;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactsGroupBean;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.hjq.toast.ToastUtils;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
@@ -19,6 +23,10 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
 import java.util.List;
 
+/**
+ * 二级折叠列表，借鉴于
+ * https://cloud.tencent.com/developer/article/1154841
+ */
 public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapter.GroupContentViewHolder, RecyclerAdapter.ChildContentViewHolder> {
 
     private Activity activity;
@@ -45,7 +53,7 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapt
     @Override
     public void onBindChildViewHolder(ChildContentViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
         final ContactBean child = ((ContactsGroupBean) group).getItems().get(childIndex);
-        holder.onBind(child,group);
+        holder.onBind(child, group);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,13 +83,13 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapt
         @Override
         public void expand() {
 //            name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_right, 0);
-            iv_trait_group.setImageResource(R.drawable.arrow_right);
+            iv_trait_group.setImageResource(R.drawable.icon_left);
         }
 
         @Override
         public void collapse() {
 //            name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrows_bottom_ic, 0);
-            iv_trait_group.setImageResource(R.drawable.arrows_bottom_ic);
+            iv_trait_group.setImageResource(R.drawable.icon_down);
         }
 
         public void setGroupName(String title) {
@@ -91,20 +99,32 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapt
 
     public static class ChildContentViewHolder extends ChildViewHolder {
         private TextView name;
+        private ImageView img_head;
+
         public ChildContentViewHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.tv_trait);
+            name = itemView.findViewById(R.id.tv_name);
+            img_head = itemView.findViewById(R.id.img_head);
         }
 
         public void onBind(ContactBean child, ExpandableGroup group) {
             name.setText(child.getName());
-            if (group.getTitle().equals("水果")) {
-                name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_contact, 0, 0, 0);
-            } else if (group.getTitle().equals("球类")) {
-                name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_avatar, 0, 0, 0);
-            } else {
-                name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_camera, 0, 0, 0);
-            }
+
+            GlideApp.with(img_head)
+                    .load("http://img.duoziwang.com/2021/03/1623076080632524.jpg")
+                    .transform(new RoundedCorners((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                            20, AppApplication.instance().getResources().getDisplayMetrics())))
+                    .into(img_head);
+
+
+//            if (group.getTitle().equals("水果")) {
+//                name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_contact, 0, 0, 0);
+//            } else if (group.getTitle().equals("球类")) {
+//                name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_avatar, 0, 0, 0);
+//            } else {
+//                name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_camera, 0, 0, 0);
+//            }
+
         }
     }
 }

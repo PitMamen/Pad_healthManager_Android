@@ -185,9 +185,11 @@ public final class AppApplication extends Application {
                 //其他配置
                 .build();
 
+//        EasyConfig.getInstance().addHeader("Authorization", SharedPreManager.getString(Constants.KEY_TOKEN));
         EasyConfig.with(okHttpClient)
                 // 是否打印日志
                 .setLogEnabled(AppConfig.isLogEnable())
+                .addHeader("Authorization", SharedPreManager.getString(Constants.KEY_TOKEN))
                 // 设置服务器配置
                 .setServer(new RequestServer())
                 .setInterceptor(new IRequestInterceptor() {

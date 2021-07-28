@@ -73,6 +73,8 @@
     <color name="home_blue_dark">#006DC3</color>
     <color name="main_blue_little">#398CCC</color>
     <color name="text_main">#333333</color>
+    <color name="text_black">#1A1A1A</color>
     <color name="text_desc">#CCCCCC</color>
+    <color name="text_desc_dark">#999999</color>
 
 </resources>

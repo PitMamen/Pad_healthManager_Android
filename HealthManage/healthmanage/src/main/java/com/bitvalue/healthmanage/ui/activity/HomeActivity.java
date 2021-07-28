@@ -42,11 +42,6 @@ public class HomeActivity extends AppActivity {
         return R.layout.activity_home;
     }
 
-//    @Override
-//    protected void onSaveInstanceState(@NonNull @NotNull Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//    }
-
     @Override
     protected void initView() {
         tv_news = findViewById(R.id.tv_news);
@@ -145,7 +140,6 @@ public class HomeActivity extends AppActivity {
         switch (view.getId()) {
             case R.id.layout_person:
                 afterTabSelect(0);
-                testInter();
                 break;
             case R.id.layout_news:
                 afterTabSelect(1);

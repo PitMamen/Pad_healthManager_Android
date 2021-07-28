@@ -237,7 +237,7 @@ dependencies {
     implementation 'com.thoughtbot:expandablerecyclerview:1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    api('com.squareup.okhttp3:okhttp:3.3.0')
-    api('com.zhy:okhttputils:2.6.2')
-    api('com.google.code.gson:gson:2.8.1')
+    api 'com.squareup.okhttp3:okhttp:3.3.0'
+    api 'com.zhy:okhttputils:2.6.2'
+    api 'com.google.code.gson:gson:2.8.1'
 }
