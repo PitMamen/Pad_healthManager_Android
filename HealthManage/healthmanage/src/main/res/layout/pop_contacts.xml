@@ -7,18 +7,18 @@
 
     <ImageView
         android:id="@+id/img_corner"
-        android:layout_marginLeft="105dp"
         android:layout_width="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50dp"
         android:src="@drawable/icon_corner"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="135dp"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/shape_pop_contacts"
-        android:paddingVertical="6.5dp"
-        android:layout_height="wrap_content">
+        android:paddingVertical="6.5dp">
 
         <TextView
             android:id="@+id/tv_project"
@@ -27,6 +27,7 @@
             android:layout_marginLeft="6.5dp"
             android:text="健康管理计划"
             android:textColor="@color/white"
+            android:textSize="8sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,10 +48,10 @@
             android:layout_marginTop="6.5dp"
             android:text="消息群发"
             android:textColor="@color/white"
+            android:textSize="8sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_line" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </LinearLayout>

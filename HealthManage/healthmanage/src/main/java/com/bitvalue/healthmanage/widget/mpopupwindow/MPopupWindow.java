@@ -31,7 +31,9 @@ public class MPopupWindow {
     private int mOffsetY;
     private boolean mTouchable;
     private View mTarget;
-    private @TypeGravity int mGravity;
+    private @TypeGravity
+    int mGravity;
+    private ViewCallback viewCallBack;
 
     private MPopupWindow() {
     }
@@ -45,6 +47,9 @@ public class MPopupWindow {
             mPopupWindow.setContentView(mView);
         } else if (mLayoutId != -1) {
             View contentView = LayoutInflater.from(mContext).inflate(mLayoutId, null);
+            if (null != viewCallBack) {
+                viewCallBack.onInitView(contentView,mLayoutId);
+            }
             mPopupWindow.setContentView(contentView);
         }
         if (mWidth != 0) mPopupWindow.setWidth(mWidth);
@@ -141,7 +146,9 @@ public class MPopupWindow {
         private int offsetY;
         private boolean touchable;
         private View target;
-        private @TypeGravity int gravity;
+        private @TypeGravity
+        int gravity;
+        private ViewCallback viewCallBack;
 
         public Builder(Context context) {
             this.context = context;
@@ -212,6 +219,11 @@ public class MPopupWindow {
             return this;
         }
 
+        public Builder setViewCallBack(ViewCallback viewCallBack) {
+            this.viewCallBack = viewCallBack;
+            return this;
+        }
+
         public Builder setTouchable(boolean touchable) {
             this.touchable = touchable;
             return this;
@@ -241,7 +253,7 @@ public class MPopupWindow {
                 throw new MException("contentView or layoutId can't be null.");
             }
 
-            if (target == null){
+            if (target == null) {
                 throw new MException("please set a target view");
             }
 
@@ -254,6 +266,7 @@ public class MPopupWindow {
             window.mBackgroundDrawable = this.backgroundDrawable;
             window.mOnDismissListener = this.onDismissListener;
             window.mAnimationStyle = this.animationStyle;
+            window.viewCallBack = this.viewCallBack;
             window.mTouchable = this.touchable;
             window.mOffsetX = this.offsetX;
             window.mOffsetY = this.offsetY;

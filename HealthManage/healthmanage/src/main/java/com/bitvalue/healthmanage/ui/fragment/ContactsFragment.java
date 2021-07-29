@@ -1,13 +1,16 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,13 +19,15 @@ import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.ClientsApi;
-import com.bitvalue.healthmanage.http.request.TestApi;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactsGroupBean;
 import com.bitvalue.healthmanage.ui.contacts.view.RecyclerAdapter;
 import com.bitvalue.healthmanage.util.UiUtil;
+import com.bitvalue.healthmanage.widget.mpopupwindow.MPopupWindow;
+import com.bitvalue.healthmanage.widget.mpopupwindow.TypeGravity;
+import com.bitvalue.healthmanage.widget.mpopupwindow.ViewCallback;
 import com.bitvalue.healthmanage.widget.popupwindow.CommonPopupWindow;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
@@ -45,6 +50,8 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
     private HomeActivity homeActivity;
     private CommonPopupWindow popupWindow;
     private LinearLayout layout_nav;
+    private ImageView img_nav;
+    private MPopupWindow mPopupWindow;
 
     @Override
     protected int getLayoutId() {
@@ -68,6 +75,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         is_need_toast = getArguments().getBoolean("is_need_toast");
         contact_list = getView().findViewById(R.id.contact_list);
         layout_nav = getView().findViewById(R.id.layout_nav);
+        img_nav = getView().findViewById(R.id.img_nav);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         contact_list.setLayoutManager(layoutManager);
@@ -100,10 +108,53 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_nav:
-                showPartPop(R.layout.pop_contacts);
+//                showPartPop(R.layout.pop_contacts);
+                showPop(R.layout.pop_contacts);
                 break;
         }
     }
+
+    private void showPop(int layoutId) {
+        mPopupWindow = MPopupWindow.create(getActivity())
+                .setLayoutId(layoutId)
+//                .setBackgroundDrawable(new ColorDrawable(Color.GREEN))
+                .setAnimationStyle(R.style.AnimDown)
+                .setOnDismissListener(new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        if (mPopupWindow != null){
+                            mPopupWindow = null;
+                        }
+                    }
+                })
+                .setViewCallBack(viewCallback)
+                .setTarget(layout_nav)
+                .setGravity(TypeGravity.BOTTOM_RIGHT)
+                .build();
+        mPopupWindow.show();
+    }
+    private ViewCallback viewCallback = new ViewCallback() {
+        @Override
+        public void onInitView(View view, int mLayoutId) {
+            switch (mLayoutId){
+                case R.layout.pop_contacts:
+                    view.findViewById(R.id.tv_project).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ToastUtils.show("点击了计划");
+                        }
+                    });
+
+                    view.findViewById(R.id.tv_mul_msg).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ToastUtils.show("点击了群发");
+                        }
+                    });
+                    break;
+            }
+        }
+    };
 
     private void geMyClients() {
         EasyHttp.get(this).api(new ClientsApi()).request(new HttpCallback<HttpData<ClientsResultBean>>(this) {
@@ -145,37 +196,21 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
 
     //冒泡弹出
     private void showPartPop(int layoutResId) {
-//        int top = Constants.screenHeight * 2 / 3 - UiUtil.getStatusBarHeight(LessonVideoPlayActivity.this);//屏幕高度减播放器高度
+        if (popupWindow != null && popupWindow.isShowing()) return;
+        View upView = LayoutInflater.from(getActivity()).inflate(layoutResId, null);
         //测量View的宽高
-
+        UiUtil.measureWidthAndHeight(upView);
         popupWindow = new CommonPopupWindow.Builder(getActivity())
                 .setView(layoutResId)
                 .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-//                .setAnimationStyle(R.style.AnimUp)
-                .setAnimationStyle(R.style.AnimDown)
+//                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
+                .setBackGroundLevel(1f)//取值范围0.0f-1.0f 值越小越暗
+                .setAnimationStyle(R.style.AnimUp)
                 .setViewOnclickListener(this)
                 .setOutsideTouchable(true)
                 .create();
-//        popupWindow.showAsDropDown(layout_nav, -200, 0);
-        UiUtil.measureWidthAndHeight(popupWindow.getContentView());
-        popupWindow.showAsDropDown(layout_nav, -popupWindow.getContentView().getWidth(), 0);
-
-
-//        if (popupWindow != null && popupWindow.isShowing()) return;
-//        View upView = LayoutInflater.from(getActivity()).inflate(layoutResId, null);
-//        //测量View的宽高
-//        UiUtil.measureWidthAndHeight(upView);
-//        popupWindow = new CommonPopupWindow.Builder(getActivity())
-//                .setView(layoutResId)
-//                .setWidthAndHeight(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-//                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-//                .setBackGroundLevel(1f)//取值范围0.0f-1.0f 值越小越暗
-//                .setAnimationStyle(R.style.AnimUp)
-//                .setViewOnclickListener(this)
-//                .setOutsideTouchable(true)
-//                .create();
-//        popupWindow.showAsDropDown(layout_nav,layout_nav.getWidth(),);
-//        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+//        popupWindow.showAsDropDown(layout_nav);
+        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
     }
 
     @Override
