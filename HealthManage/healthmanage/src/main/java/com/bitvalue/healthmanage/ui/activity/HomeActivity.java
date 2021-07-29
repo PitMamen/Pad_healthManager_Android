@@ -1,9 +1,14 @@
 package com.bitvalue.healthmanage.ui.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
@@ -16,13 +21,23 @@ import com.bitvalue.healthmanage.http.request.TestApi;
 import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
+import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
+import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
 import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewsFragment;
 import com.bitvalue.healthmanage.util.SharedPreManager;
+import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.hjq.http.EasyConfig;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
+import com.tencent.imsdk.v2.V2TIMConversation;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import okhttp3.Call;
 
@@ -34,8 +49,9 @@ public class HomeActivity extends AppActivity {
     private ContactsFragment contactsFragment;
     private AppFragment[] fragments;
     private int tabPosition = -1;
-    private TextView tv_news, tv_chat,tv_person;
-    private ImageView img_chat, img_news,img_person;
+    private TextView tv_news, tv_chat, tv_person;
+    private ImageView img_chat, img_news, img_person;
+    private Map<String, Fragment> mapFragments = new HashMap<>();
 
     @Override
     protected int getLayoutId() {
@@ -163,4 +179,84 @@ public class HomeActivity extends AppActivity {
             // System.exit(0);
         }, 300);
     }
+
+    /**
+     * HomeActivity切换从左往右第二个fragment的方法
+     * 流程：
+     * 判断切换到的fragment类型
+     * 传参数新增fragment
+     *
+     * @param keyFragment
+     * @param child
+     */
+    public void switchSecondFragment(String keyFragment, ContactBean child) {
+        boolean isContain = mapFragments.containsKey(keyFragment);
+        switch (keyFragment) {
+            case Constants.FRAGMENT_CHAT:
+                ChatFragment chatFragment;
+//                if (!isContain) {
+//                    chatFragment = new ChatFragment();
+//                } else {
+//                    chatFragment = (ChatFragment) mapFragments.get(keyFragment);
+//                }
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                chatFragment = new ChatFragment();
+
+                Bundle bundle = new Bundle();//TODO 参数可改
+                ChatInfo chatInfo = new ChatInfo();
+                chatInfo.setType(V2TIMConversation.V2TIM_C2C);
+                chatInfo.setId(child.getUserId());
+                String chatName = child.getName();
+                chatInfo.setChatName(chatName);
+
+                bundle.putSerializable(Constants.CHAT_INFO, chatInfo);
+                chatFragment.setArguments(bundle);
+                mapFragments.put(Constants.FRAGMENT_CHAT, chatFragment);
+                break;
+        }
+        Set<String> strings = mapFragments.keySet();
+        List<String> strings1 = new ArrayList<>(strings);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        for (int i = 0; i < mapFragments.size(); i++) {
+            if (!strings1.get(i).equals(keyFragment)) {
+                transaction.hide(fragments[i]).commit();
+            }
+        }
+        if (!mapFragments.get(keyFragment).isAdded()) {
+            transaction.add(R.id.layout_fragment_end, mapFragments.get(keyFragment));
+        }
+        transaction.addToBackStack(Constants.FRAGMENT_CHAT);
+        transaction.show(mapFragments.get(keyFragment)).commit();
+
+//        tabPosition = index;
+    }
+
+    public void switchSecondFragmentOther() {
+
+    }
+
+//    public void forward(int viewId, Fragment fragment, String name, boolean hide) {
+//        if (getSupportFragmentManager() == null){
+//            return;
+//        }
+//        FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
+//        if (hide) {
+//            trans.hide(this);
+//            trans.add(viewId, fragment);
+//        } else {
+//            trans.replace(viewId, fragment);
+//        }
+//
+//        trans.addToBackStack(name);
+//        trans.commitAllowingStateLoss();
+//    }
+//
+//    public void backward() {
+//        if (getSupportFragmentManager() == null){
+//            return;
+//        }
+//        getSupportFragmentManager().popBackStack();
+//    }
 }

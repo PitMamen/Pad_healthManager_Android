@@ -1,5 +1,6 @@
 package com.bitvalue.healthmanage.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,11 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
+import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.action.TitleBarAction;
 import com.bitvalue.healthmanage.action.ToastAction;
 import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.manager.ActivityManager;
+import com.bitvalue.healthmanage.ui.activity.LoginActivity;
 import com.bitvalue.healthmanage.ui.dialog.WaitDialog;
+import com.bitvalue.healthmanage.util.DemoLog;
+import com.bitvalue.healthmanage.util.SharedPreManager;
+import com.bitvalue.sdk.collab.TUIKit;
+import com.bitvalue.sdk.collab.base.IMEventListener;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.bar.TitleBar;
 import com.hjq.base.BaseActivity;
@@ -20,6 +29,8 @@ import com.hjq.base.BaseDialog;
 import com.hjq.http.listener.OnHttpListener;
 
 import okhttp3.Call;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  *    author : Android 轮子哥
@@ -85,6 +96,9 @@ public abstract class AppActivity extends BaseActivity
     protected void initLayout() {
         super.initLayout();
 
+        //添加IM监听，监听授权失效和被踢下线后需要重新登录
+        TUIKit.addIMEventListener(mIMEventListener);
+
         if (getTitleBar() != null) {
             getTitleBar().setOnTitleBarListener(this);
         }
@@ -98,6 +112,30 @@ public abstract class AppActivity extends BaseActivity
                 ImmersionBar.setTitleBar(this, getTitleBar());
             }
         }
+    }
+
+    // 监听做成静态可以让每个子类重写时都注册相同的一份。
+    private static IMEventListener mIMEventListener = new IMEventListener() {
+        @Override
+        public void onForceOffline() {
+            ToastUtil.toastLongMessage(AppApplication.instance().getString(R.string.repeat_login_tip));
+            logout(AppApplication.instance());
+        }
+
+        @Override
+        public void onUserSigExpired() {
+            ToastUtil.toastLongMessage(AppApplication.instance().getString(R.string.expired_login_tip));
+            logout(AppApplication.instance());
+        }
+    };
+
+    public static void logout(Context context) {
+        SharedPreManager.putObject(Constants.KYE_USER_BEAN, null);
+        Intent intent = new Intent(AppApplication.instance(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        AppApplication.instance().startActivity(intent);
+        // 进行内存优化，销毁除登录页之外的所有界面
+        ActivityManager.getInstance().finishAllActivities(LoginActivity.class);
     }
 
     /**

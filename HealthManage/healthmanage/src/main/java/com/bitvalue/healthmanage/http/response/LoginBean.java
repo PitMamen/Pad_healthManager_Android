@@ -13,6 +13,22 @@ public final class LoginBean {
     private String jwt;//相当于token
     private UserInfoBean user;
 
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
+    }
+
+    public UserInfoBean getUser() {
+        return user;
+    }
+
+    public void setUser(UserInfoBean user) {
+        this.user = user;
+    }
+
     public String getToken() {
         return jwt;
     }

@@ -180,7 +180,7 @@ public final class AppApplication extends Application {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(20000L, TimeUnit.MILLISECONDS)
                 .readTimeout(20000L, TimeUnit.MILLISECONDS)
-                .addInterceptor(new LoggerInterceptor("OkHttp",true))
+                .addInterceptor(new LoggerInterceptor("OkHttp", true))
                 .addInterceptor(new ExceptionInterceptor())
                 //其他配置
                 .build();
@@ -235,7 +235,7 @@ public final class AppApplication extends Application {
 
 //        initHttpUtils();
 
-//        initTencentIM(application);//TODO 现在改到登录初始化
+        initTencentIM(application);
     }
 
     private void initHttpUtils() {
@@ -295,56 +295,56 @@ public final class AppApplication extends Application {
     }
 
     private void initTencentIM(Application application) {
-        TUIKit.init(application, Constants.IM_APPId, new ConfigHelper().getConfigs());
+        TUIKit.init(application, Constants.IM_APPId, new ConfigHelper().getConfigs(application));
         registerCustomListeners();
 
-        // 1. 从 IM 控制台获取应用 SDKAppID，详情请参考 SDKAppID。
-// 2. 初始化 config 对象
-        V2TIMSDKConfig config = new V2TIMSDKConfig();
-// 3. 指定 log 输出级别，详情请参考 SDKConfig。
-        config.setLogLevel(V2TIMSDKConfig.V2TIM_LOG_INFO);
-// 4. 初始化 SDK 并设置 V2TIMSDKListener 的监听对象。
-// initSDK 后 SDK 会自动连接网络，网络连接状态可以在 V2TIMSDKListener 回调里面监听。
-
-        V2TIMManager.getInstance().initSDK(application, Constants.IM_APPId, config, new V2TIMSDKListener() {
-            @Override
-            public void onKickedOffline() {
-                super.onKickedOffline();
-                //踢下线 此时可以 UI 提示用户“您已经在其他端登录了当前账号，是否重新登录？”
-            }
-
-            @Override
-            public void onUserSigExpired() {
-                super.onUserSigExpired();
-                //登录票据已经过期 请使用新签发的 UserSig 进行登录。
-            }
-
-            // 5. 监听 V2TIMSDKListener 回调
-            @Override
-            public void onConnecting() {
-                // 正在连接到腾讯云服务器
-                ToastUtils.show("腾讯云正在连接");
-
-            }
-
-            @Override
-            public void onSelfInfoUpdated(V2TIMUserFullInfo info) {
-                super.onSelfInfoUpdated(info);
-                //可以在 UI 上更新自己的头像和昵称。
-            }
-
-            @Override
-            public void onConnectSuccess() {
-                // 已经成功连接到腾讯云服务器
-                ToastUtils.show("腾讯云已经连上");
-            }
-
-            @Override
-            public void onConnectFailed(int code, String error) {
-                // 连接腾讯云服务器失败
-                ToastUtils.show("腾讯云连接失败");
-            }
-        });
+        //单独SDK集成的初始化，这里用了TUIKit的就注释了
+//        // 1. 从 IM 控制台获取应用 SDKAppID，详情请参考 SDKAppID。
+//        // 2. 初始化 config 对象
+//        V2TIMSDKConfig config = new V2TIMSDKConfig();
+//        // 3. 指定 log 输出级别，详情请参考 SDKConfig。
+//        config.setLogLevel(V2TIMSDKConfig.V2TIM_LOG_INFO);
+//        // 4. 初始化 SDK 并设置 V2TIMSDKListener 的监听对象。
+//        // initSDK 后 SDK 会自动连接网络，网络连接状态可以在 V2TIMSDKListener 回调里面监听。
+//        V2TIMManager.getInstance().initSDK(application, Constants.IM_APPId, config, new V2TIMSDKListener() {
+//            @Override
+//            public void onKickedOffline() {
+//                super.onKickedOffline();
+//                //踢下线 此时可以 UI 提示用户“您已经在其他端登录了当前账号，是否重新登录？”
+//            }
+//
+//            @Override
+//            public void onUserSigExpired() {
+//                super.onUserSigExpired();
+//                //登录票据已经过期 请使用新签发的 UserSig 进行登录。
+//            }
+//
+//            // 5. 监听 V2TIMSDKListener 回调
+//            @Override
+//            public void onConnecting() {
+//                // 正在连接到腾讯云服务器
+//                ToastUtils.show("腾讯云正在连接");
+//
+//            }
+//
+//            @Override
+//            public void onSelfInfoUpdated(V2TIMUserFullInfo info) {
+//                super.onSelfInfoUpdated(info);
+//                //可以在 UI 上更新自己的头像和昵称。
+//            }
+//
+//            @Override
+//            public void onConnectSuccess() {
+//                // 已经成功连接到腾讯云服务器
+//                ToastUtils.show("腾讯云已经连上");
+//            }
+//
+//            @Override
+//            public void onConnectFailed(int code, String error) {
+//                // 连接腾讯云服务器失败
+//                ToastUtils.show("腾讯云连接失败");
+//            }
+//        });
     }
 
     private static void registerCustomListeners() {

@@ -1,5 +1,6 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.PopupWindow;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppFragment;
@@ -21,6 +23,7 @@ import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.ClientsApi;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
+import com.bitvalue.healthmanage.ui.activity.LoginActivity;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactsGroupBean;
 import com.bitvalue.healthmanage.ui.contacts.view.RecyclerAdapter;
@@ -81,6 +84,15 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         contact_list.setLayoutManager(layoutManager);
 
         adapter = new RecyclerAdapter(getActivity(), contactsGroupBeans);
+        adapter.setOnChildItemClickListener(new RecyclerAdapter.OnChildItemClickListener() {
+            @Override
+            public void onChildItemClick(ContactBean child, ExpandableGroup group, int childIndex, int flatPosition) {
+                ContactsGroupBean clickGroup = (ContactsGroupBean) group;
+                ToastUtils.show("父级是" + clickGroup.getTitle() + "###当前条目是" + child.getName());
+
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT,child);
+            }
+        });
         adapter.setOnGroupClickListener(new OnGroupClickListener() {
             @Override
             public boolean onGroupClick(int flatPos) {
@@ -122,7 +134,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                 .setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
-                        if (mPopupWindow != null){
+                        if (mPopupWindow != null) {
                             mPopupWindow = null;
                         }
                     }
@@ -133,15 +145,17 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                 .build();
         mPopupWindow.show();
     }
+
     private ViewCallback viewCallback = new ViewCallback() {
         @Override
         public void onInitView(View view, int mLayoutId) {
-            switch (mLayoutId){
+            switch (mLayoutId) {
                 case R.layout.pop_contacts:
                     view.findViewById(R.id.tv_project).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             ToastUtils.show("点击了计划");
+                            startActivity(new Intent(getActivity(), LoginActivity.class));
                         }
                     });
 
@@ -180,16 +194,16 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
 
     private void getDatas() {
         List<ContactBean> childList = new ArrayList<>();
-        childList.add(new ContactBean("张三"));
-        childList.add(new ContactBean("李四"));
-        childList.add(new ContactBean("王二"));
+        childList.add(new ContactBean("张三","111"));
+        childList.add(new ContactBean("李四","111"));
+        childList.add(new ContactBean("王二","111"));
         ContactsGroupBean contactsGroupBean = new ContactsGroupBean("朋友", childList);
         contactsGroupBeans.add(contactsGroupBean);
 
         List<ContactBean> childList2 = new ArrayList<>();
-        childList2.add(new ContactBean("小宝"));
-        childList2.add(new ContactBean("爷爷"));
-        childList2.add(new ContactBean("奶奶"));
+        childList2.add(new ContactBean("小宝","111"));
+        childList2.add(new ContactBean("爷爷","111"));
+        childList2.add(new ContactBean("奶奶","111"));
         ContactsGroupBean contactsGroupBean2 = new ContactsGroupBean("亲人", childList2);
         contactsGroupBeans.add(contactsGroupBean2);
     }

@@ -1,5 +1,8 @@
 package com.bitvalue.healthmanage.app;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.bitvalue.healthmanage.action.ToastAction;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.hjq.base.BaseFragment;
@@ -15,6 +18,33 @@ import okhttp3.Call;
  */
 public abstract class AppFragment<A extends AppActivity> extends BaseFragment<A>
         implements ToastAction, OnHttpListener<Object> {
+
+    public void forward(Fragment fragment, boolean hide) {
+        forward(getId(), fragment, null, hide);
+    }
+
+    public void forward(int viewId, Fragment fragment, String name, boolean hide) {
+        if (getFragmentManager() == null){
+            return;
+        }
+        FragmentTransaction trans = getFragmentManager().beginTransaction();
+        if (hide) {
+            trans.hide(this);
+            trans.add(viewId, fragment);
+        } else {
+            trans.replace(viewId, fragment);
+        }
+
+        trans.addToBackStack(name);
+        trans.commitAllowingStateLoss();
+    }
+
+    public void backward() {
+        if (getFragmentManager() == null){
+            return;
+        }
+        getFragmentManager().popBackStack();
+    }
 
     /**
      * 当前加载对话框是否在显示中

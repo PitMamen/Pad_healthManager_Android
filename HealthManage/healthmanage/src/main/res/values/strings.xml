@@ -157,6 +157,9 @@
 
     <string name="login_other">其他登录方式</string>
 
+    <string name="repeat_login_tip">您的帐号已在其它终端登录</string>
+    <string name="expired_login_tip">帐号已过期，请重新登录</string>
+
     <!-- 注册 -->
     <string name="register_title">注册</string>
     <string name="register_hint">手机号仅用于登录和保护账号安全</string>

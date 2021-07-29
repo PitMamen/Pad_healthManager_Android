@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="28dp"
+    android:layout_height="@dimen/qb_px_28"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
     <View
         android:layout_width="match_parent"
         android:background="@color/divider"
-        android:layout_height="1dp"/>
+        android:layout_height="@dimen/qb_px_1"/>
 
     <LinearLayout
         android:id="@+id/layout_arrow"
-        android:layout_width="20dp"
-        android:paddingLeft="10dp"
+        android:layout_width="@dimen/qb_px_20"
+        android:paddingLeft="@dimen/qb_px_10"
         android:layout_height="match_parent"
         android:gravity="center">
 
@@ -31,12 +31,12 @@
         android:id="@+id/tv_trait_group"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="6dp"
+        android:layout_marginLeft="@dimen/qb_px_6"
         android:layout_toRightOf="@id/layout_arrow"
         android:gravity="center"
         android:text="第一级"
         android:textColor="@color/text_black"
-        android:textSize="8sp" />
+        android:textSize="@dimen/qb_px_8" />
 
     <TextView
         android:id="@+id/tv_group_no"
@@ -45,8 +45,8 @@
         android:layout_alignParentRight="true"
         android:gravity="center"
         android:text="8"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="@dimen/qb_px_15"
         android:textColor="@color/text_desc_dark"
-        android:textSize="8sp" />
+        android:textSize="@dimen/qb_px_8" />
 
 </RelativeLayout>

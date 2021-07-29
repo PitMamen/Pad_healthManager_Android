@@ -5,6 +5,15 @@ import android.os.Parcelable;
 
 public class ContactBean implements Parcelable {
     private String name;
+    private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public ContactBean() {
     }
@@ -45,5 +54,10 @@ public class ContactBean implements Parcelable {
 
     public ContactBean(String name) {
         this.name = name;
+    }
+
+    public ContactBean(String name, String userId) {
+        this.name = name;
+        this.userId = userId;
     }
 }

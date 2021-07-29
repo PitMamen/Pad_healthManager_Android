@@ -30,10 +30,15 @@ import java.util.List;
 public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapter.GroupContentViewHolder, RecyclerAdapter.ChildContentViewHolder> {
 
     private Activity activity;
+    private OnChildItemClickListener onChildItemClickListener;
 
     public RecyclerAdapter(Activity activity, List<? extends ExpandableGroup> groups) {
         super(groups);
         this.activity = activity;
+    }
+
+    public void setOnChildItemClickListener(OnChildItemClickListener onChildItemClickListener){
+        this.onChildItemClickListener = onChildItemClickListener;
     }
 
     @Override
@@ -57,9 +62,9 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapt
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO 跳转事件
-                ToastUtils.show("点击了" + child.getName());
-//                ToastUtil.toastLongMessage("点击了" + child.getName());
+                if (null != onChildItemClickListener){
+                    onChildItemClickListener.onChildItemClick(child,group,childIndex,flatPosition);
+                }
             }
         });
     }
@@ -126,5 +131,11 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapt
 //            }
 
         }
+    }
+
+    public interface OnChildItemClickListener{
+
+        void onChildItemClick(ContactBean child, ExpandableGroup group, int childIndex, int flatPosition);
+
     }
 }

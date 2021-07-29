@@ -16,17 +16,24 @@ import com.bitvalue.healthmanage.app.AppActivity;
 //import com.bitvalue.sdk.base.VerifyHelper;
 //import com.bitvalue.sdk.base.util.net.CheckCallBack;
 //import com.bitvalue.sdk.base.util.sp.SharedPreManager;
+import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.myhttp.RequestConstants;
 import com.bitvalue.healthmanage.http.myhttp.RequestUtil;
 import com.bitvalue.healthmanage.http.request.LoginApi;
 import com.bitvalue.healthmanage.http.response.LoginBean;
+import com.bitvalue.healthmanage.util.DemoLog;
 import com.bitvalue.healthmanage.util.SharedPreManager;
+import com.bitvalue.healthmanage.util.signature.GenerateTestUserSig;
+import com.bitvalue.sdk.collab.TUIKit;
+import com.bitvalue.sdk.collab.base.IUIKitCallBack;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.hjq.http.EasyConfig;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
+import com.tencent.imsdk.relationship.UserInfo;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 //import butterknife.OnClick;
@@ -108,15 +115,32 @@ public class LoginActivity extends AppActivity {
                     public void onSucceed(HttpData<LoginBean> data) {
                         // 更新 Token
 //                        EasyConfig.getInstance().addParam("token", data.getData().getToken());
-                        EasyConfig.getInstance().addHeader("Authorization", data.getData().getToken());
-                        SharedPreManager.putString(Constants.KEY_TOKEN, data.getData().getToken());
-                        SharedPreManager.putObject(Constants.KYE_USER_BEAN,data.getData());
+                        LoginBean loginBean = data.getData();
+                        EasyConfig.getInstance().addHeader("Authorization", loginBean.getToken());
+                        SharedPreManager.putString(Constants.KEY_TOKEN, loginBean.getToken());
+                        SharedPreManager.putObject(Constants.KYE_USER_BEAN, loginBean);
+                        String userSig = GenerateTestUserSig.genTestUserSig(loginBean.getUser().userId + "");//TODO 要改，正常是后台计算秘钥，UserSig
+                        TUIKit.login(loginBean.getUser().userId + "", userSig, new IUIKitCallBack() {
+                            @Override
+                            public void onError(String module, final int code, final String desc) {
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        DemoLog.e("TUIKit.login", "登录聊天失败" + ", errCode = " + code + ", errInfo = " + desc);
+//                                        ToastUtil.toastLongMessage(getString("登录聊天失败") + ", errCode = " + code + ", errInfo = " + desc);
+                                    }
+                                });
+//                                DemoLog.i(TAG, "imLogin errorCode = " + code + ", errorInfo = " + desc);
+                            }
 
-                        // 跳转到首页
-                        // HomeActivity.start(getContext(), MeFragment.class);
-                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                        finish();
-
+                            @Override
+                            public void onSuccess(Object data) {
+                                // 跳转到首页
+                                // HomeActivity.start(getContext(), MeFragment.class);
+                                SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, AppApplication.instance());
+                                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                finish();
+                            }
+                        });
                     }
 
                     @Override
@@ -127,7 +151,6 @@ public class LoginActivity extends AppActivity {
                         }, 1000);
                     }
                 });
-
     }
 
     /**

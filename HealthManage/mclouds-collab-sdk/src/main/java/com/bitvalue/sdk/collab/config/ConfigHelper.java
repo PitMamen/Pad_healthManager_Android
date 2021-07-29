@@ -1,5 +1,6 @@
 package com.bitvalue.sdk.collab.config;
 
+import android.content.Context;
 import android.os.Environment;
 
 import com.bitvalue.sdk.collab.TUIKit;
@@ -13,12 +14,12 @@ public class ConfigHelper {
 
     }
 
-    public TUIKitConfigs getConfigs() {
+    public TUIKitConfigs getConfigs(Context context) {
         GeneralConfig config = new GeneralConfig();
         // 显示对方是否已读的view将会展示
         config.setShowRead(true);
 //        config.setAppCacheDir(DemoApplication.instance().getFilesDir().getPath());
-        config.setAppCacheDir(TUIKitImpl.getAppContext().getFilesDir().getPath());//TODO 这里改了一个context
+        config.setAppCacheDir(context.getFilesDir().getPath());//TODO 这里改了一个context
         if (new File(Environment.getExternalStorageDirectory() + "/111222333").exists()) {//这个文件没有生成，则不是测试环境
             config.setTestEnv(true);
         }
