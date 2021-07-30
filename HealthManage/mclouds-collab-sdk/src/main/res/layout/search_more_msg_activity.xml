@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/status_bar_color"
-    tools:context="com.tencent.qcloud.tim.uikit.modules.search.SearchMainActivity">
+    android:background="@color/status_bar_color">
+<!--    tools:context="com.bitvalue.sdk.collab.modules.search.SearchMainActivity">-->
 
     <!-- search-->
     <LinearLayout
@@ -142,7 +142,7 @@
                     android:layout_height="0.3dp"
                     android:background="@color/split_lint_color" />
 
-                <com.tencent.qcloud.tim.uikit.modules.search.view.PageRecycleView
+                <com.bitvalue.sdk.collab.modules.search.view.PageRecycleView
                     android:id="@+id/message_rc_search"
                     android:layout_below="@+id/view_line_three"
                     android:layout_width="match_parent"

@@ -8,7 +8,7 @@ android:paddingTop="12dp"
 android:paddingLeft="14.85dp"
 android:orientation="horizontal">
 
-<com.tencent.qcloud.tim.uikit.modules.conversation.base.ConversationIconView
+<com.bitvalue.sdk.collab.modules.conversation.base.ConversationIconView
     android:id="@+id/conversation_icon"
     android:layout_width="@dimen/conversation_avatar_width"
     android:layout_height="@dimen/conversation_avatar_height" />

@@ -81,6 +81,7 @@ public class ChatFragment extends AppFragment {
 
         //获取单聊面板的标题栏
         mTitleBar = mChatLayout.getTitleBar();
+        mTitleBar.getLeftGroup().setVisibility(GONE);//沒有可返回的页面，隐藏
 
         //单聊面板标记栏返回按钮点击事件，这里需要开发者自行控制
         mTitleBar.setOnLeftClickListener(new View.OnClickListener() {

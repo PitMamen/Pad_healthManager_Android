@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/chat_background_color">
 
-    <com.tencent.qcloud.tim.uikit.component.TitleBarLayout
+    <com.bitvalue.sdk.collab.component.TitleBarLayout
         android:id="@+id/chat_title_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/page_title_height" />
@@ -16,14 +17,14 @@
         android:layout_height="0.3dp"
         android:background="@color/chat_title_line_color" />
 
-    <com.tencent.qcloud.tim.uikit.component.NoticeLayout
+    <com.bitvalue.sdk.collab.component.NoticeLayout
         android:id="@+id/chat_group_apply_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_line"
         android:visibility="gone" />
 
-    <com.tencent.qcloud.tim.uikit.component.NoticeLayout
+    <com.bitvalue.sdk.collab.component.NoticeLayout
         android:id="@+id/chat_notice_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +32,7 @@
         android:layout_marginTop="1dp"
         android:visibility="gone" />
 
-    <com.tencent.qcloud.tim.uikit.modules.chat.layout.message.MessageLayout
+    <com.bitvalue.sdk.collab.modules.chat.layout.message.MessageLayout
         android:id="@+id/chat_message_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,10 +52,11 @@
         android:textColor="@color/read_dot_bg"
         android:background="@color/list_bottom_text_bg"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/btn_margin_right"/>
+        android:layout_marginEnd="@dimen/btn_margin_right"
+        tools:ignore="RtlCompat" />
 
 
-    <com.tencent.qcloud.tim.uikit.modules.chat.layout.input.InputLayout
+    <com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayout
         android:id="@+id/chat_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

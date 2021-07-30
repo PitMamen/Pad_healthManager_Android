@@ -120,14 +120,14 @@ public class SplashActivity extends AppActivity {
     };
 
     private void jumpActivity() {
-        if (SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty()) {
-            //从闪屏界面跳转到首界面
-            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-            startActivity(intent);
-        } else {
+//        if (SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty()) {
+//            //从闪屏界面跳转到首界面
+//            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+//            startActivity(intent);
+//        } else {
             Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
             startActivity(intent);
-        }
+//        }
         finish();
     }
 

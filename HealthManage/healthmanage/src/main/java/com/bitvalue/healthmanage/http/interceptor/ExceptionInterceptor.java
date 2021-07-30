@@ -84,13 +84,13 @@ public class ExceptionInterceptor implements Interceptor {
                 if (responseEntity != null) {
                     int result = responseEntity.getCode();
                     // result为9时，接口需要登录
-                    if (result == 10001) {
-                        Intent intent = new Intent(AppApplication.instance(), LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        AppApplication.instance().startActivity(intent);
-                        // 进行内存优化，销毁除登录页之外的所有界面
-                        ActivityManager.getInstance().finishAllActivities(LoginActivity.class);
-                    }
+//                    if (result == 10001) {
+//                        Intent intent = new Intent(AppApplication.instance(), LoginActivity.class);
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        AppApplication.instance().startActivity(intent);
+//                        // 进行内存优化，销毁除登录页之外的所有界面
+//                        ActivityManager.getInstance().finishAllActivities(LoginActivity.class);
+//                    }
                 }
             }
 

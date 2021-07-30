@@ -1,10 +1,9 @@
 package com.bitvalue.healthmanage.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -16,21 +15,16 @@ import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppActivity;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
-import com.bitvalue.healthmanage.http.request.LoginApi;
 import com.bitvalue.healthmanage.http.request.TestApi;
-import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
 import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
 import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
-import com.bitvalue.healthmanage.ui.fragment.NewsFragment;
-import com.bitvalue.healthmanage.util.SharedPreManager;
+import com.bitvalue.healthmanage.ui.settings.fragment.SettingsFragment;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
-import com.hjq.http.EasyConfig;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
-import com.hjq.toast.ToastUtils;
 import com.tencent.imsdk.v2.V2TIMConversation;
 
 import java.util.ArrayList;
@@ -44,13 +38,14 @@ import okhttp3.Call;
 public class HomeActivity extends AppActivity {
 
     private static final int chat_index = 0;
-    private static final int news_index = 1;
-    private NewsFragment newsFragment;
+    private static final int settings = 1;
+    private SettingsFragment settingsFragment;
     private ContactsFragment contactsFragment;
     private AppFragment[] fragments;
     private int tabPosition = -1;
-    private TextView tv_news, tv_chat, tv_person;
-    private ImageView img_chat, img_news, img_person;
+    private TextView tv_settings, tv_chat, tv_person;
+    private LinearLayout layout_person,layout_settings;
+    private ImageView img_chat, img_settings, img_person;
     private Map<String, Fragment> mapFragments = new HashMap<>();
 
     @Override
@@ -60,21 +55,24 @@ public class HomeActivity extends AppActivity {
 
     @Override
     protected void initView() {
-        tv_news = findViewById(R.id.tv_news);
+        tv_settings = findViewById(R.id.tv_settings);
         tv_chat = findViewById(R.id.tv_chat);
         tv_person = findViewById(R.id.tv_person);
         img_chat = findViewById(R.id.img_chat);
-        img_news = findViewById(R.id.img_news);
+        img_settings = findViewById(R.id.img_settings);
         img_person = findViewById(R.id.img_person);
+        layout_person = findViewById(R.id.layout_person);
+        layout_settings = findViewById(R.id.layout_settings);
 
-        setOnClickListener(R.id.layout_person, R.id.layout_news);
+        setOnClickListener(R.id.layout_person, R.id.layout_settings);
         initFragments(0);
     }
 
     private void initFragments(int index) {
         contactsFragment = ContactsFragment.getInstance(false);
-        newsFragment = NewsFragment.getInstance(false);
-        fragments = new AppFragment[]{contactsFragment, newsFragment};
+//        newsFragment = NewsFragment.getInstance(false);
+        settingsFragment = SettingsFragment.getInstance(false);
+        fragments = new AppFragment[]{contactsFragment, settingsFragment};
         getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment, fragments[0]).commitAllowingStateLoss();
         getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment, fragments[1]).commitAllowingStateLoss();
         afterTabSelect(index);
@@ -133,11 +131,13 @@ public class HomeActivity extends AppActivity {
             case chat_index:
                 img_person.setImageResource(R.drawable.tab_icon_ct);
                 tv_person.setTextColor(getResources().getColor(R.color.white));
+                layout_person.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
 
-            case news_index:
-                img_news.setImageResource(R.drawable.tab_icon_set);
-                tv_news.setTextColor(getResources().getColor(R.color.white));
+            case settings:
+                img_settings.setImageResource(R.drawable.tab_icon_set);
+                tv_settings.setTextColor(getResources().getColor(R.color.white));
+                layout_settings.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
         }
     }
@@ -145,9 +145,11 @@ public class HomeActivity extends AppActivity {
     private void initNaviUI() {
         img_person.setImageResource(R.drawable.tab_icon_ct);
         tv_person.setTextColor(getResources().getColor(R.color.gray));
+        layout_person.setBackgroundColor(getResources().getColor(R.color.home_blue));
 
-        img_news.setImageResource(R.drawable.tab_icon_set);
-        tv_news.setTextColor(getResources().getColor(R.color.gray));
+        img_settings.setImageResource(R.drawable.tab_icon_set);
+        tv_settings.setTextColor(getResources().getColor(R.color.gray));
+        layout_settings.setBackgroundColor(getResources().getColor(R.color.home_blue));
     }
 
     @SingleClick
@@ -157,7 +159,7 @@ public class HomeActivity extends AppActivity {
             case R.id.layout_person:
                 afterTabSelect(0);
                 break;
-            case R.id.layout_news:
+            case R.id.layout_settings:
                 afterTabSelect(1);
                 break;
         }
@@ -211,7 +213,7 @@ public class HomeActivity extends AppActivity {
                 String chatName = child.getName();
                 chatInfo.setChatName(chatName);
 
-                bundle.putSerializable(Constants.CHAT_INFO, chatInfo);
+                bundle.putSerializable(com.bitvalue.healthmanage.util.Constants.CHAT_INFO, chatInfo);
                 chatFragment.setArguments(bundle);
                 mapFragments.put(Constants.FRAGMENT_CHAT, chatFragment);
                 break;

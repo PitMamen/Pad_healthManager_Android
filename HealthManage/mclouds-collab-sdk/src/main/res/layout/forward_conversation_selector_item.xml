@@ -15,7 +15,7 @@
         android:layout_marginRight="6.23dp"
         android:visibility="gone"/>-->
 
-    <com.tencent.qcloud.tim.uikit.component.gatherimage.UserIconView
+    <com.bitvalue.sdk.collab.component.gatherimage.UserIconView
         android:id="@+id/conversation_user_icon_view"
         android:layout_width="41dp"
         android:layout_height="41dp"

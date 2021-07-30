@@ -42,7 +42,7 @@
         android:layout_marginTop="3.68dp"
         android:orientation="horizontal">
 
-        <com.tencent.qcloud.tim.uikit.component.gatherimage.UserIconView
+        <com.bitvalue.sdk.collab.component.gatherimage.UserIconView
             android:id="@+id/left_user_icon_view"
             android:layout_width="41dp"
             android:layout_height="41dp"
@@ -52,7 +52,7 @@
             app:default_image="@drawable/default_user_icon"
             app:image_radius="20dp" />
 
-        <com.tencent.qcloud.tim.uikit.component.gatherimage.UserIconView
+        <com.bitvalue.sdk.collab.component.gatherimage.UserIconView
             android:id="@+id/right_user_icon_view"
             android:layout_width="41dp"
             android:layout_height="41dp"
@@ -86,7 +86,7 @@
         android:layout_marginBottom="3.68dp"
         android:orientation="horizontal">
 
-        <com.tencent.qcloud.tim.uikit.component.UnreadCountTextView
+        <com.bitvalue.sdk.collab.component.UnreadCountTextView
             android:id="@+id/audio_unread"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
