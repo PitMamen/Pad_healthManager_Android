@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bitvalue.healthmanage.Constants;
@@ -44,7 +45,7 @@ public class HomeActivity extends AppActivity {
     private AppFragment[] fragments;
     private int tabPosition = -1;
     private TextView tv_settings, tv_chat, tv_person;
-    private LinearLayout layout_person,layout_settings;
+    private LinearLayout layout_person, layout_settings;
     private ImageView img_chat, img_settings, img_person;
     private Map<String, Fragment> mapFragments = new HashMap<>();
 
@@ -55,6 +56,7 @@ public class HomeActivity extends AppActivity {
 
     @Override
     protected void initView() {
+        //adb logcat -v time >D:\log.txt
         tv_settings = findViewById(R.id.tv_settings);
         tv_chat = findViewById(R.id.tv_chat);
         tv_person = findViewById(R.id.tv_person);
@@ -110,18 +112,26 @@ public class HomeActivity extends AppActivity {
         if (index == tabPosition) {
             return;
         }
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
         for (int i = 0; i < fragments.length; i++) {
             if (i != index) {
-                getSupportFragmentManager().beginTransaction().hide(fragments[i]).commit();
+                supportFragmentManager.beginTransaction().hide(fragments[i]).commit();
             }
         }
         if (!fragments[index].isAdded()) {
-            getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment, fragments[index]);
+            supportFragmentManager.beginTransaction().add(R.id.layout_fragment, fragments[index]);
         }
-        getSupportFragmentManager().beginTransaction().show(fragments[index]).commit();
+        supportFragmentManager.beginTransaction().show(fragments[index]).commit();
 
         tabPosition = index;
         setBottomUi(index);
+//        if (index == 0) {
+//            //TODO 造的数据
+//            ContactBean contactBean = new ContactBean("爷爷", "111");
+//            switchSecondFragment(Constants.FRAGMENT_CHAT, contactBean);
+//        } else {
+//            switchSecondFragment(Constants.FRAGMENT_HEALTH, "");
+//        }
     }
 
     private void setBottomUi(int index) {
@@ -189,12 +199,13 @@ public class HomeActivity extends AppActivity {
      * 传参数新增fragment
      *
      * @param keyFragment
-     * @param child
+     * @param object
      */
-    public void switchSecondFragment(String keyFragment, ContactBean child) {
+    public void switchSecondFragment(String keyFragment, Object object) {
         boolean isContain = mapFragments.containsKey(keyFragment);
         switch (keyFragment) {
             case Constants.FRAGMENT_CHAT:
+                ContactBean child = (ContactBean) object;
                 ChatFragment chatFragment;
 //                if (!isContain) {
 //                    chatFragment = new ChatFragment();
@@ -216,49 +227,36 @@ public class HomeActivity extends AppActivity {
                 bundle.putSerializable(com.bitvalue.healthmanage.util.Constants.CHAT_INFO, chatInfo);
                 chatFragment.setArguments(bundle);
                 mapFragments.put(Constants.FRAGMENT_CHAT, chatFragment);
+                getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_CHAT)).commitAllowingStateLoss();
+                break;
+            case Constants.FRAGMENT_HEALTH:
+                SettingsFragment settingsFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                settingsFragment = new SettingsFragment();
+                mapFragments.put(Constants.FRAGMENT_HEALTH, settingsFragment);
+                getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_HEALTH)).commitAllowingStateLoss();
                 break;
         }
         Set<String> strings = mapFragments.keySet();
         List<String> strings1 = new ArrayList<>(strings);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
         for (int i = 0; i < mapFragments.size(); i++) {
             if (!strings1.get(i).equals(keyFragment)) {
-                transaction.hide(fragments[i]).commit();
+                supportFragmentManager.beginTransaction().hide(mapFragments.get(strings1.get(i))).commit();
             }
         }
         if (!mapFragments.get(keyFragment).isAdded()) {
-            transaction.add(R.id.layout_fragment_end, mapFragments.get(keyFragment));
+            supportFragmentManager.beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(keyFragment));
         }
-        transaction.addToBackStack(Constants.FRAGMENT_CHAT);
-        transaction.show(mapFragments.get(keyFragment)).commit();
-
-//        tabPosition = index;
+        supportFragmentManager.beginTransaction().addToBackStack(keyFragment);
+        supportFragmentManager.beginTransaction().show(mapFragments.get(keyFragment)).commit();
     }
 
     public void switchSecondFragmentOther() {
 
     }
-
-//    public void forward(int viewId, Fragment fragment, String name, boolean hide) {
-//        if (getSupportFragmentManager() == null){
-//            return;
-//        }
-//        FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
-//        if (hide) {
-//            trans.hide(this);
-//            trans.add(viewId, fragment);
-//        } else {
-//            trans.replace(viewId, fragment);
-//        }
-//
-//        trans.addToBackStack(name);
-//        trans.commitAllowingStateLoss();
-//    }
-//
-//    public void backward() {
-//        if (getSupportFragmentManager() == null){
-//            return;
-//        }
-//        getSupportFragmentManager().popBackStack();
-//    }
 }

@@ -11,7 +11,8 @@ public class Constants {
     public static final String KYE_USER_BEAN = "kye_user_bean";
     public static final String FRAGMENT_CHAT = "fragment_chat";
     public static final String CHAT_INFO = "chat_info";
-    public static final String KEY_IM_AUTO_LOGIN = "KEY_IM_AUTO_LOGIN";
+    public static final String KEY_IM_AUTO_LOGIN = "key_im_auto_login";
+    public static final String FRAGMENT_HEALTH = "fragment_health";
 
 //    //自己的
 //    public static final int IM_APPId =1400548652;

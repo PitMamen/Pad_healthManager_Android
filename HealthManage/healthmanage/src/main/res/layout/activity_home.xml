@@ -331,13 +331,14 @@
 
     </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/layout_fragment_end"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="6"
+        android:background="@color/white"
         android:orientation="vertical">
 
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

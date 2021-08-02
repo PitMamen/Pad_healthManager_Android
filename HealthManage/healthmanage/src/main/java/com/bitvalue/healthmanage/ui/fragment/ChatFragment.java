@@ -87,7 +87,7 @@ public class ChatFragment extends AppFragment {
         mTitleBar.setOnLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().finish();
+                getActivity().finish();//TODO 返回按钮
             }
         });
         if (mChatInfo.getType() == V2TIMConversation.V2TIM_C2C) {
