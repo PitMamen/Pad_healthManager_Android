@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
@@ -22,6 +21,8 @@ import com.bitvalue.healthmanage.other.DoubleClickHelper;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
 import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
 import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
+import com.bitvalue.healthmanage.ui.fragment.HealthPlanFragment;
+import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragment;
 import com.bitvalue.healthmanage.ui.settings.fragment.SettingsFragment;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.hjq.http.EasyHttp;
@@ -177,6 +178,12 @@ public class HomeActivity extends AppActivity {
 
     @Override
     public void onBackPressed() {
+        //堆栈有fragment则不退出app
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+            return;
+        }
+
         if (!DoubleClickHelper.isOnDoubleClick()) {
             toast(R.string.home_exit_hint);
             return;
@@ -230,27 +237,38 @@ public class HomeActivity extends AppActivity {
                 getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_CHAT)).commitAllowingStateLoss();
                 break;
             case Constants.FRAGMENT_HEALTH:
-                SettingsFragment settingsFragment;
+                HealthPlanFragment healthPlanFragment;
                 if (isContain) {
                     mapFragments.remove(keyFragment);
                 }
-                settingsFragment = new SettingsFragment();
-                mapFragments.put(Constants.FRAGMENT_HEALTH, settingsFragment);
+                healthPlanFragment = new HealthPlanFragment();
+                mapFragments.put(Constants.FRAGMENT_HEALTH, healthPlanFragment);
                 getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_HEALTH)).commitAllowingStateLoss();
+                break;
+
+            case Constants.FRAGMENT_HEALTH_NEW:
+                NewHealthPlanFragment newHealthPlanFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                newHealthPlanFragment = new NewHealthPlanFragment();
+                mapFragments.put(Constants.FRAGMENT_HEALTH_NEW, newHealthPlanFragment);
+                getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_HEALTH_NEW)).commitAllowingStateLoss();
                 break;
         }
         Set<String> strings = mapFragments.keySet();
-        List<String> strings1 = new ArrayList<>(strings);
+        List<String> stringList = new ArrayList<>(strings);
 
 
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         for (int i = 0; i < mapFragments.size(); i++) {
-            if (!strings1.get(i).equals(keyFragment)) {
-                supportFragmentManager.beginTransaction().hide(mapFragments.get(strings1.get(i))).commit();
+            if (!stringList.get(i).equals(keyFragment)) {
+                supportFragmentManager.beginTransaction().hide(mapFragments.get(stringList.get(i))).commit();
             }
         }
         if (!mapFragments.get(keyFragment).isAdded()) {
-            supportFragmentManager.beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(keyFragment));
+//            supportFragmentManager.beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(keyFragment));
+            supportFragmentManager.beginTransaction().replace(R.id.layout_fragment_end, mapFragments.get(keyFragment));
         }
         supportFragmentManager.beginTransaction().addToBackStack(keyFragment);
         supportFragmentManager.beginTransaction().show(mapFragments.get(keyFragment)).commit();

@@ -7,27 +7,27 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="@dimen/qb_px_50">
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="13.5dp"
-            android:layout_marginTop="17dp"
+            android:layout_marginLeft="@dimen/qb_px_15"
             android:text="健康管理客户"
-            android:textColor="@color/text_main"
-            android:textSize="12sp"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/qb_px_12"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
 
         <LinearLayout
             android:id="@+id/layout_nav"
-            android:layout_width="38dp"
+            android:layout_width="@dimen/qb_px_38"
             android:layout_height="match_parent"
-            android:layout_marginRight="13.5dp"
+            android:layout_marginRight="@dimen/qb_px_15"
             android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -41,6 +41,12 @@
 
         </LinearLayout>
 
+            <View
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="match_parent"
+                android:background="@color/divider"
+                android:layout_height="@dimen/qb_px_1"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -48,6 +54,6 @@
         android:id="@+id/contact_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="@dimen/qb_px_5" />
 
 </LinearLayout>

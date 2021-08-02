@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bitvalue.healthmanage.action.ToastAction;
 import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.hjq.base.BaseFragment;
 import com.hjq.http.listener.OnHttpListener;
 
@@ -19,15 +20,18 @@ import okhttp3.Call;
 public abstract class AppFragment<A extends AppActivity> extends BaseFragment<A>
         implements ToastAction, OnHttpListener<Object> {
 
-    public void forward(Fragment fragment, boolean hide) {
+    private HomeActivity homeActivity;
+
+    public void forward(HomeActivity homeActivity, Fragment fragment, boolean hide) {
+        this.homeActivity = homeActivity;
         forward(getId(), fragment, null, hide);
     }
 
     public void forward(int viewId, Fragment fragment, String name, boolean hide) {
-        if (getFragmentManager() == null){
+        if (homeActivity.getSupportFragmentManager() == null){
             return;
         }
-        FragmentTransaction trans = getFragmentManager().beginTransaction();
+        FragmentTransaction trans = homeActivity.getSupportFragmentManager().beginTransaction();
         if (hide) {
             trans.hide(this);
             trans.add(viewId, fragment);
@@ -40,10 +44,10 @@ public abstract class AppFragment<A extends AppActivity> extends BaseFragment<A>
     }
 
     public void backward() {
-        if (getFragmentManager() == null){
+        if (homeActivity.getSupportFragmentManager() == null){
             return;
         }
-        getFragmentManager().popBackStack();
+        homeActivity.getSupportFragmentManager().popBackStack();
     }
 
     /**

@@ -331,6 +331,23 @@
 
     </FrameLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="@dimen/qb_px_1"
+            android:background="@color/transparent"
+            android:layout_height="@dimen/qb_px_50"/>
+
+        <View
+            android:layout_width="@dimen/qb_px_1"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider" />
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/layout_fragment_end"
         android:layout_width="0dp"

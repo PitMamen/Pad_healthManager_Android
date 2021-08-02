@@ -9,17 +9,18 @@
         android:id="@+id/img_corner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
         android:layout_marginLeft="@dimen/qb_px_59"
+        android:scaleType="centerCrop"
         android:src="@drawable/icon_corner"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--    android:paddingVertical="@dimen/qb_px_7"-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="@dimen/qb_px_80"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_pop_contacts"
-        android:paddingVertical="@dimen/qb_px_7">
+        android:paddingBottom="@dimen/qb_px_7">
 
         <TextView
             android:id="@+id/tv_project"
@@ -29,6 +30,7 @@
             android:text="健康管理计划"
             android:textColor="@color/white"
             android:textSize="@dimen/qb_px_8"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,9 +40,11 @@
             android:layout_height="1px"
             android:layout_marginTop="@dimen/qb_px_7"
             android:background="@color/white"
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_project" />
 
+        <!--        android:layout_marginTop="@dimen/qb_px_7"-->
         <TextView
             android:id="@+id/tv_mul_msg"
             android:layout_width="wrap_content"

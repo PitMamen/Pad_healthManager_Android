@@ -13,6 +13,7 @@ public class Constants {
     public static final String CHAT_INFO = "chat_info";
     public static final String KEY_IM_AUTO_LOGIN = "key_im_auto_login";
     public static final String FRAGMENT_HEALTH = "fragment_health";
+    public static final String FRAGMENT_HEALTH_NEW = "fragment_health_new";
 
 //    //自己的
 //    public static final int IM_APPId =1400548652;

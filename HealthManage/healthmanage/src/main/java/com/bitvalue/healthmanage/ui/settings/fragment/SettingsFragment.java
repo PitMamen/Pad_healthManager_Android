@@ -2,6 +2,8 @@ package com.bitvalue.healthmanage.ui.settings.fragment;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bitvalue.healthmanage.Constants;
@@ -12,7 +14,7 @@ import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.fragment.NewsFragment;
 
 public class SettingsFragment extends AppFragment {
-    private TextView tv_health;
+    private RelativeLayout layout_plans;
     private HomeActivity homeActivity;
 
     public static SettingsFragment getInstance(boolean is_need_toast) {
@@ -31,15 +33,15 @@ public class SettingsFragment extends AppFragment {
     @Override
     protected void initView() {
         homeActivity = (HomeActivity) getActivity();
-        tv_health = getView().findViewById(R.id.tv_health);
-        setOnClickListener(R.id.tv_health);
+        layout_plans = getView().findViewById(R.id.layout_plans);
+        setOnClickListener(R.id.layout_plans);
     }
 
     @SingleClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_health:
+            case R.id.layout_plans:
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH,"");
                 break;
         }

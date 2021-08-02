@@ -1,8 +1,6 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -58,7 +56,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_chat;
+        return R.layout.fragment_contacts;
     }
 
     public static ContactsFragment getInstance(boolean is_need_toast) {
