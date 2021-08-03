@@ -23,18 +23,309 @@
         android:layout_alignParentBottom="true"
         android:background="@color/divider" />
 
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="健康管理计划名称"
-            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_gray"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/qb_px_23"
+            android:paddingVertical="@dimen/qb_px_10">
 
-    </LinearLayout>
+            <!--  任务模块  -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_name_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="健康管理计划名称"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray"
+                    android:hint="请输入健康管理计划的名称（最多20字）"
+                    android:paddingHorizontal="@dimen/qb_px_6"
+                    android:paddingVertical="@dimen/qb_px_6"
+                    android:textColor="@color/text_main"
+                    android:textSize="@dimen/qb_px_8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name_desc" />
+
+                <TextView
+                    android:id="@+id/tv_disease_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="适用疾病"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_name" />
+
+                <TextView
+                    android:id="@+id/tv_disease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray_light"
+                    android:paddingHorizontal="@dimen/qb_px_49"
+                    android:paddingVertical="@dimen/qb_px_6"
+                    android:text="通用"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_disease_desc" />
+
+                <TextView
+                    android:id="@+id/tv_base_time_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="计划基准时间"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_disease" />
 
 
+                <RelativeLayout
+                    android:id="@+id/layout_base_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_base_time_desc">
 
+                    <TextView
+                        android:id="@+id/tv_base_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="7dp"
+                        android:gravity="center_vertical"
+                        android:hint="选择时间"
+                        android:minLines="1"
+                        android:paddingLeft="11dp"
+                        android:paddingTop="5dp"
+                        android:paddingRight="30dp"
+                        android:paddingBottom="5dp"
+                        android:text=""
+                        android:textColor="@color/text_main"
+                        android:textCursorDrawable="@null"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/img_choose_street"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/arrow_right"
+                        android:visibility="visible" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_2"
+                    android:text="* 患者选择套餐计划后将根据时间类型确定计划基准的时间"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/qb_px_7"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_base_time" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                layout="@layout/layout_mission"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:visibility="visible" />
+
+            <!--  添加任务按钮  -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_18"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_blue"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/qb_px_60"
+                android:paddingVertical="@dimen/qb_px_6"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/list_items">
+
+                <ImageView
+                    android:layout_width="@dimen/qb_px_8"
+                    android:layout_height="@dimen/qb_px_8"
+                    android:src="@drawable/tianjia" />
+
+                <TextView
+                    android:id="@+id/tv_add_mission"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/qb_px_3"
+                    android:text="添加下一次任务"
+                    android:textColor="@color/main_blue"
+                    android:textSize="@dimen/qb_px_8"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_plan_intro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="套餐介绍"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_intro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray"
+                    android:hint="请输入健康管理计划套餐介绍"
+                    android:minHeight="@dimen/qb_px_50"
+                    android:paddingHorizontal="@dimen/qb_px_6"
+                    android:paddingVertical="@dimen/qb_px_6"
+                    android:textColor="@color/text_main"
+                    android:textSize="@dimen/qb_px_8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_plan_intro" />
+
+                <TextView
+                    android:id="@+id/tv_plan_unit_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="套餐规格"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_intro" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_plan_unit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_plan_unit_desc">
+
+                    <TextView
+                        android:id="@+id/tv_plan_unit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="7dp"
+                        android:gravity="center_vertical"
+                        android:hint="选择规格"
+                        android:minLines="1"
+                        android:paddingLeft="11dp"
+                        android:paddingTop="5dp"
+                        android:paddingRight="30dp"
+                        android:paddingBottom="5dp"
+                        android:text=""
+                        android:textColor="@color/text_main"
+                        android:textCursorDrawable="@null"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/img_plan_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="10dp"
+                        android:src="@drawable/arrow_right"
+                        android:visibility="visible" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_plan_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="套餐启停状态"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_plan_unit" />
+
+
+                <!--                app:switch_bg_color="@color/main_blue"-->
+                <com.bitvalue.healthmanage.widget.SwitchButton
+                    android:id="@+id/switch_button"
+                    android:layout_width="@dimen/qb_px_50"
+                    android:layout_height="@dimen/qb_px_20"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_plan_unit" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10">
+
+                <TextView
+                    android:id="@+id/tv_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_blue_dark"
+                    android:paddingHorizontal="@dimen/qb_px_30"
+                    android:paddingVertical="@dimen/qb_px_5"
+                    android:text="保存"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_10" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

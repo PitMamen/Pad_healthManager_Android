@@ -236,6 +236,7 @@ dependencies {
 //    implementation 'com.hgDendi:expandable-recyclerview-adapter:1.0.1'
     implementation 'com.thoughtbot:expandablerecyclerview:1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.contrarywind:Android-PickerView:4.1.9'
 
     api 'com.squareup.okhttp3:okhttp:3.3.0'
     api 'com.zhy:okhttputils:2.6.2'

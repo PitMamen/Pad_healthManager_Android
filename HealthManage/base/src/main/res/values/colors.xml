@@ -79,5 +79,6 @@
     <color name="text_green">#2FB315</color>
     <color name="blue_light">#EEF6FF</color>
     <color name="bg_gray">#F8F9FB</color>
+    <color name="bg_gray_light">#FAFAFA</color>
 
 </resources>

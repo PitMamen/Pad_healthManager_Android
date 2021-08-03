@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_bg_white"
+    android:orientation="vertical"
+    android:padding="@dimen/qb_px_13">
+    <!-- 任务 -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_first_mission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="第一次任务"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/qb_px_10" />
+
+        <TextView
+            android:id="@+id/tv_delete_mission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="删除任务"
+            android:textColor="@color/main_blue"
+            android:textSize="@dimen/qb_px_8"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </RelativeLayout>
+
+
+    <EditText
+        android:id="@+id/et_first_mission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:background="@drawable/shape_bg_gray"
+        android:hint="请输入任务名称"
+        android:paddingHorizontal="@dimen/qb_px_6"
+        android:paddingVertical="@dimen/qb_px_6"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/qb_px_8"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_first_mission" />
+
+    <TextView
+        android:id="@+id/tv_mission_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:text="执行时间"
+        android:textColor="@color/text_black"
+        android:textSize="@dimen/qb_px_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/et_first_mission" />
+
+    <RelativeLayout
+        android:id="@+id/layout_mission_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:background="@drawable/shape_bg_gray"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_mission_time">
+
+        <TextView
+            android:id="@+id/tv_mission_time_choose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:gravity="center_vertical"
+            android:hint="选择时间"
+            android:minLines="1"
+            android:paddingLeft="11dp"
+            android:paddingTop="5dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="5dp"
+            android:text=""
+            android:textColor="@color/text_main"
+            android:textCursorDrawable="@null"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="15dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/arrow_right"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <include
+        layout="@layout/layout_health_questions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_10" />
+
+    <include
+        layout="@layout/layout_health_questions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_10" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:background="@drawable/shape_bg_blue"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/qb_px_60"
+        android:paddingVertical="@dimen/qb_px_6"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/list_items">
+
+        <ImageView
+            android:layout_width="@dimen/qb_px_8"
+            android:layout_height="@dimen/qb_px_8"
+            android:src="@drawable/tianjia" />
+
+        <TextView
+            android:id="@+id/tv_add_mission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/qb_px_3"
+            android:text="添加任务项目"
+            android:textColor="@color/main_blue"
+            android:textSize="@dimen/qb_px_8"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+</LinearLayout>
