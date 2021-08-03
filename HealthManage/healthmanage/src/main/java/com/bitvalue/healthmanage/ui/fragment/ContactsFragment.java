@@ -160,7 +160,8 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                     view.findViewById(R.id.tv_mul_msg).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ToastUtils.show("点击了群发");
+//                            ToastUtils.show("点击了群发");
+                            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG,"");
                         }
                     });
                     break;

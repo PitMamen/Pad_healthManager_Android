@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_plans"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/qb_px_30">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="糖尿病全病程管理计划"
+        android:textColor="@color/home_blue"
+        android:textSize="@dimen/qb_px_8" />
+
+
+<!--    <ImageView-->
+<!--        android:id="@+id/img_goto"-->
+<!--        android:layout_width="@dimen/qb_px_4"-->
+<!--        android:layout_height="@dimen/qb_px_7"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:src="@drawable/icon_you" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/tv_use_status"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="@dimen/qb_px_8"-->
+<!--        android:textColor="@color/text_green"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:layout_marginRight="@dimen/qb_px_7"-->
+<!--        android:layout_toLeftOf="@id/img_goto"-->
+<!--        android:text="启用" />-->
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider" />
+
+</RelativeLayout>

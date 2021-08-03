@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
@@ -249,6 +250,27 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         super.onDetachedFromWindow();
         mTextInput.removeTextChangedListener(this);
         atUserInfoMap.clear();
+    }
+
+    @Override
+    protected void startHealthPlan() {
+        Toast.makeText(getContext(), "打开健康计划", Toast.LENGTH_SHORT).show();
+        //TODO 打开健康计划
+    }
+
+    @Override
+    protected void startHealthAnalyse() {
+        //TODO 打开健康评估
+    }
+
+    @Override
+    protected void startHealthMsg() {
+        //TODO 打开健康消息
+    }
+
+    @Override
+    protected void startUploadData() {
+        //TODO 上传资料
     }
 
     @Override

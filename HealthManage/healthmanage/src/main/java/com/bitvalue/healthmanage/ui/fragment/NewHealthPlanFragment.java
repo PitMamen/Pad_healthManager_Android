@@ -12,6 +12,7 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppFragment;
+import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.util.InputMethodUtils;
 import com.bitvalue.healthmanage.widget.SwitchButton;
 import com.hjq.toast.ToastUtils;
@@ -24,6 +25,7 @@ public class NewHealthPlanFragment extends AppFragment {
     private TextView tv_base_time;
     private TimePickerView pvTime;
     private SwitchButton switch_button;
+    private HomeActivity homeActivity;
 
     @Override
     protected int getLayoutId() {
@@ -34,8 +36,8 @@ public class NewHealthPlanFragment extends AppFragment {
     protected void initView() {
         tv_base_time = getView().findViewById(R.id.tv_base_time);
         switch_button = getView().findViewById(R.id.switch_button);
-        setOnClickListener(R.id.layout_base_time);
-
+        setOnClickListener(R.id.layout_base_time,R.id.layout_add_paper);
+        homeActivity = (HomeActivity) getActivity();
         initTimePick();
         initSwitchButton();
     }
@@ -93,6 +95,9 @@ public class NewHealthPlanFragment extends AppFragment {
             case R.id.layout_base_time:
                 pvTime.show();
                 InputMethodUtils.hideSoftInput(getActivity());
+                break;
+            case R.id.layout_add_paper:
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_PAPER,"");
                 break;
         }
     }

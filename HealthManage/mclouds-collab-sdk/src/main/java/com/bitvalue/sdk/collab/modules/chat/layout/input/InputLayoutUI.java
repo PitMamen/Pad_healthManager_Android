@@ -81,6 +81,10 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     private boolean mCaptureDisable;
     private boolean mVideoRecordDisable;
     private boolean mSendFileDisable;
+    private boolean mHealthPlanDisable;
+    private boolean mHealthAnalyseDisable;
+    private boolean mHealthMsgDisable;
+    private boolean mHealthUploadDisable;
 
     public InputLayoutUI(Context context) {
         super(context);
@@ -116,53 +120,104 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     protected void assembleActions() {
         mInputMoreActionList.clear();
         InputMoreActionUnit actionUnit;
-        if (!mSendPhotoDisable) {
+
+        if (!mHealthPlanDisable) {
             actionUnit = new InputMoreActionUnit() {
                 @Override
                 public void onAction(String chatInfoId, int chatType) {
-                    startSendPhoto();
+                    startHealthPlan();
                 }
             };
-            actionUnit.setIconResId(R.drawable.ic_more_picture);
-            actionUnit.setTitleId(R.string.pic);
+            actionUnit.setIconResId(R.drawable.icon_jkjh);
+            actionUnit.setTitleId(R.string.health);
             mInputMoreActionList.add(actionUnit);
         }
 
-        if (!mCaptureDisable) {
+
+        if (!mHealthAnalyseDisable) {
             actionUnit = new InputMoreActionUnit() {
                 @Override
                 public void onAction(String chatInfoId, int chatType) {
-                    startCapture();
+                    startHealthAnalyse();
                 }
             };
-            actionUnit.setIconResId(R.drawable.ic_more_camera);
-            actionUnit.setTitleId(R.string.photo);
+            actionUnit.setIconResId(R.drawable.icon_jkpg);
+            actionUnit.setTitleId(R.string.analyse);
             mInputMoreActionList.add(actionUnit);
         }
 
-        if (!mVideoRecordDisable) {
+        if (!mHealthMsgDisable) {
             actionUnit = new InputMoreActionUnit() {
                 @Override
                 public void onAction(String chatInfoId, int chatType) {
-                    startVideoRecord();
+                    startHealthMsg();
                 }
             };
-            actionUnit.setIconResId(R.drawable.ic_more_video);
-            actionUnit.setTitleId(R.string.video);
+            actionUnit.setIconResId(R.drawable.icon_jkxx);
+            actionUnit.setTitleId(R.string.heal_msg);
             mInputMoreActionList.add(actionUnit);
         }
 
-        if (!mSendFileDisable) {
+        if (!mHealthUploadDisable) {
             actionUnit = new InputMoreActionUnit() {
                 @Override
                 public void onAction(String chatInfoId, int chatType) {
-                    startSendFile();
+                    startUploadData();
                 }
             };
-            actionUnit.setIconResId(R.drawable.ic_more_file);
-            actionUnit.setTitleId(R.string.file);
+            actionUnit.setIconResId(R.drawable.icon_zlsc);
+            actionUnit.setTitleId(R.string.data_upload);
             mInputMoreActionList.add(actionUnit);
         }
+
+        //腾讯原来的封装
+//        if (!mSendPhotoDisable) {
+//            actionUnit = new InputMoreActionUnit() {
+//                @Override
+//                public void onAction(String chatInfoId, int chatType) {
+//                    startSendPhoto();
+//                }
+//            };
+//            actionUnit.setIconResId(R.drawable.ic_more_picture);
+//            actionUnit.setTitleId(R.string.pic);
+//            mInputMoreActionList.add(actionUnit);
+//        }
+//
+//        if (!mCaptureDisable) {
+//            actionUnit = new InputMoreActionUnit() {
+//                @Override
+//                public void onAction(String chatInfoId, int chatType) {
+//                    startCapture();
+//                }
+//            };
+//            actionUnit.setIconResId(R.drawable.ic_more_camera);
+//            actionUnit.setTitleId(R.string.photo);
+//            mInputMoreActionList.add(actionUnit);
+//        }
+//
+//        if (!mVideoRecordDisable) {
+//            actionUnit = new InputMoreActionUnit() {
+//                @Override
+//                public void onAction(String chatInfoId, int chatType) {
+//                    startVideoRecord();
+//                }
+//            };
+//            actionUnit.setIconResId(R.drawable.ic_more_video);
+//            actionUnit.setTitleId(R.string.video);
+//            mInputMoreActionList.add(actionUnit);
+//        }
+//
+//        if (!mSendFileDisable) {
+//            actionUnit = new InputMoreActionUnit() {
+//                @Override
+//                public void onAction(String chatInfoId, int chatType) {
+//                    startSendFile();
+//                }
+//            };
+//            actionUnit.setIconResId(R.drawable.ic_more_file);
+//            actionUnit.setTitleId(R.string.file);
+//            mInputMoreActionList.add(actionUnit);
+//        }
 
         addActionsFromListeners();
         mInputMoreActionList.addAll(mInputMoreCustomActionList);
@@ -216,6 +271,11 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     }
 
     protected abstract void init();
+
+    protected abstract void startHealthPlan();
+    protected abstract void startHealthAnalyse();
+    protected abstract void startHealthMsg();
+    protected abstract void startUploadData();
 
     protected abstract void startSendPhoto();
 

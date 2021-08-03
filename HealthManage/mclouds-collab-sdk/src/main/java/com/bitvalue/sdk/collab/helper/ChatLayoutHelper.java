@@ -167,6 +167,7 @@ public class ChatLayoutHelper {
         unit.setOnClickListener(unit.new OnActionClickListener() {
             @Override
             public void onClick() {
+                //TODO 自定义消息demo
                 Gson gson = new Gson();
                 CustomHelloMessage customHelloMessage = new CustomHelloMessage();
                 customHelloMessage.version = TUIKitConstants.version;

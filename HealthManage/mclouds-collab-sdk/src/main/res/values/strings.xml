@@ -6,6 +6,11 @@
     <string name="video">Record Video</string>
     <string name="file">Files</string>
 
+    <string name="health">健康计划</string>
+    <string name="analyse">健康评估</string>
+    <string name="heal_msg">健康消息</string>
+    <string name="data_upload">资料上传</string>
+
     <string name="cancel">Cancel</string>
     <string name="sure">OK</string>
 

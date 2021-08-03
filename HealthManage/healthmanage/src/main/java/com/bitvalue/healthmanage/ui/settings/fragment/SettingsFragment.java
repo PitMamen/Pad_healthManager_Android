@@ -11,7 +11,6 @@ import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.bitvalue.healthmanage.ui.fragment.NewsFragment;
 
 public class SettingsFragment extends AppFragment {
     private RelativeLayout layout_plans;

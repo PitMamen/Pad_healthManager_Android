@@ -19,10 +19,12 @@ import com.bitvalue.healthmanage.http.request.TestApi;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
+import com.bitvalue.healthmanage.ui.fragment.AddPaperFragment;
 import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
 import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragment;
+import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
 import com.bitvalue.healthmanage.ui.settings.fragment.SettingsFragment;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.hjq.http.EasyHttp;
@@ -254,6 +256,25 @@ public class HomeActivity extends AppActivity {
                 newHealthPlanFragment = new NewHealthPlanFragment();
                 mapFragments.put(Constants.FRAGMENT_HEALTH_NEW, newHealthPlanFragment);
                 getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_HEALTH_NEW)).commitAllowingStateLoss();
+                break;
+
+            case Constants.FRAGMENT_ADD_PAPER:
+                AddPaperFragment addPaperFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                addPaperFragment = new AddPaperFragment();
+                mapFragments.put(Constants.FRAGMENT_ADD_PAPER, addPaperFragment);
+                getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_ADD_PAPER)).commitAllowingStateLoss();
+                break;
+            case Constants.FRAGMENT_SEND_MSG:
+                NewMsgFragment newMsgFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                newMsgFragment = new NewMsgFragment();
+                mapFragments.put(Constants.FRAGMENT_SEND_MSG, newMsgFragment);
+                getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_SEND_MSG)).commitAllowingStateLoss();
                 break;
         }
         Set<String> strings = mapFragments.keySet();
