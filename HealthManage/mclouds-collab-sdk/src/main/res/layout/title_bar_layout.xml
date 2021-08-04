@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/page_title_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/page_title_layout">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/page_title_left_group"
@@ -12,7 +12,8 @@
         android:gravity="center_vertical"
         android:minWidth="80dp"
         android:orientation="horizontal"
-        android:paddingLeft="16dp">
+        android:paddingLeft="16dp"
+        android:paddingTop="@dimen/qb_px_15">
 
         <ImageView
             android:id="@+id/page_title_left_icon"
@@ -26,9 +27,9 @@
             android:id="@+id/page_title_left_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black_font_color"
             android:gravity="center"
-            android:textSize="14sp"/>
+            android:textColor="@color/black_font_color"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -39,10 +40,11 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:layout_weight="1"
-        android:textStyle="bold"
         android:gravity="center"
+        android:paddingTop="@dimen/qb_px_15"
         android:textColor="@color/black_font_color"
-        android:textSize="16.3sp" />
+        android:textSize="16.3sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:id="@+id/page_title_right_group"
@@ -52,6 +54,7 @@
         android:gravity="center_vertical|right"
         android:minWidth="80dp"
         android:orientation="horizontal"
+        android:paddingTop="@dimen/qb_px_15"
         android:paddingRight="16dp">
 
         <TextView
@@ -61,7 +64,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:textColor="@color/black_font_color"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/page_title_right_icon"
