@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
@@ -78,14 +79,16 @@ public class HomeActivity extends AppActivity {
 //        newsFragment = NewsFragment.getInstance(false);
         settingsFragment = SettingsFragment.getInstance(false);
         fragments = new AppFragment[]{contactsFragment, settingsFragment};
-        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment, fragments[0]).commitAllowingStateLoss();
-        getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment, fragments[1]).commitAllowingStateLoss();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.layout_fragment, fragments[0]);
+        transaction.add(R.id.layout_fragment, fragments[1]);
+        transaction.commitAllowingStateLoss();
         afterTabSelect(index);
     }
 
     @Override
     protected void initData() {
-        testInter();
+//        testInter();
     }
 
     private void testInter() {
@@ -216,11 +219,6 @@ public class HomeActivity extends AppActivity {
             case Constants.FRAGMENT_CHAT:
                 ContactBean child = (ContactBean) object;
                 ChatFragment chatFragment;
-//                if (!isContain) {
-//                    chatFragment = new ChatFragment();
-//                } else {
-//                    chatFragment = (ChatFragment) mapFragments.get(keyFragment);
-//                }
                 if (isContain) {
                     mapFragments.remove(keyFragment);
                 }
@@ -236,7 +234,6 @@ public class HomeActivity extends AppActivity {
                 bundle.putSerializable(com.bitvalue.healthmanage.util.Constants.CHAT_INFO, chatInfo);
                 chatFragment.setArguments(bundle);
                 mapFragments.put(Constants.FRAGMENT_CHAT, chatFragment);
-                getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_CHAT)).commitAllowingStateLoss();
                 break;
             case Constants.FRAGMENT_HEALTH:
                 HealthPlanFragment healthPlanFragment;
@@ -245,7 +242,6 @@ public class HomeActivity extends AppActivity {
                 }
                 healthPlanFragment = new HealthPlanFragment();
                 mapFragments.put(Constants.FRAGMENT_HEALTH, healthPlanFragment);
-                getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_HEALTH)).commitAllowingStateLoss();
                 break;
 
             case Constants.FRAGMENT_HEALTH_NEW:
@@ -255,7 +251,6 @@ public class HomeActivity extends AppActivity {
                 }
                 newHealthPlanFragment = new NewHealthPlanFragment();
                 mapFragments.put(Constants.FRAGMENT_HEALTH_NEW, newHealthPlanFragment);
-                getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_HEALTH_NEW)).commitAllowingStateLoss();
                 break;
 
             case Constants.FRAGMENT_ADD_PAPER:
@@ -265,7 +260,6 @@ public class HomeActivity extends AppActivity {
                 }
                 addPaperFragment = new AddPaperFragment();
                 mapFragments.put(Constants.FRAGMENT_ADD_PAPER, addPaperFragment);
-                getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_ADD_PAPER)).commitAllowingStateLoss();
                 break;
             case Constants.FRAGMENT_SEND_MSG:
                 NewMsgFragment newMsgFragment;
@@ -274,7 +268,6 @@ public class HomeActivity extends AppActivity {
                 }
                 newMsgFragment = new NewMsgFragment();
                 mapFragments.put(Constants.FRAGMENT_SEND_MSG, newMsgFragment);
-                getSupportFragmentManager().beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(Constants.FRAGMENT_SEND_MSG)).commitAllowingStateLoss();
                 break;
         }
         Set<String> strings = mapFragments.keySet();
@@ -282,17 +275,17 @@ public class HomeActivity extends AppActivity {
 
 
         FragmentManager supportFragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         for (int i = 0; i < mapFragments.size(); i++) {
             if (!stringList.get(i).equals(keyFragment)) {
-                supportFragmentManager.beginTransaction().hide(mapFragments.get(stringList.get(i))).commit();
+                fragmentTransaction.hide(mapFragments.get(stringList.get(i)));
             }
         }
         if (!mapFragments.get(keyFragment).isAdded()) {
-//            supportFragmentManager.beginTransaction().add(R.id.layout_fragment_end, mapFragments.get(keyFragment));
-            supportFragmentManager.beginTransaction().replace(R.id.layout_fragment_end, mapFragments.get(keyFragment));
+            fragmentTransaction.add(R.id.layout_fragment_end, mapFragments.get(keyFragment));
         }
-        supportFragmentManager.beginTransaction().addToBackStack(keyFragment);
-        supportFragmentManager.beginTransaction().show(mapFragments.get(keyFragment)).commit();
+        fragmentTransaction.addToBackStack(keyFragment);
+        fragmentTransaction.show(mapFragments.get(keyFragment)).commit();
     }
 
     public void switchSecondFragmentOther() {
