@@ -17,6 +17,7 @@ import com.bitvalue.sdk.collab.component.TitleBarLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.AbsChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatManagerKit;
+import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayout;
 import com.bitvalue.sdk.collab.modules.group.apply.GroupApplyInfo;
 import com.bitvalue.sdk.collab.modules.group.apply.GroupApplyManagerActivity;
 import com.bitvalue.sdk.collab.modules.group.info.GroupInfo;
@@ -130,6 +131,10 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
                 ToastUtil.toastLongMessage("loadApplyList onError: " + errMsg);
             }
         });
+    }
+
+    public void setOnCustomClickListener(InputLayout.OnCustomClickListener onCustomClickListener){
+        getInputLayout().setOnCustomClickListener(onCustomClickListener);
     }
 
     @Override

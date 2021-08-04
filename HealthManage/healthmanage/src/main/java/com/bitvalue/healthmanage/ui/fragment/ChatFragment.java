@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
+import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.activity.LoginActivity;
 import com.bitvalue.healthmanage.util.Constants;
 import com.bitvalue.healthmanage.util.DemoLog;
@@ -57,6 +58,7 @@ public class ChatFragment extends AppFragment {
     private int mForwardMode;
 
     private static final String TAG = ChatFragment.class.getSimpleName();
+    private HomeActivity homeActivity;
 
     @Override
     protected int getLayoutId() {
@@ -67,6 +69,8 @@ public class ChatFragment extends AppFragment {
     protected void initView() {
         Bundle bundle = getArguments();
         mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
+//        getActivity();
+        homeActivity = (HomeActivity) getActivity();
 
         //从布局文件中获取聊天面板组件
         mChatLayout = getView().findViewById(R.id.chat_layout);
@@ -215,6 +219,24 @@ public class ChatFragment extends AppFragment {
         ChatLayoutHelper helper = new ChatLayoutHelper(getActivity());
         helper.setGroupId(mChatInfo.getId());
         helper.customizeChatLayout(mChatLayout);
+
+        //新增的自定义控件点击回调
+        mChatLayout.setOnCustomClickListener(new InputLayout.OnCustomClickListener() {
+            @Override
+            public void onHealthPlanClick() {
+                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_PLAN_DETAIL,"");
+            }
+
+            @Override
+            public void onHealthAnalyseClick() {
+                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_ANALYSE,"");
+            }
+
+            @Override
+            public void onHealthMsgClick() {
+                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_SEND_MSG,"");
+            }
+        });
     }
 
     @Override

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.bitvalue.sdk.collab.R;
@@ -79,6 +80,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     private Map<String,String> atUserInfoMap = new HashMap<>();
     private String displayInputString;
+    private OnCustomClickListener onCustomClickListener;
 
     public InputLayout(Context context) {
         super(context);
@@ -254,18 +256,23 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     @Override
     protected void startHealthPlan() {
-        Toast.makeText(getContext(), "打开健康计划", Toast.LENGTH_SHORT).show();
-        //TODO 打开健康计划
+        if (null != onCustomClickListener){
+            onCustomClickListener.onHealthPlanClick();
+        }
     }
 
     @Override
     protected void startHealthAnalyse() {
-        //TODO 打开健康评估
+        if (null != onCustomClickListener){
+            onCustomClickListener.onHealthAnalyseClick();
+        }
     }
 
     @Override
     protected void startHealthMsg() {
-        //TODO 打开健康消息
+        if (null != onCustomClickListener){
+            onCustomClickListener.onHealthMsgClick();
+        }
     }
 
     @Override
@@ -473,6 +480,16 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     public void setStartActivityListener(OnStartActivityListener listener) {
         this.mStartActivityListener = listener;
+    }
+
+    public interface OnCustomClickListener{
+        void onHealthPlanClick();
+        void onHealthAnalyseClick();
+        void onHealthMsgClick();
+    }
+
+    public void setOnCustomClickListener(InputLayout.OnCustomClickListener onCustomClickListener){
+        this.onCustomClickListener = onCustomClickListener;
     }
 
     @Override

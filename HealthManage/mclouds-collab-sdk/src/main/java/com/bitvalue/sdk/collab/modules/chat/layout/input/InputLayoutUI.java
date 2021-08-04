@@ -158,17 +158,18 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
             mInputMoreActionList.add(actionUnit);
         }
 
-        if (!mHealthUploadDisable) {
-            actionUnit = new InputMoreActionUnit() {
-                @Override
-                public void onAction(String chatInfoId, int chatType) {
-                    startUploadData();
-                }
-            };
-            actionUnit.setIconResId(R.drawable.icon_zlsc);
-            actionUnit.setTitleId(R.string.data_upload);
-            mInputMoreActionList.add(actionUnit);
-        }
+        //资料上传暂时不做
+//        if (!mHealthUploadDisable) {
+//            actionUnit = new InputMoreActionUnit() {
+//                @Override
+//                public void onAction(String chatInfoId, int chatType) {
+//                    startUploadData();
+//                }
+//            };
+//            actionUnit.setIconResId(R.drawable.icon_zlsc);
+//            actionUnit.setTitleId(R.string.data_upload);
+//            mInputMoreActionList.add(actionUnit);
+//        }
 
         //腾讯原来的封装
 //        if (!mSendPhotoDisable) {

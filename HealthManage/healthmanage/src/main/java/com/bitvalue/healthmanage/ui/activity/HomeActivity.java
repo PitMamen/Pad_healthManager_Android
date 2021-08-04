@@ -23,6 +23,8 @@ import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
 import com.bitvalue.healthmanage.ui.fragment.AddPaperFragment;
 import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
 import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
+import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragment;
+import com.bitvalue.healthmanage.ui.fragment.HealthPlanDetailFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
@@ -235,13 +237,13 @@ public class HomeActivity extends AppActivity {
                 chatFragment.setArguments(bundle);
                 mapFragments.put(Constants.FRAGMENT_CHAT, chatFragment);
                 break;
-            case Constants.FRAGMENT_HEALTH:
+            case Constants.FRAGMENT_HEALTH_PLAN:
                 HealthPlanFragment healthPlanFragment;
                 if (isContain) {
                     mapFragments.remove(keyFragment);
                 }
                 healthPlanFragment = new HealthPlanFragment();
-                mapFragments.put(Constants.FRAGMENT_HEALTH, healthPlanFragment);
+                mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN, healthPlanFragment);
                 break;
 
             case Constants.FRAGMENT_HEALTH_NEW:
@@ -268,6 +270,24 @@ public class HomeActivity extends AppActivity {
                 }
                 newMsgFragment = new NewMsgFragment();
                 mapFragments.put(Constants.FRAGMENT_SEND_MSG, newMsgFragment);
+                break;
+
+            case Constants.FRAGMENT_HEALTH_ANALYSE:
+                HealthAnalyseFragment healthAnalyseFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                healthAnalyseFragment = new HealthAnalyseFragment();
+                mapFragments.put(Constants.FRAGMENT_HEALTH_ANALYSE, healthAnalyseFragment);
+                break;
+
+            case Constants.FRAGMENT_HEALTH_PLAN_DETAIL:
+                HealthPlanDetailFragment healthPlanDetailFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                healthPlanDetailFragment = new HealthPlanDetailFragment();
+                mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_DETAIL, healthPlanDetailFragment);
                 break;
         }
         Set<String> strings = mapFragments.keySet();

@@ -41,7 +41,7 @@ public class SettingsFragment extends AppFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_plans:
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH,"");
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN,"");
                 break;
         }
     }

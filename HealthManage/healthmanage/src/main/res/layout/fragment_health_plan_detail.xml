@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_50"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/qb_px_15"
+        android:text="健康管理计划"
+        android:textColor="@color/text_black"
+        android:textSize="@dimen/qb_px_12"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider" />
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/rl_health_plan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlEnablePreviewInEditMode="false"
+        tools:context=".ui.fragment.StatusFragment">
+
+        <com.hjq.widget.layout.WrapRecyclerView
+            android:id="@+id/list_health_plan"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listCount="10"
+            tools:listitem="@layout/picker_item" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+</LinearLayout>
