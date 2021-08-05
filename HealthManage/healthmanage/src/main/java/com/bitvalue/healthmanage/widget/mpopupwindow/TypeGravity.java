@@ -9,10 +9,10 @@ import java.lang.annotation.RetentionPolicy;
  * @Desc: TypeGravity
  * @Author: jzman
  */
-@IntDef({TypeGravity.TOP_LEFT, TypeGravity.TOP_CENTER, TypeGravity.TOP_RIGHT,TypeGravity.FROM_TOP,
+@IntDef({TypeGravity.TOP_LEFT, TypeGravity.TOP_CENTER, TypeGravity.TOP_RIGHT, TypeGravity.FROM_TOP,
         TypeGravity.CENTER_LEFT_TOP, TypeGravity.CENTER_RIGHT_TOP, TypeGravity.CENTER_LEFT_BOTTOM,
         TypeGravity.CENTER_RIGHT_BOTTOM, TypeGravity.CENTER, TypeGravity.BOTTOM_LEFT,
-        TypeGravity.BOTTOM_CENTER, TypeGravity.BOTTOM_RIGHT,TypeGravity.FROM_BOTTOM})
+        TypeGravity.BOTTOM_CENTER, TypeGravity.BOTTOM_RIGHT, TypeGravity.FROM_BOTTOM, TypeGravity.BOTTOM_MSG})
 @Retention(RetentionPolicy.SOURCE)
 public @interface TypeGravity {
     int TOP_LEFT = 0;
@@ -31,4 +31,5 @@ public @interface TypeGravity {
 
     int FROM_BOTTOM = 11;
     int FROM_TOP = 12;
+    int BOTTOM_MSG = 13;
 }

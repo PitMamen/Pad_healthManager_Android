@@ -73,7 +73,7 @@
                     android:id="@+id/img_house"
                     android:layout_width="@dimen/qb_px_11"
                     android:layout_height="@dimen/qb_px_11"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/tab_icon_home" />
             </LinearLayout>
 
@@ -107,7 +107,7 @@
                     android:id="@+id/img_cy"
                     android:layout_width="@dimen/qb_px_11"
                     android:layout_height="@dimen/qb_px_11"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/tab_icon_cy" />
             </LinearLayout>
 
@@ -142,7 +142,7 @@
                     android:id="@+id/img_person"
                     android:layout_width="@dimen/qb_px_11"
                     android:layout_height="@dimen/qb_px_11"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/tab_icon_ct" />
             </LinearLayout>
 
@@ -176,7 +176,7 @@
                     android:id="@+id/img_group"
                     android:layout_width="@dimen/qb_px_11"
                     android:layout_height="@dimen/qb_px_11"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/tab_icon_gr" />
             </LinearLayout>
 
@@ -210,7 +210,7 @@
                     android:id="@+id/img_send"
                     android:layout_width="@dimen/qb_px_11"
                     android:layout_height="@dimen/qb_px_11"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/tab_icon_send" />
             </LinearLayout>
 
@@ -244,7 +244,7 @@
                     android:id="@+id/img_of"
                     android:layout_width="@dimen/qb_px_11"
                     android:layout_height="@dimen/qb_px_11"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/tab_icon_of" />
             </LinearLayout>
 
@@ -278,7 +278,7 @@
                     android:id="@+id/img_chat"
                     android:layout_width="@dimen/qb_px_11"
                     android:layout_height="@dimen/qb_px_11"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/tab_icon_message" />
             </LinearLayout>
 
@@ -310,9 +310,9 @@
 
                 <ImageView
                     android:id="@+id/img_settings"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/qb_px_2"
                     android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/tab_icon_set" />
             </LinearLayout>
 

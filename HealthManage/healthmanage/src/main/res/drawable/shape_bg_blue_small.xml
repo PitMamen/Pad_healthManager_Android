@@ -11,9 +11,9 @@
 
     <stroke
         android:width="@dimen/qb_px_1"
-        android:color="@color/white" />
+        android:color="@color/main_blue" />
     <!-- 背景色 -->
-    <solid android:color="@color/white" />
+    <solid android:color="#F1F9FF" />
 
 
 </shape>

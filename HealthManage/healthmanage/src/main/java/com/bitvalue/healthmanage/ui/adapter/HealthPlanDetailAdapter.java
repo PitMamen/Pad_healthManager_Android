@@ -26,19 +26,17 @@ public class HealthPlanDetailAdapter extends AppAdapter<PlanBean> {
 
     private final class ViewHolder extends AppAdapter<PlanBean>.ViewHolder {
 
-        private final TextView tv_use_status, tv_name;
+        private final TextView  tv_step_name;
 
         private ViewHolder() {
             super(R.layout.item_plan_detail);
-            tv_use_status = findViewById(R.id.tv_use_status);
-            tv_name = findViewById(R.id.tv_name);
+            tv_step_name = findViewById(R.id.tv_step_name);
         }
 
         @Override
         public void onBindView(int position) {
             planBean = getItem(position);
-            tv_use_status.setText(planBean.status);
-            tv_name.setText(planBean.name);
+            tv_step_name.setText(planBean.name);
         }
     }
 }

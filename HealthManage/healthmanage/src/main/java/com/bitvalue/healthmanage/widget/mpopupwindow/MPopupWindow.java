@@ -11,6 +11,9 @@ import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 
+import com.bitvalue.healthmanage.R;
+import com.bitvalue.healthmanage.util.UiUtil;
+
 /**
  * @Desc: MPopupWindow
  * @Author: jzman
@@ -48,7 +51,7 @@ public class MPopupWindow {
         } else if (mLayoutId != -1) {
             View contentView = LayoutInflater.from(mContext).inflate(mLayoutId, null);
             if (null != viewCallBack) {
-                viewCallBack.onInitView(contentView,mLayoutId);
+                viewCallBack.onInitView(contentView, mLayoutId);
             }
             mPopupWindow.setContentView(contentView);
         }
@@ -121,6 +124,11 @@ public class MPopupWindow {
             case TypeGravity.FROM_TOP:
                 if (mWidth == 0) mPopupWindow.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
                 mPopupWindow.showAtLocation(mTarget, Gravity.TOP, mOffsetX, mOffsetY);
+
+            case TypeGravity.BOTTOM_MSG:
+                mPopupWindow.showAsDropDown(mTarget, targetWidth - popupWidth + mOffsetX -
+                                UiUtil.dip2px(mContext, mContext.getResources().getDimension(R.dimen.qb_px_2)),
+                        mOffsetY - UiUtil.dip2px(mContext, mContext.getResources().getDimension(R.dimen.qb_px_8)));
                 break;
         }
     }

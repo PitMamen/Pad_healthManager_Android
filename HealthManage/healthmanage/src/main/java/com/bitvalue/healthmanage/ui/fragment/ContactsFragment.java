@@ -133,13 +133,12 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                     @Override
                     public void onDismiss() {
                         if (mPopupWindow != null) {
-                            mPopupWindow = null;
                         }
                     }
                 })
                 .setViewCallBack(viewCallback)
                 .setTarget(layout_nav)
-                .setGravity(TypeGravity.BOTTOM_RIGHT)
+                .setGravity(TypeGravity.BOTTOM_MSG)
                 .build();
         mPopupWindow.show();
     }
@@ -162,6 +161,8 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                         public void onClick(View v) {
 //                            ToastUtils.show("点击了群发");
                             homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG,"");
+                            mPopupWindow.dismiss();
+                            mPopupWindow = null;
                         }
                     });
                     break;

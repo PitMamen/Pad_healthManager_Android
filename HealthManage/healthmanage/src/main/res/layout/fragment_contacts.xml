@@ -35,8 +35,9 @@
 
             <ImageView
                 android:id="@+id/img_nav"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/qb_px_2"
                 android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
                 android:src="@drawable/icon_nav" />
 
         </LinearLayout>
