@@ -9,7 +9,9 @@ import android.net.NetworkInfo;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.manager.ActivityManager;
+import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.google.gson.JsonSyntaxException;
 import com.hjq.gson.factory.GsonFactory;
 import com.hjq.http.EasyLog;
@@ -19,7 +21,6 @@ import com.hjq.http.exception.DataException;
 import com.hjq.http.exception.HttpException;
 import com.hjq.http.exception.NetworkException;
 import com.hjq.http.exception.ResponseException;
-import com.hjq.http.exception.ResultException;
 import com.hjq.http.exception.ServerException;
 import com.hjq.http.exception.TimeoutException;
 import com.hjq.http.exception.TokenException;
@@ -124,13 +125,13 @@ public final class RequestHandler implements IRequestHandler {
             if (model.getCode() == 0) {
                 // 代表执行成功
                 return result;
-            } else if (model.getCode() == 1001) {
+            } else if (model.getCode() == 10001) {
                 // 代表登录失效，需要重新登录
-                throw new TokenException(mApplication.getString(R.string.http_account_error));
+//                throw new TokenException(mApplication.getString(R.string.http_account_error));
             }
 
             // 代表执行失败
-            throw new ResultException(model.getMessage(), model);
+//            throw new ResultException(model.getMessage(), model);
         }
         return result;
     }

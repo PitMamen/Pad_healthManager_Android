@@ -1,12 +1,11 @@
 package com.bitvalue.healthmanage.http.interceptor;
 
-import android.content.Context;
 import android.content.Intent;
 
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.manager.ActivityManager;
-import com.bitvalue.healthmanage.ui.activity.LoginActivity;
+import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -84,13 +83,13 @@ public class ExceptionInterceptor implements Interceptor {
                 if (responseEntity != null) {
                     int result = responseEntity.getCode();
                     // result为9时，接口需要登录
-//                    if (result == 10001) {
-//                        Intent intent = new Intent(AppApplication.instance(), LoginActivity.class);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        AppApplication.instance().startActivity(intent);
-//                        // 进行内存优化，销毁除登录页之外的所有界面
-//                        ActivityManager.getInstance().finishAllActivities(LoginActivity.class);
-//                    }
+                    if (result == 10001) {
+                        Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        AppApplication.instance().startActivity(intent);
+                        // 进行内存优化，销毁除登录页之外的所有界面
+                        ActivityManager.getInstance().finishAllActivities(LoginHealthActivity.class);
+                    }
                 }
             }
 

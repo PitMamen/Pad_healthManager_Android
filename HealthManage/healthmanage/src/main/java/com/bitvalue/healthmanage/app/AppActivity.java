@@ -3,6 +3,7 @@ package com.bitvalue.healthmanage.app;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -15,9 +16,8 @@ import com.bitvalue.healthmanage.action.TitleBarAction;
 import com.bitvalue.healthmanage.action.ToastAction;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.manager.ActivityManager;
-import com.bitvalue.healthmanage.ui.activity.LoginActivity;
+import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.ui.dialog.WaitDialog;
-import com.bitvalue.healthmanage.util.DemoLog;
 import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IMEventListener;
@@ -29,8 +29,6 @@ import com.hjq.base.BaseDialog;
 import com.hjq.http.listener.OnHttpListener;
 
 import okhttp3.Call;
-
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  *    author : Android 轮子哥
@@ -131,11 +129,11 @@ public abstract class AppActivity extends BaseActivity
 
     public static void logout(Context context) {
         SharedPreManager.putObject(Constants.KYE_USER_BEAN, null);
-        Intent intent = new Intent(AppApplication.instance(), LoginActivity.class);
+        Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         AppApplication.instance().startActivity(intent);
         // 进行内存优化，销毁除登录页之外的所有界面
-        ActivityManager.getInstance().finishAllActivities(LoginActivity.class);
+        ActivityManager.getInstance().finishAllActivities(LoginHealthActivity.class);
     }
 
     /**
@@ -240,6 +238,7 @@ public abstract class AppActivity extends BaseActivity
 
     @Override
     public void onFail(Exception e) {
+//        Log.d("dd","dd");
         toast(e.getMessage());
     }
 

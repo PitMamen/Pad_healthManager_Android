@@ -71,7 +71,7 @@
         </activity>
 
         <activity
-            android:name=".ui.activity.LoginActivity"
+            android:name=".ui.activity.LoginHealthActivity"
             android:screenOrientation="landscape"
             android:theme="@style/SplashTheme" />
 

@@ -11,7 +11,7 @@ import com.tencent.imsdk.relationship.UserInfo;
 public final class LoginBean {
 
     private String jwt;//相当于token
-    private UserInfoBean user;
+    private UserInfoBean account;
 
     public String getJwt() {
         return jwt;
@@ -22,11 +22,11 @@ public final class LoginBean {
     }
 
     public UserInfoBean getUser() {
-        return user;
+        return account;
     }
 
-    public void setUser(UserInfoBean user) {
-        this.user = user;
+    public void setUser(UserInfoBean account) {
+        this.account = account;
     }
 
     public String getToken() {

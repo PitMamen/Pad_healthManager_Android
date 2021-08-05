@@ -13,6 +13,9 @@ import com.hjq.toast.ToastUtils;
 public interface ToastAction {
 
     default void toast(CharSequence text) {
+        if (null == text){
+            return;
+        }
         ToastUtils.show(text);
     }
 

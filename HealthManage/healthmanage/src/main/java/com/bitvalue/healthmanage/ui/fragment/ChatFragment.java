@@ -3,18 +3,15 @@ package com.bitvalue.healthmanage.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.bitvalue.healthmanage.ui.activity.LoginActivity;
+import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.util.Constants;
 import com.bitvalue.healthmanage.util.DemoLog;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
@@ -99,7 +96,7 @@ public class ChatFragment extends AppFragment {
                 @Override
                 public void onClick(View v) {
 //                    Intent intent = new Intent(AppApplication.instance(), FriendProfileActivity.class);
-                    Intent intent = new Intent(AppApplication.instance(), LoginActivity.class);//TODO
+                    Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);//TODO
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(TUIKitConstants.ProfileType.CONTENT, mChatInfo);
                     AppApplication.instance().startActivity(intent);
@@ -134,7 +131,7 @@ public class ChatFragment extends AppFragment {
                 V2TIMMergerElem mergerElem = messageInfo.getTimMessage().getMergerElem();
                 if (mergerElem != null){
 //                    Intent intent = new Intent(AppApplication.instance(), ForwardChatActivity.class);
-                    Intent intent = new Intent(AppApplication.instance(), LoginActivity.class);//TODO
+                    Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);//TODO
                     Bundle bundle=new Bundle();
                     bundle.putSerializable(TUIKitConstants.FORWARD_MERGE_MESSAGE_KEY, messageInfo);
                     intent.putExtras(bundle);
@@ -144,7 +141,7 @@ public class ChatFragment extends AppFragment {
                     ChatInfo info = new ChatInfo();
                     info.setId(messageInfo.getFromUser());
 //                    Intent intent = new Intent(AppApplication.instance(), FriendProfileActivity.class);
-                    Intent intent = new Intent(AppApplication.instance(), LoginActivity.class);//TODO
+                    Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);//TODO
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(TUIKitConstants.ProfileType.CONTENT, info);
                     AppApplication.instance().startActivity(intent);

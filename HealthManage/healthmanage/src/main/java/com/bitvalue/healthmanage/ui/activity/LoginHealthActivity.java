@@ -6,9 +6,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.core.view.GravityCompat;
-
-import com.bitvalue.healthmanage.BuildConfig;
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.SingleClick;
@@ -18,8 +15,6 @@ import com.bitvalue.healthmanage.app.AppActivity;
 //import com.bitvalue.sdk.base.util.sp.SharedPreManager;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.http.model.HttpData;
-import com.bitvalue.healthmanage.http.myhttp.RequestConstants;
-import com.bitvalue.healthmanage.http.myhttp.RequestUtil;
 import com.bitvalue.healthmanage.http.request.LoginApi;
 import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.util.DemoLog;
@@ -27,20 +22,14 @@ import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.healthmanage.util.signature.GenerateTestUserSig;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
-import com.bitvalue.sdk.collab.utils.ToastUtil;
-import com.google.gson.Gson;
 import com.hjq.http.EasyConfig;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
-import com.hjq.toast.ToastUtils;
-import com.tencent.imsdk.relationship.UserInfo;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 //import butterknife.OnClick;
 import okhttp3.Call;
-import okhttp3.Request;
 
-public class LoginActivity extends AppActivity {
+public class LoginHealthActivity extends AppActivity {
 
     private ImageView img_remember;
     private EditText et_work_no;
@@ -98,7 +87,7 @@ public class LoginActivity extends AppActivity {
     private void goLogin() {
         EasyHttp.post(this)
                 .api(new LoginApi()
-                        .setUsername(et_work_no.getText().toString())
+                        .setUserName(et_work_no.getText().toString())
                         .setPassword(et_psd.getText().toString()))
                 .request(new HttpCallback<HttpData<LoginBean>>(this) {
 
@@ -126,10 +115,8 @@ public class LoginActivity extends AppActivity {
                                 runOnUiThread(new Runnable() {
                                     public void run() {
                                         DemoLog.e("TUIKit.login", "登录聊天失败" + ", errCode = " + code + ", errInfo = " + desc);
-//                                        ToastUtil.toastLongMessage(getString("登录聊天失败") + ", errCode = " + code + ", errInfo = " + desc);
                                     }
                                 });
-//                                DemoLog.i(TAG, "imLogin errorCode = " + code + ", errorInfo = " + desc);
                             }
 
                             @Override
@@ -137,7 +124,7 @@ public class LoginActivity extends AppActivity {
                                 // 跳转到首页
                                 // HomeActivity.start(getContext(), MeFragment.class);
                                 SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, AppApplication.instance());
-                                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                startActivity(new Intent(LoginHealthActivity.this, HomeActivity.class));
                                 finish();
                             }
                         });

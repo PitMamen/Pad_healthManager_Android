@@ -90,7 +90,7 @@ public class HomeActivity extends AppActivity {
 
     @Override
     protected void initData() {
-//        testInter();
+        testInter();
     }
 
     private void testInter() {

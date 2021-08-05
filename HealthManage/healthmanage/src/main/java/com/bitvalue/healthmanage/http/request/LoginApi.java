@@ -16,13 +16,13 @@ public final class LoginApi implements IRequestApi {
     }
 
     /** 手机号 */
-    private String username;
+    private String userName;
     /** 登录密码 */
     private String password;
-    private int loginType = 1;//pad写死1
+    private int loginType = 2;//pad写死1
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
     public String getPassword() {
@@ -37,8 +37,8 @@ public final class LoginApi implements IRequestApi {
         this.loginType = loginType;
     }
 
-    public LoginApi setUsername(String username) {
-        this.username = username;
+    public LoginApi setUserName(String username) {
+        this.userName = username;
         return this;
     }
 

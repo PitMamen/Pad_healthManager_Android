@@ -21,7 +21,7 @@ import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.ClientsApi;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.bitvalue.healthmanage.ui.activity.LoginActivity;
+import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactsGroupBean;
 import com.bitvalue.healthmanage.ui.contacts.view.RecyclerAdapter;
@@ -88,7 +88,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                 ContactsGroupBean clickGroup = (ContactsGroupBean) group;
                 ToastUtils.show("父级是" + clickGroup.getTitle() + "###当前条目是" + child.getName());
 
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT,child);
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
             }
         });
         adapter.setOnGroupClickListener(new OnGroupClickListener() {
@@ -152,17 +152,18 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                         @Override
                         public void onClick(View v) {
                             ToastUtils.show("点击了计划");
-                            startActivity(new Intent(getActivity(), LoginActivity.class));
+                            startActivity(new Intent(getActivity(), LoginHealthActivity.class));
                         }
                     });
 
                     view.findViewById(R.id.tv_mul_msg).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            ToastUtils.show("点击了群发");
-                            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG,"");
-                            mPopupWindow.dismiss();
-                            mPopupWindow = null;
+//                            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG,"");
+//                            mPopupWindow.dismiss();
+//                            mPopupWindow = null;
+
+                            startActivity(new Intent(homeActivity, LoginHealthActivity.class));
                         }
                     });
                     break;
@@ -194,16 +195,16 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
 
     private void getDatas() {
         List<ContactBean> childList = new ArrayList<>();
-        childList.add(new ContactBean("张三","111"));
-        childList.add(new ContactBean("李四","111"));
-        childList.add(new ContactBean("王二","111"));
+        childList.add(new ContactBean("张三", "111"));
+        childList.add(new ContactBean("李四", "111"));
+        childList.add(new ContactBean("王二", "111"));
         ContactsGroupBean contactsGroupBean = new ContactsGroupBean("朋友", childList);
         contactsGroupBeans.add(contactsGroupBean);
 
         List<ContactBean> childList2 = new ArrayList<>();
-        childList2.add(new ContactBean("小宝","111"));
-        childList2.add(new ContactBean("爷爷","111"));
-        childList2.add(new ContactBean("奶奶","111"));
+        childList2.add(new ContactBean("小宝", "111"));
+        childList2.add(new ContactBean("爷爷", "111"));
+        childList2.add(new ContactBean("奶奶", "111"));
         ContactsGroupBean contactsGroupBean2 = new ContactsGroupBean("亲人", childList2);
         contactsGroupBeans.add(contactsGroupBean2);
     }

@@ -6,150 +6,169 @@
     android:background="@drawable/bg_login"
     android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!--    android:background="@drawable/bg_login_window"-->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="100dp"
-        android:layout_marginVertical="100dp"
-        android:background="@drawable/bg_login_window">
+        android:layout_marginHorizontal="@dimen/qb_px_30"
+        android:background="@color/white"
+        android:layout_marginVertical="@dimen/qb_px_30"
+        android:orientation="horizontal">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="42dp"
-            android:layout_marginRight="56dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:background="@drawable/bg_12"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
-            <TextView
-                android:id="@+id/tv_welcome"
-                android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_123"
+            android:layout_weight="1">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="@dimen/qb_px_200"
                 android:layout_height="wrap_content"
-                android:text="欢迎登录"
-                android:textColor="@color/main_blue"
-                android:textSize="18sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="@dimen/qb_px_20"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/qb_px_30"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:text="激活更多应用"
-                android:textColor="@color/main_blue"
-                android:textSize="12sp"
-                android:visibility="invisible"
-                app:layout_constraintBaseline_toBaselineOf="@id/tv_welcome"
-                app:layout_constraintLeft_toRightOf="@id/tv_welcome"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_work_no"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="29dp"
-                android:text="工号"
-                android:textColor="@color/text_main"
-                android:textSize="13sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_welcome" />
-
-            <EditText
-                android:id="@+id/et_work_no"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="29dp"
-                android:background="@null"
-                android:hint="请输入工号"
-                android:textColor="@color/text_main"
-                android:textSize="13sp"
-                app:layout_constraintLeft_toRightOf="@id/tv_work_no"
-                app:layout_constraintTop_toBottomOf="@id/tv_welcome" />
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginTop="11dp"
-                android:background="@color/text_desc"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_work_no" />
-
-            <TextView
-                android:id="@+id/tv_psd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="29dp"
-                android:text="密码"
-                android:textColor="@color/text_main"
-                android:textSize="13sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_work_no" />
-
-            <EditText
-                android:id="@+id/et_psd"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:inputType="textPassword"
-                android:layout_marginTop="29dp"
-                android:background="@null"
-                android:hint="请输入密码"
-                android:textColor="@color/text_main"
-                android:textSize="13sp"
-                app:layout_constraintLeft_toRightOf="@id/tv_work_no"
-                app:layout_constraintTop_toBottomOf="@id/tv_work_no" />
-
-            <View
-                android:id="@+id/divider2"
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:layout_marginTop="11dp"
-                android:background="@color/text_desc"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_psd" />
-
-            <LinearLayout
-                android:id="@+id/layout_remember"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="6dp">
-
-                <ImageView
-                    android:id="@+id/img_remember"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/unremember_pwd_choice" />
+                <TextView
+                    android:id="@+id/tv_welcome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="欢迎登录"
+                    android:textColor="@color/main_blue"
+                    android:textSize="@dimen/qb_px_18"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="记住密码"
+                    android:layout_marginLeft="@dimen/qb_px_16"
+                    android:text="激活更多应用"
+                    android:textColor="@color/main_blue"
+                    android:textSize="@dimen/qb_px_12"
+                    android:visibility="invisible"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_welcome"
+                    app:layout_constraintLeft_toRightOf="@id/tv_welcome"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_work_no"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_15"
+                    android:text="工号"
                     android:textColor="@color/text_main"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                    android:textSize="@dimen/qb_px_13"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_welcome" />
 
-            <TextView
-                android:id="@+id/btn_login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/login_btn_bg"
-                android:gravity="center"
-                android:paddingVertical="9dp"
-                android:text="登录"
-                android:textColor="@color/white"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_remember" />
+                <EditText
+                    android:id="@+id/et_work_no"
+                    android:layout_width="@dimen/qb_px_110"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_10"
+                    android:layout_marginTop="@dimen/qb_px_15"
+                    android:background="@null"
+                    android:hint="请输入工号"
+                    android:textColor="@color/text_main"
+                    android:textSize="@dimen/qb_px_13"
+                    app:layout_constraintLeft_toRightOf="@id/tv_work_no"
+                    app:layout_constraintTop_toBottomOf="@id/tv_welcome" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/qb_px_1"
+                    android:layout_marginTop="@dimen/qb_px_11"
+                    android:background="@color/text_desc"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_work_no" />
+
+                <TextView
+                    android:id="@+id/tv_psd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_15"
+                    android:text="密码"
+                    android:textColor="@color/text_main"
+                    android:textSize="@dimen/qb_px_13"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider" />
+
+                <EditText
+                    android:id="@+id/et_psd"
+                    android:layout_width="@dimen/qb_px_110"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_10"
+                    android:layout_marginTop="@dimen/qb_px_15"
+                    android:background="@null"
+                    android:hint="请输入密码"
+                    android:inputType="textPassword"
+                    android:textColor="@color/text_main"
+                    android:textSize="@dimen/qb_px_13"
+                    app:layout_constraintLeft_toRightOf="@id/tv_work_no"
+                    app:layout_constraintTop_toBottomOf="@id/divider" />
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/qb_px_1"
+                    android:layout_marginTop="@dimen/qb_px_11"
+                    android:background="@color/text_desc"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_psd" />
+
+                <LinearLayout
+                    android:id="@+id/layout_remember"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/qb_px_9"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider2">
+
+                    <ImageView
+                        android:id="@+id/img_remember"
+                        android:layout_width="@dimen/qb_px_10"
+                        android:layout_height="@dimen/qb_px_10"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/unremember_pwd_choice" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/qb_px_10"
+                        android:text="记住密码"
+                        android:textColor="@color/text_main"
+                        android:textSize="@dimen/qb_px_12" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/btn_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_15"
+                    android:background="@drawable/login_btn_bg"
+                    android:gravity="center"
+                    android:paddingVertical="@dimen/qb_px_9"
+                    android:text="登录"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_remember" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
 </LinearLayout>

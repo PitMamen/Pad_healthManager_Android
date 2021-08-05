@@ -33,7 +33,9 @@ public final class ToastInterceptor implements IToastInterceptor {
                 }
 
                 Timber.tag("ToastUtils");
-                Timber.i("(" + stackTrace[i].getFileName() + ":" + lineNumber + ") " + text.toString());
+                if (null != text){
+                    Timber.i("(" + stackTrace[i].getFileName() + ":" + lineNumber + ") " + text.toString());
+                }
                 break;
             }
         }

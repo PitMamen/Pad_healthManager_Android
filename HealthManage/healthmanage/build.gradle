@@ -53,6 +53,7 @@ android {
             buildConfigField('String', 'BUGLY_ID', '"请自行替换 Bugly 上面的 AppID"')
             // 测试服务器的主机地址
             buildConfigField('String', 'HOST_URL', '"http://192.168.0.114:8080"')
+//            buildConfigField('String', 'HOST_URL', '"http://192.168.1.122:8080"')
             // 设置清单占位符
             manifestPlaceholders = ['app_name': '健康管理']
             // 调试模式下只保留一种架构的 so 库，提升打包速度

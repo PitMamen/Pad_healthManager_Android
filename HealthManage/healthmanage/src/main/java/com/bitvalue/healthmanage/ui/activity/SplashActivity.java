@@ -1,12 +1,8 @@
 package com.bitvalue.healthmanage.ui.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Handler;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,8 +14,6 @@ import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppActivity;
 import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.healthmanage.util.Utils;
-import com.bitvalue.sdk.collab.utils.ToastUtil;
-import com.hjq.toast.ToastUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -120,14 +114,14 @@ public class SplashActivity extends AppActivity {
     };
 
     private void jumpActivity() {
-//        if (SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty()) {
-//            //从闪屏界面跳转到首界面
-//            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-//            startActivity(intent);
-//        } else {
+        if (SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty()) {
+            //从闪屏界面跳转到首界面
+            Intent intent = new Intent(SplashActivity.this, LoginHealthActivity.class);
+            startActivity(intent);
+        } else {
             Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
             startActivity(intent);
-//        }
+        }
         finish();
     }
 
