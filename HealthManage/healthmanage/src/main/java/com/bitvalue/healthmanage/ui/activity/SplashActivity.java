@@ -12,8 +12,13 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppActivity;
+import com.bitvalue.healthmanage.app.AppApplication;
+import com.bitvalue.healthmanage.http.response.LoginBean;
+import com.bitvalue.healthmanage.util.DemoLog;
 import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.healthmanage.util.Utils;
+import com.bitvalue.sdk.collab.TUIKit;
+import com.bitvalue.sdk.collab.base.IUIKitCallBack;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,9 +41,7 @@ public class SplashActivity extends AppActivity {
     protected void initView() {
         tv_jump = findViewById(R.id.tv_jump);
         setOnClickListener(R.id.tv_jump);
-
         Utils.checkPermission(this);
-
     }
 
     @SingleClick
@@ -114,15 +117,38 @@ public class SplashActivity extends AppActivity {
     };
 
     private void jumpActivity() {
-        if (SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty()) {
-            //从闪屏界面跳转到首界面
+        if (!SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty() && SharedPreManager.getBoolean(Constants.KEY_IM_AUTO_LOGIN, false, this)) {
+            loginIM();
+        } else {
+            //从闪屏界面跳转到登录界面
             Intent intent = new Intent(SplashActivity.this, LoginHealthActivity.class);
             startActivity(intent);
-        } else {
-            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-            startActivity(intent);
+            finish();
         }
-        finish();
+
+    }
+
+    private void loginIM() {
+        LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, this);
+        TUIKit.login(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig, new IUIKitCallBack() {
+            @Override
+            public void onError(String module, final int code, final String desc) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        DemoLog.e("TUIKit.login", "登录聊天失败" + ", errCode = " + code + ", errInfo = " + desc);
+                    }
+                });
+            }
+
+            @Override
+            public void onSuccess(Object data) {
+                // 跳转到首页
+                // HomeActivity.start(getContext(), MeFragment.class);
+                SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, AppApplication.instance());
+                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                finish();
+            }
+        });
     }
 
     private TimerTask task = new TimerTask() {

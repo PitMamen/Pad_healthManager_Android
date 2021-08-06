@@ -85,6 +85,8 @@ public class LoginHealthActivity extends AppActivity {
     }
 
     private void goLogin() {
+        //登陆的时候 Authorization 先置空
+        EasyConfig.getInstance().getHeaders().put("Authorization", "");
         EasyHttp.post(this)
                 .api(new LoginApi()
                         .setUserName(et_work_no.getText().toString())
@@ -108,8 +110,8 @@ public class LoginHealthActivity extends AppActivity {
                         EasyConfig.getInstance().addHeader("Authorization", loginBean.getToken());
                         SharedPreManager.putString(Constants.KEY_TOKEN, loginBean.getToken());
                         SharedPreManager.putObject(Constants.KYE_USER_BEAN, loginBean);
-                        String userSig = GenerateTestUserSig.genTestUserSig(loginBean.getUser().userId + "");//TODO 要改，正常是后台计算秘钥，UserSig
-                        TUIKit.login(loginBean.getUser().userId + "", userSig, new IUIKitCallBack() {
+//                        String userSig = GenerateTestUserSig.genTestUserSig(loginBean.getUser().userId + "");//要改，正常是后台计算秘钥，UserSig
+                        TUIKit.login(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig, new IUIKitCallBack() {
                             @Override
                             public void onError(String module, final int code, final String desc) {
                                 runOnUiThread(new Runnable() {

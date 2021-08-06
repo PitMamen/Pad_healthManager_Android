@@ -110,9 +110,9 @@ public class TUIKitImpl {
             @Override
             public void onSuccess() {
                 //登录IM之后登录直播
-                loginTUIKitLive(TUIKitConfigs.getConfigs().getGeneralConfig().getSDKAppId(),
-                        userid,
-                        usersig);
+//                loginTUIKitLive(TUIKitConfigs.getConfigs().getGeneralConfig().getSDKAppId(),
+//                        userid,
+//                        usersig);
                 callback.onSuccess(null);
             }
         });

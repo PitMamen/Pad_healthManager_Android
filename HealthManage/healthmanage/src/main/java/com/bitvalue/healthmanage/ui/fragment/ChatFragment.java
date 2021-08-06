@@ -62,6 +62,9 @@ public class ChatFragment extends AppFragment {
         return R.layout.chat_fragment;
     }
 
+
+    //get tinyid by userid failed
+    //convert user_id to tiny_id failed
     @Override
     protected void initView() {
         Bundle bundle = getArguments();
