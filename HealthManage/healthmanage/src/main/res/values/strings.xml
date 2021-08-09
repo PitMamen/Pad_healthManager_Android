@@ -14,6 +14,15 @@
     <string name="common_minute">分</string>
     <string name="common_second">秒</string>
 
+    <string name="success">成功</string>
+    <string name="have_be_friend">对方已是您的好友</string>
+    <string name="friend_limit">您的好友数已达系统上限</string>
+    <string name="other_friend_limit">对方的好友数已达系统上限</string>
+    <string name="in_blacklist">被加好友在自己的黑名单中</string>
+    <string name="forbid_add_friend">对方已禁止加好友</string>
+    <string name="set_in_blacklist">您已被被对方设置为黑名单</string>
+    <string name="wait_agree_friend">等待好友审核同意</string>
+
     <!-- 通用的 -->
     <string name="common_crash_hint">应用出了点小意外，正在重新启动</string>
 

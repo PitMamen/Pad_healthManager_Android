@@ -1,5 +1,6 @@
 package com.bitvalue.healthmanage.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,9 +15,11 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppActivity;
+import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.TestApi;
+import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
@@ -29,6 +32,10 @@ import com.bitvalue.healthmanage.ui.fragment.HealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
 import com.bitvalue.healthmanage.ui.settings.fragment.SettingsFragment;
+import com.bitvalue.healthmanage.util.DemoLog;
+import com.bitvalue.healthmanage.util.SharedPreManager;
+import com.bitvalue.sdk.collab.TUIKit;
+import com.bitvalue.sdk.collab.base.IUIKitCallBack;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
@@ -74,6 +81,28 @@ public class HomeActivity extends AppActivity {
 
         setOnClickListener(R.id.layout_person, R.id.layout_settings);
         initFragments(0);
+        loginIM();
+    }
+
+    private void loginIM() {
+        LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, this);
+        TUIKit.login(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig, new IUIKitCallBack() {
+            @Override
+            public void onError(String module, final int code, final String desc) {
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        DemoLog.e("TUIKit.login", "登录聊天失败" + ", errCode = " + code + ", errInfo = " + desc);
+                    }
+                });
+            }
+
+            @Override
+            public void onSuccess(Object data) {
+                // 跳转到首页
+                // HomeActivity.start(getContext(), MeFragment.class);
+                SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, AppApplication.instance());
+            }
+        });
     }
 
     private void initFragments(int index) {
@@ -229,9 +258,9 @@ public class HomeActivity extends AppActivity {
                 Bundle bundle = new Bundle();//TODO 参数可改
                 ChatInfo chatInfo = new ChatInfo();
                 chatInfo.setType(V2TIMConversation.V2TIM_C2C);
-                chatInfo.setId(child.getUserId());
-                String chatName = child.getName();
-                chatInfo.setChatName(chatName);
+//                chatInfo.setId(child.getUserId());
+                chatInfo.setId("3");
+                chatInfo.setChatName(child.getName());
 
                 bundle.putSerializable(com.bitvalue.healthmanage.util.Constants.CHAT_INFO, chatInfo);
                 chatFragment.setArguments(bundle);

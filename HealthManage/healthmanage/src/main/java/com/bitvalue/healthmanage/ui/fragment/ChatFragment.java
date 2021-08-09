@@ -63,7 +63,7 @@ public class ChatFragment extends AppFragment {
     }
 
 
-    //get tinyid by userid failed
+    //get tinyid by userid failed  70107
     //convert user_id to tiny_id failed
     @Override
     protected void initView() {

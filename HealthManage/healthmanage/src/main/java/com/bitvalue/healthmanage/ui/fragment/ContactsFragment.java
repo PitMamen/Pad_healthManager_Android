@@ -2,6 +2,7 @@ package com.bitvalue.healthmanage.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,14 +26,21 @@ import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactsGroupBean;
 import com.bitvalue.healthmanage.ui.contacts.view.RecyclerAdapter;
+import com.bitvalue.healthmanage.util.DemoLog;
 import com.bitvalue.healthmanage.util.UiUtil;
 import com.bitvalue.healthmanage.widget.mpopupwindow.MPopupWindow;
 import com.bitvalue.healthmanage.widget.mpopupwindow.TypeGravity;
 import com.bitvalue.healthmanage.widget.mpopupwindow.ViewCallback;
 import com.bitvalue.healthmanage.widget.popupwindow.CommonPopupWindow;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
+import com.tencent.imsdk.BaseConstants;
+import com.tencent.imsdk.v2.V2TIMFriendAddApplication;
+import com.tencent.imsdk.v2.V2TIMFriendOperationResult;
+import com.tencent.imsdk.v2.V2TIMManager;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener;
 import com.thoughtbot.expandablerecyclerview.listeners.OnGroupClickListener;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
@@ -88,6 +96,8 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                 ContactsGroupBean clickGroup = (ContactsGroupBean) group;
                 ToastUtils.show("父级是" + clickGroup.getTitle() + "###当前条目是" + child.getName());
 
+//                addFriend(child.getUserId());
+
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
             }
         });
@@ -111,6 +121,65 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         contact_list.setAdapter(adapter);
 
 //        geMyClients();
+    }
+
+
+    /**
+     * 添加好友
+     * @param id
+     */
+    public void addFriend(String id) {
+        if (TextUtils.isEmpty(id)) {
+            return;
+        }
+
+        V2TIMFriendAddApplication v2TIMFriendAddApplication = new V2TIMFriendAddApplication(id);
+        v2TIMFriendAddApplication.setAddWording("添加好友哦");
+        v2TIMFriendAddApplication.setAddSource("android");
+        V2TIMManager.getFriendshipManager().addFriend(v2TIMFriendAddApplication, new V2TIMValueCallback<V2TIMFriendOperationResult>() {
+            @Override
+            public void onError(int code, String desc) {
+                DemoLog.e("addFriend", "addFriend err code = " + code + ", desc = " + desc);
+                ToastUtil.toastShortMessage("Error code = " + code + ", desc = " + desc);
+            }
+
+            @Override
+            public void onSuccess(V2TIMFriendOperationResult v2TIMFriendOperationResult) {
+                DemoLog.i("addFriend", "addFriend success");
+                switch (v2TIMFriendOperationResult.getResultCode()) {
+                    case BaseConstants.ERR_SUCC:
+                        ToastUtil.toastShortMessage(getString(R.string.success));
+                        break;
+                    case BaseConstants.ERR_SVR_FRIENDSHIP_INVALID_PARAMETERS:
+                        if (TextUtils.equals(v2TIMFriendOperationResult.getResultInfo(), "Err_SNS_FriendAdd_Friend_Exist")) {
+                            ToastUtil.toastShortMessage(getString(R.string.have_be_friend));
+                            break;
+                        }
+                    case BaseConstants.ERR_SVR_FRIENDSHIP_COUNT_LIMIT:
+                        ToastUtil.toastShortMessage(getString(R.string.friend_limit));
+                        break;
+                    case BaseConstants.ERR_SVR_FRIENDSHIP_PEER_FRIEND_LIMIT:
+                        ToastUtil.toastShortMessage(getString(R.string.other_friend_limit));
+                        break;
+                    case BaseConstants.ERR_SVR_FRIENDSHIP_IN_SELF_BLACKLIST:
+                        ToastUtil.toastShortMessage(getString(R.string.in_blacklist));
+                        break;
+                    case BaseConstants.ERR_SVR_FRIENDSHIP_ALLOW_TYPE_DENY_ANY:
+                        ToastUtil.toastShortMessage(getString(R.string.forbid_add_friend));
+                        break;
+                    case BaseConstants.ERR_SVR_FRIENDSHIP_IN_PEER_BLACKLIST:
+                        ToastUtil.toastShortMessage(getString(R.string.set_in_blacklist));
+                        break;
+                    case BaseConstants.ERR_SVR_FRIENDSHIP_ALLOW_TYPE_NEED_CONFIRM:
+                        ToastUtil.toastShortMessage(getString(R.string.wait_agree_friend));
+                        break;
+                    default:
+                        ToastUtil.toastLongMessage(v2TIMFriendOperationResult.getResultCode() + " " + v2TIMFriendOperationResult.getResultInfo());
+                        break;
+                }
+                finish();
+            }
+        });
     }
 
     @SingleClick
@@ -159,11 +228,11 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                     view.findViewById(R.id.tv_mul_msg).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-//                            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG,"");
-//                            mPopupWindow.dismiss();
-//                            mPopupWindow = null;
+                            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG,"");
+                            mPopupWindow.dismiss();
+                            mPopupWindow = null;
 
-                            startActivity(new Intent(homeActivity, LoginHealthActivity.class));
+//                            startActivity(new Intent(homeActivity, LoginHealthActivity.class));
                         }
                     });
                     break;

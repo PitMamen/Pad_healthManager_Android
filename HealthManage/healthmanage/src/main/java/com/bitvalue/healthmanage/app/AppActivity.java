@@ -129,6 +129,7 @@ public abstract class AppActivity extends BaseActivity
 
     public static void logout(Context context) {
         SharedPreManager.putObject(Constants.KYE_USER_BEAN, null);
+        SharedPreManager.putString(Constants.KEY_TOKEN,"");
         Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         AppApplication.instance().startActivity(intent);

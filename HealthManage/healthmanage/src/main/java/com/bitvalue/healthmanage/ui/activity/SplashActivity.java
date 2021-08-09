@@ -117,8 +117,11 @@ public class SplashActivity extends AppActivity {
     };
 
     private void jumpActivity() {
-        if (!SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty() && SharedPreManager.getBoolean(Constants.KEY_IM_AUTO_LOGIN, false, this)) {
-            loginIM();
+//        if (!SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty() && SharedPreManager.getBoolean(Constants.KEY_IM_AUTO_LOGIN, false, this)) {
+        if (!SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty()) {
+//            loginIM();
+            startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+            finish();
         } else {
             //从闪屏界面跳转到登录界面
             Intent intent = new Intent(SplashActivity.this, LoginHealthActivity.class);
