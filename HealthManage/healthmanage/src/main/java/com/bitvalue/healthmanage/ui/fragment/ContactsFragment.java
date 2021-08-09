@@ -120,7 +120,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         });
         contact_list.setAdapter(adapter);
 
-//        geMyClients();
+        geMyClients();
     }
 
 
@@ -229,6 +229,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                         @Override
                         public void onClick(View v) {
                             homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG,"");
+                            geMyClients();
                             mPopupWindow.dismiss();
                             mPopupWindow = null;
 

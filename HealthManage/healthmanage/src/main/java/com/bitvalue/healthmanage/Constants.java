@@ -18,6 +18,8 @@ public class Constants {
     public static final String FRAGMENT_SEND_MSG= "fragment_send_msg";
     public static final String FRAGMENT_HEALTH_ANALYSE = "fragment_health_analyse";
     public static final String FRAGMENT_HEALTH_PLAN_DETAIL = "fragment_health_plan_detail";
+    public static final String API_ACCOUNT = "/account-api";
+    public static final String API_HEALTH = "/health-api";
 
 //    //自己的
 //    public static final int IM_APPId =1400548652;

@@ -1,5 +1,6 @@
 package com.bitvalue.healthmanage.http.request;
 
+import com.bitvalue.healthmanage.Constants;
 import com.hjq.http.config.IRequestApi;
 
 /**
@@ -12,7 +13,7 @@ public final class LoginApi implements IRequestApi {
 
     @Override
     public String getApi() {
-        return "/login";
+        return Constants.API_ACCOUNT + "/login";
     }
 
     /** 手机号 */
