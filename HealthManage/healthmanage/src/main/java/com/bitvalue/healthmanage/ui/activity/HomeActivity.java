@@ -19,6 +19,7 @@ import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.TestApi;
+import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
@@ -248,7 +249,7 @@ public class HomeActivity extends AppActivity {
         boolean isContain = mapFragments.containsKey(keyFragment);
         switch (keyFragment) {
             case Constants.FRAGMENT_CHAT:
-                ContactBean child = (ContactBean) object;
+                ClientsResultBean.UserInfoDTO child = (ClientsResultBean.UserInfoDTO) object;
                 ChatFragment chatFragment;
                 if (isContain) {
                     mapFragments.remove(keyFragment);
@@ -258,9 +259,9 @@ public class HomeActivity extends AppActivity {
                 Bundle bundle = new Bundle();//TODO 参数可改
                 ChatInfo chatInfo = new ChatInfo();
                 chatInfo.setType(V2TIMConversation.V2TIM_C2C);
-//                chatInfo.setId(child.getUserId());
-                chatInfo.setId("3");
-                chatInfo.setChatName(child.getName());
+                chatInfo.setId(child.userId + "");
+//                chatInfo.setId("3");
+                chatInfo.setChatName(child.userName);
 
                 bundle.putSerializable(com.bitvalue.healthmanage.util.Constants.CHAT_INFO, chatInfo);
                 chatFragment.setArguments(bundle);

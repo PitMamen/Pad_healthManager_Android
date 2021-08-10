@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
-import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
-import com.bitvalue.healthmanage.ui.contacts.bean.ContactsGroupBean;
+import com.bitvalue.healthmanage.http.response.ClientsResultBean;
+import com.bitvalue.healthmanage.util.TimeUtils;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.hjq.toast.ToastUtils;
@@ -37,7 +37,7 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapt
         this.activity = activity;
     }
 
-    public void setOnChildItemClickListener(OnChildItemClickListener onChildItemClickListener){
+    public void setOnChildItemClickListener(OnChildItemClickListener onChildItemClickListener) {
         this.onChildItemClickListener = onChildItemClickListener;
     }
 
@@ -57,13 +57,15 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapt
 
     @Override
     public void onBindChildViewHolder(ChildContentViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
-        final ContactBean child = ((ContactsGroupBean) group).getItems().get(childIndex);
+//        final ClientsResultBean.UserInfoDTO child = ((ClientsResultBean.UserInfoDTO) group).getItems().get(childIndex);
+        List<ClientsResultBean.UserInfoDTO> userInfo = ((ClientsResultBean) group).userInfo;
+        ClientsResultBean.UserInfoDTO child = userInfo.get(childIndex);
         holder.onBind(child, group);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != onChildItemClickListener){
-                    onChildItemClickListener.onChildItemClick(child,group,childIndex,flatPosition);
+                if (null != onChildItemClickListener) {
+                    onChildItemClickListener.onChildItemClick(child, group, childIndex, flatPosition);
                 }
             }
         });
@@ -71,17 +73,24 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapt
 
     @Override
     public void onBindGroupViewHolder(GroupContentViewHolder holder, int flatPosition, ExpandableGroup group) {
+        holder.onBind(flatPosition, group);
         holder.setGroupName(group.getTitle());
     }
 
     public static class GroupContentViewHolder extends GroupViewHolder {
 
-        private TextView name;
+        public void onBind(int flatPosition, ExpandableGroup group) {
+            ClientsResultBean clientsResultBean = (ClientsResultBean) group;
+            tv_group_no.setText(clientsResultBean.num + "");
+        }
+
+        private TextView name, tv_group_no;
         private ImageView iv_trait_group;
 
         public GroupContentViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.tv_trait_group);
+            tv_group_no = (TextView) itemView.findViewById(R.id.tv_group_no);
             iv_trait_group = (ImageView) itemView.findViewById(R.id.iv_trait_group);
         }
 
@@ -103,17 +112,25 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapt
     }
 
     public static class ChildContentViewHolder extends ChildViewHolder {
-        private TextView name;
+        private TextView name,tv_sex,tv_age,tv_date,tv_project_name;
         private ImageView img_head;
 
         public ChildContentViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.tv_name);
             img_head = itemView.findViewById(R.id.img_head);
+            tv_sex = itemView.findViewById(R.id.tv_sex);
+            tv_age = itemView.findViewById(R.id.tv_age);
+            tv_date = itemView.findViewById(R.id.tv_date);
+            tv_project_name = itemView.findViewById(R.id.tv_project_name);
         }
 
-        public void onBind(ContactBean child, ExpandableGroup group) {
-            name.setText(child.getName());
+        public void onBind(ClientsResultBean.UserInfoDTO child, ExpandableGroup group) {
+            name.setText(child.userName);
+            tv_sex.setText(child.userSex);
+            tv_age.setText(child.userAge + "");
+            tv_date.setText(TimeUtils.getTime(child.beginTime,TimeUtils.YY_MM_DD_FORMAT_3));
+            tv_project_name.setText(child.goodsName);
 
             GlideApp.with(img_head)
                     .load("http://img.duoziwang.com/2021/03/1623076080632524.jpg")
@@ -133,9 +150,9 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapt
         }
     }
 
-    public interface OnChildItemClickListener{
+    public interface OnChildItemClickListener {
 
-        void onChildItemClick(ContactBean child, ExpandableGroup group, int childIndex, int flatPosition);
+        void onChildItemClick(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex, int flatPosition);
 
     }
 }

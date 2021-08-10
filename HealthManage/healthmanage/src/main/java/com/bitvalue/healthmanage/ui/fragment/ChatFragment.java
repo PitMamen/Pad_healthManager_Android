@@ -86,12 +86,13 @@ public class ChatFragment extends AppFragment {
         //获取单聊面板的标题栏
         mTitleBar = mChatLayout.getTitleBar();
         mTitleBar.getLeftGroup().setVisibility(GONE);//沒有可返回的页面，隐藏
+        mTitleBar.getRightIcon().setVisibility(GONE);//沒有好友详情页面，隐藏
 
         //单聊面板标记栏返回按钮点击事件，这里需要开发者自行控制
         mTitleBar.setOnLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().finish();//TODO 返回按钮
+                getActivity().finish();
             }
         });
         if (mChatInfo.getType() == V2TIMConversation.V2TIM_C2C) {
@@ -99,7 +100,7 @@ public class ChatFragment extends AppFragment {
                 @Override
                 public void onClick(View v) {
 //                    Intent intent = new Intent(AppApplication.instance(), FriendProfileActivity.class);
-                    Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);//TODO
+                    Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(TUIKitConstants.ProfileType.CONTENT, mChatInfo);
                     AppApplication.instance().startActivity(intent);

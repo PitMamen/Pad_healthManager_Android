@@ -1,0 +1,142 @@
+package com.bitvalue.healthmanage.util;
+
+import android.annotation.SuppressLint;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+/**
+ * TimeUtils
+ *
+ * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2013-8-24
+ */
+public class TimeUtils {
+
+    public static final SimpleDateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    public static final SimpleDateFormat MM_DD_HH_MM_FORMAT = new SimpleDateFormat("MM/dd' 'HH:mm");
+    public static final SimpleDateFormat YY_MM_DD_HH_MM_SS_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    public static final SimpleDateFormat YY_MM_DD_FORMAT_2 = new SimpleDateFormat("yyyy/MM/dd");
+    public static final SimpleDateFormat YY_MM_DD_FORMAT_3 = new SimpleDateFormat("yyyy-MM-dd");
+    public static final SimpleDateFormat YY_MM_DD_FORMAT_4 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    @SuppressLint("NewApi")
+//    public static final SimpleDateFormat YY_MM_DD_FORMAT_5 = new SimpleDateFormat("YYYYMMddhhmmss");
+    public static final SimpleDateFormat YY_MM_DD_FORMAT_6 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+    /**
+     * long time to string
+     *
+     * @param timeInMillis
+     * @param dateFormat
+     * @return
+     */
+    public static String getTime(long timeInMillis, SimpleDateFormat dateFormat) {
+        if (timeInMillis <= 0) {
+            return "";
+        }
+        return dateFormat.format(new Date(timeInMillis));
+    }
+
+    /**
+     * long time to string, format is {@link #DEFAULT_DATE_FORMAT}
+     *
+     * @param timeInMillis
+     * @return
+     */
+    public static String getTime(long timeInMillis) {
+        return getTime(timeInMillis, DEFAULT_DATE_FORMAT);
+    }
+
+    /**
+     * get current time in milliseconds
+     *
+     * @return
+     */
+    public static long getCurrentTimeInLong() {
+        return System.currentTimeMillis();
+    }
+
+    /**
+     * get current time in milliseconds, format is {@link #DEFAULT_DATE_FORMAT}
+     *
+     * @return
+     */
+    public static String getCurrentTimeInString() {
+        return getTime(getCurrentTimeInLong());
+    }
+
+    /**
+    /**
+     * get current time in milliseconds
+     *
+     * @return
+     */
+    public static String getCurrentTimeInString(SimpleDateFormat dateFormat) {
+        return getTime(getCurrentTimeInLong(), dateFormat);
+    }
+    public static int getDateCount(long start, long end){
+        long time = end - start;
+        int dayCount = (int) (time / (1000 * 60 * 60 * 24));
+        return dayCount;
+    }
+
+    public static String formatDate(Date date) {
+        return DEFAULT_DATE_FORMAT.format(date);
+    }
+
+    public static String formatDate_DD_HH_MM(Date date) {
+        return MM_DD_HH_MM_FORMAT.format(date);
+    }
+
+    public static Date parseDate(String dateString) throws ParseException {
+        return DEFAULT_DATE_FORMAT.parse(dateString);
+    }
+
+    /**
+     *
+     * @param mss 要转换的毫秒数
+     * @return 该毫秒数转换为 * days * hours * minutes * seconds 后的格式
+     * @author fy.zhang
+     */
+    public static String formatDuring(long mss) {
+        //long days = mss / (1000 * 60 * 60 * 24);
+        long hours = (mss % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
+        long minutes = (mss % (1000 * 60 * 60)) / (1000 * 60);
+        long seconds = (mss % (1000 * 60)) / 1000;
+
+        String time = "00:00:00";
+
+        if(hours > 0 ) {
+            time += ":" + String.format("%02d", hours);
+        }
+        else {
+            time = "00";
+        }
+
+        if(minutes > 0 ) {
+            time += ":" + String.format("%02d", minutes);
+        }
+        else {
+            time += ":" + "00";
+        }
+
+//        if(seconds > 0 ) {
+//            time += ":" + String.format("%02d", seconds);
+//        }
+//        else {
+//            time += ":" + "00";
+//        }
+
+        return time;
+    }
+    /**
+     *
+     * @param begin 时间段的开始
+     * @param end   时间段的结束
+     * @return  输入的两个Date类型数据之间的时间间格用* days * hours * minutes * seconds的格式展示
+     * @author fy.zhang
+     */
+    public static String formatDuring(Date begin, Date end) {
+        return formatDuring(end.getTime() - begin.getTime());
+    }
+}

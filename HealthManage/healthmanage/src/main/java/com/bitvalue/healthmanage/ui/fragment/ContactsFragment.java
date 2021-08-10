@@ -54,13 +54,14 @@ import okhttp3.Call;
 public class ContactsFragment extends AppFragment implements CommonPopupWindow.ViewInterface {
     private boolean is_need_toast;
     private RecyclerView contact_list;
-    private List<ContactsGroupBean> contactsGroupBeans = new ArrayList();
     private RecyclerAdapter adapter;
     private HomeActivity homeActivity;
     private CommonPopupWindow popupWindow;
     private LinearLayout layout_nav;
     private ImageView img_nav;
     private MPopupWindow mPopupWindow;
+    private ArrayList<ClientsResultBean> clientsResultBeans = new ArrayList<>();
+    private ArrayList<ClientsResultBean> clientsProcessBeans = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -80,7 +81,6 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         homeActivity = (HomeActivity) getActivity();
         setOnClickListener(R.id.layout_nav);
 
-        getDatas();
         is_need_toast = getArguments().getBoolean("is_need_toast");
         contact_list = getView().findViewById(R.id.contact_list);
         layout_nav = getView().findViewById(R.id.layout_nav);
@@ -89,14 +89,13 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         contact_list.setLayoutManager(layoutManager);
 
-        adapter = new RecyclerAdapter(getActivity(), contactsGroupBeans);
+//        adapter = new RecyclerAdapter(getActivity(), contactsGroupBeans);
+        adapter = new RecyclerAdapter(getActivity(), clientsProcessBeans);
         adapter.setOnChildItemClickListener(new RecyclerAdapter.OnChildItemClickListener() {
             @Override
-            public void onChildItemClick(ContactBean child, ExpandableGroup group, int childIndex, int flatPosition) {
-                ContactsGroupBean clickGroup = (ContactsGroupBean) group;
-                ToastUtils.show("父级是" + clickGroup.getTitle() + "###当前条目是" + child.getName());
-
-//                addFriend(child.getUserId());
+            public void onChildItemClick(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex, int flatPosition) {
+                ClientsResultBean clientsResultBean = (ClientsResultBean) group;
+                ToastUtils.show("父级是" + clientsResultBean.getTitle() + "###当前条目是" + child.userName);
 
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
             }
@@ -126,6 +125,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
 
     /**
      * 添加好友
+     *
      * @param id
      */
     public void addFriend(String id) {
@@ -228,7 +228,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                     view.findViewById(R.id.tv_mul_msg).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG,"");
+                            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG, "");
                             geMyClients();
                             mPopupWindow.dismiss();
                             mPopupWindow = null;
@@ -242,18 +242,18 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
     };
 
     private void geMyClients() {
-        EasyHttp.get(this).api(new ClientsApi()).request(new HttpCallback<HttpData<ClientsResultBean>>(this) {
+        EasyHttp.post(this).api(new ClientsApi()).request(new HttpCallback<HttpData<ArrayList<ClientsResultBean>>>(this) {
             @Override
             public void onStart(Call call) {
                 super.onStart(call);
             }
 
             @Override
-            public void onSucceed(HttpData<ClientsResultBean> result) {
+            public void onSucceed(HttpData<ArrayList<ClientsResultBean>> result) {
                 super.onSucceed(result);
-                if (true) {
-
-                }
+                clientsResultBeans = result.getData();
+                processData();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -263,20 +263,22 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         });
     }
 
-    private void getDatas() {
-        List<ContactBean> childList = new ArrayList<>();
-        childList.add(new ContactBean("张三", "10002"));
-        childList.add(new ContactBean("李四", "10002"));
-        childList.add(new ContactBean("王二", "10002"));
-        ContactsGroupBean contactsGroupBean = new ContactsGroupBean("朋友", childList);
-        contactsGroupBeans.add(contactsGroupBean);
-
-        List<ContactBean> childList2 = new ArrayList<>();
-        childList2.add(new ContactBean("小宝", "10002"));
-        childList2.add(new ContactBean("爷爷", "10002"));
-        childList2.add(new ContactBean("奶奶", "10002"));
-        ContactsGroupBean contactsGroupBean2 = new ContactsGroupBean("亲人", childList2);
-        contactsGroupBeans.add(contactsGroupBean2);
+    private void processData() {
+        for (int i = 0; i < clientsResultBeans.size(); i++) {
+            ClientsResultBean clientsResultBean = clientsResultBeans.get(i);
+            List<ClientsResultBean.UserInfoDTO> userInfo = clientsResultBean.userInfo;
+            if (null == userInfo || userInfo.size() == 0) {
+                continue;
+//                userInfo = new ArrayList<>();
+//                ClientsResultBean.UserInfoDTO userInfoDTO = new ClientsResultBean.UserInfoDTO("暂无");
+//                userInfo.add(userInfoDTO);
+            }
+            ClientsResultBean newOne = new ClientsResultBean(clientsResultBean.group, userInfo);
+            newOne.userInfo = userInfo;
+            newOne.num = clientsResultBean.num;
+            newOne.group = clientsResultBean.group;
+            clientsProcessBeans.add(newOne);
+        }
     }
 
     //冒泡弹出
