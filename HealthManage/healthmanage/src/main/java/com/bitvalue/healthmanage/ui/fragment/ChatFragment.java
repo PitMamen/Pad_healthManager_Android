@@ -18,6 +18,8 @@ import com.bitvalue.sdk.collab.base.IUIKitCallBack;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.component.TitleBarLayout;
 import com.bitvalue.sdk.collab.helper.ChatLayoutHelper;
+import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
+import com.bitvalue.sdk.collab.helper.CustomHelloMessage;
 import com.bitvalue.sdk.collab.modules.chat.ChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.AbsChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
@@ -29,7 +31,9 @@ import com.bitvalue.sdk.collab.modules.forward.base.ConversationBean;
 import com.bitvalue.sdk.collab.modules.group.info.GroupInfo;
 import com.bitvalue.sdk.collab.modules.group.info.StartGroupMemberSelectActivity;
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
+import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.TUIKitConstants;
+import com.google.gson.Gson;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 import com.tencent.imsdk.v2.V2TIMManager;
@@ -107,7 +111,7 @@ public class ChatFragment extends AppFragment {
                 }
             });
         }
-        mChatLayout.setForwardSelectActivityListener(new AbsChatLayout.onForwardSelectActivityListener(){
+        mChatLayout.setForwardSelectActivityListener(new AbsChatLayout.onForwardSelectActivityListener() {
             @Override
             public void onStartForwardSelectActivity(int mode, List<MessageInfo> msgIds) {
                 mForwardMode = mode;
@@ -133,15 +137,15 @@ public class ChatFragment extends AppFragment {
                 }
 
                 V2TIMMergerElem mergerElem = messageInfo.getTimMessage().getMergerElem();
-                if (mergerElem != null){
+                if (mergerElem != null) {
 //                    Intent intent = new Intent(AppApplication.instance(), ForwardChatActivity.class);
                     Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);//TODO
-                    Bundle bundle=new Bundle();
+                    Bundle bundle = new Bundle();
                     bundle.putSerializable(TUIKitConstants.FORWARD_MERGE_MESSAGE_KEY, messageInfo);
                     intent.putExtras(bundle);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     AppApplication.instance().startActivity(intent);
-                }else {
+                } else {
                     ChatInfo info = new ChatInfo();
                     info.setId(messageInfo.getFromUser());
 //                    Intent intent = new Intent(AppApplication.instance(), FriendProfileActivity.class);
@@ -174,8 +178,8 @@ public class ChatFragment extends AppFragment {
 
                 @Override
                 public void onSuccess(V2TIMConversation v2TIMConversation) {
-                    if (v2TIMConversation == null){
-                        DemoLog.d(TAG,"getConversation failed");
+                    if (v2TIMConversation == null) {
+                        DemoLog.d(TAG, "getConversation failed");
                         return;
                     }
                     mChatInfo.setAtInfoList(v2TIMConversation.getGroupAtInfoList());
@@ -206,7 +210,7 @@ public class ChatFragment extends AppFragment {
 
                                     @Override
                                     public void onError(String module, int errCode, String errMsg) {
-                                        DemoLog.d(TAG,"getAtInfoChatMessages failed");
+                                        DemoLog.d(TAG, "getAtInfoChatMessages failed");
                                     }
                                 });
                             }
@@ -225,17 +229,27 @@ public class ChatFragment extends AppFragment {
         mChatLayout.setOnCustomClickListener(new InputLayout.OnCustomClickListener() {
             @Override
             public void onHealthPlanClick() {
-                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_PLAN_DETAIL,"");
+                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_PLAN_DETAIL, "");
             }
 
             @Override
             public void onHealthAnalyseClick() {
-                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_ANALYSE,"");
+                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_ANALYSE, "");
             }
 
             @Override
             public void onHealthMsgClick() {
-                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_SEND_MSG,"");
+//                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_SEND_MSG,"");
+                // TODO 模拟自定义消息
+                CustomHealthMessage message = new CustomHealthMessage();
+                message.msgDetailId = "111";
+                message.msgText = "这是健康消息";
+                message.msgType = "多个消息种类的消息";
+                message.setType("CustomHealthMessage");
+                message.setDescription("健康管理消息");
+
+                MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
+                mChatLayout.sendMessage(info, false);
             }
         });
     }
@@ -245,9 +259,9 @@ public class ChatFragment extends AppFragment {
 
     }
 
-    private void updateAtInfoLayout(){
+    private void updateAtInfoLayout() {
         int atInfoType = getAtInfoType(mChatInfo.getAtInfoList());
-        switch (atInfoType){
+        switch (atInfoType) {
             case V2TIMGroupAtInfo.TIM_AT_ME:
                 mChatLayout.getAtInfoLayout().setVisibility(VISIBLE);
                 mChatLayout.getAtInfoLayout().setText(AppApplication.instance().getString(R.string.ui_at_me));
@@ -272,7 +286,7 @@ public class ChatFragment extends AppFragment {
         boolean atMe = false;
         boolean atAll = false;
 
-        if (atInfoList == null || atInfoList.isEmpty()){
+        if (atInfoList == null || atInfoList.isEmpty()) {
             return V2TIMGroupAtInfo.TIM_AT_UNKNOWN;
         }
 
@@ -313,14 +327,14 @@ public class ChatFragment extends AppFragment {
             String result_id = data.getStringExtra(TUIKitConstants.Selection.USER_ID_SELECT);
             String result_name = data.getStringExtra(TUIKitConstants.Selection.USER_NAMECARD_SELECT);
             mChatLayout.getInputLayout().updateInputText(result_name, result_id);
-        } else if (requestCode == TUIKitConstants.FORWARD_SELECT_ACTIVTY_CODE && resultCode == TUIKitConstants.FORWARD_SELECT_ACTIVTY_CODE){
+        } else if (requestCode == TUIKitConstants.FORWARD_SELECT_ACTIVTY_CODE && resultCode == TUIKitConstants.FORWARD_SELECT_ACTIVTY_CODE) {
             if (data != null) {
-                if (mForwardSelectMsgInfos == null || mForwardSelectMsgInfos.isEmpty()){
+                if (mForwardSelectMsgInfos == null || mForwardSelectMsgInfos.isEmpty()) {
                     return;
                 }
 
                 ArrayList<ConversationBean> conversationBeans = data.getParcelableArrayListExtra(TUIKitConstants.FORWARD_SELECT_CONVERSATION_KEY);
-                if (conversationBeans == null || conversationBeans.isEmpty()){
+                if (conversationBeans == null || conversationBeans.isEmpty()) {
                     return;
                 }
 
@@ -356,17 +370,17 @@ public class ChatFragment extends AppFragment {
         }
     }
 
-    private List<V2TIMMessage> MessgeInfo2TIMMessage(List<MessageInfo> msgInfos){
-        if (msgInfos == null || msgInfos.isEmpty()){
+    private List<V2TIMMessage> MessgeInfo2TIMMessage(List<MessageInfo> msgInfos) {
+        if (msgInfos == null || msgInfos.isEmpty()) {
             return null;
         }
         List<V2TIMMessage> msgList = new ArrayList<>();
-        for(int i = 0; i < msgInfos.size(); i++){
+        for (int i = 0; i < msgInfos.size(); i++) {
             msgList.add(msgInfos.get(i).getTimMessage());
         }
         return msgList;
     }
-    
+
     @Override
     public void onResume() {
         super.onResume();

@@ -23,8 +23,12 @@ import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.TUIKitConstants;
 import com.bitvalue.sdk.collab.utils.TUIKitLog;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.tencent.imsdk.v2.V2TIMCustomElem;
 import com.tencent.imsdk.v2.V2TIMMessage;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -44,14 +48,46 @@ public class HelloChatController implements TUIChatControllerListener {
             if (customElem == null || customElem.getData() == null) {
                 return null;
             }
-            CustomHelloMessage helloMessage = null;
-            try {
-                helloMessage = new Gson().fromJson(new String(customElem.getData()), CustomHelloMessage.class);
-            } catch (Exception e) {
-//                Logger.w(TAG, "invalid json: " + new String(customElem.getData()) + " " + e.getMessage());
-                TUIKitLog.e(TAG, "invalid json: " + new String(customElem.getData()) + " " + e.getMessage());
-            }
-            if (helloMessage != null && TextUtils.equals(helloMessage.businessID, TUIKitConstants.BUSINESS_ID_CUSTOM_HELLO)) {
+
+//            if (null != customElem.getExtension()) {
+//                switch (new String(customElem.getExtension())) {
+//                    case "CustomHealthMessage":
+//                        CustomHealthMessage healthMessage = null;
+//                        try {
+//                            healthMessage = new Gson().fromJson(new String(customElem.getData()), CustomHealthMessage.class);
+//                        } catch (Exception e) {
+////                Logger.w(TAG, "invalid json: " + new String(customElem.getData()) + " " + e.getMessage());
+//                            TUIKitLog.e(TAG, "invalid json: " + new String(customElem.getData()) + " " + e.getMessage());
+//                        }
+//                        break;
+//                }
+//            }
+
+//            String dataJson = new String(customElem.getData());
+//            try {
+//                JSONObject jsonObject = new JSONObject(dataJson);
+//                String type = jsonObject.optString("type");
+//                switch (type) {
+//                    case "CustomHealthMessage":
+//                        CustomHealthMessage healthMessage = new Gson().fromJson(jsonObject.optString("data"), CustomHealthMessage.class);
+//                        if (healthMessage != null){
+//                            MessageInfo messageInfo = new HelloMessageInfo();
+//                            messageInfo.setMsgType(HelloMessageInfo.MSG_TYPE_HELLO);
+//                            MessageInfoUtil.setMessageInfoCommonAttributes(messageInfo, timMessage);
+//                            Context context = TUIKit.getAppContext();
+//                            if (context != null) {
+//                                messageInfo.setExtra(context.getString(R.string.custom_msg));
+//                            }
+//                            return messageInfo;
+//                        }
+//                        break;
+//                }
+//
+//            } catch (JSONException e) {
+//            }
+
+            String dataFather = new String(customElem.getData());
+            if (null != dataFather && !dataFather.isEmpty()) {
                 MessageInfo messageInfo = new HelloMessageInfo();
                 messageInfo.setMsgType(HelloMessageInfo.MSG_TYPE_HELLO);
                 MessageInfoUtil.setMessageInfoCommonAttributes(messageInfo, timMessage);
@@ -61,6 +97,26 @@ public class HelloChatController implements TUIChatControllerListener {
                 }
                 return messageInfo;
             }
+
+
+            //demo原本的代码，上面三块都是加的
+//            CustomHelloMessage helloMessage = null;
+//            try {
+//                helloMessage = new Gson().fromJson(new String(customElem.getData()), CustomHelloMessage.class);
+//            } catch (Exception e) {
+////                Logger.w(TAG, "invalid json: " + new String(customElem.getData()) + " " + e.getMessage());
+//                TUIKitLog.e(TAG, "invalid json: " + new String(customElem.getData()) + " " + e.getMessage());
+//            }
+//            if (helloMessage != null && TextUtils.equals(helloMessage.businessID, TUIKitConstants.BUSINESS_ID_CUSTOM_HELLO)) {
+//                MessageInfo messageInfo = new HelloMessageInfo();
+//                messageInfo.setMsgType(HelloMessageInfo.MSG_TYPE_HELLO);
+//                MessageInfoUtil.setMessageInfoCommonAttributes(messageInfo, timMessage);
+//                Context context = TUIKit.getAppContext();
+//                if (context != null) {
+//                    messageInfo.setExtra(context.getString(R.string.custom_msg));
+//                }
+//                return messageInfo;
+//            }
         }
         return null;
     }
@@ -126,23 +182,45 @@ public class HelloChatController implements TUIChatControllerListener {
                 return;
             }
             V2TIMCustomElem elem = info.getTimMessage().getCustomElem();
-            // 自定义的json数据，需要解析成bean实例
-            CustomHelloMessage data = null;
+
+            String dataJson = new String(elem.getData());
             try {
-                data = new Gson().fromJson(new String(elem.getData()), CustomHelloMessage.class);
-            } catch (Exception e) {
+                JSONObject jsonObject = new JSONObject(dataJson);
+                String type = jsonObject.optString("type");
+                switch (type) {
+                    case "CustomHealthMessage":
+                        CustomHealthMessage healthMessage = new Gson().fromJson(dataJson, CustomHealthMessage.class);
+                        if (healthMessage != null) {
+                            if (parent instanceof MessageBaseHolder) {
+                                //TODO  CustomHelloTIMUIController 改成 CustomHealthMessageController
+//                                CustomHelloTIMUIController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                                CustomHealthMessageController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                            }
+                        }
+                        break;
+                }
+
+            } catch (JSONException e) {
                 TUIKitLog.w(TAG, "invalid json: " + new String(elem.getData()) + " " + e.getMessage());
             }
-            if (data == null) {
-                TUIKitLog.e(TAG, "No Custom Data: " + new String(elem.getData()));
-            } else if (data.version == TUIKitConstants.JSON_VERSION_1
-                    || (data.version == TUIKitConstants.JSON_VERSION_4 && data.businessID.equals(TUIKitConstants.BUSINESS_ID_CUSTOM_HELLO))) {
-                if (parent instanceof MessageBaseHolder) {
-                    CustomHelloTIMUIController.onDraw(parent, data, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
-                }
-            } else {
-                TUIKitLog.w(TAG, "unsupported version: " + data);
-            }
+
+
+//            // 自定义的json数据，需要解析成bean实例
+//            CustomHelloMessage data = null;
+//            try {
+//                data = new Gson().fromJson(new String(elem.getData()), CustomHelloMessage.class);
+//            } catch (Exception e) {
+//                TUIKitLog.w(TAG, "invalid json: " + new String(elem.getData()) + " " + e.getMessage());
+//            }
+//            if (data == null) {
+//                TUIKitLog.e(TAG, "No Custom Data: " + new String(elem.getData()));
+//            } else if (data.version == TUIKitConstants.JSON_VERSION_1 || (data.version == TUIKitConstants.JSON_VERSION_4 && data.businessID.equals(TUIKitConstants.BUSINESS_ID_CUSTOM_HELLO))) {
+//                if (parent instanceof MessageBaseHolder) {
+//                    CustomHelloTIMUIController.onDraw(parent, data, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+//                }
+//            } else {
+//                TUIKitLog.w(TAG, "unsupported version: " + data);
+//            }
         }
     }
 

@@ -229,7 +229,6 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                         @Override
                         public void onClick(View v) {
                             homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG, "");
-                            geMyClients();
                             mPopupWindow.dismiss();
                             mPopupWindow = null;
 
@@ -252,6 +251,9 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
             public void onSucceed(HttpData<ArrayList<ClientsResultBean>> result) {
                 super.onSucceed(result);
                 clientsResultBeans = result.getData();
+                if (null == clientsResultBeans || clientsResultBeans.size() == 0){
+                    return;
+                }
                 processData();
                 adapter.notifyDataSetChanged();
             }
