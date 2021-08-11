@@ -214,8 +214,7 @@ public class HomeActivity extends AppActivity {
 //        }
 //    }
 
-    @SingleClick
-    @OnClick
+    @OnClick({R.id.layout_person, R.id.layout_settings})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_person:

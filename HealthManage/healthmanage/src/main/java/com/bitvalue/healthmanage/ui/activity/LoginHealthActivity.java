@@ -56,8 +56,7 @@ public class LoginHealthActivity extends AppActivity {
         updateIsRememberPwdImage();
     }
 
-    @SingleClick
-    @OnClick
+    @OnClick({R.id.layout_remember, R.id.btn_login})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_remember:

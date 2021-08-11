@@ -60,7 +60,7 @@ public class SplashActivity extends AppActivity {
 //        }
 //    }
 
-    @OnClick
+    @OnClick({R.id.tv_jump})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_jump:
