@@ -23,6 +23,9 @@ import com.hjq.base.action.ResourcesAction;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  *    author : Android 轮子哥
  *    github : https://github.com/getActivity/AndroidProject
@@ -38,6 +41,7 @@ public abstract class BaseFragment<A extends BaseActivity> extends Fragment impl
     private View mRootView;
     /** 当前是否加载过 */
     private boolean mLoading;
+    private Unbinder unbinder;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -55,6 +59,7 @@ public abstract class BaseFragment<A extends BaseActivity> extends Fragment impl
 
         mLoading = false;
         mRootView = inflater.inflate(getLayoutId(), container, false);
+        unbinder = ButterKnife.bind(this, mRootView);
         initView();
         return mRootView;
     }
@@ -96,6 +101,9 @@ public abstract class BaseFragment<A extends BaseActivity> extends Fragment impl
 
     @Override
     public void onDestroy() {
+        if (null != unbinder){
+            unbinder.unbind();
+        }
         super.onDestroy();
         mLoading = false;
         removeCallbacks();

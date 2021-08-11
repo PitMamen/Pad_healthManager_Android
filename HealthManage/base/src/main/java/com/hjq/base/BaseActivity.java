@@ -23,6 +23,9 @@ import com.hjq.base.action.KeyboardAction;
 import java.util.List;
 import java.util.Random;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  *    author : Android 轮子哥
  *    github : https://github.com/getActivity/AndroidProject
@@ -35,6 +38,7 @@ public abstract class BaseActivity extends AppCompatActivity
 
     /** Activity 回调集合 */
     private SparseArray<OnActivityCallback> mActivityCallbacks;
+    private Unbinder bind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,7 @@ public abstract class BaseActivity extends AppCompatActivity
     protected void initLayout() {
         if (getLayoutId() > 0) {
             setContentView(getLayoutId());
+            bind = ButterKnife.bind(this);
             initSoftKeyboard();
         }
     }
@@ -86,6 +91,9 @@ public abstract class BaseActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
+        if (null != bind){
+            bind.unbind();
+        }
         super.onDestroy();
         removeCallbacks();
     }

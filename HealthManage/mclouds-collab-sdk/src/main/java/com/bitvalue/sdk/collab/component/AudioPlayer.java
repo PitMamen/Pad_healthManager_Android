@@ -3,6 +3,7 @@ package com.bitvalue.sdk.collab.component;
 
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.os.Environment;
 import android.os.Handler;
 import android.text.TextUtils;
 
@@ -11,6 +12,8 @@ import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.utils.TUIKitConstants;
 import com.bitvalue.sdk.collab.utils.TUIKitLog;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
+
+import java.io.File;
 
 public class AudioPlayer {
 
@@ -39,6 +42,9 @@ public class AudioPlayer {
     public void startRecord(Callback callback) {
         mRecordCallback = callback;
         try {
+
+            //本来打算修改地址，调试发现 mAudioRecordPath 地址在发送自定义消息时也可用
+            //String compressPath = Environment.getExternalStorageDirectory() + "/msg/audio/" + ".m4a";
             mAudioRecordPath = CURRENT_RECORD_FILE + System.currentTimeMillis() + ".m4a";
             mRecorder = new MediaRecorder();
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);

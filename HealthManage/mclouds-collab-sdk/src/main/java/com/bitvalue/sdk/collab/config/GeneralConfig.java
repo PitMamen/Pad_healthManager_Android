@@ -7,7 +7,7 @@ import com.tencent.imsdk.v2.V2TIMSDKConfig;
  */
 public class GeneralConfig {
 
-    public final static int DEFAULT_AUDIO_RECORD_MAX_TIME = 60;
+    public final static int DEFAULT_AUDIO_RECORD_MAX_TIME = 180;//医生改为180，原来是60
     public final static int DEFAULT_VIDEO_RECORD_MAX_TIME = 15;
     private static final String TAG = GeneralConfig.class.getSimpleName();
     private String appCacheDir;

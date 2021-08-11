@@ -3,6 +3,7 @@ package com.bitvalue.healthmanage.ui.activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ import com.bitvalue.sdk.collab.base.IUIKitCallBack;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import butterknife.OnClick;
+
 //import butterknife.OnClick;
 
 public class SplashActivity extends AppActivity {
@@ -40,16 +43,28 @@ public class SplashActivity extends AppActivity {
     @Override
     protected void initView() {
         tv_jump = findViewById(R.id.tv_jump);
-        setOnClickListener(R.id.tv_jump);
+//        setOnClickListener(R.id.tv_jump);
         Utils.checkPermission(this);
     }
 
-    @SingleClick
-    @Override
+//    @SingleClick
+//    @Override
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.tv_jump:
+//                if (runnable != null && handler != null) {
+//                    handler.removeCallbacks(runnable);
+//                }
+//                jumpActivity();
+//                break;
+//        }
+//    }
+
+    @OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_jump:
-                if (runnable != null) {
+                if (runnable != null && handler != null) {
                     handler.removeCallbacks(runnable);
                 }
                 jumpActivity();
@@ -105,7 +120,7 @@ public class SplashActivity extends AppActivity {
         /**
          * 正常情况下不点击跳过
          */
-        handler = new Handler();
+        handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(runnable, 3000);
     }
 

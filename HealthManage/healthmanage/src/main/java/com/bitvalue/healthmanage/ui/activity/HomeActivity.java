@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import butterknife.OnClick;
 import okhttp3.Call;
 
 public class HomeActivity extends AppActivity {
@@ -80,7 +81,7 @@ public class HomeActivity extends AppActivity {
         layout_person = findViewById(R.id.layout_person);
         layout_settings = findViewById(R.id.layout_settings);
 
-        setOnClickListener(R.id.layout_person, R.id.layout_settings);
+//        setOnClickListener(R.id.layout_person, R.id.layout_settings);
         initFragments(0);
         loginIM();
     }
@@ -200,8 +201,21 @@ public class HomeActivity extends AppActivity {
         layout_settings.setBackgroundColor(getResources().getColor(R.color.home_blue));
     }
 
+//    @SingleClick
+//    @Override
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.layout_person:
+//                afterTabSelect(0);
+//                break;
+//            case R.id.layout_settings:
+//                afterTabSelect(1);
+//                break;
+//        }
+//    }
+
     @SingleClick
-    @Override
+    @OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_person:
@@ -294,11 +308,16 @@ public class HomeActivity extends AppActivity {
                 mapFragments.put(Constants.FRAGMENT_ADD_PAPER, addPaperFragment);
                 break;
             case Constants.FRAGMENT_SEND_MSG:
+                String msgType = (String) object;
                 NewMsgFragment newMsgFragment;
                 if (isContain) {
                     mapFragments.remove(keyFragment);
                 }
                 newMsgFragment = new NewMsgFragment();
+
+                Bundle msgBundle = new Bundle();
+                msgBundle.putString(Constants.MSG_TYPE,msgType);
+                newMsgFragment.setArguments(msgBundle);
                 mapFragments.put(Constants.FRAGMENT_SEND_MSG, newMsgFragment);
                 break;
 

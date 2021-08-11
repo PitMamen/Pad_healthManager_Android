@@ -239,17 +239,17 @@ public class ChatFragment extends AppFragment {
 
             @Override
             public void onHealthMsgClick() {
-//                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_SEND_MSG,"");
+                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_SEND_MSG, com.bitvalue.healthmanage.Constants.MSG_SINGLE);
                 // TODO 模拟自定义消息
-                CustomHealthMessage message = new CustomHealthMessage();
-                message.msgDetailId = "111";
-                message.msgText = "这是健康消息";
-                message.msgType = "多个消息种类的消息";
-                message.setType("CustomHealthMessage");
-                message.setDescription("健康管理消息");
-
-                MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
-                mChatLayout.sendMessage(info, false);
+//                CustomHealthMessage message = new CustomHealthMessage();
+//                message.msgDetailId = "111";
+//                message.msgText = "这是健康消息";
+//                message.msgType = "多个消息种类的消息";
+//                message.setType("CustomHealthMessage");
+//                message.setDescription("健康管理消息");
+//
+//                MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
+//                mChatLayout.sendMessage(info, false);
             }
         });
     }

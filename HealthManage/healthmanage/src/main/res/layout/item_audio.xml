@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/qb_px_5">
+
+    <View
+        android:id="@+id/audio_view"
+        android:layout_width="@dimen/qb_px_50"
+        android:layout_height="@dimen/qb_px_20"
+        android:background="@drawable/shape_bg_gray"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_duration"
+        android:layout_width="@dimen/qb_px_20"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/qb_px_5"
+        android:layout_marginTop="@dimen/qb_px_3"
+        android:text="6&quot;"
+        app:layout_constraintLeft_toRightOf="@id/audio_view"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,6 +20,10 @@ public class Constants {
     public static final String FRAGMENT_HEALTH_PLAN_DETAIL = "fragment_health_plan_detail";
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";
+    public static final String API_CONTENT = "/content-api";
+    public static final String MSG_SINGLE = "msg_single";
+    public static final String MSG_MULTI = "msg_multi";
+    public static final String MSG_TYPE = "msg_type";
 
 //    //自己的
 //    public static final int IM_APPId =1400548652;

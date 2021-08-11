@@ -228,7 +228,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                     view.findViewById(R.id.tv_mul_msg).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG, "");
+                            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG, Constants.MSG_MULTI);
                             mPopupWindow.dismiss();
                             mPopupWindow = null;
 

@@ -27,6 +27,7 @@ import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 
 //import butterknife.OnClick;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 public class LoginHealthActivity extends AppActivity {
@@ -46,7 +47,7 @@ public class LoginHealthActivity extends AppActivity {
         img_remember = findViewById(R.id.img_remember);
         et_work_no = findViewById(R.id.et_work_no);
         et_psd = findViewById(R.id.et_psd);
-        setOnClickListener(R.id.layout_remember, R.id.btn_login);
+//        setOnClickListener(R.id.layout_remember, R.id.btn_login);
     }
 
     @Override
@@ -56,7 +57,7 @@ public class LoginHealthActivity extends AppActivity {
     }
 
     @SingleClick
-    @Override
+    @OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_remember:
@@ -95,15 +96,17 @@ public class LoginHealthActivity extends AppActivity {
 
                     @Override
                     public void onStart(Call call) {
-//                        mCommitView.showProgress();
+                        super.onStart(call);
                     }
 
                     @Override
                     public void onEnd(Call call) {
+                        super.onStart(call);
                     }
 
                     @Override
                     public void onSucceed(HttpData<LoginBean> data) {
+                        super.onSucceed(data);
                         // 更新 Token
 //                        EasyConfig.getInstance().addParam("token", data.getData().getToken());
                         LoginBean loginBean = data.getData();
@@ -135,9 +138,9 @@ public class LoginHealthActivity extends AppActivity {
                     @Override
                     public void onFail(Exception e) {
                         super.onFail(e);
-                        postDelayed(() -> {
-//                            mCommitView.showError(3000);
-                        }, 1000);
+//                        postDelayed(() -> {
+////                            mCommitView.showError(3000);
+//                        }, 1000);
                     }
                 });
     }
