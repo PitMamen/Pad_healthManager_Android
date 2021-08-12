@@ -18,12 +18,15 @@ public class Constants {
     public static final String FRAGMENT_SEND_MSG= "fragment_send_msg";
     public static final String FRAGMENT_HEALTH_ANALYSE = "fragment_health_analyse";
     public static final String FRAGMENT_HEALTH_PLAN_DETAIL = "fragment_health_plan_detail";
+    public static final String FRAGMENT_ADD_VIDEO = "fragment_add_video";
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";
     public static final String API_CONTENT = "/content-api";
     public static final String MSG_SINGLE = "msg_single";
     public static final String MSG_MULTI = "msg_multi";
     public static final String MSG_TYPE = "msg_type";
+    public static final String IMG_ADD = "img_add";
+    public static final int MAX_IMG = 9;
 
 //    //自己的
 //    public static final int IM_APPId =1400548652;

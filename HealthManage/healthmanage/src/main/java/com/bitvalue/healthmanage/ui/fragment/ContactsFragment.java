@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //import butterknife.OnClick;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 public class ContactsFragment extends AppFragment implements CommonPopupWindow.ViewInterface {
@@ -79,7 +80,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
     @Override
     protected void initView() {
         homeActivity = (HomeActivity) getActivity();
-        setOnClickListener(R.id.layout_nav);
+//        setOnClickListener(R.id.layout_nav);
 
         is_need_toast = getArguments().getBoolean("is_need_toast");
         contact_list = getView().findViewById(R.id.contact_list);
@@ -182,8 +183,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         });
     }
 
-    @SingleClick
-    @Override
+    @OnClick({R.id.layout_nav})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_nav:

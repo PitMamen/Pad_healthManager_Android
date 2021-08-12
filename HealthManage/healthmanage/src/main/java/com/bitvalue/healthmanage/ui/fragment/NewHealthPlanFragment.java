@@ -20,6 +20,8 @@ import com.hjq.toast.ToastUtils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import butterknife.OnClick;
+
 public class NewHealthPlanFragment extends AppFragment {
 
     private TextView tv_base_time;
@@ -36,7 +38,7 @@ public class NewHealthPlanFragment extends AppFragment {
     protected void initView() {
         tv_base_time = getView().findViewById(R.id.tv_base_time);
         switch_button = getView().findViewById(R.id.switch_button);
-        setOnClickListener(R.id.layout_base_time,R.id.layout_add_paper);
+//        setOnClickListener(R.id.layout_base_time,R.id.layout_add_paper);
         homeActivity = (HomeActivity) getActivity();
         initTimePick();
         initSwitchButton();
@@ -88,8 +90,7 @@ public class NewHealthPlanFragment extends AppFragment {
 
     }
 
-    @SingleClick
-    @Override
+    @OnClick({R.id.layout_base_time, R.id.layout_add_paper})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_base_time:
@@ -97,7 +98,7 @@ public class NewHealthPlanFragment extends AppFragment {
                 InputMethodUtils.hideSoftInput(getActivity());
                 break;
             case R.id.layout_add_paper:
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_PAPER,"");
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_PAPER, "");
                 break;
         }
     }

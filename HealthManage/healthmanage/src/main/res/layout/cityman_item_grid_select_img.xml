@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/qb_px_2"
+    android:paddingLeft="@dimen/qb_px_2"
+    android:paddingRight="@dimen/qb_px_2"
+    android:paddingTop="@dimen/qb_px_2">
+
+
+    <ImageView
+        android:id="@+id/cityman_add_IB"
+        android:layout_width="@dimen/qb_px_20"
+        android:layout_height="@dimen/qb_px_20"
+        android:layout_alignParentRight="true"
+        android:layout_margin="0dp"
+        android:clickable="true"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/cityman_delete_IV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:paddingBottom="@dimen/qb_px_15"
+        android:paddingLeft="@dimen/qb_px_15"
+        android:paddingRight="@dimen/qb_px_3"
+        android:paddingTop="@dimen/qb_px_3"
+        android:src="@drawable/iv_delete_x" />
+
+</RelativeLayout>

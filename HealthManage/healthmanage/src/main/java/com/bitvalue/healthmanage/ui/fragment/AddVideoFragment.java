@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.response.PaperBean;
-import com.bitvalue.healthmanage.http.response.PlanBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.bitvalue.healthmanage.ui.adapter.HealthPlanAdapter;
 import com.bitvalue.healthmanage.ui.adapter.PaperAdapter;
 import com.hjq.base.BaseAdapter;
 import com.hjq.widget.layout.WrapRecyclerView;
@@ -23,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddPaperFragment extends AppFragment {
+public class AddVideoFragment extends AppFragment {
     private HomeActivity homeActivity;
     private SmartRefreshLayout mRefreshLayout;
     private PaperAdapter mAdapter;
@@ -50,6 +48,10 @@ public class AddPaperFragment extends AppFragment {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
                 toast(mAdapter.getItem(position).name);
+//                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+//                    homeActivity.getSupportFragmentManager().popBackStack();
+//                }
+                //TODO 传数据
                 homeActivity.getSupportFragmentManager().popBackStack();
             }
         });

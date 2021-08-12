@@ -139,11 +139,22 @@ android {
     }
 }
 
-
+repositories {
+    maven { url 'https://maven.aliyun.com/repository/jcenter' }
+    maven { url 'https://maven.aliyun.com/repository/public' }
+    maven { url 'https://maven.aliyun.com/repository/google' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+    // 友盟仓库：https://bintray.com/umsdk/release
+    maven { url 'https://dl.bintray.com/umsdk/release' }
+    jcenter()
+    google()
+    mavenCentral()
+}
 
 // api 与 implementation 的区别：https://www.jianshu.com/p/8962d6ba936e
 dependencies {
-    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     // 基类封装
     implementation project(':base')
     // 控件封装
@@ -234,16 +245,27 @@ dependencies {
 //    api 'com.tencent.imsdk:imsdk-plus:5.5.892'
 //    api 'com.tencent.imsdk:imsdk-plus:5.5.892'
     implementation project(':mclouds-collab-sdk')
+//    implementation project(':imagepicker')
 //    implementation 'com.hgDendi:expandable-recyclerview-adapter:1.0.1'
     implementation 'com.thoughtbot:expandablerecyclerview:1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.contrarywind:Android-PickerView:4.1.9'//时间选择控件
     implementation 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
     implementation 'io.reactivex:rxjava:1.1.0'
+    implementation 'io.reactivex:rxandroid:1.1.0'
+    implementation 'com.zhihu.android:matisse:0.5.0-alpha4'
+//    implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
+//    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+//    implementation 'com.trello.rxlifecycle2:rxlifecycle-android-lifecycle:2.2.2'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.19'
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
     implementation "com.jakewharton:butterknife:10.0.0"
     annotationProcessor "com.jakewharton:butterknife-compiler:10.0.0"
+
+    implementation 'pub.devrel:easypermissions:1.0.1'
+    implementation 'com.github.bingoogolapple:BGAPhotoPicker-Android:2.0.1'
+    implementation 'com.github.bingoogolapple:BGABaseAdapter-Android:2.0.1'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 
     api 'com.squareup.okhttp3:okhttp:3.3.0'
     api 'com.zhy:okhttputils:2.6.2'

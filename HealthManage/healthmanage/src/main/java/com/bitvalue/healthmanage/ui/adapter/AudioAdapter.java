@@ -27,7 +27,8 @@ public class AudioAdapter extends BaseQuickAdapter<UploadFileApi, BaseViewHolder
         if (null == uploadFileApi) {
             return;
         }
-        holder.setText(R.id.tv_duration, uploadFileApi.duration + "&quot;");
+//        holder.setText(R.id.tv_duration, uploadFileApi.duration + "&quot;");
+        holder.setText(R.id.tv_duration, uploadFileApi.duration/1000 + "\"");
 
 //        if (null != couponInfo.isChoosed) {//后台获取时，isChoosed可能为null，所以加一个判断
 //            holder.setChecked(R.id.checkbox_choose, couponInfo.isChoosed);

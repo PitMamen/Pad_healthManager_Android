@@ -26,6 +26,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.OnClick;
+
 public class HealthPlanFragment extends AppFragment {
 
     private WrapRecyclerView list_my_plans;
@@ -40,7 +42,7 @@ public class HealthPlanFragment extends AppFragment {
 
     @Override
     protected void initView() {
-        setOnClickListener(R.id.layout_new_plan);
+//        setOnClickListener(R.id.layout_new_plan);
         list_my_plans = (WrapRecyclerView) findViewById(R.id.list_my_plans);
         homeActivity = (HomeActivity) getActivity();
         initList();
@@ -113,13 +115,12 @@ public class HealthPlanFragment extends AppFragment {
 
     }
 
-    @SingleClick
-    @Override
+    @OnClick({R.id.layout_new_plan})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_new_plan:
 
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_NEW,"");
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_NEW, "");
 
 //                NewHealthPlanFragment fragment = new NewHealthPlanFragment();
 //                Bundle bundle = new Bundle();

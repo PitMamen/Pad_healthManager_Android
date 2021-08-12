@@ -11,7 +11,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_LOGS"
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -71,18 +72,60 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <!--        <provider-->
+        <!--            android:name="androidx.core.content.FileProvider"-->
+        <!--            android:authorities="com.healthmanage.fileprovider"-->
+        <!--            android:exported="false"-->
+        <!--            android:grantUriPermissions="true">-->
+        <!--            <meta-data-->
+        <!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--                android:resource="@xml/file_paths_public" />-->
+        <!--        </provider>-->
+
         <!-- 闪屏页 -->
         <activity
             android:name=".ui.activity.HomeActivity"
+            android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
-            android:theme="@style/SplashTheme">
-        </activity>
+            android:theme="@style/SplashTheme" />
 
         <activity
             android:name=".ui.activity.LoginHealthActivity"
             android:screenOrientation="landscape"
             android:theme="@style/SplashTheme" />
+
+        <!-- 拍照选择 -->
+        <activity
+            android:name=".ui.media.CameraActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
+
+        <!-- 图片选择 -->
+        <activity
+            android:name=".ui.media.ImageSelectActivity"
+            android:label="@string/image_select_title"
+            android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
+            android:screenOrientation="landscape" />
+
+        <!-- 查看大图 -->
+        <activity
+            android:name=".ui.media.ImagePreviewActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
+
+        <!-- 播放视频 -->
+        <activity
+            android:name=".ui.media.VideoPlayActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:theme="@style/FullScreenTheme" />
+
+        <!-- 选择视频 -->
+        <activity
+            android:name=".ui.media.VideoSelectActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
 
         <activity
             android:name=".ui.activity.SplashActivity"

@@ -221,6 +221,20 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_img_msg" />
 
+                    <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
+                        android:id="@+id/npl_item_moment_photos"
+                        style="@style/MatchWrap"
+                        android:layout_marginTop="@dimen/qb_px_7"
+                        app:bga_npl_itemCornerRadius="0dp"
+                        app:bga_npl_itemSpanCount="5"
+                        app:bga_npl_itemWhiteSpacing="@dimen/qb_px_4"
+                        app:bga_npl_itemWidth="@dimen/qb_px_50"
+                        app:bga_npl_otherWhiteSpacing="@dimen/qb_px_64"
+                        app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
+                        app:bga_npl_showAsLargeWhenOnlyOne="true"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/img_add_pic" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!--        健康问卷-->

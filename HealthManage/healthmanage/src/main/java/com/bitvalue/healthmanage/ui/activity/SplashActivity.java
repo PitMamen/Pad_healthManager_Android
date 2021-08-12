@@ -16,6 +16,7 @@ import com.bitvalue.healthmanage.app.AppActivity;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.util.DemoLog;
+import com.bitvalue.healthmanage.util.MLog;
 import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.healthmanage.util.Utils;
 import com.bitvalue.sdk.collab.TUIKit;
@@ -23,8 +24,14 @@ import com.bitvalue.sdk.collab.base.IUIKitCallBack;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
 
 //import butterknife.OnClick;
 
@@ -32,8 +39,8 @@ public class SplashActivity extends AppActivity {
 
     private TextView tv_jump;
     private int recLen = 3;
-    private Timer timer = new Timer();
-    private Handler handler;
+    private Subscription hideSubscribe;
+    private Subscription subscription;
 
     @Override
     protected int getLayoutId() {
@@ -64,8 +71,11 @@ public class SplashActivity extends AppActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_jump:
-                if (runnable != null && handler != null) {
-                    handler.removeCallbacks(runnable);
+//                if (runnable != null && handler != null) {
+//                    handler.removeCallbacks(runnable);
+//                }
+                if (null != subscription){
+                    subscription.unsubscribe();
                 }
                 jumpActivity();
                 break;
@@ -112,24 +122,39 @@ public class SplashActivity extends AppActivity {
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-        startCountAndJump();
+//        startCountAndJump();
+        startSubscribe();
     }
 
-    private void startCountAndJump() {
-        timer.schedule(task, 1000, 1000);//等待时间一秒，停顿时间一秒
-        /**
-         * 正常情况下不点击跳过
-         */
-        handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(runnable, 3000);
+    private void startSubscribe() {
+        subscription = Observable.interval(0, 1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+                .take(4)
+                .subscribe(aLong -> tv_jump.setText("跳过 " + (3 - aLong)),
+                        MLog::e, new Action0() {
+                            @Override
+                            public void call() {
+                                tv_jump.setVisibility(View.GONE);//倒计时到0隐藏字体
+                                jumpActivity();
+                            }
+                        });
     }
 
-    private Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            jumpActivity();
-        }
-    };
+
+//    private void startCountAndJump() {
+//        timer.schedule(task, 1000, 1000);//等待时间一秒，停顿时间一秒
+//        /**
+//         * 正常情况下不点击跳过
+//         */
+//        handler = new Handler(Looper.getMainLooper());
+//        handler.postDelayed(runnable, 3000);
+//    }
+//
+//    private Runnable runnable = new Runnable() {
+//        @Override
+//        public void run() {
+//            jumpActivity();
+//        }
+//    };
 
     private void jumpActivity() {
 //        if (!SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty() && SharedPreManager.getBoolean(Constants.KEY_IM_AUTO_LOGIN, false, this)) {
@@ -169,30 +194,33 @@ public class SplashActivity extends AppActivity {
         });
     }
 
-    private TimerTask task = new TimerTask() {
-        @Override
-        public void run() {
-            runOnUiThread(new Runnable() { // UI thread
-                @Override
-                public void run() {
-                    recLen--;
-                    tv_jump.setText("跳过 " + recLen);
-                    if (recLen < 0) {
-                        timer.cancel();
-                        tv_jump.setVisibility(View.GONE);//倒计时到0隐藏字体
-                    }
-                }
-            });
-        }
-
-    };
+//    private TimerTask task = new TimerTask() {
+//        @Override
+//        public void run() {
+//            runOnUiThread(new Runnable() { // UI thread
+//                @Override
+//                public void run() {
+//                    recLen--;
+//                    tv_jump.setText("跳过 " + recLen);
+//                    if (recLen < 0) {
+//                        timer.cancel();
+//                        tv_jump.setVisibility(View.GONE);//倒计时到0隐藏字体
+//                    }
+//                }
+//            });
+//        }
+//
+//    };
 
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        if (handler != null) {
-            handler.removeCallbacks(runnable);
+        if (null != subscription){
+            subscription.unsubscribe();
         }
+        super.onDestroy();
+//        if (handler != null) {
+//            handler.removeCallbacks(runnable);
+//        }
     }
 }

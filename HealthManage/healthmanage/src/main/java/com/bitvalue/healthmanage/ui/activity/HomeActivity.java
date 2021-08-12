@@ -25,6 +25,7 @@ import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
 import com.bitvalue.healthmanage.ui.fragment.AddPaperFragment;
+import com.bitvalue.healthmanage.ui.fragment.AddVideoFragment;
 import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
 import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragment;
@@ -315,7 +316,7 @@ public class HomeActivity extends AppActivity {
                 newMsgFragment = new NewMsgFragment();
 
                 Bundle msgBundle = new Bundle();
-                msgBundle.putString(Constants.MSG_TYPE,msgType);
+                msgBundle.putString(Constants.MSG_TYPE, msgType);
                 newMsgFragment.setArguments(msgBundle);
                 mapFragments.put(Constants.FRAGMENT_SEND_MSG, newMsgFragment);
                 break;
@@ -336,6 +337,14 @@ public class HomeActivity extends AppActivity {
                 }
                 healthPlanDetailFragment = new HealthPlanDetailFragment();
                 mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_DETAIL, healthPlanDetailFragment);
+                break;
+            case Constants.FRAGMENT_ADD_VIDEO:
+                AddVideoFragment addVideoFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                addVideoFragment = new AddVideoFragment();
+                mapFragments.put(Constants.FRAGMENT_ADD_VIDEO, addVideoFragment);
                 break;
         }
         Set<String> strings = mapFragments.keySet();

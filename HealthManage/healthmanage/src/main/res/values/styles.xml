@@ -31,6 +31,11 @@
         <item name="android:overScrollMode">never</item>
     </style>
 
+    <style name="MatchWrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="AnimUp" parent="@android:style/Animation">
         <item name="android:windowEnterAnimation">@anim/alpha_in</item>
         <item name="android:windowExitAnimation">@anim/alpha_out</item>

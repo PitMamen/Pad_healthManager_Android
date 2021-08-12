@@ -45,6 +45,9 @@ import com.hjq.permissions.XXPermissions;
 import com.hjq.toast.ToastUtils;
 import com.hjq.toast.style.ToastBlackStyle;
 import com.hjq.umeng.UmengClient;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.scwang.smart.refresh.header.MaterialHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -97,14 +100,14 @@ public final class AppApplication extends Application {
     public void onLowMemory() {
         super.onLowMemory();
         // 清理所有图片内存缓存
-        GlideApp.get(this).onLowMemory();
+//        GlideApp.get(this).onLowMemory();
     }
 
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
         // 根据手机内存剩余情况清理图片内存缓存
-        GlideApp.get(this).onTrimMemory(level);
+//        GlideApp.get(this).onTrimMemory(level);
     }
 
     /**
@@ -172,6 +175,16 @@ public final class AppApplication extends Application {
                     // 仿苹果越界效果开关
                     .setEnableOverScrollDrag(false);
         });
+
+        //图片选择(添加问题)预览缩略图用到的ImageLoader,在这要初始化一下
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+//				.showImageOnFail(R.drawable.test)
+//				.showImageOnFail(R.drawable.test)
+                .cacheInMemory(true).cacheOnDisc(true).build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions).build();
+
+        ImageLoader.getInstance().init(config);
 
         // Activity 栈管理初始化
         ActivityManager.getInstance().init(application);
