@@ -121,8 +121,14 @@ public class HomeActivity extends AppActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        AppApplication.instance().setHomeActivity(this);
+    }
+
+    @Override
     protected void initData() {
-        testInter();
+//        testInter();
     }
 
     private void testInter() {
@@ -308,7 +314,7 @@ public class HomeActivity extends AppActivity {
                 mapFragments.put(Constants.FRAGMENT_ADD_PAPER, addPaperFragment);
                 break;
             case Constants.FRAGMENT_SEND_MSG:
-                String msgType = (String) object;
+                ChatFragment.NewMsgData msgData = (ChatFragment.NewMsgData) object;
                 NewMsgFragment newMsgFragment;
                 if (isContain) {
                     mapFragments.remove(keyFragment);
@@ -316,7 +322,8 @@ public class HomeActivity extends AppActivity {
                 newMsgFragment = new NewMsgFragment();
 
                 Bundle msgBundle = new Bundle();
-                msgBundle.putString(Constants.MSG_TYPE, msgType);
+                msgBundle.putString(Constants.MSG_TYPE, msgData.msgType);
+                msgBundle.putStringArrayList(Constants.MSG_IDS, msgData.userIds);
                 newMsgFragment.setArguments(msgBundle);
                 mapFragments.put(Constants.FRAGMENT_SEND_MSG, newMsgFragment);
                 break;

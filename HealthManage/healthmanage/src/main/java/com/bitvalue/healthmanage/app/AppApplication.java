@@ -20,6 +20,7 @@ import androidx.multidex.MultiDex;
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.DebugLog;
+import com.bitvalue.healthmanage.helper.HelloChatController;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
 import com.bitvalue.healthmanage.http.interceptor.ExceptionInterceptor;
 import com.bitvalue.healthmanage.http.model.RequestHandler;
@@ -30,11 +31,11 @@ import com.bitvalue.healthmanage.other.CrashHandler;
 import com.bitvalue.healthmanage.other.DebugLoggerTree;
 import com.bitvalue.healthmanage.other.SmartBallPulseFooter;
 import com.bitvalue.healthmanage.other.ToastInterceptor;
+import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.TUIKitListenerManager;
 import com.bitvalue.sdk.collab.config.ConfigHelper;
-import com.bitvalue.sdk.collab.helper.HelloChatController;
 import com.hjq.bar.TitleBar;
 import com.hjq.bar.initializer.LightBarInitializer;
 import com.hjq.http.EasyConfig;
@@ -82,6 +83,7 @@ import timber.log.Timber;
  */
 public final class AppApplication extends Application {
     private static AppApplication instance;
+    private HomeActivity homeActivity;
 
     @DebugLog("启动耗时")
     @Override
@@ -363,5 +365,13 @@ public final class AppApplication extends Application {
     private static void registerCustomListeners() {
         TUIKitListenerManager.getInstance().addChatListener(new HelloChatController());
         TUIKitListenerManager.getInstance().addConversationListener(new HelloChatController.HelloConversationController());
+    }
+
+    public void setHomeActivity(HomeActivity homeActivity) {
+        this.homeActivity = homeActivity;
+    }
+
+    public HomeActivity getHomeActivity() {
+        return homeActivity;
     }
 }

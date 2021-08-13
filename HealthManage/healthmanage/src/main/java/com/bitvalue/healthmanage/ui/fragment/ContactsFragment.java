@@ -61,6 +61,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
     private LinearLayout layout_nav;
     private ImageView img_nav;
     private MPopupWindow mPopupWindow;
+    private ArrayList<String> mIds = new ArrayList<>();
     private ArrayList<ClientsResultBean> clientsResultBeans = new ArrayList<>();
     private ArrayList<ClientsResultBean> clientsProcessBeans = new ArrayList<>();
 
@@ -228,11 +229,16 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                     view.findViewById(R.id.tv_mul_msg).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG, Constants.MSG_MULTI);
+                            if (mIds.size() == 0) {
+                                ToastUtil.toastShortMessage("请选择群发用户");
+                                return;
+                            }
+                            ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
+                            msgData.msgType = Constants.MSG_MULTI;
+                            msgData.userIds = mIds;
+                            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG, msgData);
                             mPopupWindow.dismiss();
                             mPopupWindow = null;
-
-//                            startActivity(new Intent(homeActivity, LoginHealthActivity.class));
                         }
                     });
                     break;
@@ -251,7 +257,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
             public void onSucceed(HttpData<ArrayList<ClientsResultBean>> result) {
                 super.onSucceed(result);
                 clientsResultBeans = result.getData();
-                if (null == clientsResultBeans || clientsResultBeans.size() == 0){
+                if (null == clientsResultBeans || clientsResultBeans.size() == 0) {
                     return;
                 }
                 processData();

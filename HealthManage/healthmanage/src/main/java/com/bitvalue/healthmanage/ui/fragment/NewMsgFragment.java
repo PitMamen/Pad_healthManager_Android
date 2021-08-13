@@ -4,10 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.EditText;
@@ -15,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,25 +19,32 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.myhttp.FileUploadUtils;
+import com.bitvalue.healthmanage.http.request.ClientsApi;
+import com.bitvalue.healthmanage.http.request.SaveTotalMsgApi;
+import com.bitvalue.healthmanage.http.request.UpdateImageApi;
 import com.bitvalue.healthmanage.http.request.UploadFileApi;
+import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.AudioUploadResultBean;
+import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.http.response.ImageModel;
+import com.bitvalue.healthmanage.http.response.VideoBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.AudioAdapter;
-import com.bitvalue.healthmanage.ui.adapter.NineImageAdapter;
 import com.bitvalue.healthmanage.ui.media.ImagePreviewActivity;
 import com.bitvalue.healthmanage.ui.media.ImageSelectActivity;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
-import com.bitvalue.healthmanage.util.UiUtil;
+import com.bitvalue.healthmanage.util.Utils;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
-import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayout;
+import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.tbruyelle.rxpermissions.RxPermissions;
-import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -49,12 +52,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.bingoogolapple.photopicker.activity.BGAPhotoPreviewActivity;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import okhttp3.Call;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 import rx.functions.Action1;
+
+import static com.bitvalue.healthmanage.Constants.MAX_IMG;
 
 public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.Delegate {
 
@@ -84,19 +86,20 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     protected View mRecordingGroup;
     protected ImageView mRecordingIcon;
     protected TextView mRecordingTips;
-    private AnimationDrawable mVolumeAnim;
-
-    private InputLayout.ChatInputHandler mChatInputHandler;
     private boolean isRecording;
     private List<UploadFileApi> mUploadedAudios = new ArrayList<>();
+    private List<UpdateImageApi> mUploadImages = new ArrayList<>();
+    private List<VideoBean> videos = new ArrayList<>();
+    private List<ArticleBean> articles = new ArrayList<>();
     private RecyclerView list_audio;
     private AudioAdapter adapter;
     private HomeActivity homeActivity;
-    private ArrayList<ImageModel> mImgModelsLive = new ArrayList<ImageModel>();
-    private NineImageAdapter nineImageAdapter;
     private List<ImageModel> mImageModels = new ArrayList<>();
     private ArrayList<String> photos = new ArrayList<>();
+    private ArrayList<String> photosFinal = new ArrayList<>();
+    private ArrayList<String> audiosFinal = new ArrayList<>();
     private BGANinePhotoLayout mCurrentClickNpl;
+    private ArrayList<String> mIds;
 
     @Override
     protected int getLayoutId() {
@@ -107,6 +110,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     protected void initView() {
         homeActivity = (HomeActivity) getActivity();
         msgType = getArguments().getString(Constants.MSG_TYPE);
+        mIds = getArguments().getStringArrayList(Constants.MSG_IDS);
         tv_title = getView().findViewById(R.id.tv_title);
         tv_add_audio = getView().findViewById(R.id.tv_add_audio);
         tv_send_msg = getView().findViewById(R.id.tv_send_msg);
@@ -140,7 +144,8 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 UploadFileApi uploadFileApi = mUploadedAudios.get(position);
                 ToastUtil.toastLongMessage("开始播放");
-                AudioPlayer.getInstance().startPlay(uploadFileApi.fileLinkUrl, new AudioPlayer.Callback() {
+                AudioPlayer.getInstance().startPlay(uploadFileApi.path, new AudioPlayer.Callback() {
+                    //                AudioPlayer.getInstance().startPlay(uploadFileApi.fileLinkUrl, new AudioPlayer.Callback() {
                     @Override
                     public void onCompletion(Boolean success) {
                         ToastUtil.toastLongMessage("播放完成");
@@ -149,6 +154,28 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
             }
         });
         list_audio.setAdapter(adapter);
+    }
+
+    public void uploadAudio(UploadFileApi uploadFileApi, FileUploadUtils.OnAudioUploadCallback onAudioUploadCallback) {
+        EasyHttp.post(this).api(uploadFileApi).request(new HttpCallback<HttpData<AudioUploadResultBean>>(this) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<AudioUploadResultBean> result) {
+                super.onSucceed(result);
+                onAudioUploadCallback.onSuccess(result);
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+                onAudioUploadCallback.onFail();
+            }
+        });
+
     }
 
     public void checkPermission() {
@@ -170,7 +197,22 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
                                 AudioPlayer.getInstance().startRecord(new AudioPlayer.Callback() {
                                     @Override
                                     public void onCompletion(Boolean success) {
-                                        uploadAudio(success);
+                                        tv_add_audio.setText("点击录音");
+                                        tv_add_audio.setTextColor(getAttachActivity().getResources().getColor(R.color.main_blue));
+                                        isRecording = false;
+
+                                        int duration = AudioPlayer.getInstance().getDuration();
+                                        String path = AudioPlayer.getInstance().getPath();
+                                        //组装录音列表数据
+                                        UploadFileApi uploadFileApi = new UploadFileApi();
+                                        uploadFileApi.path = path;
+                                        File file = new File(path);
+                                        if (!file.isDirectory() && file.exists()) {
+                                            uploadFileApi.file = file;
+                                        }
+                                        uploadFileApi.duration = duration;
+                                        mUploadedAudios.add(uploadFileApi);
+                                        adapter.setNewData(mUploadedAudios);
                                     }
                                 });
                             } else {
@@ -213,51 +255,6 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
      * mRecordingTips.setText(TUIKit.getAppContext().getString(R.string.down_cancle_send));
      */
 
-    private void uploadAudio(boolean success) {
-        int duration = AudioPlayer.getInstance().getDuration();
-        String path = AudioPlayer.getInstance().getPath();
-        UploadFileApi uploadFileApi = new UploadFileApi();
-        File file = new File(path);
-        if (file.isDirectory() || !file.exists()) {
-            return;
-        }
-        uploadFileApi.file = file;
-        EasyHttp.post(this).api(uploadFileApi).request(new HttpCallback<HttpData<AudioUploadResultBean>>(this) {
-            @Override
-            public void onStart(Call call) {
-                super.onStart(call);
-            }
-
-            @Override
-            public void onSucceed(HttpData<AudioUploadResultBean> result) {
-                super.onSucceed(result);
-                tv_add_audio.setText("点击录音");
-                tv_add_audio.setTextColor(getAttachActivity().getResources().getColor(R.color.main_blue));
-                isRecording = false;
-                if (result.getCode() != 0) {
-                    ToastUtil.toastLongMessage(result.getMessage());
-                    return;
-                }
-
-                //组装录音列表数据
-                uploadFileApi.path = path;
-                uploadFileApi.duration = duration;
-                uploadFileApi.fileLinkUrl = result.getData().fileLinkUrl;
-                uploadFileApi.id = result.getData().id;
-                mUploadedAudios.add(uploadFileApi);
-                adapter.setNewData(mUploadedAudios);
-            }
-
-            @Override
-            public void onFail(Exception e) {
-                super.onFail(e);
-                tv_add_audio.setText("点击录音");
-                tv_add_audio.setTextColor(getAttachActivity().getResources().getColor(R.color.main_blue));
-                isRecording = false;
-            }
-        });
-    }
-
     @Override
     protected void initData() {
         mImageModels.add(new ImageModel(Constants.IMG_ADD));
@@ -280,29 +277,197 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
             case R.id.layout_add_video:
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_VIDEO, "");
                 break;
+
+            //可能需要检查权限，用带回调的封装的Utils.checkPermission
             case R.id.img_add_pic:
-                ImageSelectActivity.start(getAttachActivity(), 9, new ImageSelectActivity.OnPhotoSelectListener() {
-
+                Utils.checkPermission(getAttachActivity(), new Utils.PermissionCallBack() {
                     @Override
-                    public void onSelected(List<String> data) {
-                        toast("选择了" + data.toString());
+                    public void onPermissionResult(boolean permit) {
+                        int canSelectNun = MAX_IMG - photos.size();
+                        if (canSelectNun < 1) {
+                            ToastUtil.toastShortMessage("最多选择9张照片");
+                            return;
+                        }
+                        ImageSelectActivity.start(getAttachActivity(), canSelectNun, new ImageSelectActivity.OnPhotoSelectListener() {
 
-                        getImages(data);
-                    }
+                            @Override
+                            public void onSelected(List<String> data) {
+                                getImages(data);
+                            }
 
-                    @Override
-                    public void onCancel() {
-                        toast("取消了");
+                            @Override
+                            public void onCancel() {
+                            }
+                        });
                     }
                 });
+
                 break;
             case R.id.layout_add_paper:
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_PAPER, "");
                 break;
             case R.id.tv_send_msg:
+                checkTotalMsg();
                 break;
         }
     }
+
+    private void checkTotalMsg() {
+        if (et_text_msg.getText().toString().isEmpty()) {
+            ToastUtil.toastShortMessage("请输入文本消息");
+            return;
+        }
+        if (mUploadedAudios.size() == 0) {
+            ToastUtil.toastShortMessage("请录制语音消息");
+            return;
+        }
+//        if (videos.size() == 0){
+//            ToastUtil.toastShortMessage("请添加视频消息");
+//            return;
+//        }
+
+        if (photos.size() == 0) {
+            ToastUtil.toastShortMessage("请添加图片消息");
+            return;
+        }
+
+//        if (articles.size() == 0){
+//            ToastUtil.toastShortMessage("请添加文章");
+//            return;
+//        }
+
+        uploadedAudioMsgs();
+    }
+
+    int[] i = {0};
+
+    private void uploadedAudioMsgs() {
+        FileUploadUtils.INSTANCE.uploadAudio(NewMsgFragment.this, mUploadedAudios.get(i[0]), new FileUploadUtils.OnAudioUploadCallback() {
+            @Override
+            public void onSuccess(HttpData<AudioUploadResultBean> result) {
+
+                if (result.getCode() != 0) {
+                    ToastUtil.toastLongMessage(result.getMessage());
+                    return;
+                }
+
+                //要上传语音数据
+                audiosFinal.add(result.getData().id);
+
+                //组装录音列表数据
+                mUploadedAudios.get(i[0]).fileLinkUrl = result.getData().fileLinkUrl;
+                mUploadedAudios.get(i[0]).id = result.getData().id;
+                i[0]++;
+                if (i[0] < mUploadedAudios.size()) {
+                    uploadedAudioMsgs();
+                } else {
+                    //组装图片数据
+                    for (int i = 0; i < photos.size(); i++) {
+                        UpdateImageApi updateImageApi = new UpdateImageApi();
+                        File file = new File(photos.get(i));
+                        if (!file.isDirectory() && file.exists()) {
+                            updateImageApi.file = file;
+                            mUploadImages.add(updateImageApi);
+                        }
+                    }
+
+                    //先置空
+                    photosFinal.clear();
+                    j = new int[]{0};
+
+                    uploadedPicMsgs();
+                }
+
+
+            }
+
+            @Override
+            public void onFail() {
+                ToastUtil.toastShortMessage("请求失败");
+            }
+        });
+    }
+
+    int[] j = {0};
+
+    private void uploadedPicMsgs() {
+        FileUploadUtils.INSTANCE.uploadPic(NewMsgFragment.this, mUploadImages.get(j[0]), new FileUploadUtils.OnAudioUploadCallback() {
+            @Override
+            public void onSuccess(HttpData<AudioUploadResultBean> result) {
+
+                if (result.getCode() != 0) {
+                    ToastUtil.toastLongMessage(result.getMessage());
+                    return;
+                }
+
+                photosFinal.add(result.getData().id);
+
+                //组装录音列表数据
+                mUploadImages.get(j[0]).fileLinkUrl = result.getData().fileLinkUrl;
+                mUploadImages.get(j[0]).id = result.getData().id;
+                j[0]++;
+                if (j[0] < mUploadImages.size()) {
+                    uploadedPicMsgs();
+                } else {
+                    commitTotalMsg();
+                }
+            }
+
+            @Override
+            public void onFail() {
+                ToastUtil.toastShortMessage("请求失败");
+            }
+        });
+    }
+
+    private void commitTotalMsg() {
+        SaveTotalMsgApi saveTotalMsgApi = new SaveTotalMsgApi();
+        saveTotalMsgApi.createTime = System.currentTimeMillis() + "";
+        saveTotalMsgApi.picList = getProcessString(photosFinal);
+        saveTotalMsgApi.remindContent = et_text_msg.getText().toString();
+        saveTotalMsgApi.userId = getProcessString(mIds);
+        saveTotalMsgApi.voiceList = getProcessString(audiosFinal);
+        EasyHttp.post(this).api(saveTotalMsgApi).request(new HttpCallback<HttpData<String>>(this) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<String> result) {
+                super.onSucceed(result);
+                if (result.getCode() == 0) {
+                    ToastUtil.toastShortMessage("发送成功");
+                    CustomHealthMessage message = new CustomHealthMessage();
+                    message.title = "健康消息";
+                    message.content = saveTotalMsgApi.remindContent;
+                    //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
+                    message.setType("CustomHealthMessage");
+                    message.setDescription("健康管理消息");
+                    EventBus.getDefault().post(message);
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
+    }
+
+    private String getProcessString(ArrayList<String> photosFinal) {
+        String total = "";
+        for (int i = 0; i < photosFinal.size(); i++) {
+            if (i != photosFinal.size() - 1) {
+                total = total + photosFinal.get(i) + ",";
+            } else {
+                total = total + photosFinal.get(i);
+            }
+        }
+        return total;
+    }
+
 
     private void getImages(List<String> data) {
         if (null == data || data.size() == 0) {

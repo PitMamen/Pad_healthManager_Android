@@ -266,6 +266,7 @@ dependencies {
     implementation 'com.github.bingoogolapple:BGAPhotoPicker-Android:2.0.1'
     implementation 'com.github.bingoogolapple:BGABaseAdapter-Android:2.0.1'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation 'org.greenrobot:eventbus:3.2.0'
 
     api 'com.squareup.okhttp3:okhttp:3.3.0'
     api 'com.zhy:okhttputils:2.6.2'

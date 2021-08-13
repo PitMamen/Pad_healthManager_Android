@@ -20,6 +20,7 @@ import com.bitvalue.sdk.collab.component.TitleBarLayout;
 import com.bitvalue.sdk.collab.helper.ChatLayoutHelper;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.helper.CustomHelloMessage;
+import com.bitvalue.sdk.collab.helper.CustomMessage;
 import com.bitvalue.sdk.collab.modules.chat.ChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.AbsChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
@@ -40,6 +41,10 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMergerElem;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +76,7 @@ public class ChatFragment extends AppFragment {
     //convert user_id to tiny_id failed
     @Override
     protected void initView() {
+        EventBus.getDefault().register(this);
         Bundle bundle = getArguments();
         mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
 //        getActivity();
@@ -239,7 +245,11 @@ public class ChatFragment extends AppFragment {
 
             @Override
             public void onHealthMsgClick() {
-                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_SEND_MSG, com.bitvalue.healthmanage.Constants.MSG_SINGLE);
+                NewMsgData msgData = new NewMsgData();
+                msgData.msgType = com.bitvalue.healthmanage.Constants.MSG_SINGLE;
+                msgData.userIds = new ArrayList<>();
+                msgData.userIds.add(mChatInfo.getId());
+                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_SEND_MSG, msgData);
                 // TODO 模拟自定义消息
 //                CustomHealthMessage message = new CustomHealthMessage();
 //                message.msgDetailId = "111";
@@ -252,6 +262,25 @@ public class ChatFragment extends AppFragment {
 //                mChatLayout.sendMessage(info, false);
             }
         });
+    }
+
+    /**
+     * 处理订阅消息
+     *
+     * @param message
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(CustomMessage message) {
+        if (message instanceof CustomHealthMessage) {
+            MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
+            mChatLayout.sendMessage(info, false);
+        }
+    }
+
+    public static class NewMsgData {
+        public ArrayList<String> userIds;
+        public String msgType;
+//        public String msgType;
     }
 
     @Override
@@ -406,10 +435,11 @@ public class ChatFragment extends AppFragment {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         if (mChatLayout != null) {
             mChatLayout.exitChat();
         }
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
 }

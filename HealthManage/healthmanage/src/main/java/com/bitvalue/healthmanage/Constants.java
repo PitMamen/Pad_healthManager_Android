@@ -25,6 +25,7 @@ public class Constants {
     public static final String MSG_SINGLE = "msg_single";
     public static final String MSG_MULTI = "msg_multi";
     public static final String MSG_TYPE = "msg_type";
+    public static final String MSG_IDS = "msg_ids";
     public static final String IMG_ADD = "img_add";
     public static final int MAX_IMG = 9;
 

@@ -1,4 +1,4 @@
-package com.bitvalue.sdk.collab.helper;
+package com.bitvalue.healthmanage.helper;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import com.bitvalue.sdk.collab.base.IBaseInfo;
 import com.bitvalue.sdk.collab.base.IBaseViewHolder;
 import com.bitvalue.sdk.collab.base.TUIChatControllerListener;
 import com.bitvalue.sdk.collab.base.TUIConversationControllerListener;
+import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.IOnCustomMessageDrawListener;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.MessageBaseHolder;

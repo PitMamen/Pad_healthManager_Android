@@ -85,5 +85,24 @@
     <color name="textSecond">#737373</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorShallow">#9E9EA1</color>
+    <color name="blue">#FF0000FF</color>
+    <!-- 紫色 -->
+    <color name="purple">#FF800080</color>
+    <!-- 粉色 -->
+    <color name="pink">#FFFFC0CB</color>
+    <!-- 橙色 -->
+    <color name="orange">#FFFFA500</color>
+    <color name="main_blue">#398CF7</color>
+    <color name="home_blue">#0088F4</color>
+    <color name="home_blue_dark">#006DC3</color>
+    <color name="main_blue_little">#398CCC</color>
+    <color name="text_main">#333333</color>
+    <color name="text_black">#1A1A1A</color>
+    <color name="text_desc">#CCCCCC</color>
+    <color name="text_desc_dark">#999999</color>
+    <color name="text_green">#2FB315</color>
+    <color name="blue_light">#EEF6FF</color>
+    <color name="bg_gray">#F8F9FB</color>
+    <color name="bg_gray_light">#FAFAFA</color>
 
 </resources>

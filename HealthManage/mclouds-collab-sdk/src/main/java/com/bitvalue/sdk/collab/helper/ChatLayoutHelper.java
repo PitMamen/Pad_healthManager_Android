@@ -179,7 +179,7 @@ public class ChatLayoutHelper {
                 layout.sendMessage(info, false);
             }
         });
-        inputLayout.addAction(unit);
+//        inputLayout.addAction(unit);//项目不不需要这个自定义消息
     }
 
     public static class CustomInputFragment extends BaseInputFragment {

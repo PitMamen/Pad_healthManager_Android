@@ -2,15 +2,26 @@ package com.bitvalue.healthmanage.util;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
 
 import androidx.core.app.ActivityCompat;
 
+import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
+import com.bitvalue.sdk.collab.component.AudioPlayer;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.functions.Action1;
 
 public class Utils {
 
@@ -47,5 +58,25 @@ public class Utils {
         }
 
         return true;
+    }
+
+    public static void checkPermission(Context context, PermissionCallBack permissionCallBack) {
+        RxPermissions.getInstance(context)
+                .request(Manifest.permission.CAMERA
+                        , Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+                        , Manifest.permission.READ_PHONE_STATE
+                        , Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        , Manifest.permission.RECORD_AUDIO)
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean flag) {
+                        permissionCallBack.onPermissionResult(flag);
+                    }
+                });
+
+    }
+
+    public interface PermissionCallBack {
+        public void onPermissionResult(boolean permit);
     }
 }
