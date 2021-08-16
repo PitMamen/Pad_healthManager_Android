@@ -1,33 +1,62 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
+import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.request.GetArticleApi;
+import com.bitvalue.healthmanage.http.request.SearchArticleApi;
+import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.PaperBean;
-import com.bitvalue.healthmanage.http.response.PlanBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.bitvalue.healthmanage.ui.adapter.HealthPlanAdapter;
 import com.bitvalue.healthmanage.ui.adapter.PaperAdapter;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.base.BaseAdapter;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.HttpCallback;
 import com.hjq.widget.layout.WrapRecyclerView;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import okhttp3.Call;
+
 public class AddPaperFragment extends AppFragment {
+    @BindView(R.id.layout_daily)
+    LinearLayout layout_daily;
+
+    @BindView(R.id.layout_search_result)
+    SmartRefreshLayout layout_search_result;
+
+    @BindView(R.id.list_search)
+    RecyclerView list_search;
+
+    @BindView(R.id.et_search)
+    EditText et_search;
+
     private HomeActivity homeActivity;
     private SmartRefreshLayout mRefreshLayout;
-    private PaperAdapter mAdapter;
+    private PaperAdapter mDailyAdapter;
+    private PaperAdapter mSearchAdapter;
     private WrapRecyclerView list_normal;
+    private ArrayList<ArticleBean> dailyArticles = new ArrayList<>();
+    private ArrayList<ArticleBean> searchArticles = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -39,21 +68,44 @@ public class AddPaperFragment extends AppFragment {
         list_normal = (WrapRecyclerView) findViewById(R.id.list_normal);
         homeActivity = (HomeActivity) getActivity();
 
-        initList();
+        initSearchButton();
+        initDailyList();
+        initSearchList();
     }
 
-    private void initList() {
+    private void initSearchButton() {
+        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (et_search.getText().toString().isEmpty()) {
+                        ToastUtil.toastShortMessage("请输入搜索内容");
+                        return true;
+                    }
+
+                    //关闭软键盘
+                    hideKeyboard(et_search);
+                    getSearchArticles();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+    }
+
+    private void initDailyList() {
         mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.rl_status_refresh);
 
-        mAdapter = new PaperAdapter(getAttachActivity());
-        mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
+        mDailyAdapter = new PaperAdapter(getAttachActivity());
+        mDailyAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
-                toast(mAdapter.getItem(position).name);
+                toast(mDailyAdapter.getItem(position).name);
                 homeActivity.getSupportFragmentManager().popBackStack();
             }
         });
-        list_normal.setAdapter(mAdapter);
+        list_normal.setAdapter(mDailyAdapter);
 
 //        TextView headerView = list_my_plans.addHeaderView(R.layout.picker_item);
 //        headerView.setText("我是头部");
@@ -67,38 +119,146 @@ public class AddPaperFragment extends AppFragment {
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
                 postDelayed(() -> {
-                    mAdapter.addData(analogData());
+                    mDailyAdapter.addData(analogData());
                     mRefreshLayout.finishLoadMore();
 
-                    mAdapter.setLastPage(mAdapter.getItemCount() >= 11);
-                    mRefreshLayout.setNoMoreData(mAdapter.isLastPage());
+                    mDailyAdapter.setLastPage(mDailyAdapter.getItemCount() >= 5);
+                    mRefreshLayout.setNoMoreData(mDailyAdapter.isLastPage());
                 }, 1000);
             }
 
             @Override
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
                 postDelayed(() -> {
-                    mAdapter.clearData();
-                    mAdapter.setData(analogData());
+                    mDailyAdapter.clearData();
+                    mDailyAdapter.setData(analogData());
                     mRefreshLayout.finishRefresh();
                 }, 1000);
             }
         });
 
-        mAdapter.setData(analogData());//TODO 获取数据
+        mDailyAdapter.setData(analogData());//TODO 获取数据
+        getDailyArticles();
     }
+
+    private void initSearchList() {
+
+        mSearchAdapter = new PaperAdapter(getAttachActivity());
+        mSearchAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
+                toast(mSearchAdapter.getItem(position).name);
+                EventBus.getDefault().post(searchArticles.get(position));
+                homeActivity.getSupportFragmentManager().popBackStack();
+            }
+        });
+        list_search.setAdapter(mSearchAdapter);
+
+//        TextView headerView = list_my_plans.addHeaderView(R.layout.picker_item);
+//        headerView.setText("我是头部");
+//        headerView.setOnClickListener(v -> toast("点击了头部"));
+//
+//        TextView footerView = list_my_plans.addFooterView(R.layout.picker_item);
+//        footerView.setText("我是尾部");
+//        footerView.setOnClickListener(v -> toast("点击了尾部"));
+
+        layout_search_result.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
+                postDelayed(() -> {
+                    mSearchAdapter.addData(analogData());
+                    layout_search_result.finishLoadMore();
+
+                    mSearchAdapter.setLastPage(mSearchAdapter.getItemCount() >= 11);
+                    layout_search_result.setNoMoreData(mSearchAdapter.isLastPage());
+                }, 1000);
+            }
+
+            @Override
+            public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
+                postDelayed(() -> {
+                    mSearchAdapter.clearData();
+                    mSearchAdapter.setData(analogData());
+                    layout_search_result.finishRefresh();
+                }, 1000);
+            }
+        });
+
+    }
+
+    private void getDailyArticles() {
+        GetArticleApi getArticleApi = new GetArticleApi();
+        getArticleApi.articleNum = 5;
+        EasyHttp.get(this).api(getArticleApi).request(new HttpCallback<HttpData<ArrayList<ArticleBean>>>(this) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<ArrayList<ArticleBean>> result) {
+                super.onSucceed(result);
+                dailyArticles = result.getData();
+                if (null == dailyArticles || dailyArticles.size() == 0) {
+                    layout_daily.setVisibility(View.GONE);
+                } else {
+                    layout_daily.setVisibility(View.VISIBLE);
+                }
+                mDailyAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
+    }
+
+    private void getSearchArticles() {
+        String title = et_search.getText().toString();
+        if (title.isEmpty()) {
+            return;
+        }
+        SearchArticleApi searchArticleApi = new SearchArticleApi();
+        searchArticleApi.title = title;
+        EasyHttp.get(this).api(searchArticleApi).request(new HttpCallback<HttpData<ArrayList<ArticleBean>>>(this) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<ArrayList<ArticleBean>> result) {
+                super.onSucceed(result);
+                searchArticles = result.getData();
+                if (null == searchArticles || searchArticles.size() == 0) {
+                    ToastUtil.toastShortMessage("未查询到结果");
+                    layout_daily.setVisibility(View.VISIBLE);
+                } else {
+                    mSearchAdapter.notifyDataSetChanged();
+                    layout_daily.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
+    }
+
 
     /**
      * 模拟数据
      */
     private List<PaperBean> analogData() {
         List<PaperBean> data = new ArrayList<>();
-        for (int i = mAdapter.getItemCount(); i < mAdapter.getItemCount() + 10; i++) {
+        for (int i = mDailyAdapter.getItemCount(); i < mDailyAdapter.getItemCount() + 10; i++) {
             PaperBean planBean;
             if (i % 3 == 0) {
-                planBean = new PaperBean("我是第" + i + "条目", 1);
+                planBean = new PaperBean("我是第" + i + "问卷", 1);
             } else {
-                planBean = new PaperBean("我是第" + i + "条目", 2);
+                planBean = new PaperBean("我是第" + i + "问卷", 2);
             }
             data.add(planBean);
         }

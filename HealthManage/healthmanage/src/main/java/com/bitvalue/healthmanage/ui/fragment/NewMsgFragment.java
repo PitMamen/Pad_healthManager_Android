@@ -28,9 +28,12 @@ import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.AudioUploadResultBean;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.http.response.ImageModel;
+import com.bitvalue.healthmanage.http.response.PaperBean;
 import com.bitvalue.healthmanage.http.response.VideoBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.AudioAdapter;
+import com.bitvalue.healthmanage.ui.adapter.PaperAdapter;
+import com.bitvalue.healthmanage.ui.adapter.PaperQuickAdapter;
 import com.bitvalue.healthmanage.ui.media.ImagePreviewActivity;
 import com.bitvalue.healthmanage.ui.media.ImageSelectActivity;
 import com.bitvalue.healthmanage.util.DensityUtil;
@@ -38,13 +41,19 @@ import com.bitvalue.healthmanage.util.MUtils;
 import com.bitvalue.healthmanage.util.Utils;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
+import com.bitvalue.sdk.collab.helper.CustomMessage;
+import com.bitvalue.sdk.collab.modules.message.MessageInfo;
+import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -67,6 +76,9 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     @BindView(R.id.npl_item_moment_photos)
     BGANinePhotoLayout ninePhotoLayout;
 
+    @BindView(R.id.list_articles)
+    RecyclerView list_articles;
+
     //    @BindView(R.id.list_photos)
 //    RecyclerView list_photos;
     private static final int PRC_PHOTO_PREVIEW = 1;
@@ -88,11 +100,13 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     protected TextView mRecordingTips;
     private boolean isRecording;
     private List<UploadFileApi> mUploadedAudios = new ArrayList<>();
+    private List<PaperBean> mPapers = new ArrayList<>();
     private List<UpdateImageApi> mUploadImages = new ArrayList<>();
     private List<VideoBean> videos = new ArrayList<>();
     private List<ArticleBean> articles = new ArrayList<>();
     private RecyclerView list_audio;
     private AudioAdapter adapter;
+    private PaperQuickAdapter paperAdapter;
     private HomeActivity homeActivity;
     private List<ImageModel> mImageModels = new ArrayList<>();
     private ArrayList<String> photos = new ArrayList<>();
@@ -108,6 +122,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
 
     @Override
     protected void initView() {
+        EventBus.getDefault().register(this);
         homeActivity = (HomeActivity) getActivity();
         msgType = getArguments().getString(Constants.MSG_TYPE);
         mIds = getArguments().getStringArrayList(Constants.MSG_IDS);
@@ -132,6 +147,21 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
         ninePhotoLayout.setData(photos);
 
         initAudioListView();
+        initArticleListView();
+    }
+
+    private void initArticleListView() {
+        list_articles.setLayoutManager(new LinearLayoutManager(getAttachActivity()));
+        list_articles.addItemDecoration(MUtils.spaceDivider(
+                DensityUtil.dip2px(getAttachActivity(), getAttachActivity().getResources().getDimension(R.dimen.qb_px_3)), false));
+        paperAdapter = new PaperQuickAdapter(R.layout.item_paper, articles);
+        paperAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                PaperBean uploadFileApi = mPapers.get(position);
+            }
+        });
+        list_articles.setAdapter(paperAdapter);
     }
 
     private void initAudioListView() {
@@ -156,26 +186,16 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
         list_audio.setAdapter(adapter);
     }
 
-    public void uploadAudio(UploadFileApi uploadFileApi, FileUploadUtils.OnAudioUploadCallback onAudioUploadCallback) {
-        EasyHttp.post(this).api(uploadFileApi).request(new HttpCallback<HttpData<AudioUploadResultBean>>(this) {
-            @Override
-            public void onStart(Call call) {
-                super.onStart(call);
-            }
-
-            @Override
-            public void onSucceed(HttpData<AudioUploadResultBean> result) {
-                super.onSucceed(result);
-                onAudioUploadCallback.onSuccess(result);
-            }
-
-            @Override
-            public void onFail(Exception e) {
-                super.onFail(e);
-                onAudioUploadCallback.onFail();
-            }
-        });
-
+    /**
+     * 处理订阅消息
+     *
+     * @param articleBean
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ArticleBean articleBean) {
+        articles.add(articleBean);
+//        paperAdapter.notifyDataSetChanged();//TODO 刷新数据
+        paperAdapter.setNewData(articles);
     }
 
     public void checkPermission() {
@@ -265,6 +285,12 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
         super.onResume();
         int size = mImageModels.size();
         ImageModel imageModel = mImageModels.get(0);
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     //    @SingleClick

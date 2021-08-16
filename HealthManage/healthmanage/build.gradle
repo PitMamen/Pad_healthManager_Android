@@ -52,7 +52,8 @@ android {
             // 测试包下的 BuglyId
             buildConfigField('String', 'BUGLY_ID', '"请自行替换 Bugly 上面的 AppID"')
             // 测试服务器的主机地址
-//            buildConfigField('String', 'HOST_URL', '"http://192.168.0.114"')
+//            buildConfigField('String', 'HOST_URL', '"http://192.168.0.114"')//晓峰
+//            buildConfigField('String', 'HOST_URL', '"http://192.168.1.112"')//江南
             buildConfigField('String', 'HOST_URL', '"http://192.168.1.122"')
             // 设置清单占位符
             manifestPlaceholders = ['app_name': '健康管理']
