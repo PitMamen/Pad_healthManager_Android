@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:background="@drawable/shape_bg_white"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout_questions"
+        android:layout_width="wrap_content"
+        android:paddingHorizontal="@dimen/qb_px_60"
+        android:paddingVertical="@dimen/qb_px_5"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="健康问卷"
+            android:textSize="@dimen/qb_px_10" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        android:background="@color/divider" />
+
+    <RelativeLayout
+        android:id="@+id/layout_articles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/qb_px_60"
+        android:paddingVertical="@dimen/qb_px_5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="科普文章"
+            android:textSize="@dimen/qb_px_10" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        android:background="@color/divider" />
+
+    <RelativeLayout
+        android:id="@+id/layout_reminds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/qb_px_60"
+        android:paddingVertical="@dimen/qb_px_5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="健康提醒"
+            android:textSize="@dimen/qb_px_10" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        android:background="@color/divider" />
+
+    <RelativeLayout
+        android:id="@+id/layout_analyse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/qb_px_60"
+        android:paddingVertical="@dimen/qb_px_5">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="健康评估"
+            android:textSize="@dimen/qb_px_10" />
+
+        <ImageView
+            android:layout_width="@dimen/qb_px_10"
+            android:layout_height="@dimen/qb_px_10"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_right"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+</LinearLayout>

@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_first_mission"
+            android:id="@+id/tv_mission_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -49,7 +49,7 @@
         android:textColor="@color/text_main"
         android:textSize="@dimen/qb_px_8"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_first_mission" />
+        app:layout_constraintTop_toBottomOf="@id/tv_mission_no" />
 
     <TextView
         android:id="@+id/tv_mission_time"
@@ -101,25 +101,22 @@
             android:visibility="visible" />
     </RelativeLayout>
 
-    <include
-        layout="@layout/layout_health_misson"
+    <LinearLayout
+        android:id="@+id/layout_mission_wrap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/qb_px_10" />
+        android:orientation="vertical">
 
-    <include
-        layout="@layout/layout_health_misson"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/qb_px_10" />
+    </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_add_mission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/qb_px_10"
         android:background="@drawable/shape_bg_blue"
         android:gravity="center"
-        android:layout_gravity="center_horizontal"
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/qb_px_60"
         android:paddingVertical="@dimen/qb_px_6"

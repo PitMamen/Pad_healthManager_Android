@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_bg_gray_light"
+    android:paddingBottom="@dimen/qb_px_10">
+
+    <ImageView
+        android:id="@+id/img_type"
+        android:layout_width="@dimen/qb_px_10"
+        android:layout_height="@dimen/qb_px_10"
+        android:layout_marginLeft="@dimen/qb_px_7"
+        android:layout_marginTop="@dimen/qb_px_7"
+        android:scaleType="centerCrop"
+        android:src="@drawable/shanchu"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_mission_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/qb_px_3"
+        android:layout_marginTop="@dimen/qb_px_6"
+        android:text="科普文章"
+        android:textColor="@color/text_black"
+        android:textSize="@dimen/qb_px_10"
+        app:layout_constraintLeft_toRightOf="@id/img_type"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:paddingHorizontal="@dimen/qb_px_10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_type" />
+
+    <LinearLayout
+        android:id="@+id/layout_add_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:background="@drawable/shape_bg_blue"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/qb_px_47"
+        android:paddingVertical="@dimen/qb_px_6"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/list_items">
+
+        <ImageView
+            android:layout_width="@dimen/qb_px_8"
+            android:layout_height="@dimen/qb_px_8"
+            android:src="@drawable/icon_add" />
+
+        <TextView
+            android:id="@+id/tv_add_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/qb_px_3"
+            android:text="添加文章"
+            android:textColor="@color/main_blue"
+            android:textSize="@dimen/qb_px_8"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

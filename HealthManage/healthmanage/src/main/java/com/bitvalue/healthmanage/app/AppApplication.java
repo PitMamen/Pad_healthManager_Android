@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.os.Build;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -251,6 +253,7 @@ public final class AppApplication extends Application {
 //        initHttpUtils();
 
         initTencentIM(application);
+        initWidthAndHeight();
     }
 
     private void initHttpUtils() {
@@ -360,6 +363,24 @@ public final class AppApplication extends Application {
 //                ToastUtils.show("腾讯云连接失败");
 //            }
 //        });
+    }
+
+    private void initWidthAndHeight() {
+        /**
+         * 获取屏幕宽高
+         */
+        WindowManager windowManager = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            windowManager.getDefaultDisplay().getRealMetrics(dm);
+            Constants.screenWidth = dm.widthPixels; // 宽度（PX）
+            Constants.screenHeight = dm.heightPixels; // 高度（PX）
+        } else {
+            windowManager.getDefaultDisplay().getMetrics(dm);
+            Constants.screenWidth = dm.widthPixels;
+            Constants.screenHeight = dm.heightPixels;
+        }
     }
 
     private static void registerCustomListeners() {
