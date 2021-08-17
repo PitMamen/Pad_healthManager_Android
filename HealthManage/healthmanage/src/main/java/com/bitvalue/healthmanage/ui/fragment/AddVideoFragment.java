@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
+import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.PaperBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.PaperAdapter;
@@ -34,7 +35,7 @@ public class AddVideoFragment extends AppFragment {
 
     @Override
     protected void initView() {
-        list_normal = (WrapRecyclerView) findViewById(R.id.list_normal);
+        list_normal = (WrapRecyclerView) findViewById(R.id.list_daily);
         homeActivity = (HomeActivity) getActivity();
 
         initList();
@@ -47,7 +48,7 @@ public class AddVideoFragment extends AppFragment {
         mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
-                toast(mAdapter.getItem(position).name);
+                toast(mAdapter.getItem(position).title);
 //                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
 //                    homeActivity.getSupportFragmentManager().popBackStack();
 //                }
@@ -68,22 +69,22 @@ public class AddVideoFragment extends AppFragment {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
-                postDelayed(() -> {
-                    mAdapter.addData(analogData());
-                    mRefreshLayout.finishLoadMore();
-
-                    mAdapter.setLastPage(mAdapter.getItemCount() >= 11);
-                    mRefreshLayout.setNoMoreData(mAdapter.isLastPage());
-                }, 1000);
+//                postDelayed(() -> {
+//                    mAdapter.addData(analogData());
+//                    mRefreshLayout.finishLoadMore();
+//
+//                    mAdapter.setLastPage(mAdapter.getItemCount() >= 11);
+//                    mRefreshLayout.setNoMoreData(mAdapter.isLastPage());
+//                }, 1000);
             }
 
             @Override
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
-                postDelayed(() -> {
-                    mAdapter.clearData();
-                    mAdapter.setData(analogData());
-                    mRefreshLayout.finishRefresh();
-                }, 1000);
+//                postDelayed(() -> {
+//                    mAdapter.clearData();
+//                    mAdapter.setData(analogData());
+//                    mRefreshLayout.finishRefresh();
+//                }, 1000);
             }
         });
 
@@ -93,14 +94,14 @@ public class AddVideoFragment extends AppFragment {
     /**
      * 模拟数据
      */
-    private List<PaperBean> analogData() {
-        List<PaperBean> data = new ArrayList<>();
+    private List<ArticleBean> analogData() {
+        List<ArticleBean> data = new ArrayList<>();
         for (int i = mAdapter.getItemCount(); i < mAdapter.getItemCount() + 10; i++) {
-            PaperBean planBean;
+            ArticleBean planBean;
             if (i % 3 == 0) {
-                planBean = new PaperBean("我是第" + i + "条目", 1);
+                planBean = new ArticleBean("我是第" + i + "条目", 1);
             } else {
-                planBean = new PaperBean("我是第" + i + "条目", 2);
+                planBean = new ArticleBean("我是第" + i + "条目", 2);
             }
             data.add(planBean);
         }

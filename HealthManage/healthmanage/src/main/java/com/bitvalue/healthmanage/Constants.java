@@ -16,7 +16,9 @@ public class Constants {
     public static final String FRAGMENT_HEALTH_NEW = "fragment_health_new";
     public static final String FRAGMENT_ADD_PAPER = "fragment_add_paper";
     public static final String FRAGMENT_SEND_MSG= "fragment_send_msg";
+    public static final String FRAGMENT_SEND_MSG_DISPLAY = "fragment_send_msg_display";
     public static final String FRAGMENT_HEALTH_ANALYSE = "fragment_health_analyse";
+    public static final String FRAGMENT_HEALTH_ANALYSE_DISPLAY = "fragment_health_analyse_display";
     public static final String FRAGMENT_HEALTH_PLAN_DETAIL = "fragment_health_plan_detail";
     public static final String FRAGMENT_ADD_VIDEO = "fragment_add_video";
     public static final String API_ACCOUNT = "/account-api";
@@ -25,9 +27,10 @@ public class Constants {
     public static final String MSG_SINGLE = "msg_single";
     public static final String MSG_MULTI = "msg_multi";
     public static final String MSG_TYPE = "msg_type";
-    public static final String MSG_IDS = "msg_ids";
+    public static final String MSG_IDS = "msg_ids";//要发送消息到患者的userId
     public static final String IMG_ADD = "img_add";
     public static final int MAX_IMG = 9;
+    public static final String MSG_CUSTOM_ID = "msg_custom_id";
 
 //    //自己的
 //    public static final int IM_APPId =1400548652;

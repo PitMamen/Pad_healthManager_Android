@@ -29,10 +29,12 @@ import com.bitvalue.healthmanage.ui.fragment.AddVideoFragment;
 import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
 import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragment;
+import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragmentDisplay;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanDetailFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
+import com.bitvalue.healthmanage.ui.fragment.NewMsgFragmentDisplay;
 import com.bitvalue.healthmanage.ui.settings.fragment.SettingsFragment;
 import com.bitvalue.healthmanage.util.DemoLog;
 import com.bitvalue.healthmanage.util.SharedPreManager;
@@ -327,6 +329,21 @@ public class HomeActivity extends AppActivity {
                 newMsgFragment.setArguments(msgBundle);
                 mapFragments.put(Constants.FRAGMENT_SEND_MSG, newMsgFragment);
                 break;
+            case Constants.FRAGMENT_SEND_MSG_DISPLAY:
+                ChatFragment.NewMsgData msgDataDis = (ChatFragment.NewMsgData) object;
+                NewMsgFragmentDisplay newMsgFragmentDisplay;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                newMsgFragmentDisplay = new NewMsgFragmentDisplay();
+
+                Bundle msgBundleDis = new Bundle();
+                msgBundleDis.putString(Constants.MSG_TYPE, msgDataDis.msgType);
+                msgBundleDis.putString(Constants.MSG_CUSTOM_ID, msgDataDis.id);//显示详情的时候才要
+                msgBundleDis.putStringArrayList(Constants.MSG_IDS, msgDataDis.userIds);
+                newMsgFragmentDisplay.setArguments(msgBundleDis);
+                mapFragments.put(Constants.FRAGMENT_SEND_MSG_DISPLAY, newMsgFragmentDisplay);
+                break;
 
             case Constants.FRAGMENT_HEALTH_ANALYSE:
                 HealthAnalyseFragment healthAnalyseFragment;
@@ -334,7 +351,29 @@ public class HomeActivity extends AppActivity {
                     mapFragments.remove(keyFragment);
                 }
                 healthAnalyseFragment = new HealthAnalyseFragment();
+
+                Bundle msgBundleAnalyse = new Bundle();
+                ChatFragment.NewMsgData msgDataAnalyse = (ChatFragment.NewMsgData) object;
+//                msgBundleAnalyse.putString(Constants.MSG_CUSTOM_ID, msgDataAnalyse.id);//显示详情的时候才要
+                msgBundleAnalyse.putStringArrayList(Constants.MSG_IDS, msgDataAnalyse.userIds);//传入消息接受者的userId
+                healthAnalyseFragment.setArguments(msgBundleAnalyse);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_ANALYSE, healthAnalyseFragment);
+                break;
+
+            case Constants.FRAGMENT_HEALTH_ANALYSE_DISPLAY:
+                HealthAnalyseFragmentDisplay healthAnalyseFragmentDisplay;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                healthAnalyseFragmentDisplay = new HealthAnalyseFragmentDisplay();
+
+                Bundle msgBundleAnalyseDis = new Bundle();
+                ChatFragment.NewMsgData msgDataAnalyseDis = (ChatFragment.NewMsgData) object;
+//                msgBundleAnalyse.putString(Constants.MSG_CUSTOM_ID, msgDataAnalyse.id);//显示详情的时候才要
+                msgBundleAnalyseDis.putStringArrayList(Constants.MSG_IDS, msgDataAnalyseDis.userIds);//传入消息接受者的userId
+                msgBundleAnalyseDis.putString(Constants.MSG_CUSTOM_ID, msgDataAnalyseDis.id);//显示详情的时候才要
+                healthAnalyseFragmentDisplay.setArguments(msgBundleAnalyseDis);
+                mapFragments.put(Constants.FRAGMENT_HEALTH_ANALYSE_DISPLAY, healthAnalyseFragmentDisplay);
                 break;
 
             case Constants.FRAGMENT_HEALTH_PLAN_DETAIL:

@@ -54,8 +54,8 @@ public class AddPaperFragment extends AppFragment {
     private SmartRefreshLayout mRefreshLayout;
     private PaperAdapter mDailyAdapter;
     private PaperAdapter mSearchAdapter;
-    private WrapRecyclerView list_normal;
-    private ArrayList<ArticleBean> dailyArticles = new ArrayList<>();
+    private WrapRecyclerView list_daily;
+    private List<ArticleBean> dailyArticles = new ArrayList<>();
     private ArrayList<ArticleBean> searchArticles = new ArrayList<>();
 
     @Override
@@ -65,7 +65,7 @@ public class AddPaperFragment extends AppFragment {
 
     @Override
     protected void initView() {
-        list_normal = (WrapRecyclerView) findViewById(R.id.list_normal);
+        list_daily = (WrapRecyclerView) findViewById(R.id.list_daily);
         homeActivity = (HomeActivity) getActivity();
 
         initSearchButton();
@@ -101,11 +101,14 @@ public class AddPaperFragment extends AppFragment {
         mDailyAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
-                toast(mDailyAdapter.getItem(position).name);
+                if (dailyArticles.size() == 0){
+                    return;
+                }
+                EventBus.getDefault().post(dailyArticles.get(position));
                 homeActivity.getSupportFragmentManager().popBackStack();
             }
         });
-        list_normal.setAdapter(mDailyAdapter);
+        list_daily.setAdapter(mDailyAdapter);
 
 //        TextView headerView = list_my_plans.addHeaderView(R.layout.picker_item);
 //        headerView.setText("我是头部");
@@ -118,26 +121,26 @@ public class AddPaperFragment extends AppFragment {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
-                postDelayed(() -> {
-                    mDailyAdapter.addData(analogData());
-                    mRefreshLayout.finishLoadMore();
 
-                    mDailyAdapter.setLastPage(mDailyAdapter.getItemCount() >= 5);
-                    mRefreshLayout.setNoMoreData(mDailyAdapter.isLastPage());
-                }, 1000);
+//                postDelayed(() -> {
+//                    mDailyAdapter.addData(analogData());
+//                    mRefreshLayout.finishLoadMore();
+//
+//                    mDailyAdapter.setLastPage(mDailyAdapter.getItemCount() >= 5);
+//                    mRefreshLayout.setNoMoreData(mDailyAdapter.isLastPage());
+//                }, 1000);
             }
 
             @Override
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
-                postDelayed(() -> {
-                    mDailyAdapter.clearData();
-                    mDailyAdapter.setData(analogData());
-                    mRefreshLayout.finishRefresh();
-                }, 1000);
+//                postDelayed(() -> {
+//                    mDailyAdapter.clearData();
+//                    mDailyAdapter.setData(analogData());
+//                    mRefreshLayout.finishRefresh();
+//                }, 1000);
             }
         });
 
-        mDailyAdapter.setData(analogData());//TODO 获取数据
         getDailyArticles();
     }
 
@@ -147,8 +150,6 @@ public class AddPaperFragment extends AppFragment {
         mSearchAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
-                toast(mSearchAdapter.getItem(position).name);
-                EventBus.getDefault().post(searchArticles.get(position));
                 homeActivity.getSupportFragmentManager().popBackStack();
             }
         });
@@ -165,22 +166,22 @@ public class AddPaperFragment extends AppFragment {
         layout_search_result.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
-                postDelayed(() -> {
-                    mSearchAdapter.addData(analogData());
-                    layout_search_result.finishLoadMore();
-
-                    mSearchAdapter.setLastPage(mSearchAdapter.getItemCount() >= 11);
-                    layout_search_result.setNoMoreData(mSearchAdapter.isLastPage());
-                }, 1000);
+//                postDelayed(() -> {
+//                    mSearchAdapter.addData(analogData());//TODO
+//                    layout_search_result.finishLoadMore();
+//
+//                    mSearchAdapter.setLastPage(mSearchAdapter.getItemCount() >= 11);
+//                    layout_search_result.setNoMoreData(mSearchAdapter.isLastPage());
+//                }, 1000);
             }
 
             @Override
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
-                postDelayed(() -> {
-                    mSearchAdapter.clearData();
-                    mSearchAdapter.setData(analogData());
-                    layout_search_result.finishRefresh();
-                }, 1000);
+//                postDelayed(() -> {
+//                    mSearchAdapter.clearData();
+//                    mSearchAdapter.setData(analogData());//TODO
+//                    layout_search_result.finishRefresh();
+//                }, 1000);
             }
         });
 
@@ -199,6 +200,7 @@ public class AddPaperFragment extends AppFragment {
             public void onSucceed(HttpData<ArrayList<ArticleBean>> result) {
                 super.onSucceed(result);
                 dailyArticles = result.getData();
+                mDailyAdapter.setData(dailyArticles);
                 if (null == dailyArticles || dailyArticles.size() == 0) {
                     layout_daily.setVisibility(View.GONE);
                 } else {
@@ -256,9 +258,9 @@ public class AddPaperFragment extends AppFragment {
         for (int i = mDailyAdapter.getItemCount(); i < mDailyAdapter.getItemCount() + 10; i++) {
             PaperBean planBean;
             if (i % 3 == 0) {
-                planBean = new PaperBean("我是第" + i + "问卷", 1);
+                planBean = new PaperBean("我是第" + i + "文章", 1);
             } else {
-                planBean = new PaperBean("我是第" + i + "问卷", 2);
+                planBean = new PaperBean("我是第" + i + "文章", 2);
             }
             data.add(planBean);
         }

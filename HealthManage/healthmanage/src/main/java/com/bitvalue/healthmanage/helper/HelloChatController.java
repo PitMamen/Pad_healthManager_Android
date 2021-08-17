@@ -13,6 +13,7 @@ import com.bitvalue.sdk.collab.base.IBaseInfo;
 import com.bitvalue.sdk.collab.base.IBaseViewHolder;
 import com.bitvalue.sdk.collab.base.TUIChatControllerListener;
 import com.bitvalue.sdk.collab.base.TUIConversationControllerListener;
+import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.IOnCustomMessageDrawListener;
@@ -192,6 +193,16 @@ public class HelloChatController implements TUIChatControllerListener {
                                 //TODO  CustomHelloTIMUIController 改成 CustomHealthMessageController
 //                                CustomHelloTIMUIController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                                 CustomHealthMessageController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                            }
+                        }
+                        break;
+                    case "CustomAnalyseMessage":
+                        CustomAnalyseMessage customAnalyseMessage = new Gson().fromJson(dataJson, CustomAnalyseMessage.class);
+                        if (customAnalyseMessage != null) {
+                            if (parent instanceof MessageBaseHolder) {
+                                //TODO  CustomHelloTIMUIController 改成 CustomHealthMessageController
+//                                CustomHelloTIMUIController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                                CustomAnalyseMessageController.onDraw(parent, customAnalyseMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                             }
                         }
                         break;

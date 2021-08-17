@@ -8,11 +8,12 @@ import androidx.annotation.NonNull;
 
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppAdapter;
+import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.PaperBean;
 
-public class PaperAdapter extends AppAdapter<PaperBean> {
+public class PaperAdapter extends AppAdapter<ArticleBean> {
 
-    private PaperBean paperBean;
+    private ArticleBean paperBean;
 
     public PaperAdapter(Context context) {
         super(context);
@@ -24,7 +25,7 @@ public class PaperAdapter extends AppAdapter<PaperBean> {
         return new ViewHolder();
     }
 
-    private final class ViewHolder extends AppAdapter<PaperBean>.ViewHolder {
+    private final class ViewHolder extends AppAdapter<ArticleBean>.ViewHolder {
 
         private final TextView tv_name;
 
@@ -37,7 +38,7 @@ public class PaperAdapter extends AppAdapter<PaperBean> {
         @Override
         public void onBindView(int position) {
             paperBean = getItem(position);
-            tv_name.setText(paperBean.name);
+            tv_name.setText(paperBean.title);
         }
     }
 }

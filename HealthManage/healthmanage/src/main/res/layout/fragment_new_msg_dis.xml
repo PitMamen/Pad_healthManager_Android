@@ -95,6 +95,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
+                        android:visibility="invisible"
                         android:id="@+id/layout_add_audio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -164,6 +165,7 @@
                         android:background="@drawable/shape_bg_blue"
                         android:gravity="center"
                         android:orientation="horizontal"
+                        android:visibility="invisible"
                         android:paddingHorizontal="@dimen/qb_px_47"
                         android:paddingVertical="@dimen/qb_px_6"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -263,6 +265,7 @@
                         android:background="@drawable/shape_bg_blue"
                         android:gravity="center"
                         android:orientation="horizontal"
+                        android:visibility="invisible"
                         android:paddingHorizontal="@dimen/qb_px_47"
                         android:paddingVertical="@dimen/qb_px_6"
                         app:layout_constraintTop_toTopOf="parent"
@@ -303,6 +306,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/qb_px_10"
                     android:background="@drawable/shape_bg_white"
                     android:orientation="vertical"
@@ -350,6 +354,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="invisible"
                     android:layout_marginTop="@dimen/qb_px_10"
                     android:layout_marginBottom="@dimen/qb_px_10">
 

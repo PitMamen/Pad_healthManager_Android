@@ -15,7 +15,7 @@
 
     <TextView
         android:id="@+id/tv_duration"
-        android:layout_width="@dimen/qb_px_20"
+        android:layout_width="@dimen/qb_px_40"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/qb_px_5"
         android:layout_marginTop="@dimen/qb_px_3"

@@ -18,6 +18,7 @@ import com.bitvalue.sdk.collab.base.IUIKitCallBack;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.component.TitleBarLayout;
 import com.bitvalue.sdk.collab.helper.ChatLayoutHelper;
+import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.helper.CustomHelloMessage;
 import com.bitvalue.sdk.collab.helper.CustomMessage;
@@ -240,7 +241,11 @@ public class ChatFragment extends AppFragment {
 
             @Override
             public void onHealthAnalyseClick() {
-                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_ANALYSE, "");
+                NewMsgData msgData = new NewMsgData();
+                msgData.msgType = com.bitvalue.healthmanage.Constants.MSG_SINGLE;
+                msgData.userIds = new ArrayList<>();
+                msgData.userIds.add(mChatInfo.getId());
+                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_ANALYSE, msgData);
             }
 
             @Override
@@ -270,16 +275,26 @@ public class ChatFragment extends AppFragment {
      * @param message
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(CustomMessage message) {
-        if (message instanceof CustomHealthMessage) {
-            MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
-            mChatLayout.sendMessage(info, false);
-        }
+    public void onEvent(CustomMessage message) {//不用区分类型，全部直接转换成json发送消息出去
+        MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
+        mChatLayout.sendMessage(info, false);
+
+//        if (message instanceof CustomHealthMessage) {//处理健康消息自定义消息
+//            MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
+//            mChatLayout.sendMessage(info, false);
+//        }
+//
+//        if (message instanceof CustomAnalyseMessage) {//TODO 处理健康评估自定义消息
+//            MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
+//            mChatLayout.sendMessage(info, false);
+//        }
     }
+
 
     public static class NewMsgData {
         public ArrayList<String> userIds;
         public String msgType;
+        public String id;
 //        public String msgType;
     }
 

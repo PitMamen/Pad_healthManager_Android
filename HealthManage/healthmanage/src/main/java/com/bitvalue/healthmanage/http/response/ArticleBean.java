@@ -21,4 +21,13 @@ public class ArticleBean {
     public String templateId;
     public String title;
     public String updateTime;
+
+
+    public ArticleBean() {
+    }
+
+    public ArticleBean(String title, int articleIdd) {
+        this.articleId = articleId;
+        this.title = title;
+    }
 }

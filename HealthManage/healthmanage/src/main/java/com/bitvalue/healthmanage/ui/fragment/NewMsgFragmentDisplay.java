@@ -20,6 +20,8 @@ import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.myhttp.FileUploadUtils;
+import com.bitvalue.healthmanage.http.request.GetArticleApi;
+import com.bitvalue.healthmanage.http.request.GetCustomMsgApi;
 import com.bitvalue.healthmanage.http.request.SaveTotalMsgApi;
 import com.bitvalue.healthmanage.http.request.UpdateImageApi;
 import com.bitvalue.healthmanage.http.request.UploadFileApi;
@@ -35,7 +37,6 @@ import com.bitvalue.healthmanage.ui.media.ImagePreviewActivity;
 import com.bitvalue.healthmanage.ui.media.ImageSelectActivity;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
-import com.bitvalue.healthmanage.util.TimeUtils;
 import com.bitvalue.healthmanage.util.Utils;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
@@ -61,7 +62,7 @@ import rx.functions.Action1;
 
 import static com.bitvalue.healthmanage.Constants.MAX_IMG;
 
-public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.Delegate {
+public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLayout.Delegate {
 
     @BindView(R.id.img_add_pic)
     ImageView img_add_pic;
@@ -74,7 +75,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     RecyclerView list_articles;
 
     //    @BindView(R.id.list_photos)
-//    RecyclerView list_photos;
+    //    RecyclerView list_photos;
     private static final int PRC_PHOTO_PREVIEW = 1;
 
     private static final int RC_ADD_MOMENT = 1;
@@ -109,10 +110,11 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     private ArrayList<String> articles = new ArrayList<>();
     private BGANinePhotoLayout mCurrentClickNpl;
     private ArrayList<String> mIds;
+    private String msgCustomId;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_new_msg;
+        return R.layout.fragment_new_msg_dis;
     }
 
     @Override
@@ -120,6 +122,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
         EventBus.getDefault().register(this);
         homeActivity = (HomeActivity) getActivity();
         msgType = getArguments().getString(Constants.MSG_TYPE);
+        msgCustomId = getArguments().getString(Constants.MSG_CUSTOM_ID);
         mIds = getArguments().getStringArrayList(Constants.MSG_IDS);
         tv_title = getView().findViewById(R.id.tv_title);
         tv_add_audio = getView().findViewById(R.id.tv_add_audio);
@@ -138,11 +141,79 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
             tv_title.setText("群发消息");
         }
 
-        ninePhotoLayout.setDelegate(NewMsgFragment.this);
+        ninePhotoLayout.setDelegate(NewMsgFragmentDisplay.this);
         ninePhotoLayout.setData(photos);
 
         initAudioListView();
         initArticleListView();
+
+        getMsgDetail();
+    }
+
+    private void getMsgDetail() {//    /health/doctor/getUserRemind
+        GetCustomMsgApi getCustomMsgApi = new GetCustomMsgApi();
+        getCustomMsgApi.id = msgCustomId;
+        EasyHttp.get(this).api(getCustomMsgApi).request(new HttpCallback<HttpData<SaveTotalMsgApi>>(this) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<SaveTotalMsgApi> result) {
+                super.onSucceed(result);
+                //TODO 展示获取到的信息
+                if (result.getCode() == 0) {
+                    SaveTotalMsgApi saveTotalMsgApi = result.getData();
+                    et_text_msg.setText(saveTotalMsgApi.remindContent);
+
+                    processPics(saveTotalMsgApi.picList);
+                    processAudios(saveTotalMsgApi.voiceList);
+                    processArticles(saveTotalMsgApi);
+
+                } else {
+                    ToastUtil.toastShortMessage(result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
+    }
+
+    private void processPics(String picList) {
+        if (picList.isEmpty()) {
+            return;
+        }
+        String[] split = picList.split(",");
+        for (int i = 0; i < split.length; i++) {
+            photos.add(split[i]);
+        }
+        ninePhotoLayout.setData(photos);
+    }
+
+    private void processAudios(String voiceList) {
+        if (voiceList.isEmpty()) {
+            return;
+        }
+        String[] split = voiceList.split(",");
+        for (int i = 0; i < split.length; i++) {
+            UploadFileApi uploadFileApi = new UploadFileApi();
+            uploadFileApi.fileLinkUrl = split[i];
+            mUploadedAudios.add(uploadFileApi);
+        }
+        adapter.setNewData(mUploadedAudios);
+    }
+
+    private void processArticles(SaveTotalMsgApi saveTotalMsgApi) {
+        if (null == saveTotalMsgApi.articleInfo || saveTotalMsgApi.articleInfo.size() == 0) {
+            return;
+        }
+
+        articleBeans = saveTotalMsgApi.articleInfo;
+        paperAdapter.setNewData(articleBeans);
     }
 
     private void initArticleListView() {
@@ -153,7 +224,6 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
         paperAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                PaperBean uploadFileApi = mPapers.get(position);
             }
         });
         list_articles.setAdapter(paperAdapter);
@@ -169,8 +239,13 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 UploadFileApi uploadFileApi = mUploadedAudios.get(position);
                 ToastUtil.toastLongMessage("开始播放");
-                AudioPlayer.getInstance().startPlay(uploadFileApi.path, new AudioPlayer.Callback() {
-                    //                AudioPlayer.getInstance().startPlay(uploadFileApi.fileLinkUrl, new AudioPlayer.Callback() {
+                String playPath = "";
+                if (null == uploadFileApi.path || uploadFileApi.path.isEmpty()) {
+                    playPath = uploadFileApi.fileLinkUrl;
+                } else {
+                    playPath = uploadFileApi.path;
+                }
+                AudioPlayer.getInstance().startPlay(playPath, new AudioPlayer.Callback() {
                     @Override
                     public void onCompletion(Boolean success) {
                         ToastUtil.toastLongMessage("播放完成");
@@ -364,7 +439,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     int[] i = {0};
 
     private void uploadedAudioMsgs() {
-        FileUploadUtils.INSTANCE.uploadAudio(NewMsgFragment.this, mUploadedAudios.get(i[0]), new FileUploadUtils.OnAudioUploadCallback() {
+        FileUploadUtils.INSTANCE.uploadAudio(NewMsgFragmentDisplay.this, mUploadedAudios.get(i[0]), new FileUploadUtils.OnAudioUploadCallback() {
             @Override
             public void onSuccess(HttpData<AudioUploadResultBean> result) {
 
@@ -413,7 +488,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     int[] j = {0};
 
     private void uploadedPicMsgs() {
-        FileUploadUtils.INSTANCE.uploadPic(NewMsgFragment.this, mUploadImages.get(j[0]), new FileUploadUtils.OnAudioUploadCallback() {
+        FileUploadUtils.INSTANCE.uploadPic(NewMsgFragmentDisplay.this, mUploadImages.get(j[0]), new FileUploadUtils.OnAudioUploadCallback() {
             @Override
             public void onSuccess(HttpData<AudioUploadResultBean> result) {
 
@@ -444,7 +519,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
 
     private void commitTotalMsg() {
         SaveTotalMsgApi saveTotalMsgApi = new SaveTotalMsgApi();
-        saveTotalMsgApi.createTime = TimeUtils.getTime(System.currentTimeMillis(),TimeUtils.YY_MM_DD_FORMAT_4);
+        saveTotalMsgApi.createTime = System.currentTimeMillis() + "";
         saveTotalMsgApi.picList = getProcessString(photosFinal);
         saveTotalMsgApi.remindContent = et_text_msg.getText().toString();
         saveTotalMsgApi.userId = getProcessString(mIds);
@@ -464,14 +539,13 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
                     CustomHealthMessage message = new CustomHealthMessage();
                     message.title = "健康消息";
                     message.msgDetailId = result.getData().get(0).id + "";
-                    message.userId = mIds;
                     message.content = saveTotalMsgApi.remindContent;
                     //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
                     message.setType("CustomHealthMessage");
                     message.setDescription("健康管理消息");
                     EventBus.getDefault().post(message);
                     homeActivity.getSupportFragmentManager().popBackStack();
-                }else {
+                } else {
                     ToastUtil.toastShortMessage(result.getMessage());
                 }
             }

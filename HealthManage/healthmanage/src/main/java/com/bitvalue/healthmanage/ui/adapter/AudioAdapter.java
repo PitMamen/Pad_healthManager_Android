@@ -12,7 +12,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 /**
- *
  * 语音列表
  */
 
@@ -28,7 +27,11 @@ public class AudioAdapter extends BaseQuickAdapter<UploadFileApi, BaseViewHolder
             return;
         }
 //        holder.setText(R.id.tv_duration, uploadFileApi.duration + "&quot;");
-        holder.setText(R.id.tv_duration, uploadFileApi.duration/1000 + "\"");
+        if (uploadFileApi.duration > 0) {
+            holder.setText(R.id.tv_duration, uploadFileApi.duration / 1000 + "\"");
+        } else {
+            holder.setText(R.id.tv_duration, "点击播放");
+        }
 
 //        if (null != couponInfo.isChoosed) {//后台获取时，isChoosed可能为null，所以加一个判断
 //            holder.setChecked(R.id.checkbox_choose, couponInfo.isChoosed);

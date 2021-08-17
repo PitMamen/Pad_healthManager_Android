@@ -1,6 +1,7 @@
 package com.bitvalue.healthmanage.http.request;
 
 import com.bitvalue.healthmanage.Constants;
+import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.hjq.http.config.IRequestApi;
 
 import java.io.File;
@@ -13,20 +14,21 @@ public final class SaveTotalMsgApi implements IRequestApi {
 
     public int contentId;
     public String createTime;
-//    public List<String> picList;
     public String picList;
-//    public List<String> videoList;
     public String videoList;
-//    public List<String> voiceList;
     public String voiceList;
     public String remindContent;
-    public String remindName;
-//    public List<String> userId;
+    public String remindName;//
+    public String remindUser;//发送者id，也就是医生的userId
     public String userId;
+    public String articleList;
+    public int id;
+    public int type;//类型（1：计划内提醒 2：计划外提醒 3：临时提醒）
+    public List<ArticleBean> articleInfo;
 
     @Override
     public String getApi() {
-        return Constants.API_HEALTH + "/health/doctor/saveUserRemind";
+        return Constants.API_HEALTH + "/health/doctor/sendUserRemind";
     }
 
 

@@ -2,7 +2,7 @@ package com.bitvalue.sdk.collab.helper;
 
 import java.util.ArrayList;
 
-public class CustomHealthMessage extends CustomMessage {
+public class CustomAnalyseMessage extends CustomMessage {
     public String msgText;
     public String title;
     public String content;
