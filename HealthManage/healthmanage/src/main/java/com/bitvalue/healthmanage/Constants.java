@@ -15,6 +15,7 @@ public class Constants {
     public static final String KEY_IM_AUTO_LOGIN = "key_im_auto_login";
     public static final String FRAGMENT_HEALTH_PLAN = "fragment_health_plan";
     public static final String FRAGMENT_HEALTH_NEW = "fragment_health_new";
+    public static final String FRAGMENT_HEALTH_MODIFY = "fragment_health_modify";
     public static final String FRAGMENT_ADD_PAPER = "fragment_add_paper";
     public static final String FRAGMENT_SEND_MSG= "fragment_send_msg";
     public static final String FRAGMENT_SEND_MSG_DISPLAY = "fragment_send_msg_display";
@@ -32,6 +33,7 @@ public class Constants {
     public static final String IMG_ADD = "img_add";
     public static final int MAX_IMG = 9;
     public static final String MSG_CUSTOM_ID = "msg_custom_id";
+    public static final String PLAN_LIST_BEAN = "plan_list_bean";
 
 //    //自己的
 //    public static final int IM_APPId =1400548652;

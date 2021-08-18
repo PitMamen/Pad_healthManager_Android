@@ -27,7 +27,7 @@ import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.AudioUploadResultBean;
 import com.bitvalue.healthmanage.http.response.ImageModel;
 import com.bitvalue.healthmanage.http.response.PaperBean;
-import com.bitvalue.healthmanage.http.response.VideoBean;
+import com.bitvalue.healthmanage.http.response.VideoResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.AudioAdapter;
 import com.bitvalue.healthmanage.ui.adapter.PaperQuickAdapter;
@@ -96,7 +96,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     private List<UploadFileApi> mUploadedAudios = new ArrayList<>();
     private List<PaperBean> mPapers = new ArrayList<>();
     private List<UpdateImageApi> mUploadImages = new ArrayList<>();
-    private List<VideoBean> videos = new ArrayList<>();
+    private List<VideoResultBean> videos = new ArrayList<>();
     private List<ArticleBean> articleBeans = new ArrayList<>();
     private RecyclerView list_audio;
     private AudioAdapter adapter;
@@ -297,7 +297,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
                 checkPermission();
                 break;
             case R.id.layout_add_video:
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_VIDEO, "");
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_VIDEO, "");//TODO
                 break;
 
             //可能需要检查权限，用带回调的封装的Utils.checkPermission

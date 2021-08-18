@@ -9,12 +9,13 @@ import androidx.annotation.NonNull;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppAdapter;
 import com.bitvalue.healthmanage.http.response.PlanBean;
+import com.bitvalue.healthmanage.http.response.PlanListBean;
 
 import org.jetbrains.annotations.NotNull;
 
-public class HealthPlanAdapter extends AppAdapter<PlanBean> {
+public class HealthPlanAdapter extends AppAdapter<PlanListBean> {
 
-    private PlanBean planBean;
+    private PlanListBean planBean;
 
     public HealthPlanAdapter(Context context) {
         super(context);
@@ -26,7 +27,7 @@ public class HealthPlanAdapter extends AppAdapter<PlanBean> {
         return new ViewHolder();
     }
 
-    private final class ViewHolder extends AppAdapter<PlanBean>.ViewHolder {
+    private final class ViewHolder extends AppAdapter<PlanListBean>.ViewHolder {
 
         private final TextView tv_use_status, tv_name;
 
@@ -39,8 +40,8 @@ public class HealthPlanAdapter extends AppAdapter<PlanBean> {
         @Override
         public void onBindView(int position) {
             planBean = getItem(position);
-            tv_use_status.setText(planBean.status);
-            tv_name.setText(planBean.name);
+            tv_use_status.setText(planBean.status.equals("1") ? "启用" : "停用");
+            tv_name.setText(planBean.templateName);
         }
     }
 }

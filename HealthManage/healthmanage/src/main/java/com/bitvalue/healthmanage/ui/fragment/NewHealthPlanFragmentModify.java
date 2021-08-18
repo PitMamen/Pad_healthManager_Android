@@ -11,9 +11,11 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.response.PlanListBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.util.InputMethodUtils;
 import com.bitvalue.healthmanage.widget.DataUtil;
@@ -24,6 +26,7 @@ import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +36,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-public class NewHealthPlanFragment extends AppFragment {
+public class NewHealthPlanFragmentModify extends AppFragment {
 
     @BindView(R.id.task_first)
     TaskView task_first;
@@ -54,6 +57,7 @@ public class NewHealthPlanFragment extends AppFragment {
     private List<TaskView> taskViews = new ArrayList<>();
     private SavePlanApi savePlanApi = new SavePlanApi();
     private boolean isChecked;
+    private PlanListBean planListBean;
 
     @Override
     protected int getLayoutId() {
@@ -62,6 +66,9 @@ public class NewHealthPlanFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        planListBean = (PlanListBean) getArguments().getSerializable(Constants.PLAN_LIST_BEAN);
+        //TODO 获取详情
+
         tv_base_time = getView().findViewById(R.id.tv_base_time);
         switch_button = getView().findViewById(R.id.switch_button);
         homeActivity = (HomeActivity) getActivity();
@@ -102,7 +109,7 @@ public class NewHealthPlanFragment extends AppFragment {
 
             @Override
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
-                NewHealthPlanFragment.this.isChecked = isChecked;
+                NewHealthPlanFragmentModify.this.isChecked = isChecked;
             }
         });
     }

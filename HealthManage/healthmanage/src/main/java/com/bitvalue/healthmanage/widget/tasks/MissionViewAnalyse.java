@@ -8,9 +8,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +27,7 @@ public class MissionViewAnalyse extends LinearLayout {
     @BindView(R.id.layout_add_item)
     LinearLayout layout_add_item;
 
-    private Context mContext;
+    private HomeActivity homeActivity;
     private MissionViewCallBack missionViewCallBack;
 
     public MissionViewAnalyse(Context context) {
@@ -51,7 +51,7 @@ public class MissionViewAnalyse extends LinearLayout {
     }
 
     private void initView(Context context) {
-        mContext = context;
+        homeActivity = (HomeActivity) context;
         View.inflate(context, R.layout.layout_misson_analyse, this);
         ButterKnife.bind(this);
 //        layout_after_end.getLayoutParams().height = Constants.screenHeight / 3;

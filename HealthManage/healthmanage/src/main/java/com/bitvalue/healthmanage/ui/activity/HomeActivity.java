@@ -21,6 +21,7 @@ import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.TestApi;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.http.response.LoginBean;
+import com.bitvalue.healthmanage.http.response.PlanListBean;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
@@ -33,6 +34,7 @@ import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragmentDisplay;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanDetailFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragment;
+import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragmentModify;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragmentDisplay;
 import com.bitvalue.healthmanage.ui.settings.fragment.SettingsFragment;
@@ -227,11 +229,20 @@ public class HomeActivity extends AppActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_person:
+//                backAll();
                 afterTabSelect(0);
                 break;
             case R.id.layout_settings:
+//                backAll();
                 afterTabSelect(1);
                 break;
+        }
+    }
+
+    private void backAll() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+            backAll();
         }
     }
 
@@ -305,6 +316,18 @@ public class HomeActivity extends AppActivity {
                 }
                 newHealthPlanFragment = new NewHealthPlanFragment();
                 mapFragments.put(Constants.FRAGMENT_HEALTH_NEW, newHealthPlanFragment);
+                break;
+            case Constants.FRAGMENT_HEALTH_MODIFY:
+                PlanListBean planListBean = (PlanListBean) object;
+                NewHealthPlanFragmentModify newHealthPlanFragmentModify;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                newHealthPlanFragmentModify = new NewHealthPlanFragmentModify();
+                Bundle bundleModify = new Bundle();
+                bundleModify.putSerializable(Constants.PLAN_LIST_BEAN, planListBean);
+                newHealthPlanFragmentModify.setArguments(bundleModify);
+                mapFragments.put(Constants.FRAGMENT_HEALTH_MODIFY, newHealthPlanFragmentModify);
                 break;
 
             case Constants.FRAGMENT_ADD_PAPER:

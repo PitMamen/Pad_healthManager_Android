@@ -3,6 +3,7 @@ package com.bitvalue.healthmanage.widget.tasks;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +15,23 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
+import com.bitvalue.healthmanage.util.InputMethodUtils;
 import com.bitvalue.healthmanage.util.UiUtil;
 import com.bitvalue.healthmanage.widget.DataUtil;
+import com.bitvalue.healthmanage.widget.StatusLayout;
 import com.bitvalue.healthmanage.widget.popupwindow.CommonPopupWindow;
+import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -45,10 +55,15 @@ public class TaskView extends LinearLayout {
     @BindView(R.id.tv_mission_no)
     public TextView tv_mission_no;
 
+    @BindView(R.id.tv_mission_time_choose)
+    public TextView tv_mission_time_choose;
+
     private HomeActivity homeActivity;
     private TaskViewCallBack taskViewCallBack;
     private CommonPopupWindow popupWindow;
     private List<View> missionViews = new ArrayList<>();
+    public SavePlanApi.TemplateTaskDTO templateTaskDTO = new SavePlanApi.TemplateTaskDTO();
+    private TimePickerView pvTime;
 
     public TaskView(Context context) {
         super(context);
@@ -74,9 +89,42 @@ public class TaskView extends LinearLayout {
         homeActivity = (HomeActivity) context;
         View.inflate(context, R.layout.layout_task, this);
         ButterKnife.bind(this);
+        initTimePick();
     }
 
-    @OnClick({R.id.tv_delete_mission, R.id.layout_add_mission})
+    private void initTimePick() {
+        //初始化时间选择器
+        pvTime = new TimePickerBuilder(homeActivity, new OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                simpleDateFormat.format(date);
+                tv_mission_time_choose.setText(simpleDateFormat.format(date).substring(0, 11));
+            }
+        })
+                .setTimeSelectChangeListener(new OnTimeSelectChangeListener() {
+                    @Override
+                    public void onTimeSelectChanged(Date date) {
+                        Log.i("pvTime", "onTimeSelectChanged");
+                    }
+                })
+                .setType(new boolean[]{true, true, true, false, false, false})
+                .isDialog(true) //默认设置false ，内部实现将DecorView 作为它的父控件。
+                .addOnCancelClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.i("pvTime", "onCancelClickListener");
+                    }
+                })
+//                .setRangDate(new GregorianCalendar(1900, 1, 1), Calendar.getInstance())
+                .setItemVisibleCount(5) //若设置偶数，实际值会加1（比如设置6，则最大可见条目为7）
+                .setLineSpacingMultiplier(2.0f)
+                .isAlphaGradient(true)
+                .build();
+
+    }
+
+    @OnClick({R.id.tv_delete_mission, R.id.layout_add_mission, R.id.tv_mission_time_choose})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_delete_mission:
@@ -86,6 +134,10 @@ public class TaskView extends LinearLayout {
                 break;
             case R.id.layout_add_mission:
                 showFullPop(R.layout.choose_mission);
+                break;
+            case R.id.tv_mission_time_choose:
+                pvTime.show();
+                InputMethodUtils.hideSoftInput(homeActivity);
                 break;
         }
     }
@@ -271,6 +323,31 @@ public class TaskView extends LinearLayout {
 
     public void setTaskViewCallBack(TaskViewCallBack taskViewCallBack) {
         this.taskViewCallBack = taskViewCallBack;
+    }
+
+    public List<SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO> getMissionData() {
+        List<SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO> templateTaskContentDTOS = new ArrayList<>();
+        for (int i = 0; i < missionViews.size(); i++) {
+            View view = missionViews.get(i);
+            SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO data;
+            if (view instanceof MissionViewRemind) {
+                data = ((MissionViewRemind) view).getData();
+            } else if (view instanceof MissionViewArticle) {
+                data = ((MissionViewArticle) view).getData();
+
+            } else {
+                data = ((MissionViewQuestion) view).getData();
+            }
+            templateTaskContentDTOS.add(data);
+        }
+        return templateTaskContentDTOS;
+    }
+
+    public SavePlanApi.TemplateTaskDTO getTaskData() {
+        templateTaskDTO.execTime = tv_mission_time_choose.getText().toString();
+        templateTaskDTO.taskName = et_first_mission.getText().toString();
+        templateTaskDTO.templateTaskContent = getMissionData();
+        return templateTaskDTO;
     }
 
     public interface TaskViewCallBack {
