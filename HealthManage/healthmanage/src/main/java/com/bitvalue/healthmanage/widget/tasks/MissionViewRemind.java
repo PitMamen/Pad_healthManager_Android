@@ -267,6 +267,19 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
         this.missionViewCallBack = missionViewCallBack;
     }
 
+    public boolean isDataReady() {
+        if (et_text_msg.getText().toString().isEmpty()) {
+            ToastUtil.toastShortMessage("请输入提醒内容");
+            return false;
+        }
+
+        if (mUploadedAudios.size() == 0) {
+            ToastUtil.toastShortMessage("请录制语音");
+            return false;
+        }
+        return true;
+    }
+
     public interface MissionViewCallBack {
         void onDeleteMission();
 

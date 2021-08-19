@@ -1,6 +1,5 @@
 package com.bitvalue.healthmanage.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,7 +12,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppActivity;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
@@ -25,8 +23,8 @@ import com.bitvalue.healthmanage.http.response.PlanListBean;
 import com.bitvalue.healthmanage.http.response.msg.AddVideoObject;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
-import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
-import com.bitvalue.healthmanage.ui.fragment.AddPaperFragment;
+import com.bitvalue.healthmanage.ui.fragment.AddArticleFragment;
+import com.bitvalue.healthmanage.ui.fragment.AddQuestionFragment;
 import com.bitvalue.healthmanage.ui.fragment.AddVideoFragment;
 import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
 import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
@@ -332,12 +330,20 @@ public class HomeActivity extends AppActivity {
                 break;
 
             case Constants.FRAGMENT_ADD_PAPER:
-                AddPaperFragment addPaperFragment;
+                AddArticleFragment addArticleFragment;
                 if (isContain) {
                     mapFragments.remove(keyFragment);
                 }
-                addPaperFragment = new AddPaperFragment();
-                mapFragments.put(Constants.FRAGMENT_ADD_PAPER, addPaperFragment);
+                addArticleFragment = new AddArticleFragment();
+                mapFragments.put(Constants.FRAGMENT_ADD_PAPER, addArticleFragment);
+                break;
+            case Constants.FRAGMENT_ADD_QUESTION:
+                AddQuestionFragment addQuestionFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                addQuestionFragment = new AddQuestionFragment();
+                mapFragments.put(Constants.FRAGMENT_ADD_QUESTION, addQuestionFragment);
                 break;
             case Constants.FRAGMENT_SEND_MSG:
                 ChatFragment.NewMsgData msgData = (ChatFragment.NewMsgData) object;

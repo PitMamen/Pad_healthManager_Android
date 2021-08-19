@@ -206,7 +206,11 @@ public class NewHealthPlanFragment extends AppFragment {
         //任务列表
         for (int i = 0; i < taskViews.size(); i++) {
             SavePlanApi.TemplateTaskDTO taskData = taskViews.get(i).getTaskData();
-            savePlanApi.templateTask.add(taskData);
+            if (null == taskData) {
+                return;
+            } else {
+                savePlanApi.templateTask.add(taskData);
+            }
         }
 
         EasyHttp.post(this).api(savePlanApi).request(new HttpCallback<HttpData<SavePlanApi>>(this) {

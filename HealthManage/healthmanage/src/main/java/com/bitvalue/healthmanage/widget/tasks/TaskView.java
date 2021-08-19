@@ -28,6 +28,7 @@ import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.healthmanage.widget.StatusLayout;
 import com.bitvalue.healthmanage.widget.popupwindow.CommonPopupWindow;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -325,18 +326,39 @@ public class TaskView extends LinearLayout {
         this.taskViewCallBack = taskViewCallBack;
     }
 
+    /**
+     * 获取单个任务的所有项目的数据
+     * <p>
+     * 先判断单个控件的数据是否为空，任一个控件的数据不完整，都返回null；
+     *
+     * @return
+     */
     public List<SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO> getMissionData() {
         List<SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO> templateTaskContentDTOS = new ArrayList<>();
         for (int i = 0; i < missionViews.size(); i++) {
             View view = missionViews.get(i);
-            SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO data;
+            SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO data = null;
             if (view instanceof MissionViewRemind) {
-                data = ((MissionViewRemind) view).getData();
+                MissionViewRemind missionViewRemind = (MissionViewRemind) view;
+                if (missionViewRemind.isDataReady()) {
+                    data = missionViewRemind.getData();
+                } else {
+                    return null;
+                }
             } else if (view instanceof MissionViewArticle) {
-                data = ((MissionViewArticle) view).getData();
-
+                MissionViewArticle missionViewArticle = (MissionViewArticle) view;
+                if (missionViewArticle.isDataReady()) {
+                    data = missionViewArticle.getData();
+                } else {
+                    return null;
+                }
             } else {
-                data = ((MissionViewQuestion) view).getData();
+                MissionViewQuestion missionViewQuestion = (MissionViewQuestion) view;
+                if (missionViewQuestion.isDataReady()) {
+                    data = missionViewQuestion.getData();
+                } else {
+                    return null;
+                }
             }
             templateTaskContentDTOS.add(data);
         }
@@ -344,9 +366,24 @@ public class TaskView extends LinearLayout {
     }
 
     public SavePlanApi.TemplateTaskDTO getTaskData() {
-        templateTaskDTO.execTime = tv_mission_time_choose.getText().toString();
+        if (et_first_mission.getText().toString().isEmpty()){
+            ToastUtil.toastShortMessage("请输入任务名称");
+            return null;
+        }
         templateTaskDTO.taskName = et_first_mission.getText().toString();
-        templateTaskDTO.templateTaskContent = getMissionData();
+
+        if (tv_mission_time_choose.getText().toString().isEmpty()){
+            ToastUtil.toastShortMessage("请选择任务执行时间");
+            return null;
+        }
+        templateTaskDTO.execTime = tv_mission_time_choose.getText().toString();
+
+        List<SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO> missionData = getMissionData();
+        if (null == missionData) {
+            return null;
+        } else {
+            templateTaskDTO.templateTaskContent = missionData;
+        }
         return templateTaskDTO;
     }
 

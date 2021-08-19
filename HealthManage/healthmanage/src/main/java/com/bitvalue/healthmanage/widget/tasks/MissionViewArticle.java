@@ -156,6 +156,14 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
         return templateTaskContentDTO;
     }
 
+    public boolean isDataReady() {
+        if (articleBeans.size() == 0){
+            ToastUtil.toastShortMessage("请选择文章");
+            return false;
+        }
+        return true;
+    }
+
     public interface MissionViewCallBack {
         void onDeleteMission();
 

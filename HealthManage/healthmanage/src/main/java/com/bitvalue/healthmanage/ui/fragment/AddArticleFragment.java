@@ -17,6 +17,7 @@ import com.bitvalue.healthmanage.http.request.GetArticleApi;
 import com.bitvalue.healthmanage.http.request.SearchArticleApi;
 import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.PaperBean;
+import com.bitvalue.healthmanage.http.response.SearchArticleResult;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.PaperAdapter;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
@@ -37,7 +38,7 @@ import java.util.List;
 import butterknife.BindView;
 import okhttp3.Call;
 
-public class AddPaperFragment extends AppFragment {
+public class AddArticleFragment extends AppFragment {
     @BindView(R.id.layout_daily)
     LinearLayout layout_daily;
 
@@ -56,7 +57,7 @@ public class AddPaperFragment extends AppFragment {
     private PaperAdapter mSearchAdapter;
     private WrapRecyclerView list_daily;
     private List<ArticleBean> dailyArticles = new ArrayList<>();
-    private ArrayList<ArticleBean> searchArticles = new ArrayList<>();
+    private List<ArticleBean> searchArticles = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -150,6 +151,10 @@ public class AddPaperFragment extends AppFragment {
         mSearchAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
+                if (searchArticles.size() == 0){
+                    return;
+                }
+                EventBus.getDefault().post(searchArticles.get(position));
                 homeActivity.getSupportFragmentManager().popBackStack();
             }
         });
@@ -206,7 +211,6 @@ public class AddPaperFragment extends AppFragment {
                 } else {
                     layout_daily.setVisibility(View.VISIBLE);
                 }
-                mDailyAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -223,21 +227,21 @@ public class AddPaperFragment extends AppFragment {
         }
         SearchArticleApi searchArticleApi = new SearchArticleApi();
         searchArticleApi.title = title;
-        EasyHttp.get(this).api(searchArticleApi).request(new HttpCallback<HttpData<ArrayList<ArticleBean>>>(this) {
+        EasyHttp.get(this).api(searchArticleApi).request(new HttpCallback<HttpData<SearchArticleResult>>(this) {
             @Override
             public void onStart(Call call) {
                 super.onStart(call);
             }
 
             @Override
-            public void onSucceed(HttpData<ArrayList<ArticleBean>> result) {
+            public void onSucceed(HttpData<SearchArticleResult> result) {
                 super.onSucceed(result);
-                searchArticles = result.getData();
+                searchArticles = result.getData().list;
                 if (null == searchArticles || searchArticles.size() == 0) {
                     ToastUtil.toastShortMessage("未查询到结果");
                     layout_daily.setVisibility(View.VISIBLE);
                 } else {
-                    mSearchAdapter.notifyDataSetChanged();
+                    mSearchAdapter.setData(searchArticles);
                     layout_daily.setVisibility(View.GONE);
                 }
             }

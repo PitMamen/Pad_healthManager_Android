@@ -17,6 +17,7 @@ public class Constants {
     public static final String FRAGMENT_HEALTH_NEW = "fragment_health_new";
     public static final String FRAGMENT_HEALTH_MODIFY = "fragment_health_modify";
     public static final String FRAGMENT_ADD_PAPER = "fragment_add_paper";
+    public static final String FRAGMENT_ADD_QUESTION = "fragment_add_question";
     public static final String FRAGMENT_SEND_MSG= "fragment_send_msg";
     public static final String FRAGMENT_SEND_MSG_DISPLAY = "fragment_send_msg_display";
     public static final String FRAGMENT_HEALTH_ANALYSE = "fragment_health_analyse";
