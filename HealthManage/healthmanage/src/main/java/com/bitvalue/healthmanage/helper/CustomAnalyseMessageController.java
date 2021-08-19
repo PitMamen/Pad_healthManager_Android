@@ -29,6 +29,9 @@ public class CustomAnalyseMessageController {
         TextView tv_title = view.findViewById(R.id.tv_title);
         TextView tv_content = view.findViewById(R.id.tv_content);
         final String text = TUIKitImpl.getAppContext().getString(R.string.no_support_msg);
+        if (tv_content == null || tv_title == null) {
+            return;
+        }
         if (data == null) {
             tv_title.setText(text);
         } else {
@@ -43,13 +46,13 @@ public class CustomAnalyseMessageController {
                 ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
                 msgData.userIds = data.userId;
                 msgData.id = data.msgDetailId;
-                appApplication.getHomeActivity().switchSecondFragment(Constants.FRAGMENT_HEALTH_ANALYSE_DISPLAY,msgData);
+                appApplication.getHomeActivity().switchSecondFragment(Constants.FRAGMENT_HEALTH_ANALYSE_DISPLAY, msgData);
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (onItemLongClickListener != null){
+                if (onItemLongClickListener != null) {
                     onItemLongClickListener.onMessageLongClick(v, position, info);
                 }
                 return false;

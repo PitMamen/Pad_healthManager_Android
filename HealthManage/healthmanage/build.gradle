@@ -56,7 +56,8 @@ android {
             // 测试服务器的主机地址
 //            buildConfigField('String', 'HOST_URL', '"http://192.168.0.114"')//晓峰
 //            buildConfigField('String', 'HOST_URL', '"http://192.168.1.112"')//江南
-            buildConfigField('String', 'HOST_URL', '"http://192.168.1.122"')
+            buildConfigField('String', 'HOST_URL', '"http://192.168.1.122"')//测试环境
+//            buildConfigField('String', 'HOST_URL', '"http://218.77.104.74:8008"')//演示环境
             // 设置清单占位符
             manifestPlaceholders = ['app_name': '健康管理']
             // 调试模式下只保留一种架构的 so 库，提升打包速度
@@ -221,9 +222,9 @@ dependencies {
 
     // 内存泄漏监测框架：https://github.com/square/leakcanary
     // noinspection GradleDependency
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
-    // noinspection GradleDependency
-    previewImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
+//    // noinspection GradleDependency
+//    previewImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
 
     implementation 'androidx.multidex:multidex:2.0.1'
 

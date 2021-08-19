@@ -32,6 +32,7 @@ import com.bitvalue.healthmanage.http.response.VideoResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.AudioAdapter;
 import com.bitvalue.healthmanage.ui.adapter.PaperQuickAdapter;
+import com.bitvalue.healthmanage.ui.adapter.VideoQuickAdapter;
 import com.bitvalue.healthmanage.ui.media.ImagePreviewActivity;
 import com.bitvalue.healthmanage.ui.media.ImageSelectActivity;
 import com.bitvalue.healthmanage.util.DensityUtil;
@@ -73,6 +74,9 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
     @BindView(R.id.list_articles)
     RecyclerView list_articles;
 
+    @BindView(R.id.list_videos)
+    RecyclerView list_videos;
+
     //    @BindView(R.id.list_photos)
     //    RecyclerView list_photos;
     private static final int PRC_PHOTO_PREVIEW = 1;
@@ -96,11 +100,12 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
     private List<UploadFileApi> mUploadedAudios = new ArrayList<>();
     private List<PaperBean> mPapers = new ArrayList<>();
     private List<UpdateImageApi> mUploadImages = new ArrayList<>();
-    private List<VideoResultBean> videos = new ArrayList<>();
+    private ArrayList<String> videos = new ArrayList<>();
     private List<ArticleBean> articleBeans = new ArrayList<>();
     private RecyclerView list_audio;
     private AudioAdapter adapter;
     private PaperQuickAdapter paperAdapter;
+    private VideoQuickAdapter videoAdapter;
     private HomeActivity homeActivity;
     private List<ImageModel> mImageModels = new ArrayList<>();
     private ArrayList<String> photos = new ArrayList<>();
@@ -110,6 +115,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
     private BGANinePhotoLayout mCurrentClickNpl;
     private ArrayList<String> mIds;
     private String msgCustomId;
+    private List<VideoResultBean.ListDTO> videoBeans = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -145,8 +151,23 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
 
         initAudioListView();
         initArticleListView();
+        initVideoListView();
 
         getMsgDetail();
+    }
+
+    private void initVideoListView() {
+        list_videos.setLayoutManager(new LinearLayoutManager(getAttachActivity()));
+        list_videos.addItemDecoration(MUtils.spaceDivider(
+                DensityUtil.dip2px(getAttachActivity(), getAttachActivity().getResources().getDimension(R.dimen.qb_px_3)), false));
+        videoAdapter = new VideoQuickAdapter(R.layout.item_paper, videoBeans);
+        videoAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+        });
+        list_videos.setAdapter(videoAdapter);
     }
 
     private void getMsgDetail() {//    /health/doctor/getUserRemind
@@ -169,6 +190,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
                     processPics(saveTotalMsgApi.picList);
                     processAudios(saveTotalMsgApi.voiceList);
                     processArticles(saveTotalMsgApi);
+                    processVideos(saveTotalMsgApi);
 
                 } else {
                     ToastUtil.toastShortMessage(result.getMessage());
@@ -180,6 +202,15 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
                 super.onFail(e);
             }
         });
+    }
+
+    private void processVideos(SaveTotalMsgApi saveTotalMsgApi) {
+        if (null == saveTotalMsgApi.vedioInfo || saveTotalMsgApi.vedioInfo.size() == 0) {
+            return;
+        }
+
+        videoBeans = saveTotalMsgApi.vedioInfo;
+        videoAdapter.setNewData(videoBeans);
     }
 
     private void processPics(String picList) {

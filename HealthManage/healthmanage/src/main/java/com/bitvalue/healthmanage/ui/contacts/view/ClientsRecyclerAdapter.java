@@ -13,9 +13,7 @@ import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.util.TimeUtils;
-import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.hjq.toast.ToastUtils;
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
@@ -27,12 +25,12 @@ import java.util.List;
  * 二级折叠列表，借鉴于
  * https://cloud.tencent.com/developer/article/1154841
  */
-public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapter.GroupContentViewHolder, RecyclerAdapter.ChildContentViewHolder> {
+public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<ClientsRecyclerAdapter.GroupContentViewHolder, ClientsRecyclerAdapter.ChildContentViewHolder> {
 
     private Activity activity;
     private OnChildItemClickListener onChildItemClickListener;
 
-    public RecyclerAdapter(Activity activity, List<? extends ExpandableGroup> groups) {
+    public ClientsRecyclerAdapter(Activity activity, List<? extends ExpandableGroup> groups) {
         super(groups);
         this.activity = activity;
     }
@@ -128,7 +126,7 @@ public class RecyclerAdapter extends ExpandableRecyclerViewAdapter<RecyclerAdapt
         public void onBind(ClientsResultBean.UserInfoDTO child, ExpandableGroup group) {
             name.setText(child.userName);
             tv_sex.setText(child.userSex);
-            tv_age.setText(child.userAge + "");
+            tv_age.setText(child.userAge + "岁");
             tv_date.setText(TimeUtils.getTime(child.beginTime,TimeUtils.YY_MM_DD_FORMAT_3));
             tv_project_name.setText(child.goodsName);
 

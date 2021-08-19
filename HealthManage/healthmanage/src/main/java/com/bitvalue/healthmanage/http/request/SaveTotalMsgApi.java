@@ -2,6 +2,7 @@ package com.bitvalue.healthmanage.http.request;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.http.response.ArticleBean;
+import com.bitvalue.healthmanage.http.response.VideoResultBean;
 import com.hjq.http.config.IRequestApi;
 
 import java.io.File;
@@ -25,6 +26,7 @@ public final class SaveTotalMsgApi implements IRequestApi {
     public int id;
     public int type;//类型（1：计划内提醒 2：计划外提醒 3：临时提醒）
     public List<ArticleBean> articleInfo;
+    public List<VideoResultBean.ListDTO> vedioInfo;
 
     @Override
     public String getApi() {

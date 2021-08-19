@@ -42,7 +42,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import kotlin.jvm.Throws;
 import rx.functions.Action1;
 
 public class MissionViewRemind extends LinearLayout implements DataInterface {

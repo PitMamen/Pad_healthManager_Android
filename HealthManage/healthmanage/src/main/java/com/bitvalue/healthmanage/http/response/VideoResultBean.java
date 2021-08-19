@@ -24,5 +24,8 @@ public class VideoResultBean {
         public String updateTime;
         public int vedioId;
         public String vedioUrl;
+
+        //新增的type字段，用以区分Eventbus消息的类型，用于不同的页面关注
+        public String videoFor;
     }
 }

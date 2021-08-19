@@ -33,6 +33,9 @@ public class CustomHealthMessageController {
         TextView tv_title = view.findViewById(R.id.tv_title);
         TextView tv_content = view.findViewById(R.id.tv_content);
         final String text = TUIKitImpl.getAppContext().getString(R.string.no_support_msg);
+        if (tv_content == null || tv_title == null) {
+            return;
+        }
         if (data == null) {
             tv_title.setText(text);
         } else {

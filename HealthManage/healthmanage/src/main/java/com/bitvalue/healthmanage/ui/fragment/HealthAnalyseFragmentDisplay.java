@@ -108,6 +108,9 @@ public class HealthAnalyseFragmentDisplay extends AppFragment {
                 //TODO 展示获取到的信息
                 if (result.getCode() == 0) {
                     et_text_analyse.setFocusable(false);
+                    if (null == result.getData()){
+                        return;
+                    }
                     et_text_analyse.setText(result.getData().evalContent);
                 } else {
                     ToastUtil.toastShortMessage(result.getMessage());

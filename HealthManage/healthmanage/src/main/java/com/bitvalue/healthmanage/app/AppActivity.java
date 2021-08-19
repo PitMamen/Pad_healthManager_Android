@@ -241,6 +241,7 @@ public abstract class AppActivity extends BaseActivity
     public void onFail(Exception e) {
 //        Log.d("dd","dd");
         toast(e.getMessage());
+        hideDialog();
     }
 
     @Override

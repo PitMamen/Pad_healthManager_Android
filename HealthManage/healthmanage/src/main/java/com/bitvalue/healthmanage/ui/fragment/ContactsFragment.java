@@ -3,6 +3,7 @@ package com.bitvalue.healthmanage.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,16 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.ClientsApi;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
-import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
-import com.bitvalue.healthmanage.ui.contacts.bean.ContactsGroupBean;
-import com.bitvalue.healthmanage.ui.contacts.view.RecyclerAdapter;
+import com.bitvalue.healthmanage.ui.contacts.view.ClientsRecyclerAdapter;
 import com.bitvalue.healthmanage.util.DemoLog;
 import com.bitvalue.healthmanage.util.UiUtil;
 import com.bitvalue.healthmanage.widget.mpopupwindow.MPopupWindow;
@@ -55,7 +53,7 @@ import okhttp3.Call;
 public class ContactsFragment extends AppFragment implements CommonPopupWindow.ViewInterface {
     private boolean is_need_toast;
     private RecyclerView contact_list;
-    private RecyclerAdapter adapter;
+    private ClientsRecyclerAdapter adapter;
     private HomeActivity homeActivity;
     private CommonPopupWindow popupWindow;
     private LinearLayout layout_nav;
@@ -92,8 +90,8 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         contact_list.setLayoutManager(layoutManager);
 
 //        adapter = new RecyclerAdapter(getActivity(), contactsGroupBeans);
-        adapter = new RecyclerAdapter(getActivity(), clientsProcessBeans);
-        adapter.setOnChildItemClickListener(new RecyclerAdapter.OnChildItemClickListener() {
+        adapter = new ClientsRecyclerAdapter(getActivity(), clientsProcessBeans);
+        adapter.setOnChildItemClickListener(new ClientsRecyclerAdapter.OnChildItemClickListener() {
             @Override
             public void onChildItemClick(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex, int flatPosition) {
                 ClientsResultBean clientsResultBean = (ClientsResultBean) group;
@@ -287,6 +285,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
             newOne.group = clientsResultBean.group;
             clientsProcessBeans.add(newOne);
         }
+        Log.d("dd",clientsProcessBeans.toString());
     }
 
     //冒泡弹出

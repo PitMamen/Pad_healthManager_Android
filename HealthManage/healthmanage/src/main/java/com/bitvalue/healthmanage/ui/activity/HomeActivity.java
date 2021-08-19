@@ -22,6 +22,7 @@ import com.bitvalue.healthmanage.http.request.TestApi;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.http.response.PlanListBean;
+import com.bitvalue.healthmanage.http.response.msg.AddVideoObject;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
 import com.bitvalue.healthmanage.ui.contacts.bean.ContactBean;
@@ -408,11 +409,15 @@ public class HomeActivity extends AppActivity {
                 mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_DETAIL, healthPlanDetailFragment);
                 break;
             case Constants.FRAGMENT_ADD_VIDEO:
+                AddVideoObject addVideoObject = (AddVideoObject) object;
+                Bundle bundleMsg = new Bundle();
+                bundleMsg.putSerializable(Constants.ADD_VIDEO_DATA, addVideoObject);
                 AddVideoFragment addVideoFragment;
                 if (isContain) {
                     mapFragments.remove(keyFragment);
                 }
                 addVideoFragment = new AddVideoFragment();
+                addVideoFragment.setArguments(bundleMsg);
                 mapFragments.put(Constants.FRAGMENT_ADD_VIDEO, addVideoFragment);
                 break;
         }

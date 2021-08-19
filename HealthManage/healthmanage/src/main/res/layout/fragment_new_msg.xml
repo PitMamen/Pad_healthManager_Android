@@ -153,9 +153,18 @@
                         android:text="视频消息"
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/qb_px_10"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/list_videos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/qb_px_10"
+                        android:layout_marginTop="@dimen/qb_px_10"
+                        android:visibility="visible"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_video_msg" />
 
                     <LinearLayout
                         android:id="@+id/layout_add_video"
@@ -166,7 +175,6 @@
                         android:orientation="horizontal"
                         android:paddingHorizontal="@dimen/qb_px_47"
                         android:paddingVertical="@dimen/qb_px_6"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 

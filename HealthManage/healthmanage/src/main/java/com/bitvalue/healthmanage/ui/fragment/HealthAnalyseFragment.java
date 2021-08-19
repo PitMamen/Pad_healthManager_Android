@@ -33,6 +33,7 @@ public class HealthAnalyseFragment extends AppFragment {
 
     @BindView(R.id.tv_send_analyse)
     TextView tv_send_analyse;
+
     private ArrayList<String> mIds;
     private HomeActivity homeActivity;
 

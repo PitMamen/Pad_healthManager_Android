@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
@@ -14,6 +15,7 @@ import com.bitvalue.healthmanage.http.request.SaveTotalMsgApi;
 import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.PaperBean;
 import com.bitvalue.healthmanage.http.response.VideoResultBean;
+import com.bitvalue.healthmanage.http.response.msg.AddVideoObject;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.PaperAdapter;
 import com.bitvalue.healthmanage.ui.adapter.VideoAdapter;
@@ -26,8 +28,10 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +45,7 @@ public class AddVideoFragment extends AppFragment {
     private List<VideoResultBean.ListDTO> videoBeans = new ArrayList<>();
     private GetVideosApi getVideosApi;
     private int total;
+    private AddVideoObject addVideoObject;
 
     @Override
     protected int getLayoutId() {
@@ -52,6 +57,8 @@ public class AddVideoFragment extends AppFragment {
         list_normal = (WrapRecyclerView) findViewById(R.id.list_daily);
         homeActivity = (HomeActivity) getActivity();
 
+        addVideoObject = (AddVideoObject) getArguments().getSerializable(Constants.ADD_VIDEO_DATA);
+
         initList();
     }
 
@@ -62,11 +69,9 @@ public class AddVideoFragment extends AppFragment {
         mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
-                toast(mAdapter.getItem(position).title);
-//                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
-//                    homeActivity.getSupportFragmentManager().popBackStack();
-//                }
-                //TODO 传数据
+                VideoResultBean.ListDTO listDTO = videoBeans.get(position);
+                listDTO.videoFor = addVideoObject.videoFor;
+                EventBus.getDefault().post(listDTO);
                 homeActivity.getSupportFragmentManager().popBackStack();
             }
         });
@@ -84,6 +89,7 @@ public class AddVideoFragment extends AppFragment {
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
                 getVideosApi.start = mAdapter.getCount() + 1;
+                getVideos();
 
 //                postDelayed(() -> {
 //                    mAdapter.addData(analogData());
@@ -96,6 +102,9 @@ public class AddVideoFragment extends AppFragment {
 
             @Override
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
+                getVideosApi.start = 1;
+                mAdapter.clearData();
+                getVideos();
 //                postDelayed(() -> {
 //                    mAdapter.clearData();
 //                    mAdapter.setData(analogData());
@@ -121,11 +130,15 @@ public class AddVideoFragment extends AppFragment {
                 super.onSucceed(result);
                 //TODO 展示获取到的信息
                 if (result.getCode() == 0) {
-                    if (getVideosApi.start == 1) {
+                    if (getVideosApi.start == 1) {//下拉刷新,以及第一次加载
                         videoBeans = result.getData().list;
                         total = result.getData().total;
-                    } else {
+                        mRefreshLayout.finishRefresh();
+                    } else {//加载更多
                         videoBeans.addAll(result.getData().list);
+                        mRefreshLayout.finishLoadMore();
+                        mAdapter.setLastPage(mAdapter.getItemCount() >= total);
+                        mRefreshLayout.setNoMoreData(mAdapter.isLastPage());
                     }
                     mAdapter.setData(videoBeans);
 
