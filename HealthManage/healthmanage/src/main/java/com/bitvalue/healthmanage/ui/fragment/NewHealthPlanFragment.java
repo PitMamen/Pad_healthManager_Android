@@ -14,6 +14,7 @@ import com.bigkoo.pickerview.view.TimePickerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.response.RefreshPlansObj;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.util.InputMethodUtils;
 import com.bitvalue.healthmanage.widget.DataUtil;
@@ -23,6 +24,8 @@ import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -224,6 +227,7 @@ public class NewHealthPlanFragment extends AppFragment {
                 super.onSucceed(result);
                 if (result.getCode() == 0) {
                     ToastUtil.toastShortMessage("保存成功");
+                    EventBus.getDefault().post(new RefreshPlansObj());
                     homeActivity.getSupportFragmentManager().popBackStack();
                 } else {
                     ToastUtil.toastShortMessage(result.getMessage());

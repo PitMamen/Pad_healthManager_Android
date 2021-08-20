@@ -441,6 +441,7 @@ public class HomeActivity extends AppActivity {
         if (!mapFragments.get(keyFragment).isAdded()) {
             fragmentTransaction.add(R.id.layout_fragment_end, mapFragments.get(keyFragment));
         }
+        supportFragmentManager.popBackStack(keyFragment,FragmentManager.POP_BACK_STACK_INCLUSIVE);
         fragmentTransaction.addToBackStack(keyFragment);
         fragmentTransaction.show(mapFragments.get(keyFragment)).commit();
     }

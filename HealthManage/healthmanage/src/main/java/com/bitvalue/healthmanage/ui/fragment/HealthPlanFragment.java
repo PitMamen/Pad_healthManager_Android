@@ -1,23 +1,17 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
-import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
-import com.bitvalue.healthmanage.http.request.ClientsApi;
 import com.bitvalue.healthmanage.http.request.PlanListApi;
-import com.bitvalue.healthmanage.http.response.ClientsResultBean;
-import com.bitvalue.healthmanage.http.response.PlanBean;
 import com.bitvalue.healthmanage.http.response.PlanListBean;
+import com.bitvalue.healthmanage.http.response.RefreshPlansObj;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.HealthPlanAdapter;
 import com.hjq.base.BaseAdapter;
@@ -28,10 +22,12 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.OnClick;
 import okhttp3.Call;
@@ -51,11 +47,18 @@ public class HealthPlanFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        EventBus.getDefault().register(this);
 //        setOnClickListener(R.id.layout_new_plan);
         list_my_plans = (WrapRecyclerView) findViewById(R.id.list_my_plans);
         homeActivity = (HomeActivity) getActivity();
         initList();
-        geMyPlans();
+        getMyPlans();
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     private void initList() {
@@ -115,7 +118,7 @@ public class HealthPlanFragment extends AppFragment {
         mAdapter.setData(planListBeans);
     }
 
-    private void geMyPlans() {
+    private void getMyPlans() {
         EasyHttp.post(this).api(new PlanListApi()).request(new HttpCallback<HttpData<ArrayList<PlanListBean>>>(this) {
             @Override
             public void onStart(Call call) {
@@ -135,6 +138,16 @@ public class HealthPlanFragment extends AppFragment {
                 super.onFail(e);
             }
         });
+    }
+
+    /**
+     * 处理订阅消息 科普文章
+     *
+     * @param refreshPlansObj
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(RefreshPlansObj refreshPlansObj) {
+        getMyPlans();
     }
 
     /**
