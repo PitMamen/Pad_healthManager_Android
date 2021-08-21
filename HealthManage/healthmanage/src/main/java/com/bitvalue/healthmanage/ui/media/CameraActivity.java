@@ -1,5 +1,6 @@
 package com.bitvalue.healthmanage.ui.media;
 
+import android.Manifest;
 import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -15,20 +16,24 @@ import com.bitvalue.healthmanage.aop.Permissions;
 import com.bitvalue.healthmanage.app.AppActivity;
 import com.bitvalue.healthmanage.other.AppConfig;
 import com.bitvalue.healthmanage.other.IntentKey;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.base.BaseActivity;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import rx.functions.Action1;
+
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/AndroidProject
- *    time   : 2019/12/18
- *    desc   : 拍摄图片、视频
+ * author : Android 轮子哥
+ * github : https://github.com/getActivity/AndroidProject
+ * time   : 2019/12/18
+ * desc   : 拍摄图片、视频
  */
 public final class CameraActivity extends AppActivity {
 
@@ -64,6 +69,24 @@ public final class CameraActivity extends AppActivity {
 
     @Override
     protected void initView() {
+        checkPermission();
+    }
+
+    public void checkPermission() {
+        RxPermissions.getInstance(this)
+                .request(Manifest.permission.CAMERA
+                        , Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+                        , Manifest.permission.READ_PHONE_STATE
+                        , Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        , Manifest.permission.RECORD_AUDIO)
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean flag) {
+                        if (!flag) {
+                            ToastUtil.toastShortMessage("请授权拍照");
+                        }
+                    }
+                });
 
     }
 
@@ -137,13 +160,14 @@ public final class CameraActivity extends AppActivity {
         /**
          * 选择回调
          *
-         * @param file          文件
+         * @param file 文件
          */
         void onSelected(File file);
 
         /**
          * 取消回调
          */
-        default void onCancel() {}
+        default void onCancel() {
+        }
     }
 }

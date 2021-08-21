@@ -95,7 +95,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
             @Override
             public void onChildItemClick(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex, int flatPosition) {
                 ClientsResultBean clientsResultBean = (ClientsResultBean) group;
-                ToastUtils.show("父级是" + clientsResultBean.getTitle() + "###当前条目是" + child.userName);
+//                ToastUtils.show("父级是" + clientsResultBean.getTitle() + "###当前条目是" + child.userName);
 
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
             }

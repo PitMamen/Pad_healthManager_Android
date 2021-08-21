@@ -295,6 +295,7 @@ public class HomeActivity extends AppActivity {
 //                chatInfo.setId("3");
                 chatInfo.setChatName(child.userName);
 
+                bundle.putInt(Constants.PLAN_ID,child.planId);
                 bundle.putSerializable(com.bitvalue.healthmanage.util.Constants.CHAT_INFO, chatInfo);
                 chatFragment.setArguments(bundle);
                 mapFragments.put(Constants.FRAGMENT_CHAT, chatFragment);
@@ -407,11 +408,16 @@ public class HomeActivity extends AppActivity {
                 break;
 
             case Constants.FRAGMENT_HEALTH_PLAN_DETAIL:
+                ChatFragment.NewMsgData msgDataDetail = (ChatFragment.NewMsgData) object;
                 HealthPlanDetailFragment healthPlanDetailFragment;
                 if (isContain) {
                     mapFragments.remove(keyFragment);
                 }
                 healthPlanDetailFragment = new HealthPlanDetailFragment();
+                Bundle bundleDetail = new Bundle();
+                bundleDetail.putStringArrayList(Constants.MSG_IDS,msgDataDetail.userIds);
+                bundleDetail.putString(Constants.PLAN_ID,msgDataDetail.id);
+                healthPlanDetailFragment.setArguments(bundleDetail);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_DETAIL, healthPlanDetailFragment);
                 break;
             case Constants.FRAGMENT_ADD_VIDEO:

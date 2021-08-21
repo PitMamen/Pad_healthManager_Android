@@ -38,6 +38,7 @@ public class Constants {
     public static String VIDEO_FOR_MSG = "video_for_msg";
 
     public static final String ADD_VIDEO_DATA = "add_video_data";
+    public static final String PLAN_ID = "plan_id";
 //    //自己的
 //    public static final int IM_APPId =1400548652;
 //    public static final String IM_PRIVATE_KEY ="e3f3f2db3fa1ebb73d1fa009f774c668e93577ce8f15492409582cd041b6e712";

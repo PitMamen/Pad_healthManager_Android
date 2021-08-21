@@ -22,6 +22,7 @@ public class ClientsResultBean extends ExpandableGroup<ClientsResultBean.UserInf
         public int identificationType;
         public String userName;
         public int userId;
+        public int planId;
         public String cardNo;
         public int userAge;
         public int accountId;

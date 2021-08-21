@@ -1,10 +1,14 @@
 package com.bitvalue.healthmanage.ui.media;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -18,17 +22,21 @@ import com.bitvalue.healthmanage.aop.DebugLog;
 import com.bitvalue.healthmanage.aop.Permissions;
 import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppActivity;
+import com.bitvalue.healthmanage.http.request.UploadFileApi;
 import com.bitvalue.healthmanage.manager.ThreadPoolManager;
 import com.bitvalue.healthmanage.other.GridSpaceDecoration;
 import com.bitvalue.healthmanage.other.IntentKey;
 import com.bitvalue.healthmanage.ui.adapter.ImageSelectAdapter;
 import com.bitvalue.healthmanage.ui.media.adapter.AlbumDialog;
 import com.bitvalue.healthmanage.widget.StatusLayout;
+import com.bitvalue.sdk.collab.component.AudioPlayer;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hjq.base.BaseActivity;
 import com.hjq.base.BaseAdapter;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,11 +45,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import rx.functions.Action1;
+
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/AndroidProject
- *    time   : 2019/07/24
- *    desc   : 选择图片
+ * author : Android 轮子哥
+ * github : https://github.com/getActivity/AndroidProject
+ * time   : 2019/07/24
+ * desc   : 选择图片
  */
 public final class ImageSelectActivity extends AppActivity
         implements StatusAction, Runnable,
@@ -95,17 +105,27 @@ public final class ImageSelectActivity extends AppActivity
 
     private ImageSelectAdapter mAdapter;
 
-    /** 最大选中 */
+    /**
+     * 最大选中
+     */
     private int mMaxSelect = 1;
-    /** 选中列表 */
+    /**
+     * 选中列表
+     */
     private final ArrayList<String> mSelectImage = new ArrayList<>();
 
-    /** 全部图片 */
+    /**
+     * 全部图片
+     */
     private final ArrayList<String> mAllImage = new ArrayList<>();
-    /** 图片专辑 */
+    /**
+     * 图片专辑
+     */
     private final HashMap<String, List<String>> mAllAlbum = new HashMap<>();
 
-    /** 专辑选择对话框 */
+    /**
+     * 专辑选择对话框
+     */
     private AlbumDialog.Builder mAlbumDialog;
 
     @Override
@@ -115,6 +135,8 @@ public final class ImageSelectActivity extends AppActivity
 
     @Override
     protected void initView() {
+        checkPermission();
+
         mStatusLayout = findViewById(R.id.hl_image_select_hint);
         mRecyclerView = findViewById(R.id.rv_image_select_list);
         mFloatingView = findViewById(R.id.fab_image_select_floating);
@@ -129,6 +151,24 @@ public final class ImageSelectActivity extends AppActivity
         mRecyclerView.setItemAnimator(null);
         // 添加分割线
         mRecyclerView.addItemDecoration(new GridSpaceDecoration((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, getResources().getDisplayMetrics())));
+    }
+
+    public void checkPermission() {
+        RxPermissions.getInstance(this)
+                .request(Manifest.permission.CAMERA
+                        , Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
+                        , Manifest.permission.READ_PHONE_STATE
+                        , Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        , Manifest.permission.RECORD_AUDIO)
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean flag) {
+                        if (!flag) {
+                            ToastUtil.toastShortMessage("请授权以获取图片");
+                        }
+                    }
+                });
+
     }
 
     @Override
@@ -250,9 +290,10 @@ public final class ImageSelectActivity extends AppActivity
 
     /**
      * {@link BaseAdapter.OnItemClickListener}
-     * @param recyclerView      RecyclerView对象
-     * @param itemView          被点击的条目对象
-     * @param position          被点击的条目位置
+     *
+     * @param recyclerView RecyclerView对象
+     * @param itemView     被点击的条目对象
+     * @param position     被点击的条目位置
      */
     @Override
     public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
@@ -261,9 +302,10 @@ public final class ImageSelectActivity extends AppActivity
 
     /**
      * {@link BaseAdapter.OnItemLongClickListener}
-     * @param recyclerView      RecyclerView对象
-     * @param itemView          被点击的条目对象
-     * @param position          被点击的条目位置
+     *
+     * @param recyclerView RecyclerView对象
+     * @param itemView     被点击的条目对象
+     * @param position     被点击的条目位置
      */
     @Override
     public boolean onItemLongClick(RecyclerView recyclerView, View itemView, int position) {
@@ -276,9 +318,10 @@ public final class ImageSelectActivity extends AppActivity
 
     /**
      * {@link BaseAdapter.OnChildClickListener}
-     * @param recyclerView      RecyclerView对象
-     * @param childView         被点击的条目子 View Id
-     * @param position          被点击的条目位置
+     *
+     * @param recyclerView RecyclerView对象
+     * @param childView    被点击的条目子 View Id
+     * @param position     被点击的条目位置
      */
     @Override
     public void onChildClick(RecyclerView recyclerView, View childView, int position) {
@@ -435,13 +478,14 @@ public final class ImageSelectActivity extends AppActivity
         /**
          * 选择回调
          *
-         * @param data          图片列表
+         * @param data 图片列表
          */
         void onSelected(List<String> data);
 
         /**
          * 取消回调
          */
-        default void onCancel() {}
+        default void onCancel() {
+        }
     }
 }

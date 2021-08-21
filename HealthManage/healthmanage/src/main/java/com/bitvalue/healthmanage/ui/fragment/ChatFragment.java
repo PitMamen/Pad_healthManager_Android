@@ -66,6 +66,7 @@ public class ChatFragment extends AppFragment {
 
     private static final String TAG = ChatFragment.class.getSimpleName();
     private HomeActivity homeActivity;
+    private int planId;
 
     @Override
     protected int getLayoutId() {
@@ -79,6 +80,7 @@ public class ChatFragment extends AppFragment {
     protected void initView() {
         EventBus.getDefault().register(this);
         Bundle bundle = getArguments();
+        planId = bundle.getInt(com.bitvalue.healthmanage.Constants.PLAN_ID);
         mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
 //        getActivity();
         homeActivity = (HomeActivity) getActivity();
@@ -144,23 +146,23 @@ public class ChatFragment extends AppFragment {
                 }
 
                 V2TIMMergerElem mergerElem = messageInfo.getTimMessage().getMergerElem();
-                if (mergerElem != null) {
-//                    Intent intent = new Intent(AppApplication.instance(), ForwardChatActivity.class);
-                    Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);//TODO
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(TUIKitConstants.FORWARD_MERGE_MESSAGE_KEY, messageInfo);
-                    intent.putExtras(bundle);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    AppApplication.instance().startActivity(intent);
-                } else {
-                    ChatInfo info = new ChatInfo();
-                    info.setId(messageInfo.getFromUser());
-//                    Intent intent = new Intent(AppApplication.instance(), FriendProfileActivity.class);
-                    Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);//TODO
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra(TUIKitConstants.ProfileType.CONTENT, info);
-                    AppApplication.instance().startActivity(intent);
-                }
+//                if (mergerElem != null) {
+////                    Intent intent = new Intent(AppApplication.instance(), ForwardChatActivity.class);
+//                    Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);//TODO
+//                    Bundle bundle = new Bundle();
+//                    bundle.putSerializable(TUIKitConstants.FORWARD_MERGE_MESSAGE_KEY, messageInfo);
+//                    intent.putExtras(bundle);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    AppApplication.instance().startActivity(intent);
+//                } else {
+//                    ChatInfo info = new ChatInfo();
+//                    info.setId(messageInfo.getFromUser());
+////                    Intent intent = new Intent(AppApplication.instance(), FriendProfileActivity.class);
+//                    Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);//TODO
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    intent.putExtra(TUIKitConstants.ProfileType.CONTENT, info);
+//                    AppApplication.instance().startActivity(intent);
+//                }
             }
         });
 
@@ -236,7 +238,11 @@ public class ChatFragment extends AppFragment {
         mChatLayout.setOnCustomClickListener(new InputLayout.OnCustomClickListener() {
             @Override
             public void onHealthPlanClick() {
-                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_PLAN_DETAIL, "");
+                NewMsgData msgData = new NewMsgData();
+                msgData.userIds = new ArrayList<>();
+                msgData.userIds.add(mChatInfo.getId());
+                msgData.id = planId + "";//这里id设置为 planId
+                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_PLAN_DETAIL, msgData);
             }
 
             @Override

@@ -10,28 +10,40 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/qb_px_30"
+        android:layout_marginHorizontal="@dimen/qb_px_73"
+        android:layout_marginVertical="@dimen/qb_px_60"
         android:background="@color/white"
-        android:layout_marginVertical="@dimen/qb_px_30"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:background="@drawable/bg_12"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/bg_12" />
+
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_123"
             android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/bg_123" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="@dimen/qb_px_200"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/qb_px_20"
                 android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/qb_px_20"
                 android:layout_marginRight="@dimen/qb_px_30"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
