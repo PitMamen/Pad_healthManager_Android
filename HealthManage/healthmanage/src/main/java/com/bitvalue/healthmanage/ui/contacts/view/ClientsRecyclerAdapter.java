@@ -5,6 +5,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,10 +31,19 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
 
     private Activity activity;
     private OnChildItemClickListener onChildItemClickListener;
+    private static OnChildCheckListener onChildCheckListener;
 
     public ClientsRecyclerAdapter(Activity activity, List<? extends ExpandableGroup> groups) {
         super(groups);
         this.activity = activity;
+    }
+
+    public void setOnChildCheckListener(OnChildCheckListener onChildCheckListener){
+        this.onChildCheckListener = onChildCheckListener;
+    }
+
+    public interface OnChildCheckListener{
+        void onChildCheck(boolean isCheck, int childIndex, ClientsResultBean.UserInfoDTO child);
     }
 
     public void setOnChildItemClickListener(OnChildItemClickListener onChildItemClickListener) {
@@ -58,7 +69,7 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
 //        final ClientsResultBean.UserInfoDTO child = ((ClientsResultBean.UserInfoDTO) group).getItems().get(childIndex);
         List<ClientsResultBean.UserInfoDTO> userInfo = ((ClientsResultBean) group).userInfo;
         ClientsResultBean.UserInfoDTO child = userInfo.get(childIndex);
-        holder.onBind(child, group);
+        holder.onBind(child, group,childIndex);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +123,7 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
     public static class ChildContentViewHolder extends ChildViewHolder {
         private TextView name,tv_sex,tv_age,tv_date,tv_project_name;
         private ImageView img_head;
+        private CheckBox cb_choose;
 
         public ChildContentViewHolder(View itemView) {
             super(itemView);
@@ -120,15 +132,31 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
             tv_sex = itemView.findViewById(R.id.tv_sex);
             tv_age = itemView.findViewById(R.id.tv_age);
             tv_date = itemView.findViewById(R.id.tv_date);
+            cb_choose = itemView.findViewById(R.id.cb_choose);
             tv_project_name = itemView.findViewById(R.id.tv_project_name);
         }
 
-        public void onBind(ClientsResultBean.UserInfoDTO child, ExpandableGroup group) {
+        public void onBind(ClientsResultBean.UserInfoDTO child, ExpandableGroup group,int childIndex) {
             name.setText(child.userName);
             tv_sex.setText(child.userSex);
             tv_age.setText(child.userAge + "岁");
             tv_date.setText(TimeUtils.getTime(child.beginTime,TimeUtils.YY_MM_DD_FORMAT_3));
             tv_project_name.setText(child.goodsName);
+
+            if (child.isShowCheck){
+                cb_choose.setVisibility(View.VISIBLE);
+            }else {
+                cb_choose.setVisibility(View.GONE);
+            }
+
+            cb_choose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (null != onChildCheckListener){
+                        onChildCheckListener.onChildCheck(isChecked,childIndex,child);
+                    }
+                }
+            });
 
             GlideApp.with(img_head)
                     .load("http://img.duoziwang.com/2021/03/1623076080632524.jpg")

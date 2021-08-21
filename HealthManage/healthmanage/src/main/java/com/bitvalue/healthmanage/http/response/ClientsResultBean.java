@@ -34,6 +34,10 @@ public class ClientsResultBean extends ExpandableGroup<ClientsResultBean.UserInf
         public String relationship;
         public String goodsName;
 
+
+        public boolean isChecked = false;
+        public boolean isShowCheck = false;
+
         public UserInfoDTO() {
         }
 

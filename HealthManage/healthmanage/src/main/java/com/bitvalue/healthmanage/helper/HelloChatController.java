@@ -14,7 +14,9 @@ import com.bitvalue.sdk.collab.base.IBaseViewHolder;
 import com.bitvalue.sdk.collab.base.TUIChatControllerListener;
 import com.bitvalue.sdk.collab.base.TUIConversationControllerListener;
 import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
+import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
+import com.bitvalue.sdk.collab.helper.CustomHealthPlanMessage;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.IOnCustomMessageDrawListener;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.MessageBaseHolder;
@@ -203,6 +205,25 @@ public class HelloChatController implements TUIChatControllerListener {
                                 //TODO  CustomHelloTIMUIController 改成 CustomHealthMessageController
 //                                CustomHelloTIMUIController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                                 CustomAnalyseMessageController.onDraw(parent, customAnalyseMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                            }
+                        }
+                        break;
+                    case "CustomHealthManageMessage":
+                        CustomHealthPlanMessage customHealthPlanMessage = new Gson().fromJson(dataJson, CustomHealthPlanMessage.class);
+                        if (customHealthPlanMessage != null) {
+                            if (parent instanceof MessageBaseHolder) {
+//                                CustomHelloTIMUIController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                                CustomHealthPlanMessageController.onDraw(parent, customHealthPlanMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                            }
+                        }
+                        break;
+
+                        case "CustomUploadMessage":
+                        CustomHealthDataMessage customHealthDataMessage = new Gson().fromJson(dataJson, CustomHealthDataMessage.class);
+                        if (customHealthDataMessage != null) {
+                            if (parent instanceof MessageBaseHolder) {
+//                                CustomHelloTIMUIController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                                CustomHealthDataMessageController.onDraw(parent, customHealthDataMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                             }
                         }
                         break;

@@ -2,12 +2,8 @@ package com.bitvalue.healthmanage.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -24,8 +20,6 @@ import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.ui.contacts.view.ClientsRecyclerAdapter;
-import com.bitvalue.healthmanage.util.DemoLog;
-import com.bitvalue.healthmanage.util.UiUtil;
 import com.bitvalue.healthmanage.widget.mpopupwindow.MPopupWindow;
 import com.bitvalue.healthmanage.widget.mpopupwindow.TypeGravity;
 import com.bitvalue.healthmanage.widget.mpopupwindow.ViewCallback;
@@ -34,11 +28,6 @@ import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
-import com.tencent.imsdk.BaseConstants;
-import com.tencent.imsdk.v2.V2TIMFriendAddApplication;
-import com.tencent.imsdk.v2.V2TIMFriendOperationResult;
-import com.tencent.imsdk.v2.V2TIMManager;
-import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener;
 import com.thoughtbot.expandablerecyclerview.listeners.OnGroupClickListener;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
@@ -100,6 +89,20 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
             }
         });
+
+        adapter.setOnChildCheckListener(new ClientsRecyclerAdapter.OnChildCheckListener() {
+            @Override
+            public void onChildCheck(boolean isCheck, int childIndex, ClientsResultBean.UserInfoDTO child) {
+//                ToastUtil.toastShortMessage("是否勾选：" + isCheck + "---勾选哪一个" + childIndex);
+                if (isCheck) {
+                    mIds.add(child.userId + "");
+                } else {
+                    if (mIds.contains(child.userId + "")) {
+                        mIds.remove(child.userId + "");
+                    }
+                }
+            }
+        });
         adapter.setOnGroupClickListener(new OnGroupClickListener() {
             @Override
             public boolean onGroupClick(int flatPos) {
@@ -122,66 +125,6 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         geMyClients();
     }
 
-
-    /**
-     * 添加好友
-     *
-     * @param id
-     */
-    public void addFriend(String id) {
-        if (TextUtils.isEmpty(id)) {
-            return;
-        }
-
-        V2TIMFriendAddApplication v2TIMFriendAddApplication = new V2TIMFriendAddApplication(id);
-        v2TIMFriendAddApplication.setAddWording("添加好友哦");
-        v2TIMFriendAddApplication.setAddSource("android");
-        V2TIMManager.getFriendshipManager().addFriend(v2TIMFriendAddApplication, new V2TIMValueCallback<V2TIMFriendOperationResult>() {
-            @Override
-            public void onError(int code, String desc) {
-                DemoLog.e("addFriend", "addFriend err code = " + code + ", desc = " + desc);
-                ToastUtil.toastShortMessage("Error code = " + code + ", desc = " + desc);
-            }
-
-            @Override
-            public void onSuccess(V2TIMFriendOperationResult v2TIMFriendOperationResult) {
-                DemoLog.i("addFriend", "addFriend success");
-                switch (v2TIMFriendOperationResult.getResultCode()) {
-                    case BaseConstants.ERR_SUCC:
-                        ToastUtil.toastShortMessage(getString(R.string.success));
-                        break;
-                    case BaseConstants.ERR_SVR_FRIENDSHIP_INVALID_PARAMETERS:
-                        if (TextUtils.equals(v2TIMFriendOperationResult.getResultInfo(), "Err_SNS_FriendAdd_Friend_Exist")) {
-                            ToastUtil.toastShortMessage(getString(R.string.have_be_friend));
-                            break;
-                        }
-                    case BaseConstants.ERR_SVR_FRIENDSHIP_COUNT_LIMIT:
-                        ToastUtil.toastShortMessage(getString(R.string.friend_limit));
-                        break;
-                    case BaseConstants.ERR_SVR_FRIENDSHIP_PEER_FRIEND_LIMIT:
-                        ToastUtil.toastShortMessage(getString(R.string.other_friend_limit));
-                        break;
-                    case BaseConstants.ERR_SVR_FRIENDSHIP_IN_SELF_BLACKLIST:
-                        ToastUtil.toastShortMessage(getString(R.string.in_blacklist));
-                        break;
-                    case BaseConstants.ERR_SVR_FRIENDSHIP_ALLOW_TYPE_DENY_ANY:
-                        ToastUtil.toastShortMessage(getString(R.string.forbid_add_friend));
-                        break;
-                    case BaseConstants.ERR_SVR_FRIENDSHIP_IN_PEER_BLACKLIST:
-                        ToastUtil.toastShortMessage(getString(R.string.set_in_blacklist));
-                        break;
-                    case BaseConstants.ERR_SVR_FRIENDSHIP_ALLOW_TYPE_NEED_CONFIRM:
-                        ToastUtil.toastShortMessage(getString(R.string.wait_agree_friend));
-                        break;
-                    default:
-                        ToastUtil.toastLongMessage(v2TIMFriendOperationResult.getResultCode() + " " + v2TIMFriendOperationResult.getResultInfo());
-                        break;
-                }
-                finish();
-            }
-        });
-    }
-
     @OnClick({R.id.layout_nav})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -197,10 +140,19 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                 .setLayoutId(layoutId)
 //                .setBackgroundDrawable(new ColorDrawable(Color.GREEN))
                 .setAnimationStyle(R.style.AnimDown)
+                .setOutsideTouchable(false)
                 .setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {
                         if (mPopupWindow != null) {
+                            for (int i = 0; i < clientsProcessBeans.size(); i++) {
+                                for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
+                                    clientsProcessBeans.get(i).userInfo.get(j).isChecked = false;
+                                    clientsProcessBeans.get(i).userInfo.get(j).isShowCheck = false;
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                            mPopupWindow = null;
                         }
                     }
                 })
@@ -227,6 +179,15 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                     view.findViewById(R.id.tv_mul_msg).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            for (int i = 0; i < clientsProcessBeans.size(); i++) {
+                                for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
+                                    clientsProcessBeans.get(i).userInfo.get(j).isChecked = false;
+                                    clientsProcessBeans.get(i).userInfo.get(j).isShowCheck = true;
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+
+
                             if (mIds.size() == 0) {
                                 ToastUtil.toastShortMessage("请选择群发用户");
                                 return;
@@ -235,6 +196,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                             msgData.msgType = Constants.MSG_MULTI;
                             msgData.userIds = mIds;
                             homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG, msgData);
+                            mIds.clear();
                             mPopupWindow.dismiss();
                             mPopupWindow = null;
                         }
@@ -285,26 +247,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
             newOne.group = clientsResultBean.group;
             clientsProcessBeans.add(newOne);
         }
-        Log.d("dd",clientsProcessBeans.toString());
-    }
-
-    //冒泡弹出
-    private void showPartPop(int layoutResId) {
-        if (popupWindow != null && popupWindow.isShowing()) return;
-        View upView = LayoutInflater.from(getActivity()).inflate(layoutResId, null);
-        //测量View的宽高
-        UiUtil.measureWidthAndHeight(upView);
-        popupWindow = new CommonPopupWindow.Builder(getActivity())
-                .setView(layoutResId)
-                .setWidthAndHeight(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-//                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
-                .setBackGroundLevel(1f)//取值范围0.0f-1.0f 值越小越暗
-                .setAnimationStyle(R.style.AnimUp)
-                .setViewOnclickListener(this)
-                .setOutsideTouchable(true)
-                .create();
-//        popupWindow.showAsDropDown(layout_nav);
-        popupWindow.showAtLocation(findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+        Log.d("dd", clientsProcessBeans.toString());
     }
 
     @Override
