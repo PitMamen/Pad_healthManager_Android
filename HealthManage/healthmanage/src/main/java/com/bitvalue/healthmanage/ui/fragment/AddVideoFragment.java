@@ -35,6 +35,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.OnClick;
 import okhttp3.Call;
 
 public class AddVideoFragment extends AppFragment {
@@ -60,6 +61,17 @@ public class AddVideoFragment extends AppFragment {
         addVideoObject = (AddVideoObject) getArguments().getSerializable(Constants.ADD_VIDEO_DATA);
 
         initList();
+    }
+
+    @OnClick({R.id.img_back})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
+                break;
+        }
     }
 
     private void initList() {

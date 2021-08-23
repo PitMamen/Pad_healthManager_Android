@@ -147,7 +147,7 @@ public class NewHealthPlanFragment extends AppFragment {
 
     }
 
-    @OnClick({R.id.layout_base_time, R.id.layout_add_task, R.id.tv_save})
+    @OnClick({R.id.layout_base_time, R.id.layout_add_task, R.id.tv_save, R.id.img_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_base_time:
@@ -163,6 +163,11 @@ public class NewHealthPlanFragment extends AppFragment {
 //            case R.id.layout_add_paper:
 //                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_PAPER, "");
 //                break;
+            case R.id.img_back:
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
+                break;
         }
     }
 

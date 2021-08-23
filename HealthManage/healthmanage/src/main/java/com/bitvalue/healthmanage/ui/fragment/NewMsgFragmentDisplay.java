@@ -214,7 +214,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
     }
 
     private void processPics(String picList) {
-        if (picList.isEmpty()) {
+        if (null == picList || picList.isEmpty()) {
             return;
         }
         String[] split = picList.split(",");
@@ -225,7 +225,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
     }
 
     private void processAudios(String voiceList) {
-        if (voiceList.isEmpty()) {
+        if (null == voiceList || voiceList.isEmpty()) {
             return;
         }
         String[] split = voiceList.split(",");
@@ -395,7 +395,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
     }
 
     //    @SingleClick
-    @OnClick({R.id.layout_add_audio, R.id.layout_add_video, R.id.layout_add_paper, R.id.tv_send_msg, R.id.img_add_pic})
+    @OnClick({R.id.img_back, R.id.layout_add_audio, R.id.layout_add_video, R.id.layout_add_paper, R.id.tv_send_msg, R.id.img_add_pic})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_add_audio:
@@ -435,6 +435,12 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
                 break;
             case R.id.tv_send_msg:
                 checkTotalMsg();
+
+                break;
+            case R.id.img_back:
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
                 break;
         }
     }

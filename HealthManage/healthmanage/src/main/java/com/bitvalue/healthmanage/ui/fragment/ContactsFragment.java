@@ -140,7 +140,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                 .setLayoutId(layoutId)
 //                .setBackgroundDrawable(new ColorDrawable(Color.GREEN))
                 .setAnimationStyle(R.style.AnimDown)
-                .setOutsideTouchable(false)
+//                .setOutsideTouchable(false)
                 .setOnDismissListener(new PopupWindow.OnDismissListener() {
                     @Override
                     public void onDismiss() {

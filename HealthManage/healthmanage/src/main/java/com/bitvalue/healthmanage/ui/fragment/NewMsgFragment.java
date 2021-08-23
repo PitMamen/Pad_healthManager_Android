@@ -325,11 +325,16 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     }
 
     //    @SingleClick
-    @OnClick({R.id.layout_add_audio, R.id.layout_add_video, R.id.layout_add_paper, R.id.tv_send_msg, R.id.img_add_pic})
+    @OnClick({R.id.img_back, R.id.layout_add_audio, R.id.layout_add_video, R.id.layout_add_paper, R.id.tv_send_msg, R.id.img_add_pic})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_add_audio:
                 checkPermission();
+                break;
+            case R.id.img_back:
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
                 break;
             case R.id.layout_add_video:
                 AddVideoObject addVideoObject = new AddVideoObject();
@@ -380,7 +385,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
             ToastUtil.toastShortMessage("请录制语音消息");
             return;
         }
-        if (videos.size() == 0){
+        if (videos.size() == 0) {
             ToastUtil.toastShortMessage("请添加视频消息");
             return;
         }

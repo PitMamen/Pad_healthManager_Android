@@ -61,7 +61,7 @@ public class NewHealthPlanFragmentModify extends AppFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_new_health_plan;
+        return R.layout.fragment_new_health_plan_modify;
     }
 
     @Override
@@ -151,7 +151,7 @@ public class NewHealthPlanFragmentModify extends AppFragment {
 
     }
 
-    @OnClick({R.id.layout_base_time, R.id.layout_add_task, R.id.tv_save})
+    @OnClick({R.id.layout_base_time, R.id.layout_add_task, R.id.tv_save, R.id.img_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_base_time:
@@ -163,6 +163,12 @@ public class NewHealthPlanFragmentModify extends AppFragment {
                 break;
             case R.id.tv_save:
                 checkAllDataAndSave();
+                break;
+
+            case R.id.img_back:
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
                 break;
 //            case R.id.layout_add_paper:
 //                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_PAPER, "");

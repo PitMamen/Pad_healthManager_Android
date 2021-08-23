@@ -24,11 +24,11 @@ public class CustomHealthDataMessageController {
 
         // 自定义消息view的实现，这里仅仅展示文本信息，并且实现超链接跳转
         TextView tv_name = view.findViewById(R.id.tv_name);
-        TextView tv_sex = view.findViewById(R.id.tv_sex);
-        TextView tv_age = view.findViewById(R.id.tv_age);
+
         TextView tv_type = view.findViewById(R.id.tv_type);
         TextView tv_analyse = view.findViewById(R.id.tv_analyse);
         TextView tv_plan = view.findViewById(R.id.tv_plan);
+        TextView tv_plan_end = view.findViewById(R.id.tv_plan_end);
         final String text = TUIKitImpl.getAppContext().getString(R.string.no_support_msg);
         if (tv_name == null || tv_name == null) {
             return;
@@ -36,13 +36,12 @@ public class CustomHealthDataMessageController {
         if (data == null) {
             tv_name.setText(text);
         } else {
-            tv_name.setText(data.dept);
+            tv_name.setText("患者资料上传");
         }
-//        tv_sex.setText(data.userSex);
-//        tv_age.setText(data.userAge);
-//        tv_type.setText("就诊类别：" + data.jzlb);
-//        tv_analyse.setText("初步诊断：" + data.cbzd);
-//        tv_plan.setText("健康管理：" + data.jkgl);
+        tv_type.setText("就诊医院：" + data.jzyy);
+        tv_analyse.setText("就诊时间：" + data.jzsj);
+        tv_plan.setText("就诊类型：" + data.jzlx);
+        tv_plan_end.setText("初步诊断：" + data.cbzd);
 
 
         view.setClickable(true);

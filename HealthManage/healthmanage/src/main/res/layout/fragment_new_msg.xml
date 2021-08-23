@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="@dimen/qb_px_50">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="@dimen/dp_10"
+            android:layout_height="@dimen/qb_px_20"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/qb_px_15"
+            android:scaleType="fitCenter"
+            android:src="@drawable/nav_icon_back" />
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/qb_px_50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/qb_px_15"
             android:text="消息群发"
             android:textColor="@color/text_black"
             android:textSize="@dimen/qb_px_12"
             android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <View
             android:layout_width="match_parent"
@@ -380,36 +394,4 @@
         </ScrollView>
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/voice_recording_view"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/ic_volume_dialog_bg"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-
-            <ImageView
-                android:id="@+id/recording_icon"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="10dp" />
-
-
-            <TextView
-                android:id="@+id/recording_tips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-    </RelativeLayout>
-</RelativeLayout>
+</LinearLayout>

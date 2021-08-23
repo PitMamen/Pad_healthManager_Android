@@ -55,7 +55,7 @@ public class HealthAnalyseFragment extends AppFragment {
     private void commitTotalMsg() {
         SaveAnalyseApi saveAnalyseApi = new SaveAnalyseApi();
         saveAnalyseApi.evalContent = et_text_analyse.getText().toString();
-        saveAnalyseApi.evalTime = TimeUtils.getTime(System.currentTimeMillis(),TimeUtils.YY_MM_DD_FORMAT_4);
+        saveAnalyseApi.evalTime = TimeUtils.getTime(System.currentTimeMillis(), TimeUtils.YY_MM_DD_FORMAT_4);
         saveAnalyseApi.userId = mIds.get(0);
         EasyHttp.post(this).api(saveAnalyseApi).request(new HttpCallback<HttpData<SaveAnalyseApi>>(this) {
             @Override
@@ -91,15 +91,20 @@ public class HealthAnalyseFragment extends AppFragment {
         });
     }
 
-    @OnClick({R.id.tv_send_analyse})
-    public void onClick(View view){
-        switch (view.getId()){
+    @OnClick({R.id.tv_send_analyse, R.id.img_back})
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.tv_send_analyse:
-                if (et_text_analyse.getText().toString().isEmpty()){
+                if (et_text_analyse.getText().toString().isEmpty()) {
                     ToastUtil.toastShortMessage("请输入意见内容");
                     return;
                 }
                 commitTotalMsg();
+                break;
+            case R.id.img_back:
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
                 break;
         }
     }

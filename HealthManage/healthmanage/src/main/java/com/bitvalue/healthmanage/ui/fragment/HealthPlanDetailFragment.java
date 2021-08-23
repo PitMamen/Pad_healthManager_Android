@@ -15,6 +15,7 @@ import com.bitvalue.healthmanage.http.request.SearchArticleApi;
 import com.bitvalue.healthmanage.http.response.PlanBean;
 import com.bitvalue.healthmanage.http.response.PlanDetailResult;
 import com.bitvalue.healthmanage.http.response.SearchArticleResult;
+import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.HealthPlanAdapter;
 import com.bitvalue.healthmanage.ui.adapter.HealthPlanDetailAdapter;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 public class HealthPlanDetailFragment extends AppFragment {
@@ -49,6 +51,7 @@ public class HealthPlanDetailFragment extends AppFragment {
     private String planId;
     private PlanDetailResult planDetailResult;
     private List<PlanDetailResult.UserPlanDetailsDTO> userPlanDetails;
+    private HomeActivity homeActivity;
 
     @Override
     protected int getLayoutId() {
@@ -57,10 +60,22 @@ public class HealthPlanDetailFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        homeActivity = (HomeActivity) getActivity();
         mIds = getArguments().getStringArrayList(Constants.MSG_IDS);
         planId = getArguments().getString(Constants.PLAN_ID);
         list_health_plan = (WrapRecyclerView) findViewById(R.id.list_health_plan);
         initList();
+    }
+
+    @OnClick({ R.id.img_back})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
+                break;
+        }
     }
 
     @Override

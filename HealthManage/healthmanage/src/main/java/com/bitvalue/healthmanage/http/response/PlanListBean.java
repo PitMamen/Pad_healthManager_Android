@@ -7,7 +7,7 @@ public class PlanListBean implements Serializable {
     public String templateName;
     public String basetimeType;
     public String userId;
-    public String status;
+    public String status = "0";
     public long createTime;
     public long updateTime;
 }

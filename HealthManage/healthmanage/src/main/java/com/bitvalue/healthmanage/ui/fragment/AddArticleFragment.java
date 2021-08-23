@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 public class AddArticleFragment extends AppFragment {
@@ -58,6 +59,17 @@ public class AddArticleFragment extends AppFragment {
     private WrapRecyclerView list_daily;
     private List<ArticleBean> dailyArticles = new ArrayList<>();
     private List<ArticleBean> searchArticles = new ArrayList<>();
+
+    @OnClick({R.id.img_back})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
+                break;
+        }
+    }
 
     @Override
     protected int getLayoutId() {
@@ -102,7 +114,7 @@ public class AddArticleFragment extends AppFragment {
         mDailyAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
-                if (dailyArticles.size() == 0){
+                if (dailyArticles.size() == 0) {
                     return;
                 }
                 EventBus.getDefault().post(dailyArticles.get(position));
@@ -151,7 +163,7 @@ public class AddArticleFragment extends AppFragment {
         mSearchAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
-                if (searchArticles.size() == 0){
+                if (searchArticles.size() == 0) {
                     return;
                 }
                 EventBus.getDefault().post(searchArticles.get(position));

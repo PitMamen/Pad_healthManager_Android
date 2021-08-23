@@ -98,14 +98,17 @@ public class ChatFragment extends AppFragment {
 
         //获取单聊面板的标题栏
         mTitleBar = mChatLayout.getTitleBar();
-        mTitleBar.getLeftGroup().setVisibility(GONE);//沒有可返回的页面，隐藏
+        mTitleBar.getLeftGroup().setVisibility(VISIBLE);
         mTitleBar.getRightIcon().setVisibility(GONE);//沒有好友详情页面，隐藏
 
         //单聊面板标记栏返回按钮点击事件，这里需要开发者自行控制
         mTitleBar.setOnLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().finish();
+//                getActivity().finish();
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
             }
         });
         if (mChatInfo.getType() == V2TIMConversation.V2TIM_C2C) {
