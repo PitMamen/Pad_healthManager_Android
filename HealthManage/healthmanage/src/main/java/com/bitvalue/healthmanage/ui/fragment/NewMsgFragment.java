@@ -39,13 +39,22 @@ import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
 import com.bitvalue.healthmanage.util.TimeUtils;
 import com.bitvalue.healthmanage.util.Utils;
+import com.bitvalue.sdk.collab.base.IUIKitCallBack;
+import com.bitvalue.sdk.collab.base.TUIKitListenerManager;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
+import com.bitvalue.sdk.collab.modules.chat.C2CChatManagerKit;
+import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
+import com.bitvalue.sdk.collab.modules.message.MessageInfo;
+import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
+import com.bitvalue.sdk.collab.utils.BackgroundTasks;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tencent.imsdk.v2.V2TIMConversation;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -503,6 +512,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
             public void onSucceed(HttpData<List<SaveTotalMsgApi>> result) {
                 super.onSucceed(result);
                 if (result.getCode() == 0) {
+                    //step1 组装消息
                     ToastUtil.toastShortMessage("发送成功");
                     CustomHealthMessage message = new CustomHealthMessage();
                     message.title = "健康消息";
@@ -512,7 +522,39 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
                     //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
                     message.setType("CustomHealthMessage");
                     message.setDescription("健康管理消息");
-                    EventBus.getDefault().post(message);
+
+                    //step1 分开群发单发消息
+                    if (mIds.size() == 0) {//单发消息
+                        EventBus.getDefault().post(message);
+                    } else {//群发消息
+                        for (int i = 0; i < mIds.size(); i++) {
+                            MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
+                            C2CChatManagerKit mC2CChatManager = C2CChatManagerKit.getInstance();
+                            ChatInfo chatInfo = new ChatInfo();
+                            chatInfo.setType(V2TIMConversation.V2TIM_C2C);
+                            chatInfo.setId(mIds.get(i) + "");
+//                        chatInfo.setChatName(child.userName);
+                            mC2CChatManager.setCurrentChatInfo(chatInfo);
+                            TUIKitListenerManager.getInstance().setMessageSender(mC2CChatManager);
+                            mC2CChatManager.sendMessage(info, false, new IUIKitCallBack() {
+                                @Override
+                                public void onSuccess(Object data) {
+                                    BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void onError(String module, int errCode, String errMsg) {
+                                    ToastUtil.toastLongMessage(errMsg);
+                                }
+                            });
+                        }
+                    }
+
+                    //step3 发送完成后关闭本页面
                     homeActivity.getSupportFragmentManager().popBackStack();
                 } else {
                     ToastUtil.toastShortMessage(result.getMessage());

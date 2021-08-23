@@ -288,7 +288,7 @@ public class HomeActivity extends AppActivity {
                 }
                 chatFragment = new ChatFragment();
 
-                Bundle bundle = new Bundle();//TODO 参数可改
+                Bundle bundle = new Bundle();
                 ChatInfo chatInfo = new ChatInfo();
                 chatInfo.setType(V2TIMConversation.V2TIM_C2C);
                 chatInfo.setId(child.userId + "");

@@ -38,11 +38,11 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
         this.activity = activity;
     }
 
-    public void setOnChildCheckListener(OnChildCheckListener onChildCheckListener){
+    public void setOnChildCheckListener(OnChildCheckListener onChildCheckListener) {
         this.onChildCheckListener = onChildCheckListener;
     }
 
-    public interface OnChildCheckListener{
+    public interface OnChildCheckListener {
         void onChildCheck(boolean isCheck, int childIndex, ClientsResultBean.UserInfoDTO child);
     }
 
@@ -69,7 +69,7 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
 //        final ClientsResultBean.UserInfoDTO child = ((ClientsResultBean.UserInfoDTO) group).getItems().get(childIndex);
         List<ClientsResultBean.UserInfoDTO> userInfo = ((ClientsResultBean) group).userInfo;
         ClientsResultBean.UserInfoDTO child = userInfo.get(childIndex);
-        holder.onBind(child, group,childIndex);
+        holder.onBind(child, group, childIndex);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +121,7 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
     }
 
     public static class ChildContentViewHolder extends ChildViewHolder {
-        private TextView name,tv_sex,tv_age,tv_date,tv_project_name;
+        private TextView name, tv_sex, tv_age, tv_date, tv_project_name;
         private ImageView img_head;
         private CheckBox cb_choose;
 
@@ -136,24 +136,26 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
             tv_project_name = itemView.findViewById(R.id.tv_project_name);
         }
 
-        public void onBind(ClientsResultBean.UserInfoDTO child, ExpandableGroup group,int childIndex) {
+        public void onBind(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex) {
             name.setText(child.userName);
             tv_sex.setText(child.userSex);
             tv_age.setText(child.userAge + "岁");
-            tv_date.setText(TimeUtils.getTime(child.beginTime,TimeUtils.YY_MM_DD_FORMAT_3));
+            tv_date.setText(TimeUtils.getTime(child.beginTime, TimeUtils.YY_MM_DD_FORMAT_3));
             tv_project_name.setText(child.goodsName);
 
-            if (child.isShowCheck){
+            if (child.isShowCheck) {
                 cb_choose.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 cb_choose.setVisibility(View.GONE);
             }
+
+            cb_choose.setChecked(child.isChecked);
 
             cb_choose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (null != onChildCheckListener){
-                        onChildCheckListener.onChildCheck(isChecked,childIndex,child);
+                    if (null != onChildCheckListener) {
+                        onChildCheckListener.onChildCheck(isChecked, childIndex, child);
                     }
                 }
             });

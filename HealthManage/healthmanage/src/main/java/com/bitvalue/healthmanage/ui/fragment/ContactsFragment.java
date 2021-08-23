@@ -2,11 +2,12 @@ package com.bitvalue.healthmanage.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,10 +37,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 //import butterknife.OnClick;
+import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
-public class ContactsFragment extends AppFragment implements CommonPopupWindow.ViewInterface {
+public class ContactsFragment extends AppFragment {
+    @BindView(R.id.layout_choose)
+    RelativeLayout layout_choose;
+
+    @BindView(R.id.tv_no_data)
+    TextView tv_no_data;
+
     private boolean is_need_toast;
     private RecyclerView contact_list;
     private ClientsRecyclerAdapter adapter;
@@ -59,7 +67,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
 
     public static ContactsFragment getInstance(boolean is_need_toast) {
         ContactsFragment contactsFragment = new ContactsFragment();
-        Bundle bundle = new Bundle();//TODO 参数可改
+        Bundle bundle = new Bundle();
         bundle.putBoolean("is_need_toast", is_need_toast);
         contactsFragment.setArguments(bundle);
         return contactsFragment;
@@ -68,7 +76,6 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
     @Override
     protected void initView() {
         homeActivity = (HomeActivity) getActivity();
-//        setOnClickListener(R.id.layout_nav);
 
         is_need_toast = getArguments().getBoolean("is_need_toast");
         contact_list = getView().findViewById(R.id.contact_list);
@@ -78,13 +85,11 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         contact_list.setLayoutManager(layoutManager);
 
-//        adapter = new RecyclerAdapter(getActivity(), contactsGroupBeans);
         adapter = new ClientsRecyclerAdapter(getActivity(), clientsProcessBeans);
         adapter.setOnChildItemClickListener(new ClientsRecyclerAdapter.OnChildItemClickListener() {
             @Override
             public void onChildItemClick(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex, int flatPosition) {
                 ClientsResultBean clientsResultBean = (ClientsResultBean) group;
-//                ToastUtils.show("父级是" + clientsResultBean.getTitle() + "###当前条目是" + child.userName);
 
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
             }
@@ -122,15 +127,42 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         });
         contact_list.setAdapter(adapter);
 
-        geMyClients();
+        getMyClients();
     }
 
-    @OnClick({R.id.layout_nav})
+    @OnClick({R.id.layout_nav, R.id.tv_send_msg, R.id.tv_no_data})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_nav:
-//                showPartPop(R.layout.pop_contacts);
                 showPop(R.layout.pop_contacts);
+                break;
+
+            case R.id.tv_no_data:
+                getMyClients();
+                break;
+
+            case R.id.tv_send_msg:
+                if (mIds.size() == 0) {
+                    ToastUtil.toastShortMessage("请选择群发用户");
+                    return;
+                } else {
+                    layout_choose.setVisibility(View.GONE);
+                    //跳转发送消息页面
+                    ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
+                    msgData.msgType = Constants.MSG_MULTI;
+                    msgData.userIds = mIds;
+                    homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG, msgData);
+
+                    //还要清除选择记录
+                    mIds.clear();
+                    for (int i = 0; i < clientsProcessBeans.size(); i++) {
+                        for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
+                            clientsProcessBeans.get(i).userInfo.get(j).isChecked = false;
+                            clientsProcessBeans.get(i).userInfo.get(j).isShowCheck = false;
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                }
                 break;
         }
     }
@@ -145,14 +177,6 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                     @Override
                     public void onDismiss() {
                         if (mPopupWindow != null) {
-                            for (int i = 0; i < clientsProcessBeans.size(); i++) {
-                                for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
-                                    clientsProcessBeans.get(i).userInfo.get(j).isChecked = false;
-                                    clientsProcessBeans.get(i).userInfo.get(j).isShowCheck = false;
-                                }
-                            }
-                            adapter.notifyDataSetChanged();
-                            mPopupWindow = null;
                         }
                     }
                 })
@@ -179,6 +203,8 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                     view.findViewById(R.id.tv_mul_msg).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+
+                            //step1 先将所有用户置为可选取
                             for (int i = 0; i < clientsProcessBeans.size(); i++) {
                                 for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
                                     clientsProcessBeans.get(i).userInfo.get(j).isChecked = false;
@@ -187,16 +213,17 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                             }
                             adapter.notifyDataSetChanged();
 
-
-                            if (mIds.size() == 0) {
-                                ToastUtil.toastShortMessage("请选择群发用户");
+                            //step2 展示确定按钮
+                            if (clientsProcessBeans.size() == 0){
+                                ToastUtil.toastShortMessage("暂无客户数据");
+                                //step3 关闭弹窗
+                                mPopupWindow.dismiss();
+                                mPopupWindow = null;
                                 return;
                             }
-                            ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
-                            msgData.msgType = Constants.MSG_MULTI;
-                            msgData.userIds = mIds;
-                            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG, msgData);
-                            mIds.clear();
+                            layout_choose.setVisibility(View.VISIBLE);
+
+                            //step3 关闭弹窗
                             mPopupWindow.dismiss();
                             mPopupWindow = null;
                         }
@@ -206,7 +233,7 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
         }
     };
 
-    private void geMyClients() {
+    private void getMyClients() {
         EasyHttp.post(this).api(new ClientsApi()).request(new HttpCallback<HttpData<ArrayList<ClientsResultBean>>>(this) {
             @Override
             public void onStart(Call call) {
@@ -218,7 +245,13 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
                 super.onSucceed(result);
                 clientsResultBeans = result.getData();
                 if (null == clientsResultBeans || clientsResultBeans.size() == 0) {
+                    ToastUtil.toastShortMessage("暂无客户数据");
+                    contact_list.setVisibility(View.GONE);
+                    tv_no_data.setVisibility(View.VISIBLE);
                     return;
+                } else {
+                    contact_list.setVisibility(View.VISIBLE);
+                    tv_no_data.setVisibility(View.GONE);
                 }
                 processData();
                 adapter.notifyDataSetChanged();
@@ -247,33 +280,20 @@ public class ContactsFragment extends AppFragment implements CommonPopupWindow.V
             newOne.group = clientsResultBean.group;
             clientsProcessBeans.add(newOne);
         }
-        Log.d("dd", clientsProcessBeans.toString());
+
+        //检测数据，无数据提高刷新按钮
+        if (clientsProcessBeans.size() == 0) {
+            ToastUtil.toastShortMessage("暂无客户数据");
+            contact_list.setVisibility(View.GONE);
+            tv_no_data.setVisibility(View.VISIBLE);
+        } else {
+            contact_list.setVisibility(View.VISIBLE);
+            tv_no_data.setVisibility(View.GONE);
+        }
     }
 
     @Override
     protected void initData() {
-
-    }
-
-    @Override
-    public void getChildView(View view, int layoutResId) {
-        switch (layoutResId) {
-            case R.layout.pop_contacts:
-                view.findViewById(R.id.tv_project).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ToastUtils.show("点击了计划");
-                    }
-                });
-
-                view.findViewById(R.id.tv_mul_msg).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ToastUtils.show("点击了群发");
-                    }
-                });
-                break;
-        }
 
     }
 }
