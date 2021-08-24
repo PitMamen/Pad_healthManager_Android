@@ -11,13 +11,13 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppAdapter;
 import com.bitvalue.healthmanage.app.AppApplication;
-import com.bitvalue.healthmanage.http.response.QuestionResultBean;
+import com.bitvalue.healthmanage.http.response.ArticleBean;
 
-public class QuestionAdapter extends AppAdapter<QuestionResultBean.ListDTO> {
+public class ArticleAdapter extends AppAdapter<ArticleBean> {
 
-    private QuestionResultBean.ListDTO questionBean;
+    private ArticleBean articleBean;
 
-    public QuestionAdapter(Context context) {
+    public ArticleAdapter(Context context) {
         super(context);
     }
 
@@ -27,26 +27,26 @@ public class QuestionAdapter extends AppAdapter<QuestionResultBean.ListDTO> {
         return new ViewHolder();
     }
 
-    private final class ViewHolder extends AppAdapter<QuestionResultBean.ListDTO>.ViewHolder {
+    private final class ViewHolder extends AppAdapter<ArticleBean>.ViewHolder {
 
         private final TextView tv_name,tv_use_status;
 
         private ViewHolder() {
-            super(R.layout.item_question);
+            super(R.layout.item_article);
             tv_name = findViewById(R.id.tv_name);
             tv_use_status = findViewById(R.id.tv_use_status);
             tv_use_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL,questionBean);
+                    AppApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL,articleBean);
                 }
             });
         }
 
         @Override
         public void onBindView(int position) {
-            questionBean = getItem(position);
-            tv_name.setText(questionBean.name);
+            articleBean = getItem(position);
+            tv_name.setText(articleBean.title);
         }
     }
 }

@@ -1,6 +1,10 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,10 +33,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
 public class AddQuestionFragment extends AppFragment {
+
+    @BindView(R.id.et_search)
+    EditText et_search;
+
     private HomeActivity homeActivity;
     private SmartRefreshLayout mRefreshLayout;
     private QuestionAdapter mAdapter;
@@ -55,6 +64,7 @@ public class AddQuestionFragment extends AppFragment {
 //        addVideoObject = (AddQuestionObject) getArguments().getSerializable(Constants.ADD_VIDEO_DATA);
 
         initList();
+        initSearchButton();
     }
 
     @OnClick({R.id.img_back})
@@ -66,6 +76,30 @@ public class AddQuestionFragment extends AppFragment {
                 }
                 break;
         }
+    }
+
+    private void initSearchButton() {
+        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (et_search.getText().toString().isEmpty()) {
+                        ToastUtil.toastShortMessage("请输入搜索内容");
+                        return true;
+                    }
+
+                    //关闭软键盘
+                    hideKeyboard(et_search);
+                    getVideosApi.keyWord = et_search.getText().toString();
+                    getVideosApi.start = 0;
+                    mAdapter.clearData();
+                    getQuestions();
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     private void initList() {
@@ -134,7 +168,6 @@ public class AddQuestionFragment extends AppFragment {
             @Override
             public void onSucceed(HttpData<QuestionResultBean> result) {
                 super.onSucceed(result);
-                //TODO 展示获取到的信息
                 if (result.getCode() == 0) {
                     if (getVideosApi.start == 1) {//下拉刷新,以及第一次加载
                         questionBeans = result.getData().list;

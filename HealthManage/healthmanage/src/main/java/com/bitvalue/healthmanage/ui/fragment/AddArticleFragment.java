@@ -19,7 +19,7 @@ import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.PaperBean;
 import com.bitvalue.healthmanage.http.response.SearchArticleResult;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.bitvalue.healthmanage.ui.adapter.PaperAdapter;
+import com.bitvalue.healthmanage.ui.adapter.ArticleAdapter;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.base.BaseAdapter;
 import com.hjq.http.EasyHttp;
@@ -54,8 +54,8 @@ public class AddArticleFragment extends AppFragment {
 
     private HomeActivity homeActivity;
     private SmartRefreshLayout mRefreshLayout;
-    private PaperAdapter mDailyAdapter;
-    private PaperAdapter mSearchAdapter;
+    private ArticleAdapter mDailyAdapter;
+    private ArticleAdapter mSearchAdapter;
     private WrapRecyclerView list_daily;
     private List<ArticleBean> dailyArticles = new ArrayList<>();
     private List<ArticleBean> searchArticles = new ArrayList<>();
@@ -73,7 +73,7 @@ public class AddArticleFragment extends AppFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_add_paper;
+        return R.layout.fragment_add_article;
     }
 
     @Override
@@ -110,7 +110,7 @@ public class AddArticleFragment extends AppFragment {
     private void initDailyList() {
         mRefreshLayout = (SmartRefreshLayout) findViewById(R.id.rl_status_refresh);
 
-        mDailyAdapter = new PaperAdapter(getAttachActivity());
+        mDailyAdapter = new ArticleAdapter(getAttachActivity());
         mDailyAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
@@ -159,7 +159,7 @@ public class AddArticleFragment extends AppFragment {
 
     private void initSearchList() {
 
-        mSearchAdapter = new PaperAdapter(getAttachActivity());
+        mSearchAdapter = new ArticleAdapter(getAttachActivity());
         mSearchAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {

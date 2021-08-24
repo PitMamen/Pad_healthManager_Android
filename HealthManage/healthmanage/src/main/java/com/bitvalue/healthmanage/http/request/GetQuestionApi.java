@@ -4,6 +4,7 @@ import com.bitvalue.healthmanage.Constants;
 import com.hjq.http.config.IRequestApi;
 
 public class GetQuestionApi implements IRequestApi {
+    public String keyWord;
     public int pageSize;
     public int start;
     @Override

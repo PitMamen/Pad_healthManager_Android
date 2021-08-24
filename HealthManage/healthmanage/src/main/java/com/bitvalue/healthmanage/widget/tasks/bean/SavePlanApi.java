@@ -54,6 +54,7 @@ public class SavePlanApi implements IRequestApi {
                 //科普文章属性
                 public String knowUrl;
                 public String knowContent;
+                public String articleId;
 
                 //健康提醒属性
                 public String remindName;

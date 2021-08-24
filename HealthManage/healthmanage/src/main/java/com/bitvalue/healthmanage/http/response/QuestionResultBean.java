@@ -1,5 +1,6 @@
 package com.bitvalue.healthmanage.http.response;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class QuestionResultBean {
@@ -7,7 +8,7 @@ public class QuestionResultBean {
     public List<ListDTO> list;
     public int total;
 
-    public static class ListDTO {
+    public static class ListDTO implements Serializable {
         public String describe;
         public int id;
         public String key;

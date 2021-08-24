@@ -1,6 +1,8 @@
 package com.bitvalue.healthmanage.http.response;
 
-public class ArticleBean {
+import java.io.Serializable;
+
+public class ArticleBean implements Serializable {
 
     public int articleId;
     public String articleType;

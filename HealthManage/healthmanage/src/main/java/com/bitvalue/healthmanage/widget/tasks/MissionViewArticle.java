@@ -151,13 +151,14 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
 //        templateTaskContentDTO.contentDetail.remindName = "科普文章";
         templateTaskContentDTO.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
         //填入的数据
-        templateTaskContentDTO.contentDetail.knowUrl = articleBeans.get(0).content;
-        templateTaskContentDTO.contentDetail.knowContent = articleBeans.get(0).title;
+//        templateTaskContentDTO.contentDetail.knowUrl = articleBeans.get(0).content;
+        templateTaskContentDTO.contentDetail.knowContent = articleBeans.get(0).content;
+        templateTaskContentDTO.contentDetail.articleId = articleBeans.get(0).articleId + "";
         return templateTaskContentDTO;
     }
 
     public boolean isDataReady() {
-        if (articleBeans.size() == 0){
+        if (articleBeans.size() == 0) {
             ToastUtil.toastShortMessage("请选择文章");
             return false;
         }

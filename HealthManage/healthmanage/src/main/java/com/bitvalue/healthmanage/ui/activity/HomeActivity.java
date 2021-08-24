@@ -17,15 +17,18 @@ import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.TestApi;
+import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.http.response.PlanListBean;
+import com.bitvalue.healthmanage.http.response.QuestionResultBean;
 import com.bitvalue.healthmanage.http.response.msg.AddVideoObject;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
 import com.bitvalue.healthmanage.ui.fragment.AddArticleFragment;
 import com.bitvalue.healthmanage.ui.fragment.AddQuestionFragment;
 import com.bitvalue.healthmanage.ui.fragment.AddVideoFragment;
+import com.bitvalue.healthmanage.ui.fragment.ArticleDetailFragment;
 import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
 import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragment;
@@ -36,6 +39,7 @@ import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragmentModify;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragmentDisplay;
+import com.bitvalue.healthmanage.ui.fragment.QuestionDetailFragment;
 import com.bitvalue.healthmanage.ui.settings.fragment.SettingsFragment;
 import com.bitvalue.healthmanage.util.DemoLog;
 import com.bitvalue.healthmanage.util.SharedPreManager;
@@ -431,6 +435,32 @@ public class HomeActivity extends AppActivity {
                 addVideoFragment = new AddVideoFragment();
                 addVideoFragment.setArguments(bundleMsg);
                 mapFragments.put(Constants.FRAGMENT_ADD_VIDEO, addVideoFragment);
+                break;
+
+            case Constants.FRAGMENT_QUESTION_DETAIL:
+                QuestionResultBean.ListDTO questionBean = (QuestionResultBean.ListDTO) object;
+                Bundle bundleQuest = new Bundle();
+                bundleQuest.putSerializable(Constants.QUESTION_DETAIL, questionBean);
+                QuestionDetailFragment questionDetailFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                questionDetailFragment = new QuestionDetailFragment();
+                questionDetailFragment.setArguments(bundleQuest);
+                mapFragments.put(Constants.FRAGMENT_QUESTION_DETAIL, questionDetailFragment);
+                break;
+
+            case Constants.FRAGMENT_ARTICLE_DETAIL:
+                ArticleBean articleBean = (ArticleBean) object;
+                Bundle bundleArticle = new Bundle();
+                bundleArticle.putSerializable(Constants.ARTICLE_DETAIL, articleBean);
+                ArticleDetailFragment articleDetailFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                articleDetailFragment = new ArticleDetailFragment();
+                articleDetailFragment.setArguments(bundleArticle);
+                mapFragments.put(Constants.FRAGMENT_ARTICLE_DETAIL, articleDetailFragment);
                 break;
         }
         Set<String> strings = mapFragments.keySet();

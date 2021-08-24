@@ -24,6 +24,10 @@ public class Constants {
     public static final String FRAGMENT_HEALTH_ANALYSE_DISPLAY = "fragment_health_analyse_display";
     public static final String FRAGMENT_HEALTH_PLAN_DETAIL = "fragment_health_plan_detail";
     public static final String FRAGMENT_ADD_VIDEO = "fragment_add_video";
+    public static final String FRAGMENT_QUESTION_DETAIL = "fragment_question_detail";
+    public static final String FRAGMENT_ARTICLE_DETAIL = "fragment_article_detail";
+
+
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";
     public static final String API_CONTENT = "/content-api";
@@ -38,6 +42,8 @@ public class Constants {
     public static String VIDEO_FOR_MSG = "video_for_msg";
 
     public static final String ADD_VIDEO_DATA = "add_video_data";
+    public static final String QUESTION_DETAIL = "question_detail";
+    public static final String ARTICLE_DETAIL = "article_detail";
     public static final String PLAN_ID = "plan_id";
 //    //自己的
 //    public static final int IM_APPId =1400548652;
