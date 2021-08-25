@@ -146,7 +146,7 @@
                         android:text=""
                         android:textColor="@color/text_main"
                         android:textCursorDrawable="@null"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/qb_px_8" />
 
                     <ImageView
                         android:id="@+id/img_choose_street"

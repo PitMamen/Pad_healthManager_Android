@@ -22,6 +22,7 @@ import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.healthmanage.util.signature.GenerateTestUserSig;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyConfig;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
@@ -105,7 +106,11 @@ public class LoginHealthActivity extends AppActivity {
 
                     @Override
                     public void onSucceed(HttpData<LoginBean> data) {
-                        super.onSucceed(data);
+                        super.onSucceed(data);//10004 密码错误
+                        if (data.getCode() == 10004) {
+                            ToastUtil.toastShortMessage("密码错误");
+                            return;
+                        }
                         // 更新 Token
 //                        EasyConfig.getInstance().addParam("token", data.getData().getToken());
                         LoginBean loginBean = data.getData();

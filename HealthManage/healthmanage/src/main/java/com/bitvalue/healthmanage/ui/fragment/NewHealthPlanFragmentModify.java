@@ -15,8 +15,8 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.request.DeleteTaskApi;
 import com.bitvalue.healthmanage.http.request.PlanDetailApi;
-import com.bitvalue.healthmanage.http.request.PlanListApi;
 import com.bitvalue.healthmanage.http.response.PlanListBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.util.InputMethodUtils;
@@ -28,7 +28,6 @@ import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -118,7 +117,9 @@ public class NewHealthPlanFragmentModify extends AppFragment {
             public void onSucceed(HttpData<SavePlanApi> result) {
                 super.onSucceed(result);
                 savePlanApi = result.getData();
-                initPlanData();
+                if (result.getCode() == 0) {
+                    initPlanData();
+                }
             }
 
             @Override
@@ -136,8 +137,33 @@ public class NewHealthPlanFragmentModify extends AppFragment {
         //任务列表
         for (int i = 0; i < savePlanApi.templateTask.size(); i++) {
             TaskView taskView = new TaskView(homeActivity);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             taskView.setTaskData(savePlanApi.templateTask.get(i));
-            layout_tasks_wrap.addView(taskView);
+            taskView.setTaskViewCallBack(new TaskView.TaskViewCallBack() {
+                @Override
+                public void onDeleteTask() {
+                    DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定删除任务吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
+                        @Override
+                        public void onPositive() {
+
+                            deleteTaskData(taskView.getTaskId(),taskView);
+                        }
+
+                        @Override
+                        public void onNegative() {
+
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onGetTaskData() {
+
+                }
+            });
+            taskView.setIsModify(true);
+            layout_tasks_wrap.addView(taskView,layoutParams);
             taskViews.add(taskView);
             sortTasks();
         }
@@ -221,7 +247,7 @@ public class NewHealthPlanFragmentModify extends AppFragment {
 
     private void checkAllDataAndSave() {
         //先初始化
-        savePlanApi.templateTask = new ArrayList<>();
+//        savePlanApi.templateTask = new ArrayList<>();
 
         //套餐计划名称
         if (et_name.getText().toString().isEmpty()) {
@@ -232,12 +258,13 @@ public class NewHealthPlanFragmentModify extends AppFragment {
         }
 
         //组装疾病类型
-        SavePlanApi.DiseaseDTO diseaseDTO = new SavePlanApi.DiseaseDTO();
-        diseaseDTO.diseaseCode = "S001";
-        diseaseDTO.diseaseName = "通用";
-        List<SavePlanApi.DiseaseDTO> diseaseDTOS = new ArrayList<>();
-        diseaseDTOS.add(diseaseDTO);
-        savePlanApi.disease = diseaseDTOS;
+//        SavePlanApi.DiseaseDTO diseaseDTO = new SavePlanApi.DiseaseDTO();
+//        diseaseDTO.diseaseCode = "S001";
+//        diseaseDTO.diseaseName = "通用";
+//        List<SavePlanApi.DiseaseDTO> diseaseDTOS = new ArrayList<>();
+//        diseaseDTOS.add(diseaseDTO);
+        savePlanApi.disease.get(0).diseaseName = "通用";
+        savePlanApi.disease.get(0).diseaseCode = "S001";
 
         //组装基准时间
         if (tv_base_time.getText().toString().isEmpty()) {
@@ -248,21 +275,21 @@ public class NewHealthPlanFragmentModify extends AppFragment {
         }
 
         //组装商品类型
-        SavePlanApi.GoodsInfoDTO goodsInfoDTO = new SavePlanApi.GoodsInfoDTO();
+//        SavePlanApi.GoodsInfoDTO goodsInfoDTO = new SavePlanApi.GoodsInfoDTO();
         if (et_intro.getText().toString().isEmpty()) {
             ToastUtil.toastShortMessage("请输入健康管理计划套餐介绍");
             return;
         }
-        goodsInfoDTO.goodsDescribe = et_intro.getText().toString();
-        goodsInfoDTO.goodsName = et_name.getText().toString();
-        goodsInfoDTO.status = isChecked ? "1" : "0";//1启用  0停用
-        savePlanApi.goodsInfo = goodsInfoDTO;
+        savePlanApi.goodsInfo.goodsDescribe = et_intro.getText().toString();
+        savePlanApi.goodsInfo.goodsName = et_name.getText().toString();
+        savePlanApi.goodsInfo.status = isChecked ? "1" : "3";//1启用  0停用
+//        savePlanApi.goodsInfo = goodsInfoDTO;
 
 
         //任务列表
         for (int i = 0; i < taskViews.size(); i++) {
             SavePlanApi.TemplateTaskDTO taskData = taskViews.get(i).getTaskData();
-            if (null == taskData){
+            if (null == taskData) {
                 return;
             }
             savePlanApi.templateTask.add(taskData);
@@ -304,6 +331,9 @@ public class NewHealthPlanFragmentModify extends AppFragment {
                         layout_tasks_wrap.removeView(taskView);
                         taskViews.remove(taskView);
                         sortTasks();
+
+                        //点击添加的view删除不需要调接口
+//                        deleteTaskData(taskView.getTaskId(), taskView);
                     }
 
                     @Override
@@ -322,6 +352,35 @@ public class NewHealthPlanFragmentModify extends AppFragment {
         taskViews.add(taskView);
         sortTasks();
         layout_tasks_wrap.addView(taskView, layoutParams);
+    }
+
+    private void deleteTaskData(String taskId, TaskView taskView) {
+        DeleteTaskApi deleteTaskApi = new DeleteTaskApi();
+        deleteTaskApi.templateId = savePlanApi.templateId;
+        deleteTaskApi.taskId = taskId;
+        EasyHttp.post(this).api(deleteTaskApi).request(new HttpCallback<HttpData<SavePlanApi>>(this) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<SavePlanApi> result) {
+                super.onSucceed(result);
+                if (result.getCode() == 0) {
+                    ToastUtil.toastShortMessage("删除任务成功");
+
+                    layout_tasks_wrap.removeView(taskView);
+                    taskViews.remove(taskView);
+                    sortTasks();
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
     }
 
     private void sortTasks() {

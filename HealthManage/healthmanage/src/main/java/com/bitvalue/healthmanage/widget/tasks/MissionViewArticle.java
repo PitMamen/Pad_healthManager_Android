@@ -172,6 +172,7 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
         if (null != templateTaskContentDTO.contentDetail.articleId) {
             articleBean.articleId = Integer.parseInt(templateTaskContentDTO.contentDetail.articleId);
         }
+        articleBean.content = templateTaskContentDTO.contentDetail.knowContent;
         articleBean.title = templateTaskContentDTO.contentDetail.title;
         articleBeans.add(articleBean);
         paperAdapter.setNewData(articleBeans);

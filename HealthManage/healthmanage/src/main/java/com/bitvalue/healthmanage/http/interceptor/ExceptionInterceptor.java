@@ -8,6 +8,7 @@ import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.util.SharedPreManager;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -84,8 +85,9 @@ public class ExceptionInterceptor implements Interceptor {
 
                 if (responseEntity != null) {
                     int result = responseEntity.getCode();
-                    // result为9时，接口需要登录
+                    // result为10001时，接口需要登录
                     if (result == 10001) {
+                        ToastUtil.toastShortMessage("您的账号已过期，请重新登录");
                         Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         AppApplication.instance().startActivity(intent);

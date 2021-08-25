@@ -50,6 +50,7 @@ public class SavePlanApi implements IRequestApi {
 
         public static class TemplateTaskContentDTO {
             public String taskType;
+            public String taskId;
             public String contentId;
             public String id;
             public ContentDetailDTO contentDetail;

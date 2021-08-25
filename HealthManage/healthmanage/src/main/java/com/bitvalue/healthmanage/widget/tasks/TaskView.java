@@ -1,6 +1,5 @@
 package com.bitvalue.healthmanage.widget.tasks;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -14,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
@@ -21,14 +21,17 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
+import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.request.DeleteMissionApi;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.util.InputMethodUtils;
 import com.bitvalue.healthmanage.util.UiUtil;
 import com.bitvalue.healthmanage.widget.DataUtil;
-import com.bitvalue.healthmanage.widget.StatusLayout;
 import com.bitvalue.healthmanage.widget.popupwindow.CommonPopupWindow;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.HttpCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +41,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class TaskView extends LinearLayout {
 
@@ -65,6 +69,7 @@ public class TaskView extends LinearLayout {
     private List<View> missionViews = new ArrayList<>();
     public SavePlanApi.TemplateTaskDTO templateTaskDTO = new SavePlanApi.TemplateTaskDTO();
     private TimePickerView pvTime;
+    private boolean isModify;
 
     public TaskView(Context context) {
         super(context);
@@ -111,7 +116,7 @@ public class TaskView extends LinearLayout {
                 })
                 .setType(new boolean[]{true, true, true, false, false, false})
                 .isDialog(true) //默认设置false ，内部实现将DecorView 作为它的父控件。
-                .addOnCancelClickListener(new View.OnClickListener() {
+                .addOnCancelClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Log.i("pvTime", "onCancelClickListener");
@@ -196,15 +201,15 @@ public class TaskView extends LinearLayout {
         }
     };
 
-    private void addMissionViewQuestion(){
+    private void addMissionViewQuestion() {
         addMissionViewQuestion(null);
     }
 
     private void addMissionViewQuestion(SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO) {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.topMargin = (int) homeActivity.getResources().getDimension(R.dimen.qb_px_10);
         MissionViewQuestion missionViewQuestion = new MissionViewQuestion(homeActivity);
-        if (null != templateTaskContentDTO){
+        if (null != templateTaskContentDTO) {
             missionViewQuestion.setMissionData(templateTaskContentDTO);
         }
         missionViewQuestion.setMissionViewCallBack(new MissionViewQuestion.MissionViewCallBack() {
@@ -213,8 +218,12 @@ public class TaskView extends LinearLayout {
                 DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定删除项目吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                     @Override
                     public void onPositive() {
-                        layout_mission_wrap.removeView(missionViewQuestion);
-                        missionViews.remove(missionViewQuestion);
+                        if (isModify) {
+                            deleteMissionData(templateTaskContentDTO.id, missionViewQuestion);
+                        } else {//修改的taskview需要调接口，新增的不需要
+                            layout_mission_wrap.removeView(missionViewQuestion);
+                            missionViews.remove(missionViewQuestion);
+                        }
                     }
 
                     @Override
@@ -235,15 +244,47 @@ public class TaskView extends LinearLayout {
         layout_mission_wrap.addView(missionViewQuestion, layoutParams);
     }
 
+    private void deleteMissionData(String id, View view) {
+        //templateTaskContentDTO.id,templateTaskContentDTO.taskId,
+        //templateTaskDTO
+        DeleteMissionApi deleteMissionApi = new DeleteMissionApi();
+        deleteMissionApi.templateId = templateTaskDTO.templateId;
+        deleteMissionApi.taskId = templateTaskDTO.taskId;
+        deleteMissionApi.id = id;
+        EasyHttp.post(homeActivity).api(deleteMissionApi).request(new HttpCallback<HttpData<SavePlanApi>>(homeActivity) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<SavePlanApi> result) {
+                super.onSucceed(result);
+                if (result.getCode() == 0) {
+                    ToastUtil.toastShortMessage("删除项目成功");
+                    layout_mission_wrap.removeView(view);
+                    missionViews.remove(view);
+                } else {
+                    ToastUtil.toastShortMessage("删除项目失败");
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
+    }
+
     private void addMissionViewArticle() {
         addMissionViewArticle(null);
     }
 
     private void addMissionViewArticle(SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO) {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.topMargin = (int) homeActivity.getResources().getDimension(R.dimen.qb_px_10);
         MissionViewArticle missionViewArticle = new MissionViewArticle(homeActivity);
-        if (templateTaskContentDTO != null){
+        if (templateTaskContentDTO != null) {
             missionViewArticle.setMissionData(templateTaskContentDTO);
         }
         missionViewArticle.setMissionViewCallBack(new MissionViewArticle.MissionViewCallBack() {
@@ -252,8 +293,12 @@ public class TaskView extends LinearLayout {
                 DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定删除项目吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                     @Override
                     public void onPositive() {
-                        layout_mission_wrap.removeView(missionViewArticle);
-                        missionViews.remove(missionViewArticle);
+                        if (isModify) {
+                            deleteMissionData(templateTaskContentDTO.id, missionViewArticle);
+                        } else {//修改的taskview需要调接口，新增的不需要
+                            layout_mission_wrap.removeView(missionViewArticle);
+                            missionViews.remove(missionViewArticle);
+                        }
                     }
 
                     @Override
@@ -278,10 +323,10 @@ public class TaskView extends LinearLayout {
     }
 
     private void addMissionViewRemind(SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO) {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.topMargin = (int) homeActivity.getResources().getDimension(R.dimen.qb_px_10);
         MissionViewRemind missionViewRemind = new MissionViewRemind(homeActivity);
-        if (templateTaskContentDTO != null){
+        if (templateTaskContentDTO != null) {
             missionViewRemind.setMissionData(templateTaskContentDTO);
         }
         missionViewRemind.setMissionViewCallBack(new MissionViewRemind.MissionViewCallBack() {
@@ -290,8 +335,12 @@ public class TaskView extends LinearLayout {
                 DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定删除项目吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                     @Override
                     public void onPositive() {
-                        layout_mission_wrap.removeView(missionViewRemind);
-                        missionViews.remove(missionViewRemind);
+                        if (isModify) {
+                            deleteMissionData(templateTaskContentDTO.id, missionViewRemind);
+                        } else {//修改的taskview需要调接口，新增的不需要
+                            layout_mission_wrap.removeView(missionViewRemind);
+                            missionViews.remove(missionViewRemind);
+                        }
                     }
 
                     @Override
@@ -312,7 +361,7 @@ public class TaskView extends LinearLayout {
     }
 
     private void addMissionViewAnalyse() {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.topMargin = (int) homeActivity.getResources().getDimension(R.dimen.qb_px_10);
         MissionViewAnalyse missionViewAnalyse = new MissionViewAnalyse(homeActivity);
         missionViewAnalyse.setMissionViewCallBack(new MissionViewAnalyse.MissionViewCallBack() {
@@ -438,6 +487,18 @@ public class TaskView extends LinearLayout {
                 addMissionViewRemind(templateTaskDTO.templateTaskContent.get(i));
             }
         }
+    }
+
+    public String getTaskId() {
+        return templateTaskDTO.taskId;
+    }
+
+    public void setIsModify(boolean isModify) {
+        this.isModify = isModify;
+    }
+
+    public boolean getIsModify() {
+        return isModify;
     }
 
     public interface TaskViewCallBack {

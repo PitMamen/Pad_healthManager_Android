@@ -20,6 +20,7 @@
         android:layout_marginLeft="@dimen/qb_px_5"
         android:layout_marginTop="@dimen/qb_px_3"
         android:text="6&quot;"
+        android:textSize="@dimen/qb_px_8"
         app:layout_constraintLeft_toRightOf="@id/audio_view"
         app:layout_constraintTop_toTopOf="parent" />
 
