@@ -57,8 +57,10 @@ public class QuestionDetailFragment extends AppFragment {
         homeActivity = (HomeActivity) getActivity();
         questionBean = (QuestionResultBean.ListDTO) getArguments().getSerializable(Constants.QUESTION_DETAIL);
 
-//        url = questionBean.questUrl;
-        url = "http://192.168.1.122/s/8a755f7c24ad49c9a2be6e6f79c3ee60";
+        //TODO 外网切内网
+        url = questionBean.questUrl.replace("218.77.104.74:8008", "192.168.1.122");
+//        url = "http://192.168.1.122/s/8a755f7c24ad49c9a2be6e6f79c3ee60";
+//        url = "http://218.77.104.74:8008/s/8a755f7c24ad49c9a2be6e6f79c3ee60";
         initWebView();
     }
 
@@ -113,7 +115,7 @@ public class QuestionDetailFragment extends AppFragment {
         });
 
         webView.loadUrl(url);
-        webView.setWebChromeClient(new WebChromeClient(){
+        webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onShowCustomView(View view, CustomViewCallback callback) {
                 super.onShowCustomView(view, callback);

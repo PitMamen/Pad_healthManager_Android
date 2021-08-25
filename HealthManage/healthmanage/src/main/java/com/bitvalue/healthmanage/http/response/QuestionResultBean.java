@@ -10,7 +10,7 @@ public class QuestionResultBean {
 
     public static class ListDTO implements Serializable {
         public String describe;
-        public int id;
+        public String id;
         public String key;
         public String name;
         public String questUrl;

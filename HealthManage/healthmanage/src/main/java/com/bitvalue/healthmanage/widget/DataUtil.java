@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
+
 /**
  * Created by Administrator on 2018/2/12.
  */
@@ -216,4 +218,73 @@ public class DataUtil {
         void onCancelCollectSuccess();
     }
 
+    public static SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO getNotNullData(SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO) {
+        SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO noNullData = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO();
+
+        if (templateTaskContentDTO.taskType!= null && !templateTaskContentDTO.taskType.isEmpty()) {
+            noNullData.taskType = templateTaskContentDTO.taskType;
+        }
+
+        if (templateTaskContentDTO.contentId!= null && !templateTaskContentDTO.contentId.isEmpty()) {
+            noNullData.contentId = templateTaskContentDTO.contentId;
+        }
+
+        if (templateTaskContentDTO.id!= null && !templateTaskContentDTO.id.isEmpty()) {
+            noNullData.id = templateTaskContentDTO.id;
+        }
+
+        if (templateTaskContentDTO.taskType!= null && !templateTaskContentDTO.taskType.isEmpty()) {
+            noNullData.taskType = templateTaskContentDTO.taskType;
+        }
+
+        noNullData.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
+        if (templateTaskContentDTO.contentDetail.id != null && !templateTaskContentDTO.contentDetail.id.isEmpty()) {
+            noNullData.contentDetail.id = templateTaskContentDTO.contentDetail.id;
+        }
+
+        if (templateTaskContentDTO.contentDetail.questName != null && !templateTaskContentDTO.contentDetail.questName.isEmpty()) {
+            noNullData.contentDetail.questName = templateTaskContentDTO.contentDetail.questName;
+        }
+
+        if (templateTaskContentDTO.contentDetail.questId != null && !templateTaskContentDTO.contentDetail.questId.isEmpty()) {
+            noNullData.contentDetail.questId = templateTaskContentDTO.contentDetail.questId;
+        }
+
+        if (templateTaskContentDTO.contentDetail.knowUrl != null && !templateTaskContentDTO.contentDetail.knowUrl.isEmpty()) {
+            noNullData.contentDetail.knowUrl = templateTaskContentDTO.contentDetail.knowUrl;
+        }
+
+        if (templateTaskContentDTO.contentDetail.knowContent != null && !templateTaskContentDTO.contentDetail.knowContent.isEmpty()) {
+            noNullData.contentDetail.knowContent = templateTaskContentDTO.contentDetail.knowContent;
+        }
+
+        if (templateTaskContentDTO.contentDetail.articleId != null && !templateTaskContentDTO.contentDetail.articleId.isEmpty()) {
+            noNullData.contentDetail.articleId = templateTaskContentDTO.contentDetail.articleId;
+        }
+
+        if (templateTaskContentDTO.contentDetail.title != null && !templateTaskContentDTO.contentDetail.title.isEmpty()) {
+            noNullData.contentDetail.title = templateTaskContentDTO.contentDetail.title;
+        }
+
+        if (templateTaskContentDTO.contentDetail.remindName != null && !templateTaskContentDTO.contentDetail.remindName.isEmpty()) {
+            noNullData.contentDetail.remindName = templateTaskContentDTO.contentDetail.remindName;
+        }
+
+        if (templateTaskContentDTO.contentDetail.remindContent != null && !templateTaskContentDTO.contentDetail.remindContent.isEmpty()) {
+            noNullData.contentDetail.remindContent = templateTaskContentDTO.contentDetail.remindContent;
+        }
+
+        if (templateTaskContentDTO.contentDetail.picList != null && !templateTaskContentDTO.contentDetail.picList.isEmpty()) {
+            noNullData.contentDetail.picList = templateTaskContentDTO.contentDetail.picList;
+        }
+
+        if (templateTaskContentDTO.contentDetail.voiceList != null && !templateTaskContentDTO.contentDetail.voiceList.isEmpty()) {
+            noNullData.contentDetail.voiceList = templateTaskContentDTO.contentDetail.voiceList;
+        }
+
+        if (templateTaskContentDTO.contentDetail.videoList != null && !templateTaskContentDTO.contentDetail.videoList.isEmpty()) {
+            noNullData.contentDetail.videoList = templateTaskContentDTO.contentDetail.videoList;
+        }
+        return noNullData;
+    }
 }

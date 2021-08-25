@@ -15,6 +15,8 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.request.PlanDetailApi;
+import com.bitvalue.healthmanage.http.request.PlanListApi;
 import com.bitvalue.healthmanage.http.response.PlanListBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.util.InputMethodUtils;
@@ -38,8 +40,8 @@ import okhttp3.Call;
 
 public class NewHealthPlanFragmentModify extends AppFragment {
 
-    @BindView(R.id.task_first)
-    TaskView task_first;
+//    @BindView(R.id.task_first)
+//    TaskView task_first;
 
     @BindView(R.id.et_name)
     EditText et_name;
@@ -67,40 +69,81 @@ public class NewHealthPlanFragmentModify extends AppFragment {
     @Override
     protected void initView() {
         planListBean = (PlanListBean) getArguments().getSerializable(Constants.PLAN_LIST_BEAN);
-        //TODO 获取详情
+        getPlanDetail();
 
         tv_base_time = getView().findViewById(R.id.tv_base_time);
         switch_button = getView().findViewById(R.id.switch_button);
         homeActivity = (HomeActivity) getActivity();
         initTimePick();
         initSwitchButton();
-        taskViews.add(task_first);
+//        taskViews.add(task_first);
         sortTasks();
-        task_first.setTaskViewCallBack(new TaskView.TaskViewCallBack() {
+//        task_first.setTaskViewCallBack(new TaskView.TaskViewCallBack() {
+//            @Override
+//            public void onDeleteTask() {
+//                DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定删除任务吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
+//                    @Override
+//                    public void onPositive() {
+//                        layout_tasks_wrap.removeView(task_first);
+//                        taskViews.remove(task_first);
+//                        sortTasks();
+//                    }
+//
+//                    @Override
+//                    public void onNegative() {
+//
+//                    }
+//                });
+//
+//
+//            }
+//
+//            @Override
+//            public void onGetTaskData() {
+//
+//            }
+//        });
+    }
+
+    private void getPlanDetail() {
+        PlanDetailApi planDetailApi = new PlanDetailApi();
+        planDetailApi.templateId = planListBean.templateId;
+        EasyHttp.post(this).api(planDetailApi).request(new HttpCallback<HttpData<SavePlanApi>>(this) {
             @Override
-            public void onDeleteTask() {
-                DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定删除任务吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
-                    @Override
-                    public void onPositive() {
-                        layout_tasks_wrap.removeView(task_first);
-                        taskViews.remove(task_first);
-                        sortTasks();
-                    }
-
-                    @Override
-                    public void onNegative() {
-
-                    }
-                });
-
-
+            public void onStart(Call call) {
+                super.onStart(call);
             }
 
             @Override
-            public void onGetTaskData() {
+            public void onSucceed(HttpData<SavePlanApi> result) {
+                super.onSucceed(result);
+                savePlanApi = result.getData();
+                initPlanData();
+            }
 
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
             }
         });
+    }
+
+    private void initPlanData() {
+        et_name.setText(savePlanApi.templateName);
+        tv_base_time.setText(savePlanApi.basetimeType);
+        et_intro.setText(savePlanApi.goodsInfo.goodsDescribe);
+
+        //任务列表
+        for (int i = 0; i < savePlanApi.templateTask.size(); i++) {
+            TaskView taskView = new TaskView(homeActivity);
+            taskView.setTaskData(savePlanApi.templateTask.get(i));
+            layout_tasks_wrap.addView(taskView);
+            taskViews.add(taskView);
+            sortTasks();
+        }
+
+        isChecked = savePlanApi.goodsInfo.status.equals("1") ? true : false;
+        switch_button.setChecked(isChecked);
     }
 
     private void initSwitchButton() {
@@ -219,6 +262,9 @@ public class NewHealthPlanFragmentModify extends AppFragment {
         //任务列表
         for (int i = 0; i < taskViews.size(); i++) {
             SavePlanApi.TemplateTaskDTO taskData = taskViews.get(i).getTaskData();
+            if (null == taskData){
+                return;
+            }
             savePlanApi.templateTask.add(taskData);
         }
 

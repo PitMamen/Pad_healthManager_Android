@@ -21,6 +21,7 @@ import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.PaperQuickAdapter;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
+import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -163,6 +164,17 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
             return false;
         }
         return true;
+    }
+
+    public void setMissionData(SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO) {
+        this.templateTaskContentDTO = DataUtil.getNotNullData(templateTaskContentDTO);
+        ArticleBean articleBean = new ArticleBean();
+        if (null != templateTaskContentDTO.contentDetail.articleId) {
+            articleBean.articleId = Integer.parseInt(templateTaskContentDTO.contentDetail.articleId);
+        }
+        articleBean.title = templateTaskContentDTO.contentDetail.title;
+        articleBeans.add(articleBean);
+        paperAdapter.setNewData(articleBeans);
     }
 
     public interface MissionViewCallBack {

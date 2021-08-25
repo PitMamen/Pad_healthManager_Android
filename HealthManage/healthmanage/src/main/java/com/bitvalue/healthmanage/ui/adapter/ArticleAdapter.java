@@ -29,24 +29,25 @@ public class ArticleAdapter extends AppAdapter<ArticleBean> {
 
     private final class ViewHolder extends AppAdapter<ArticleBean>.ViewHolder {
 
-        private final TextView tv_name,tv_use_status;
+        private final TextView tv_name, tv_use_status;
 
         private ViewHolder() {
             super(R.layout.item_article);
             tv_name = findViewById(R.id.tv_name);
             tv_use_status = findViewById(R.id.tv_use_status);
-            tv_use_status.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AppApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL,articleBean);
-                }
-            });
         }
 
         @Override
         public void onBindView(int position) {
             articleBean = getItem(position);
             tv_name.setText(articleBean.title);
+            tv_use_status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL, getData().get(position));
+//                    AppApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL, articleBean);
+                }
+            });
         }
     }
 }

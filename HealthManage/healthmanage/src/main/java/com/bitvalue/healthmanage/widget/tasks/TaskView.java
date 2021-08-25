@@ -196,10 +196,17 @@ public class TaskView extends LinearLayout {
         }
     };
 
-    private void addMissionViewQuestion() {
+    private void addMissionViewQuestion(){
+        addMissionViewQuestion(null);
+    }
+
+    private void addMissionViewQuestion(SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.topMargin = (int) homeActivity.getResources().getDimension(R.dimen.qb_px_10);
         MissionViewQuestion missionViewQuestion = new MissionViewQuestion(homeActivity);
+        if (null != templateTaskContentDTO){
+            missionViewQuestion.setMissionData(templateTaskContentDTO);
+        }
         missionViewQuestion.setMissionViewCallBack(new MissionViewQuestion.MissionViewCallBack() {
             @Override
             public void onDeleteMission() {
@@ -229,9 +236,16 @@ public class TaskView extends LinearLayout {
     }
 
     private void addMissionViewArticle() {
+        addMissionViewArticle(null);
+    }
+
+    private void addMissionViewArticle(SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.topMargin = (int) homeActivity.getResources().getDimension(R.dimen.qb_px_10);
         MissionViewArticle missionViewArticle = new MissionViewArticle(homeActivity);
+        if (templateTaskContentDTO != null){
+            missionViewArticle.setMissionData(templateTaskContentDTO);
+        }
         missionViewArticle.setMissionViewCallBack(new MissionViewArticle.MissionViewCallBack() {
             @Override
             public void onDeleteMission() {
@@ -260,9 +274,16 @@ public class TaskView extends LinearLayout {
     }
 
     private void addMissionViewRemind() {
+        addMissionViewRemind(null);
+    }
+
+    private void addMissionViewRemind(SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.topMargin = (int) homeActivity.getResources().getDimension(R.dimen.qb_px_10);
         MissionViewRemind missionViewRemind = new MissionViewRemind(homeActivity);
+        if (templateTaskContentDTO != null){
+            missionViewRemind.setMissionData(templateTaskContentDTO);
+        }
         missionViewRemind.setMissionViewCallBack(new MissionViewRemind.MissionViewCallBack() {
             @Override
             public void onDeleteMission() {
@@ -366,13 +387,13 @@ public class TaskView extends LinearLayout {
     }
 
     public SavePlanApi.TemplateTaskDTO getTaskData() {
-        if (et_first_mission.getText().toString().isEmpty()){
+        if (et_first_mission.getText().toString().isEmpty()) {
             ToastUtil.toastShortMessage("请输入任务名称");
             return null;
         }
         templateTaskDTO.taskName = et_first_mission.getText().toString();
 
-        if (tv_mission_time_choose.getText().toString().isEmpty()){
+        if (tv_mission_time_choose.getText().toString().isEmpty()) {
             ToastUtil.toastShortMessage("请选择任务执行时间");
             return null;
         }
@@ -385,6 +406,38 @@ public class TaskView extends LinearLayout {
             templateTaskDTO.templateTaskContent = missionData;
         }
         return templateTaskDTO;
+    }
+
+    public void setTaskData(SavePlanApi.TemplateTaskDTO templateTaskDTO) {
+        this.templateTaskDTO = templateTaskDTO;
+
+        et_first_mission.setText(templateTaskDTO.taskName);
+        tv_mission_time_choose.setText(templateTaskDTO.execTime);
+        setMissionData();
+    }
+
+    /**
+     * 获取单个任务的所有项目的数据
+     * <p>
+     * 先判断单个控件的数据是否为空，任一个控件的数据不完整，都返回null；
+     *
+     * @return
+     */
+    public void setMissionData() {
+        if (templateTaskDTO.templateTaskContent.size() == 0) {
+            return;
+        }
+
+        //planType   Quest   Remind  Knowledge   DrugGuide
+        for (int i = 0; i < templateTaskDTO.templateTaskContent.size(); i++) {
+            if (templateTaskDTO.templateTaskContent.get(i).taskType.equals("Knowledge")) {
+                addMissionViewArticle(templateTaskDTO.templateTaskContent.get(i));
+            } else if (templateTaskDTO.templateTaskContent.get(i).taskType.equals("Quest")) {
+                addMissionViewQuestion(templateTaskDTO.templateTaskContent.get(i));
+            } else if (templateTaskDTO.templateTaskContent.get(i).taskType.equals("Remind")) {
+                addMissionViewRemind(templateTaskDTO.templateTaskContent.get(i));
+            }
+        }
     }
 
     public interface TaskViewCallBack {

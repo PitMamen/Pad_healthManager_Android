@@ -3,7 +3,7 @@ package com.bitvalue.healthmanage.http.response;
 import java.io.Serializable;
 
 public class PlanListBean implements Serializable {
-    public int templateId;
+    public String templateId;
     public String templateName;
     public String basetimeType;
     public String userId;

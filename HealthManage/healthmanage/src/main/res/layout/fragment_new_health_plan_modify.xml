@@ -187,10 +187,10 @@
                 android:layout_marginTop="@dimen/qb_px_10"
                 android:orientation="vertical">
 
-                <com.bitvalue.healthmanage.widget.tasks.TaskView
-                    android:id="@+id/task_first"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+<!--                <com.bitvalue.healthmanage.widget.tasks.TaskView-->
+<!--                    android:id="@+id/task_first"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content" />-->
 
             </LinearLayout>
 
@@ -332,6 +332,7 @@
                     android:layout_height="@dimen/qb_px_20"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/qb_px_10"
+                    android:checked="false"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_intro" />
 

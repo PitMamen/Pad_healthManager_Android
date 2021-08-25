@@ -29,6 +29,7 @@ import com.bitvalue.healthmanage.ui.adapter.AudioAdapter;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
+import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
@@ -235,15 +236,6 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
         templateTaskContentDTO.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
         templateTaskContentDTO.contentDetail.remindName = "健康提醒";
         //填入的数据
-//        if (et_text_msg.getText().toString().isEmpty()) {
-//            ToastUtil.toastShortMessage("请输入提醒信息");
-//            //提示信息然后抛出异常，相当于判断数据是否ok
-//            try {
-//                throw new Exception("are you ok?");
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
         templateTaskContentDTO.contentDetail.remindContent = et_text_msg.getText().toString();
         if (audiosFinal.size() > 0) {
             templateTaskContentDTO.contentDetail.voiceList = getProcessString(audiosFinal);
@@ -278,6 +270,37 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 这里处理一下后台返回null的问题
+     *
+     * @param templateTaskContentDTO 输入数据
+     */
+    public void setMissionData(SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO) {
+        this.templateTaskContentDTO = DataUtil.getNotNullData(templateTaskContentDTO);
+//        this.templateTaskContentDTO.taskType = "";
+
+        et_text_msg.setText(templateTaskContentDTO.contentDetail.remindContent);
+
+        processAudios(templateTaskContentDTO.contentDetail.voiceList);
+    }
+
+    private void processAudios(String voiceList) {
+        if (null == voiceList || voiceList.isEmpty()) {
+            return;
+        }
+        String[] split = voiceList.split(",");
+        for (int i = 0; i < split.length; i++) {
+            UploadFileApi uploadFileApi = new UploadFileApi();
+            uploadFileApi.fileLinkUrl = split[i];
+
+            //TODO 外网切内网
+            split[i] = split[i].replace("218.77.104.74:8008", "192.168.1.122");
+            uploadFileApi.path = split[i];
+            mUploadedAudios.add(uploadFileApi);
+        }
+        adapter.setNewData(mUploadedAudios);
     }
 
     public interface MissionViewCallBack {

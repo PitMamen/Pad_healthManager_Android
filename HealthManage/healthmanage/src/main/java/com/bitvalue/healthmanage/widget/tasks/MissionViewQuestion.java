@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.PaperBean;
 import com.bitvalue.healthmanage.http.response.QuestionResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.QuestionQuickAdapter;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
+import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -115,7 +117,7 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
     public void onEvent(QuestionResultBean.ListDTO questionBean) {
         questionBeans.add(questionBean);
 //        paperAdapter.notifyDataSetChanged();//TODO 刷新数据
-        questions.add(questionBean.id + "");
+        questions.add(questionBean.id);
         questionQuickAdapter.setNewData(questionBeans);
     }
 
@@ -148,8 +150,8 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
 //        templateTaskContentDTO.contentDetail.remindName = "健康问卷";
         templateTaskContentDTO.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
         //填入的数据
-        templateTaskContentDTO.contentDetail.questName = questionBeans.get(0).name;//TODO
-        templateTaskContentDTO.contentDetail.questId = questionBeans.get(0).id + "";//TODO
+        templateTaskContentDTO.contentDetail.questName = questionBeans.get(0).name;
+        templateTaskContentDTO.contentDetail.questId = questionBeans.get(0).key;
         return templateTaskContentDTO;
     }
 
@@ -159,6 +161,15 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
             return false;
         }
         return true;
+    }
+
+    public void setMissionData(SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO) {
+        this.templateTaskContentDTO = DataUtil.getNotNullData(templateTaskContentDTO);
+        QuestionResultBean.ListDTO listDTO = new QuestionResultBean.ListDTO();
+        listDTO.name = templateTaskContentDTO.contentDetail.questName;
+        listDTO.id = templateTaskContentDTO.contentDetail.questId;
+        questionBeans.add(listDTO);
+        questionQuickAdapter.setNewData(questionBeans);
     }
 
     public interface MissionViewCallBack {

@@ -71,9 +71,8 @@ public class HealthPlanFragment extends AppFragment {
         mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
-                //TODO 修改计划
-//                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_MODIFY,planListBeans.get(position));
-                turnData(position);
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_MODIFY,planListBeans.get(position));
+//                turnData(position);
             }
         });
         list_my_plans.setAdapter(mAdapter);
