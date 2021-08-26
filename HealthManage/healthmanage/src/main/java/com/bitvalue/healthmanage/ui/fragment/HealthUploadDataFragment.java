@@ -1,26 +1,20 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
-import com.bitvalue.healthmanage.http.request.SaveAnalyseApi;
 import com.bitvalue.healthmanage.http.request.TaskDetailApi;
 import com.bitvalue.healthmanage.http.response.TaskDetailBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.media.ImagePreviewActivity;
-import com.bitvalue.healthmanage.util.TimeUtils;
 import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomMessage;
-import com.bitvalue.sdk.collab.modules.message.MessageInfo;
-import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
-import com.google.gson.Gson;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 
@@ -28,7 +22,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -148,7 +141,7 @@ public class HealthUploadDataFragment extends AppFragment implements BGANinePhot
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(CustomMessage message) {//不用区分类型，全部直接转换成json发送消息出去
-        if (message instanceof CustomAnalyseMessage) {//TODO 处理健康评估自定义消息
+        if (message instanceof CustomAnalyseMessage) {
             backPress();
         }
     }

@@ -16,6 +16,7 @@ public class CustomHealthPlanMessage extends CustomMessage {
     public String jzlb;
     public String cbzd;
     public String jkgl;
+    public String goodsId;
 
     //:"","cbzd":"","jkgl":"高血压康复套餐1"}"
 }

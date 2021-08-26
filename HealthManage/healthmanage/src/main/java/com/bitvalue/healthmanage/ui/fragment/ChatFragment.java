@@ -264,16 +264,6 @@ public class ChatFragment extends AppFragment {
                 msgData.userIds = new ArrayList<>();
                 msgData.userIds.add(mChatInfo.getId());
                 homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_SEND_MSG, msgData);
-                // TODO 模拟自定义消息
-//                CustomHealthMessage message = new CustomHealthMessage();
-//                message.msgDetailId = "111";
-//                message.msgText = "这是健康消息";
-//                message.msgType = "多个消息种类的消息";
-//                message.setType("CustomHealthMessage");
-//                message.setDescription("健康管理消息");
-//
-//                MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
-//                mChatLayout.sendMessage(info, false);
             }
         });
     }
@@ -287,16 +277,6 @@ public class ChatFragment extends AppFragment {
     public void onEvent(CustomMessage message) {//不用区分类型，全部直接转换成json发送消息出去
         MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
         mChatLayout.sendMessage(info, false);
-
-//        if (message instanceof CustomHealthMessage) {//处理健康消息自定义消息
-//            MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
-//            mChatLayout.sendMessage(info, false);
-//        }
-//
-//        if (message instanceof CustomAnalyseMessage) {//TODO 处理健康评估自定义消息
-//            MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
-//            mChatLayout.sendMessage(info, false);
-//        }
     }
 
 

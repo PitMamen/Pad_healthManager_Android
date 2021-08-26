@@ -6,20 +6,31 @@ import android.widget.TextView;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.app.AppApplication;
+import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.request.GetPlanIdApi;
+import com.bitvalue.healthmanage.http.request.TaskDetailApi;
+import com.bitvalue.healthmanage.http.response.TaskDetailBean;
+import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
+import com.bitvalue.healthmanage.ui.fragment.HealthUploadDataFragment;
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKitImpl;
-import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthPlanMessage;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.MessageLayout;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.HttpCallback;
 
 import java.util.ArrayList;
+
+import okhttp3.Call;
 
 public class CustomHealthPlanMessageController {
 
     private static final String TAG = CustomHealthPlanMessageController.class.getSimpleName();
+    private static HomeActivity homeActivity;
 
     public static void onDraw(ICustomMessageViewGroup parent, final CustomHealthPlanMessage data, final int position, final MessageLayout.OnItemLongClickListener onItemLongClickListener, final MessageInfo info) {
 
@@ -49,17 +60,12 @@ public class CustomHealthPlanMessageController {
         tv_analyse.setText("初步诊断：" + data.cbzd);
         tv_plan.setText("健康管理：" + data.jkgl);
 
-
+        homeActivity = ((AppApplication) view.getContext()).getHomeActivity();
         view.setClickable(true);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {//TODO
-//                AppApplication appApplication = (AppApplication) view.getContext();
-//                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
-////                msgData.userIds = new ArrayList<>();
-////                msgData.userIds.add(mChatInfo.getId());//不是必填参数
-//                msgData.id = data.pl + "";//这里id设置为 planId
-//                appApplication.getHomeActivity().switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_PLAN_DETAIL, msgData);
+            public void onClick(View v) {
+                getDetail(data);
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -69,6 +75,38 @@ public class CustomHealthPlanMessageController {
                     onItemLongClickListener.onMessageLongClick(v, position, info);
                 }
                 return false;
+            }
+        });
+    }
+
+    private static void getDetail(CustomHealthPlanMessage data) {
+        GetPlanIdApi getPlanIdApi = new GetPlanIdApi();
+        getPlanIdApi.goodsId = data.goodsId;
+        getPlanIdApi.userId = data.userId;
+        EasyHttp.get(homeActivity).api(getPlanIdApi).request(new HttpCallback<HttpData<String>>(homeActivity) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<String> result) {
+                super.onSucceed(result);
+                if (result.getCode() == 0) {
+                    String planId = result.getData();
+                    ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
+                    msgData.userIds = new ArrayList<>();
+                    msgData.userIds.add(data.userId);
+                    msgData.id = planId + "";//这里id设置为 planId
+                    homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_PLAN_DETAIL, msgData);
+                } else {
+                    ToastUtil.toastShortMessage(result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
             }
         });
     }
