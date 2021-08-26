@@ -35,6 +35,7 @@ import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragmentDisplay;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanDetailFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanFragment;
+import com.bitvalue.healthmanage.ui.fragment.HealthUploadDataFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragmentModify;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
@@ -45,6 +46,7 @@ import com.bitvalue.healthmanage.util.DemoLog;
 import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
+import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
@@ -393,6 +395,20 @@ public class HomeActivity extends AppActivity {
                 msgBundleAnalyse.putStringArrayList(Constants.MSG_IDS, msgDataAnalyse.userIds);//传入消息接受者的userId
                 healthAnalyseFragment.setArguments(msgBundleAnalyse);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_ANALYSE, healthAnalyseFragment);
+                break;
+
+            case Constants.FRAGMENT_USER_DATA:
+                HealthUploadDataFragment healthUploadDataFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                healthUploadDataFragment = new HealthUploadDataFragment();
+
+                Bundle bundleData = new Bundle();
+                CustomHealthDataMessage customHealthDataMessage = (CustomHealthDataMessage) object;
+                bundleData.putSerializable(Constants.DATA_MSG,customHealthDataMessage);
+                healthUploadDataFragment.setArguments(bundleData);
+                mapFragments.put(Constants.FRAGMENT_USER_DATA, healthUploadDataFragment);
                 break;
 
             case Constants.FRAGMENT_HEALTH_ANALYSE_DISPLAY:

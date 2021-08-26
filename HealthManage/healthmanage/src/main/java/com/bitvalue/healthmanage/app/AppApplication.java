@@ -197,6 +197,7 @@ public final class AppApplication extends Application {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(20000L, TimeUnit.MILLISECONDS)
                 .readTimeout(20000L, TimeUnit.MILLISECONDS)
+//                .writeTimeout(20000L, TimeUnit.MILLISECONDS)
                 .addInterceptor(new LoggerInterceptor("OkHttp", true))
                 .addInterceptor(new ExceptionInterceptor())
                 //其他配置

@@ -1,6 +1,8 @@
 package com.bitvalue.sdk.collab.helper;
 
-public class CustomHealthDataMessage extends CustomMessage {
+import java.io.Serializable;
+
+public class CustomHealthDataMessage extends CustomMessage implements Serializable {
 //    public String msgText;
 //    public String title;
 //    public String content;
@@ -8,6 +10,7 @@ public class CustomHealthDataMessage extends CustomMessage {
 
 
     public String userId;
+    public String contentId;
     public String cbzd;
     public String dept;
     public String jzlx;

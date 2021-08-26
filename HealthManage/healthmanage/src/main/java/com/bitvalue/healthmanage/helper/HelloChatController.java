@@ -202,8 +202,6 @@ public class HelloChatController implements TUIChatControllerListener {
                         CustomAnalyseMessage customAnalyseMessage = new Gson().fromJson(dataJson, CustomAnalyseMessage.class);
                         if (customAnalyseMessage != null) {
                             if (parent instanceof MessageBaseHolder) {
-                                //TODO  CustomHelloTIMUIController 改成 CustomHealthMessageController
-//                                CustomHelloTIMUIController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                                 CustomAnalyseMessageController.onDraw(parent, customAnalyseMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                             }
                         }
@@ -212,7 +210,6 @@ public class HelloChatController implements TUIChatControllerListener {
                         CustomHealthPlanMessage customHealthPlanMessage = new Gson().fromJson(dataJson, CustomHealthPlanMessage.class);
                         if (customHealthPlanMessage != null) {
                             if (parent instanceof MessageBaseHolder) {
-//                                CustomHelloTIMUIController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                                 CustomHealthPlanMessageController.onDraw(parent, customHealthPlanMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                             }
                         }
@@ -222,7 +219,6 @@ public class HelloChatController implements TUIChatControllerListener {
                         CustomHealthDataMessage customHealthDataMessage = new Gson().fromJson(dataJson, CustomHealthDataMessage.class);
                         if (customHealthDataMessage != null) {
                             if (parent instanceof MessageBaseHolder) {
-//                                CustomHelloTIMUIController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                                 CustomHealthDataMessageController.onDraw(parent, customHealthDataMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                             }
                         }

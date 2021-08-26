@@ -26,11 +26,13 @@ public class Constants {
     public static final String FRAGMENT_ADD_VIDEO = "fragment_add_video";
     public static final String FRAGMENT_QUESTION_DETAIL = "fragment_question_detail";
     public static final String FRAGMENT_ARTICLE_DETAIL = "fragment_article_detail";
-
+    public static final String FRAGMENT_USER_DATA = "fragment_user_data";
 
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";
     public static final String API_CONTENT = "/content-api";
+
+    public static final String DATA_MSG = "data_msg";
     public static final String MSG_SINGLE = "msg_single";
     public static final String MSG_MULTI = "msg_multi";
     public static final String MSG_TYPE = "msg_type";

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_50"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="@dimen/dp_10"
+            android:layout_height="@dimen/qb_px_20"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/qb_px_15"
+            android:scaleType="fitCenter"
+            android:src="@drawable/nav_icon_back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:text="患者资料上传"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/qb_px_12"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_gray"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/qb_px_15"
+            android:paddingTop="@dimen/qb_px_10">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_text_analyse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="基本情况"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_hospital_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="就诊医院:"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
+
+                <TextView
+                    android:id="@+id/tv_hospital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_3"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="长号医院"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_hospital_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
+
+                <TextView
+                    android:id="@+id/tv_time_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_170"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="就诊时间:"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_hospital_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_3"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="2021.7.5"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_time_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
+
+
+                <TextView
+                    android:id="@+id/tv_type_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="就诊类别:"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_hospital_notice" />
+
+                <TextView
+                    android:id="@+id/tv_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_3"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="门诊"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_hospital_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_hospital_notice" />
+
+                <TextView
+                    android:id="@+id/tv_result_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_170"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="初步诊断:"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_hospital_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_hospital_notice" />
+
+                <TextView
+                    android:id="@+id/tv_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_3"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="无明显病变"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_time_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_hospital_notice" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--        发送时间-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_10">
+
+                <TextView
+                    android:id="@+id/tv_send_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="就诊文书"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
+                    android:id="@+id/npl_item_moment_photos"
+                    style="@style/MatchWrap"
+                    android:layout_marginTop="@dimen/qb_px_7"
+                    app:bga_npl_itemCornerRadius="0dp"
+                    app:bga_npl_itemSpanCount="5"
+                    app:bga_npl_itemWhiteSpacing="@dimen/qb_px_4"
+                    app:bga_npl_itemWidth="@dimen/qb_px_50"
+                    app:bga_npl_otherWhiteSpacing="@dimen/qb_px_64"
+                    app:bga_npl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"
+                    app:bga_npl_showAsLargeWhenOnlyOne="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_send_time" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:layout_marginBottom="@dimen/qb_px_10">
+
+                <TextView
+                    android:id="@+id/tv_send_analyse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_blue_dark"
+                    android:paddingHorizontal="@dimen/qb_px_30"
+                    android:paddingVertical="@dimen/qb_px_5"
+                    android:text="健康评估"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_10" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

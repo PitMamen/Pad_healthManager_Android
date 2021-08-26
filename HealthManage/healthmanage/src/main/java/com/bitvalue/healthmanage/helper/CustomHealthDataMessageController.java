@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bitvalue.healthmanage.Constants;
+import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKitImpl;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
@@ -47,13 +49,9 @@ public class CustomHealthDataMessageController {
         view.setClickable(true);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {//TODO
-//                AppApplication appApplication = (AppApplication) view.getContext();
-//                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
-////                msgData.userIds = new ArrayList<>();
-////                msgData.userIds.add(mChatInfo.getId());//不是必填参数
-//                msgData.id = data.pl + "";//这里id设置为 planId
-//                appApplication.getHomeActivity().switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_PLAN_DETAIL, msgData);
+            public void onClick(View v) {
+                AppApplication appApplication = (AppApplication) view.getContext();
+                appApplication.getHomeActivity().switchSecondFragment(Constants.FRAGMENT_USER_DATA, data);
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {
