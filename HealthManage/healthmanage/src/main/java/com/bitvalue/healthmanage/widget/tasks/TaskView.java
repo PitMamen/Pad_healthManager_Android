@@ -27,6 +27,7 @@ import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.util.InputMethodUtils;
 import com.bitvalue.healthmanage.util.UiUtil;
 import com.bitvalue.healthmanage.widget.DataUtil;
+import com.bitvalue.healthmanage.widget.TimePeriodView;
 import com.bitvalue.healthmanage.widget.popupwindow.CommonPopupWindow;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
@@ -68,8 +69,8 @@ public class TaskView extends LinearLayout {
     private CommonPopupWindow popupWindow;
     private List<View> missionViews = new ArrayList<>();
     public SavePlanApi.TemplateTaskDTO templateTaskDTO = new SavePlanApi.TemplateTaskDTO();
-    private TimePickerView pvTime;
     private boolean isModify;
+    private String mDayCount;
 
     public TaskView(Context context) {
         super(context);
@@ -95,39 +96,6 @@ public class TaskView extends LinearLayout {
         homeActivity = (HomeActivity) context;
         View.inflate(context, R.layout.layout_task, this);
         ButterKnife.bind(this);
-        initTimePick();
-    }
-
-    private void initTimePick() {
-        //初始化时间选择器
-        pvTime = new TimePickerBuilder(homeActivity, new OnTimeSelectListener() {
-            @Override
-            public void onTimeSelect(Date date, View v) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                simpleDateFormat.format(date);
-                tv_mission_time_choose.setText(simpleDateFormat.format(date).substring(0, 11));
-            }
-        })
-                .setTimeSelectChangeListener(new OnTimeSelectChangeListener() {
-                    @Override
-                    public void onTimeSelectChanged(Date date) {
-                        Log.i("pvTime", "onTimeSelectChanged");
-                    }
-                })
-                .setType(new boolean[]{true, true, true, false, false, false})
-                .isDialog(true) //默认设置false ，内部实现将DecorView 作为它的父控件。
-                .addOnCancelClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Log.i("pvTime", "onCancelClickListener");
-                    }
-                })
-//                .setRangDate(new GregorianCalendar(1900, 1, 1), Calendar.getInstance())
-                .setItemVisibleCount(5) //若设置偶数，实际值会加1（比如设置6，则最大可见条目为7）
-                .setLineSpacingMultiplier(2.0f)
-                .isAlphaGradient(true)
-                .build();
-
     }
 
     @OnClick({R.id.tv_delete_mission, R.id.layout_add_mission, R.id.tv_mission_time_choose})
@@ -142,7 +110,7 @@ public class TaskView extends LinearLayout {
                 showFullPop(R.layout.choose_mission);
                 break;
             case R.id.tv_mission_time_choose:
-                pvTime.show();
+                showFullPop(R.layout.layout_choose_time);
                 InputMethodUtils.hideSoftInput(homeActivity);
                 break;
         }
@@ -170,6 +138,19 @@ public class TaskView extends LinearLayout {
                                 view.findViewById(R.id.layout_articles).setOnClickListener(onClickListener);
                                 view.findViewById(R.id.layout_reminds).setOnClickListener(onClickListener);
                                 view.findViewById(R.id.layout_analyse).setOnClickListener(onClickListener);
+                                break;
+                            case R.layout.layout_choose_time:
+                                TimePeriodView timePeriodView = view.findViewById(R.id.tp_view);
+                                timePeriodView.setGetTimeCallBack(new TimePeriodView.GetTimeCallBack() {
+                                    @Override
+                                    public void onGetTime(String day, String str) {
+                                        tv_mission_time_choose.setText(day + "天后");
+                                        mDayCount = day;
+                                        if (null != popupWindow) {
+                                            popupWindow.dismiss();
+                                        }
+                                    }
+                                });
                                 break;
                         }
                     }
@@ -446,7 +427,7 @@ public class TaskView extends LinearLayout {
             ToastUtil.toastShortMessage("请选择任务执行时间");
             return null;
         }
-        templateTaskDTO.execTime = tv_mission_time_choose.getText().toString();
+        templateTaskDTO.execTime = mDayCount + "";
 
         List<SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO> missionData = getMissionData();
         if (null == missionData) {
@@ -461,7 +442,8 @@ public class TaskView extends LinearLayout {
         this.templateTaskDTO = templateTaskDTO;
 
         et_first_mission.setText(templateTaskDTO.taskName);
-        tv_mission_time_choose.setText(templateTaskDTO.execTime);
+        mDayCount = templateTaskDTO.execTime;
+        tv_mission_time_choose.setText(templateTaskDTO.execTime + "天后");
         setMissionData();
     }
 

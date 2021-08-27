@@ -12,9 +12,11 @@ import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.GetPlanDetailApi;
 import com.bitvalue.healthmanage.http.request.SearchArticleApi;
+import com.bitvalue.healthmanage.http.request.TaskDetailApi;
 import com.bitvalue.healthmanage.http.response.PlanBean;
 import com.bitvalue.healthmanage.http.response.PlanDetailResult;
 import com.bitvalue.healthmanage.http.response.SearchArticleResult;
+import com.bitvalue.healthmanage.http.response.TaskDetailBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.HealthPlanAdapter;
 import com.bitvalue.healthmanage.ui.adapter.HealthPlanDetailAdapter;
@@ -44,7 +46,7 @@ public class HealthPlanDetailFragment extends AppFragment {
     @BindView(R.id.tv_join_time)
     TextView tv_join_time;
 
-//    private SmartRefreshLayout mRefreshLayout;
+    //    private SmartRefreshLayout mRefreshLayout;
     private HealthPlanDetailAdapter mAdapter;
     private WrapRecyclerView list_health_plan;
     private ArrayList<String> mIds;
@@ -67,7 +69,7 @@ public class HealthPlanDetailFragment extends AppFragment {
         initList();
     }
 
-    @OnClick({ R.id.img_back})
+    @OnClick({R.id.img_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
@@ -90,7 +92,20 @@ public class HealthPlanDetailFragment extends AppFragment {
         mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
-
+                PlanDetailResult.UserPlanDetailsDTO userPlanDetailsDTO = userPlanDetails.get(position);
+                //planType   Quest   Remind  Knowledge   DrugGuide
+                //健康计划类型【Evaluate：健康体检及评估 Quest：随访跟踪 DrugGuide：用药指导 Knowledge：健康科普 Remind：健康提醒 OutsideInformation：院外资料】
+                switch (userPlanDetailsDTO.planType) {
+                    case "Quest":
+                        getQuestDetail(userPlanDetailsDTO);
+                        break;
+                    case "Remind":
+                        break;
+                    case "Knowledge":
+                        break;
+                    case "DrugGuide":
+                        break;
+                }
             }
         });
         list_health_plan.setAdapter(mAdapter);
@@ -128,6 +143,34 @@ public class HealthPlanDetailFragment extends AppFragment {
         mAdapter.setData(userPlanDetails);//TODO 获取数据
 
         getPlanData();
+    }
+
+    private void getQuestDetail(PlanDetailResult.UserPlanDetailsDTO userPlanDetailsDTO) {
+        TaskDetailApi taskDetailApi = new TaskDetailApi();
+        taskDetailApi.contentId = userPlanDetailsDTO.contentId + "";
+        taskDetailApi.planType = userPlanDetailsDTO.planType;
+        taskDetailApi.userId = mIds.get(0);
+        EasyHttp.get(this).api(taskDetailApi).request(new HttpCallback<HttpData<TaskDetailBean>>(this) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<TaskDetailBean> result) {
+                super.onSucceed(result);
+                if (result.getCode() == 0) {
+                    //TODO 处理结果
+                } else {
+                    ToastUtil.toastShortMessage(result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
     }
 
     private void getPlanData() {

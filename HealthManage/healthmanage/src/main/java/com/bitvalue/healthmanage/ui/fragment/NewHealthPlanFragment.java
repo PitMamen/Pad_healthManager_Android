@@ -1,6 +1,8 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -12,13 +14,17 @@ import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.response.RefreshPlansObj;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.util.InputMethodUtils;
+import com.bitvalue.healthmanage.util.UiUtil;
 import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.healthmanage.widget.SwitchButton;
+import com.bitvalue.healthmanage.widget.TimePeriodView;
+import com.bitvalue.healthmanage.widget.popupwindow.CommonPopupWindow;
 import com.bitvalue.healthmanage.widget.tasks.TaskView;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
@@ -51,12 +57,13 @@ public class NewHealthPlanFragment extends AppFragment {
     LinearLayout layout_tasks_wrap;
 
     private TextView tv_base_time;
-    private TimePickerView pvTime;
     private SwitchButton switch_button;
     private HomeActivity homeActivity;
     private List<TaskView> taskViews = new ArrayList<>();
     private SavePlanApi savePlanApi = new SavePlanApi();
     private boolean isChecked;
+    private CommonPopupWindow popupWindow;
+    private String mDayCount;
 
     @Override
     protected int getLayoutId() {
@@ -68,7 +75,6 @@ public class NewHealthPlanFragment extends AppFragment {
         tv_base_time = getView().findViewById(R.id.tv_base_time);
         switch_button = getView().findViewById(R.id.switch_button);
         homeActivity = (HomeActivity) getActivity();
-        initTimePick();
         initSwitchButton();
         taskViews.add(task_first);
         sortTasks();
@@ -110,38 +116,6 @@ public class NewHealthPlanFragment extends AppFragment {
         });
     }
 
-    private void initTimePick() {
-        //初始化时间选择器
-        pvTime = new TimePickerBuilder(getActivity(), new OnTimeSelectListener() {
-            @Override
-            public void onTimeSelect(Date date, View v) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                simpleDateFormat.format(date);
-                tv_base_time.setText(simpleDateFormat.format(date).substring(0, 11));
-            }
-        })
-                .setTimeSelectChangeListener(new OnTimeSelectChangeListener() {
-                    @Override
-                    public void onTimeSelectChanged(Date date) {
-                        Log.i("pvTime", "onTimeSelectChanged");
-                    }
-                })
-                .setType(new boolean[]{true, true, true, false, false, false})
-                .isDialog(true) //默认设置false ，内部实现将DecorView 作为它的父控件。
-                .addOnCancelClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Log.i("pvTime", "onCancelClickListener");
-                    }
-                })
-//                .setRangDate(new GregorianCalendar(1900, 1, 1), Calendar.getInstance())
-                .setItemVisibleCount(5) //若设置偶数，实际值会加1（比如设置6，则最大可见条目为7）
-                .setLineSpacingMultiplier(2.0f)
-                .isAlphaGradient(true)
-                .build();
-
-    }
-
     @Override
     protected void initData() {
 
@@ -151,7 +125,8 @@ public class NewHealthPlanFragment extends AppFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_base_time:
-                pvTime.show();
+//                pvTime.show();
+                showFullPop(R.layout.layout_choose_time);
                 InputMethodUtils.hideSoftInput(getActivity());
                 break;
             case R.id.layout_add_task:
@@ -169,6 +144,42 @@ public class NewHealthPlanFragment extends AppFragment {
                 }
                 break;
         }
+    }
+
+    private void showFullPop(int layoutResId) {
+        if (popupWindow != null && popupWindow.isShowing()) {
+            return;
+        }
+        View upView = LayoutInflater.from(homeActivity).inflate(layoutResId, null);
+        //测量View的宽高
+        UiUtil.measureWidthAndHeight(upView);
+        popupWindow = new CommonPopupWindow.Builder(homeActivity)
+                .setView(layoutResId)
+                .setWidthAndHeight(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                .setBackGroundLevel(0.5f)//取值范围0.0f-1.0f 值越小越暗
+                .setAnimationStyle(R.style.AnimUp)
+                .setViewOnclickListener(new CommonPopupWindow.ViewInterface() {
+                    @Override
+                    public void getChildView(View view, int layoutResId) {
+                        switch (layoutResId) {
+                            case R.layout.layout_choose_time:
+                                TimePeriodView timePeriodView = view.findViewById(R.id.tp_view);
+                                timePeriodView.setGetTimeCallBack(new TimePeriodView.GetTimeCallBack() {
+                                    @Override
+                                    public void onGetTime(String day, String str) {
+                                        tv_base_time.setText(day + "天后");
+                                        mDayCount = day;
+                                        if (null != popupWindow) {
+                                            popupWindow.dismiss();
+                                        }
+                                    }
+                                });
+                                break;
+                        }
+                    }
+                })
+                .create();
+        popupWindow.showAtLocation(AppApplication.instance().getHomeActivity().findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0);
     }
 
     private void checkAllDataAndSave() {
@@ -196,7 +207,7 @@ public class NewHealthPlanFragment extends AppFragment {
             ToastUtil.toastShortMessage("请选择基准时间");
             return;
         } else {
-            savePlanApi.basetimeType = tv_base_time.getText().toString();
+            savePlanApi.basetimeType = mDayCount + "";
         }
 
         //组装商品类型

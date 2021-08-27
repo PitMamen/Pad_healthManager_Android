@@ -103,6 +103,7 @@
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginLeft="@dimen/qb_px_5"
             android:text="7月26日"
             android:textColor="@color/text_desc_dark"
