@@ -31,6 +31,7 @@ public class SavePlanApi implements IRequestApi {
     public static class GoodsInfoDTO {
         public String goodsName;
         public String goodsDescribe;
+        public String goodsId;
         public String goodsSpec = "";
         public String imgList = "";
         public String status;

@@ -210,18 +210,6 @@ public class NewHealthPlanFragment extends AppFragment {
             savePlanApi.basetimeType = mDayCount + "";
         }
 
-        //组装商品类型
-        SavePlanApi.GoodsInfoDTO goodsInfoDTO = new SavePlanApi.GoodsInfoDTO();
-        if (et_intro.getText().toString().isEmpty()) {
-            ToastUtil.toastShortMessage("请输入健康管理计划套餐介绍");
-            return;
-        }
-        goodsInfoDTO.goodsDescribe = et_intro.getText().toString();
-        goodsInfoDTO.goodsName = et_name.getText().toString();
-        goodsInfoDTO.status = isChecked ? "1" : "0";//1启用  0停用
-        savePlanApi.goodsInfo = goodsInfoDTO;
-
-
         //任务列表
         for (int i = 0; i < taskViews.size(); i++) {
             SavePlanApi.TemplateTaskDTO taskData = taskViews.get(i).getTaskData();
@@ -231,6 +219,21 @@ public class NewHealthPlanFragment extends AppFragment {
                 savePlanApi.templateTask.add(taskData);
             }
         }
+
+        //组装商品类型
+        if (et_intro.getText().toString().isEmpty()) {
+            ToastUtil.toastShortMessage("请输入健康管理计划套餐介绍");
+            return;
+        } else if (et_intro.getText().toString().length() < 6) {
+            ToastUtil.toastShortMessage("请输入任务名称长度超过5个字");
+            return;
+        }
+
+        SavePlanApi.GoodsInfoDTO goodsInfoDTO = new SavePlanApi.GoodsInfoDTO();
+        goodsInfoDTO.goodsDescribe = et_intro.getText().toString();
+        goodsInfoDTO.goodsName = et_name.getText().toString();
+        goodsInfoDTO.status = isChecked ? "1" : "3";//1启用  0停用
+        savePlanApi.goodsInfo = goodsInfoDTO;
 
         EasyHttp.post(this).api(savePlanApi).request(new HttpCallback<HttpData<SavePlanApi>>(this) {
             @Override

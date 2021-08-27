@@ -263,6 +263,9 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
         if (et_text_msg.getText().toString().isEmpty()) {
             ToastUtil.toastShortMessage("请输入提醒内容");
             return false;
+        }else if (et_text_msg.getText().toString().length()<6){
+            ToastUtil.toastShortMessage("请输入提醒内容超过5个字");
+            return false;
         }
 
         if (mUploadedAudios.size() == 0) {

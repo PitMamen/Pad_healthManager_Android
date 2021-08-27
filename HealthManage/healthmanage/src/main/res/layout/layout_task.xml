@@ -43,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/qb_px_10"
         android:background="@drawable/shape_bg_gray"
+        android:maxLength="30"
         android:hint="请输入任务名称"
         android:paddingHorizontal="@dimen/qb_px_6"
         android:paddingVertical="@dimen/qb_px_6"

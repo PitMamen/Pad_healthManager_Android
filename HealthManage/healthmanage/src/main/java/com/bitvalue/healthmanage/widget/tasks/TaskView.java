@@ -420,7 +420,12 @@ public class TaskView extends LinearLayout {
         if (et_first_mission.getText().toString().isEmpty()) {
             ToastUtil.toastShortMessage("请输入任务名称");
             return null;
+        } else if (et_first_mission.getText().toString().length() < 5) {
+            ToastUtil.toastShortMessage("请输入任务名称长度超过4个字");
+            return null;
         }
+
+
         templateTaskDTO.taskName = et_first_mission.getText().toString();
 
         if (tv_mission_time_choose.getText().toString().isEmpty()) {

@@ -385,31 +385,38 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
         }
     }
 
+    /**
+     * 只要一项有内容就可以提交
+     */
     private void checkTotalMsg() {
-        if (et_text_msg.getText().toString().isEmpty()) {
-            ToastUtil.toastShortMessage("请输入文本消息");
-            return;
-        }
-        if (mUploadedAudios.size() == 0) {
-            ToastUtil.toastShortMessage("请录制语音消息");
-            return;
-        }
-        if (videos.size() == 0) {
-            ToastUtil.toastShortMessage("请添加视频消息");
-            return;
-        }
+        if (!et_text_msg.getText().toString().isEmpty() || (mUploadedAudios.size() > 0) || (videos.size() > 0)
+                || (photos.size() > 0) || (articles.size() > 0)) {
+            //可以提交
+            if (mUploadedAudios.size() > 0) {//上传语音消息后，判断图片消息再上传图片，再上传总消息
+                uploadedAudioMsgs();
+            } else if (mUploadedAudios.size() == 0 && photos.size() > 0) {//没有语音且有图片，上传图片后再上传总消息
+                //组装图片数据
+                for (int i = 0; i < photos.size(); i++) {
+                    UpdateImageApi updateImageApi = new UpdateImageApi();
+                    File file = new File(photos.get(i));
+                    if (!file.isDirectory() && file.exists()) {
+                        updateImageApi.file = file;
+                        mUploadImages.add(updateImageApi);
+                    }
+                }
 
-        if (photos.size() == 0) {
-            ToastUtil.toastShortMessage("请添加图片消息");
+                //先置空
+                photosFinal.clear();
+                j = new int[]{0};
+
+                uploadedPicMsgs();
+            } else {//
+                commitTotalMsg();
+            }
+        } else {
+            ToastUtil.toastShortMessage("请输入至少一种类型的消息");
             return;
         }
-
-//        if (articles.size() == 0){
-//            ToastUtil.toastShortMessage("请添加文章");
-//            return;
-//        }
-
-        uploadedAudioMsgs();
     }
 
     int[] i = {0};
@@ -433,7 +440,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
                 i[0]++;
                 if (i[0] < mUploadedAudios.size()) {
                     uploadedAudioMsgs();
-                } else {
+                } else if (photos.size() > 0) {
                     //组装图片数据
                     for (int i = 0; i < photos.size(); i++) {
                         UpdateImageApi updateImageApi = new UpdateImageApi();
@@ -449,6 +456,8 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
                     j = new int[]{0};
 
                     uploadedPicMsgs();
+                } else {
+                    commitTotalMsg();
                 }
 
 
@@ -496,12 +505,24 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     private void commitTotalMsg() {
         SaveTotalMsgApi saveTotalMsgApi = new SaveTotalMsgApi();
         saveTotalMsgApi.createTime = TimeUtils.getTime(System.currentTimeMillis(), TimeUtils.YY_MM_DD_FORMAT_4);
-        saveTotalMsgApi.picList = getProcessString(photosFinal);
+        if (photosFinal.size() > 0) {
+            saveTotalMsgApi.picList = getProcessString(photosFinal);
+        }
         saveTotalMsgApi.remindContent = et_text_msg.getText().toString();
         saveTotalMsgApi.userId = getProcessString(mIds);
-        saveTotalMsgApi.voiceList = getProcessString(audiosFinal);
-        saveTotalMsgApi.videoList = getProcessString(videos);
-        saveTotalMsgApi.articleList = getProcessString(articles);
+
+        if (audiosFinal.size() > 0) {
+            saveTotalMsgApi.voiceList = getProcessString(audiosFinal);
+        }
+
+        if (videos.size() > 0) {
+            saveTotalMsgApi.videoList = getProcessString(videos);
+        }
+
+        if (articles.size() > 0) {
+            saveTotalMsgApi.articleList = getProcessString(articles);
+        }
+
         EasyHttp.post(this).api(saveTotalMsgApi).request(new HttpCallback<HttpData<List<SaveTotalMsgApi>>>(this) {
             @Override
             public void onStart(Call call) {
@@ -524,7 +545,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
                     message.setDescription("健康管理消息");
 
                     //step1 分开群发单发消息
-                    if (mIds.size() == 0) {//单发消息
+                    if (mIds.size() == 1) {//单发消息
                         EventBus.getDefault().post(message);
                     } else {//群发消息
                         for (int i = 0; i < mIds.size(); i++) {
