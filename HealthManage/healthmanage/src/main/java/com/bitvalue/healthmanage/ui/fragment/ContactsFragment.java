@@ -3,6 +3,8 @@ package com.bitvalue.healthmanage.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -47,6 +49,9 @@ public class ContactsFragment extends AppFragment {
 
     @BindView(R.id.tv_no_data)
     TextView tv_no_data;
+
+    @BindView(R.id.cb_choose)
+    CheckBox cb_choose;
 
     private boolean is_need_toast;
     private RecyclerView contact_list;
@@ -128,6 +133,35 @@ public class ContactsFragment extends AppFragment {
         contact_list.setAdapter(adapter);
 
         getMyClients();
+
+        cb_choose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {//全选
+                    mIds.clear();
+                    for (int i = 0; i < clientsProcessBeans.size(); i++) {
+                        for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
+                            clientsProcessBeans.get(i).userInfo.get(j).isChecked = true;
+                            clientsProcessBeans.get(i).userInfo.get(j).isShowCheck = true;
+                            if (!mIds.contains(clientsProcessBeans.get(i).userInfo.get(j).userId)) {
+                                mIds.add(clientsProcessBeans.get(i).userInfo.get(j).userId + "");
+                            }
+                        }
+                    }
+                    adapter.notifyDataSetChanged();
+                } else {//全部不选
+                    //还要清除选择记录
+                    mIds.clear();
+                    for (int i = 0; i < clientsProcessBeans.size(); i++) {
+                        for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
+                            clientsProcessBeans.get(i).userInfo.get(j).isChecked = false;
+                            clientsProcessBeans.get(i).userInfo.get(j).isShowCheck = false;
+                        }
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     @OnClick({R.id.layout_nav, R.id.tv_send_msg, R.id.tv_no_data})
@@ -150,7 +184,14 @@ public class ContactsFragment extends AppFragment {
                     //跳转发送消息页面
                     ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
                     msgData.msgType = Constants.MSG_MULTI;
-                    msgData.userIds = mIds;
+
+                    ArrayList<String> newList = new ArrayList<String>();
+                    for (String cd : mIds) {
+                        if (!newList.contains(cd)) {
+                            newList.add(cd);
+                        }
+                    }
+                    msgData.userIds = newList;
                     homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG, msgData);
 
                     //还要清除选择记录
@@ -214,7 +255,7 @@ public class ContactsFragment extends AppFragment {
                             adapter.notifyDataSetChanged();
 
                             //step2 展示确定按钮
-                            if (clientsProcessBeans.size() == 0){
+                            if (clientsProcessBeans.size() == 0) {
                                 ToastUtil.toastShortMessage("暂无客户数据");
                                 //step3 关闭弹窗
                                 mPopupWindow.dismiss();
@@ -222,6 +263,7 @@ public class ContactsFragment extends AppFragment {
                                 return;
                             }
                             layout_choose.setVisibility(View.VISIBLE);
+                            cb_choose.setChecked(false);
 
                             //step3 关闭弹窗
                             mPopupWindow.dismiss();

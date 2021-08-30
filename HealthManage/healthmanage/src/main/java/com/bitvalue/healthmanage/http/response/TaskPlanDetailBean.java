@@ -28,4 +28,5 @@ public class TaskPlanDetailBean implements Serializable {
     public String articleId;
     public String knowUrl;
     public String knowContent;
+    public String articleTitle;
 }

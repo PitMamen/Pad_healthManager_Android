@@ -274,9 +274,11 @@ public class AddArticleFragment extends AppFragment {
                 if (null == searchArticles || searchArticles.size() == 0) {
                     ToastUtil.toastShortMessage("未查询到结果");
                     layout_daily.setVisibility(View.VISIBLE);
+                    layout_search_result.setVisibility(View.GONE);
                 } else {
                     mSearchAdapter.setData(searchArticles);
                     layout_daily.setVisibility(View.GONE);
+                    layout_search_result.setVisibility(View.VISIBLE);
                 }
             }
 

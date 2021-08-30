@@ -26,6 +26,7 @@ import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.HealthPlanAdapter;
 import com.bitvalue.healthmanage.ui.adapter.HealthPlanDetailAdapter;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
+import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.base.BaseAdapter;
 import com.hjq.http.EasyHttp;
@@ -156,27 +157,30 @@ public class HealthPlanDetailFragment extends AppFragment {
             public void onSucceed(HttpData<TaskPlanDetailBean> result) {
                 super.onSucceed(result);
                 if (result.getCode() == 0) {
-
                     switch (userPlanDetailsDTO.planType) {
                         case "Quest":
-//                        getQuestDetail(userPlanDetailsDTO);
                             QuestionResultBean.ListDTO listDTO = new QuestionResultBean.ListDTO();
                             listDTO.questUrl = result.getData().questUrl;
-                            AppApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL,listDTO);
+                            AppApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL, listDTO);
                             break;
                         case "Remind":
-                            homeActivity.switchSecondFragment(Constants.FRAGMENT_PLAN_MSG,result.getData());
+                            homeActivity.switchSecondFragment(Constants.FRAGMENT_PLAN_MSG, result.getData());
                             break;
                         case "Knowledge":
                             ArticleBean articleBean = new ArticleBean();
                             articleBean.content = result.getData().knowContent;
-                            articleBean.title = "科普文章";
+                            articleBean.title = result.getData().articleTitle;
                             AppApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL, articleBean);
                             break;
                         case "DrugGuide":
                             break;
+                        case "OutsideInformation":
+                            CustomHealthDataMessage customHealthDataMessage = new CustomHealthDataMessage();
+                            customHealthDataMessage.contentId = result.getData().contentId;
+                            customHealthDataMessage.userId = result.getData().userId;
+                            homeActivity.switchSecondFragment(Constants.FRAGMENT_USER_DATA, customHealthDataMessage);
+                            break;
                     }
-                    //TODO 处理结果
                 } else {
                     ToastUtil.toastShortMessage(result.getMessage());
                 }

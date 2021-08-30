@@ -60,6 +60,9 @@ public class HealthPlanDetailAdapter extends AppAdapter<PlanDetailResult.UserPla
             } else if (planDetailsDTO.planType.equals("DrugGuide")) {
                 tv_step_name.setText("用药提醒");
                 tv_health_report.setText("用药提醒");
+            } else if (planDetailsDTO.planType.equals("OutsideInformation")) {
+                tv_step_name.setText("患者上传资料");
+                tv_health_report.setText("患者上传资料");
             }
             tv_step_desc.setText(planDetailsDTO.planDescribe);
             tv_step_time.setText(planDetailsDTO.execTime);

@@ -1,5 +1,7 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -41,6 +43,9 @@ public class AddQuestionFragment extends AppFragment {
 
     @BindView(R.id.et_search)
     EditText et_search;
+
+    @BindView(R.id.tv_question)
+    TextView tv_question;
 
     private HomeActivity homeActivity;
     private SmartRefreshLayout mRefreshLayout;
@@ -93,10 +98,32 @@ public class AddQuestionFragment extends AppFragment {
                     getVideosApi.keyWord = et_search.getText().toString();
                     getVideosApi.start = 0;
                     mAdapter.clearData();
+                    tv_question.setText("搜索问卷");
                     getQuestions();
                     return true;
                 }
                 return false;
+            }
+        });
+
+        et_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().isEmpty()) {
+                    getVideosApi.keyWord = "";
+                    getVideosApi.start = 0;
+                    tv_question.setText("常用问卷");
+                    getQuestions();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
 

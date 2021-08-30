@@ -545,7 +545,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
                     message.setDescription("健康管理消息");
 
                     //step1 分开群发单发消息
-                    if (mIds.size() == 1) {//单发消息
+                    if (msgType.equals(Constants.MSG_SINGLE)) {//单发消息
                         EventBus.getDefault().post(message);
                     } else {//群发消息
                         for (int i = 0; i < mIds.size(); i++) {
