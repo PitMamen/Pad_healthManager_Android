@@ -58,6 +58,7 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
     private List<String> articles = new ArrayList<>();
     private PaperQuickAdapter paperAdapter;
     private List<PaperBean> mPapers = new ArrayList<>();
+    private boolean isModify;
 
     public MissionViewArticle(Context context) {
         super(context);
@@ -103,7 +104,7 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
         paperAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                PaperBean uploadFileApi = mPapers.get(position);
+//                PaperBean uploadFileApi = mPapers.get(position);
             }
         });
         list_articles.setAdapter(paperAdapter);
@@ -150,7 +151,9 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
         //写死的类型数据
         templateTaskContentDTO.taskType = "Knowledge";
 //        templateTaskContentDTO.contentDetail.remindName = "科普文章";
-        templateTaskContentDTO.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
+        if(!isModify){
+            templateTaskContentDTO.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
+        }
         //填入的数据
 //        templateTaskContentDTO.contentDetail.knowUrl = articleBeans.get(0).content;
         templateTaskContentDTO.contentDetail.knowContent = articleBeans.get(0).content;
@@ -176,6 +179,8 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
         articleBean.title = templateTaskContentDTO.contentDetail.title;
         articleBeans.add(articleBean);
         paperAdapter.setNewData(articleBeans);
+
+        isModify = true;
     }
 
     public interface MissionViewCallBack {

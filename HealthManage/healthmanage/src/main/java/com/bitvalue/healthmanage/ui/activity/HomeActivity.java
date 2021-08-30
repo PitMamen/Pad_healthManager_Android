@@ -22,6 +22,7 @@ import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.http.response.PlanListBean;
 import com.bitvalue.healthmanage.http.response.QuestionResultBean;
+import com.bitvalue.healthmanage.http.response.TaskPlanDetailBean;
 import com.bitvalue.healthmanage.http.response.msg.AddVideoObject;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
@@ -40,6 +41,7 @@ import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragmentModify;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragmentDisplay;
+import com.bitvalue.healthmanage.ui.fragment.PlanMsgFragment;
 import com.bitvalue.healthmanage.ui.fragment.QuestionDetailFragment;
 import com.bitvalue.healthmanage.ui.settings.fragment.SettingsFragment;
 import com.bitvalue.healthmanage.util.DemoLog;
@@ -477,6 +479,18 @@ public class HomeActivity extends AppActivity {
                 articleDetailFragment = new ArticleDetailFragment();
                 articleDetailFragment.setArguments(bundleArticle);
                 mapFragments.put(Constants.FRAGMENT_ARTICLE_DETAIL, articleDetailFragment);
+                break;
+            case Constants.FRAGMENT_PLAN_MSG:
+                TaskPlanDetailBean taskPlanDetailBean = (TaskPlanDetailBean) object;
+                Bundle bundleTP = new Bundle();
+                bundleTP.putSerializable(Constants.PLAN_MSG, taskPlanDetailBean);
+                PlanMsgFragment planMsgFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                planMsgFragment = new PlanMsgFragment();
+                planMsgFragment.setArguments(bundleTP);
+                mapFragments.put(Constants.FRAGMENT_PLAN_MSG, planMsgFragment);
                 break;
         }
         Set<String> strings = mapFragments.keySet();

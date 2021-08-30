@@ -72,6 +72,7 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
     private boolean isRecording;
     private ArrayList<String> audiosFinal = new ArrayList<>();
     private SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO();
+    private boolean isModify;
 
     public MissionViewRemind(Context context) {
         super(context);
@@ -233,7 +234,9 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
     public SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO getData() {
         //写死的类型数据
         templateTaskContentDTO.taskType = "Remind";
-        templateTaskContentDTO.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
+        if (!isModify){
+            templateTaskContentDTO.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
+        }
         templateTaskContentDTO.contentDetail.remindName = "健康提醒";
         //填入的数据
         templateTaskContentDTO.contentDetail.remindContent = et_text_msg.getText().toString();
@@ -287,6 +290,7 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
         et_text_msg.setText(templateTaskContentDTO.contentDetail.remindContent);
 
         processAudios(templateTaskContentDTO.contentDetail.voiceList);
+        isModify = true;
     }
 
     private void processAudios(String voiceList) {

@@ -1,5 +1,7 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -92,6 +94,7 @@ public class AddArticleFragment extends AppFragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (et_search.getText().toString().isEmpty()) {
+
                         ToastUtil.toastShortMessage("请输入搜索内容");
                         return true;
                     }
@@ -102,6 +105,25 @@ public class AddArticleFragment extends AppFragment {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        et_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().isEmpty()) {
+                    layout_daily.setVisibility(View.VISIBLE);
+                    layout_search_result.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
 

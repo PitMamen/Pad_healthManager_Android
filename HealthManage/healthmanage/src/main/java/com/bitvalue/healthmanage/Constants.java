@@ -27,6 +27,7 @@ public class Constants {
     public static final String FRAGMENT_QUESTION_DETAIL = "fragment_question_detail";
     public static final String FRAGMENT_ARTICLE_DETAIL = "fragment_article_detail";
     public static final String FRAGMENT_USER_DATA = "fragment_user_data";
+    public static final String FRAGMENT_PLAN_MSG = "fragment_plan_msg";
 
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";
@@ -42,6 +43,7 @@ public class Constants {
     public static final String MSG_CUSTOM_ID = "msg_custom_id";
     public static final String PLAN_LIST_BEAN = "plan_list_bean";
     public static String VIDEO_FOR_MSG = "video_for_msg";
+    public static final String PLAN_MSG = "plan_msg";
 
     public static final String ADD_VIDEO_DATA = "add_video_data";
     public static final String QUESTION_DETAIL = "question_detail";

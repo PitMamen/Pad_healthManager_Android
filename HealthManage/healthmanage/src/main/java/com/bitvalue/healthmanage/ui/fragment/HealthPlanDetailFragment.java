@@ -8,18 +8,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.GetPlanDetailApi;
+import com.bitvalue.healthmanage.http.request.SaveTotalMsgApi;
 import com.bitvalue.healthmanage.http.request.SearchArticleApi;
 import com.bitvalue.healthmanage.http.request.TaskDetailApi;
+import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.PlanBean;
 import com.bitvalue.healthmanage.http.response.PlanDetailResult;
+import com.bitvalue.healthmanage.http.response.QuestionResultBean;
 import com.bitvalue.healthmanage.http.response.SearchArticleResult;
 import com.bitvalue.healthmanage.http.response.TaskDetailBean;
+import com.bitvalue.healthmanage.http.response.TaskPlanDetailBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.HealthPlanAdapter;
 import com.bitvalue.healthmanage.ui.adapter.HealthPlanDetailAdapter;
+import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.base.BaseAdapter;
 import com.hjq.http.EasyHttp;
@@ -95,17 +101,7 @@ public class HealthPlanDetailFragment extends AppFragment {
                 PlanDetailResult.UserPlanDetailsDTO userPlanDetailsDTO = userPlanDetails.get(position);
                 //planType   Quest   Remind  Knowledge   DrugGuide
                 //健康计划类型【Evaluate：健康体检及评估 Quest：随访跟踪 DrugGuide：用药指导 Knowledge：健康科普 Remind：健康提醒 OutsideInformation：院外资料】
-                switch (userPlanDetailsDTO.planType) {
-                    case "Quest":
-                        getQuestDetail(userPlanDetailsDTO);
-                        break;
-                    case "Remind":
-                        break;
-                    case "Knowledge":
-                        break;
-                    case "DrugGuide":
-                        break;
-                }
+                getQuestDetail(userPlanDetailsDTO);
             }
         });
         list_health_plan.setAdapter(mAdapter);
@@ -150,16 +146,36 @@ public class HealthPlanDetailFragment extends AppFragment {
         taskDetailApi.contentId = userPlanDetailsDTO.contentId + "";
         taskDetailApi.planType = userPlanDetailsDTO.planType;
         taskDetailApi.userId = mIds.get(0);
-        EasyHttp.get(this).api(taskDetailApi).request(new HttpCallback<HttpData<TaskDetailBean>>(this) {
+        EasyHttp.get(this).api(taskDetailApi).request(new HttpCallback<HttpData<TaskPlanDetailBean>>(this) {
             @Override
             public void onStart(Call call) {
                 super.onStart(call);
             }
 
             @Override
-            public void onSucceed(HttpData<TaskDetailBean> result) {
+            public void onSucceed(HttpData<TaskPlanDetailBean> result) {
                 super.onSucceed(result);
                 if (result.getCode() == 0) {
+
+                    switch (userPlanDetailsDTO.planType) {
+                        case "Quest":
+//                        getQuestDetail(userPlanDetailsDTO);
+                            QuestionResultBean.ListDTO listDTO = new QuestionResultBean.ListDTO();
+                            listDTO.questUrl = result.getData().questUrl;
+                            AppApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL,listDTO);
+                            break;
+                        case "Remind":
+                            homeActivity.switchSecondFragment(Constants.FRAGMENT_PLAN_MSG,result.getData());
+                            break;
+                        case "Knowledge":
+                            ArticleBean articleBean = new ArticleBean();
+                            articleBean.content = result.getData().knowContent;
+                            articleBean.title = "科普文章";
+                            AppApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL, articleBean);
+                            break;
+                        case "DrugGuide":
+                            break;
+                    }
                     //TODO 处理结果
                 } else {
                     ToastUtil.toastShortMessage(result.getMessage());

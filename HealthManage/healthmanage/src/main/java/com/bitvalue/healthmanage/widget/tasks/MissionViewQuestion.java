@@ -57,6 +57,7 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
     private List<QuestionResultBean.ListDTO> questionBeans = new ArrayList<>();
     private List<PaperBean> mPapers = new ArrayList<>();
     private List<String> questions = new ArrayList<>();
+    private boolean isModify;
 
     public MissionViewQuestion(Context context) {
         super(context);
@@ -102,7 +103,7 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
         questionQuickAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                PaperBean uploadFileApi = mPapers.get(position);
+//                PaperBean uploadFileApi = mPapers.get(position);
             }
         });
         list_question.setAdapter(questionQuickAdapter);
@@ -148,10 +149,12 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
         //写死的类型数据
         templateTaskContentDTO.taskType = "Quest";
 //        templateTaskContentDTO.contentDetail.remindName = "健康问卷";
-        templateTaskContentDTO.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
+        if (!isModify){
+            templateTaskContentDTO.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
+        }
         //填入的数据
         templateTaskContentDTO.contentDetail.questName = questionBeans.get(0).name;
-        templateTaskContentDTO.contentDetail.questId = questionBeans.get(0).key;
+        templateTaskContentDTO.contentDetail.questId = questionBeans.get(0).id;
         return templateTaskContentDTO;
     }
 
@@ -170,6 +173,8 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
         listDTO.id = templateTaskContentDTO.contentDetail.questId;
         questionBeans.add(listDTO);
         questionQuickAdapter.setNewData(questionBeans);
+
+        isModify = true;
     }
 
     public interface MissionViewCallBack {
