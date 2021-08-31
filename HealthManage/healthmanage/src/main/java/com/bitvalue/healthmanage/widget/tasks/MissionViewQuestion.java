@@ -154,7 +154,7 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
         }
         //填入的数据
         templateTaskContentDTO.contentDetail.questName = questionBeans.get(0).name;
-        templateTaskContentDTO.contentDetail.questId = questionBeans.get(0).id;
+        templateTaskContentDTO.contentDetail.questId = questionBeans.get(0).key;//TODO 31号江南说取key
         return templateTaskContentDTO;
     }
 

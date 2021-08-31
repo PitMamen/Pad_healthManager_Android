@@ -25,6 +25,7 @@ import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
+import com.tencent.trtc.videocall.VideoCallingEnterActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -68,7 +69,7 @@ public class SettingsFragment extends AppFragment {
         }
     }
 
-    @OnClick({R.id.layout_logout})
+    @OnClick({R.id.layout_logout, R.id.layout_rtc})
     public void onViewClick(View view) {
         switch (view.getId()) {
             case R.id.layout_logout:
@@ -83,6 +84,10 @@ public class SettingsFragment extends AppFragment {
 
                     }
                 });
+                break;
+            case R.id.layout_rtc:
+                Intent intent = new Intent(homeActivity, VideoCallingEnterActivity.class);
+                startActivity(intent);
                 break;
         }
     }

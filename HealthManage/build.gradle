@@ -43,7 +43,7 @@ allprojects {
         // 友盟仓库：https://bintray.com/umsdk/release
         maven { url 'https://dl.bintray.com/umsdk/release' }
         flatDir {
-            dirs 'libs'
+            dirs 'libs',project(':Basic:VideoCall').file('libs')
         }
         jcenter()
         google()
@@ -62,6 +62,18 @@ allprojects {
             links 'http://docs.oracle.com/javase/7/docs/api'
         }
     }
+}
+
+ext {
+    compileSdkVersion = 29
+    buildToolsVersion = "29.0.3"
+//    minSdkVersion = 21
+//    targetSdkVersion = 26
+//    liteavSdk="com.tencent.liteav:LiteAVSDK_TRTC:latest.release"
+//    versionCode = 1
+//    versionName = "v1.0"
+//    ndkAbi = 'armeabi'//,'armeabi-v7a', 'arm64-v8a'
+//    aekit_version = '1.0.10-cloud'
 }
 
 task clean(type: Delete) {

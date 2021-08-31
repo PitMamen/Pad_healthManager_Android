@@ -166,6 +166,7 @@ dependencies {
     implementation project(':widget')
     // 友盟封装
     implementation project(':umeng')
+    implementation project(':Basic:VideoCall')
 //    implementation project(':mclouds-base-sdk')
 //    implementation project(':mclouds-collab-sdk')
 
