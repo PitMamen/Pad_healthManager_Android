@@ -43,14 +43,49 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/qb_px_10"
         android:background="@drawable/shape_bg_gray"
-        android:maxLength="30"
         android:hint="请输入任务名称"
+        android:maxLength="30"
         android:paddingHorizontal="@dimen/qb_px_6"
         android:paddingVertical="@dimen/qb_px_6"
         android:textColor="@color/text_main"
         android:textSize="@dimen/qb_px_8"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_mission_no" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:background="@drawable/shape_bg_white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_plan_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="任务描述"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/qb_px_10"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_task_intro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:background="@drawable/shape_bg_gray"
+            android:hint="请输入任务描述"
+            android:gravity="left|top"
+            android:maxLength="100"
+            android:minHeight="@dimen/qb_px_50"
+            android:paddingHorizontal="@dimen/qb_px_6"
+            android:paddingVertical="@dimen/qb_px_6"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/qb_px_8"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_plan_intro" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/tv_mission_time"

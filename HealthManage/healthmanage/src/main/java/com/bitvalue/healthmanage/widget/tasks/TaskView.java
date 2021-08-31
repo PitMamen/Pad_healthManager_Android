@@ -58,6 +58,9 @@ public class TaskView extends LinearLayout {
     @BindView(R.id.layout_mission_wrap)
     LinearLayout layout_mission_wrap;
 
+    @BindView(R.id.et_task_intro)
+    EditText et_task_intro;
+
     @BindView(R.id.tv_mission_no)
     public TextView tv_mission_no;
 
@@ -425,8 +428,16 @@ public class TaskView extends LinearLayout {
             return null;
         }
 
+        if (et_task_intro.getText().toString().isEmpty()) {
+            ToastUtil.toastShortMessage("请输入任务描述");
+            return null;
+        } else if (et_task_intro.getText().toString().length() < 5) {
+            ToastUtil.toastShortMessage("请输入任务描述长度超过4个字");
+            return null;
+        }
 
         templateTaskDTO.taskName = et_first_mission.getText().toString();
+        templateTaskDTO.taskDescribe = et_task_intro.getText().toString();
 
         if (tv_mission_time_choose.getText().toString().isEmpty()) {
             ToastUtil.toastShortMessage("请选择任务执行时间");
@@ -447,6 +458,7 @@ public class TaskView extends LinearLayout {
         this.templateTaskDTO = templateTaskDTO;
 
         et_first_mission.setText(templateTaskDTO.taskName);
+        et_task_intro.setText(templateTaskDTO.taskDescribe);
         mDayCount = templateTaskDTO.execTime;
         tv_mission_time_choose.setText(templateTaskDTO.execTime + "天后");
         setMissionData();

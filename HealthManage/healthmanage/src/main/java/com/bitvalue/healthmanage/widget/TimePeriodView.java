@@ -30,7 +30,7 @@ public class TimePeriodView extends LinearLayout {
     WheelView wv_unit;
 
     private Context homeActivity;
-    private int mNum = 1;
+    private int mNum = 0;
     private String mUnit = "天";
     private GetTimeCallBack getTimeCallBack;
 
@@ -67,7 +67,7 @@ public class TimePeriodView extends LinearLayout {
         wv_num.setCyclic(false);
 
         final List<String> mOptionsItems = new ArrayList<>();
-        for (int i = 1; i < 101; i++) {
+        for (int i = 0; i < 101; i++) {
             mOptionsItems.add(i + "");
         }
 

@@ -1,6 +1,5 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +8,19 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
-import com.bigkoo.pickerview.listener.OnTimeSelectListener;
-import com.bigkoo.pickerview.view.TimePickerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.myhttp.FileUploadUtils;
+import com.bitvalue.healthmanage.http.request.UpdateImageApi;
+import com.bitvalue.healthmanage.http.response.AudioUploadResultBean;
 import com.bitvalue.healthmanage.http.response.RefreshPlansObj;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.bitvalue.healthmanage.util.InputMethodUtils;
+import com.bitvalue.healthmanage.ui.media.ImagePreviewActivity;
+import com.bitvalue.healthmanage.ui.media.ImageSelectActivity;
 import com.bitvalue.healthmanage.util.UiUtil;
+import com.bitvalue.healthmanage.util.Utils;
 import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.healthmanage.widget.SwitchButton;
 import com.bitvalue.healthmanage.widget.TimePeriodView;
@@ -33,13 +33,13 @@ import com.hjq.http.listener.HttpCallback;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.text.SimpleDateFormat;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import okhttp3.Call;
 
 public class NewHealthPlanFragment extends AppFragment {
@@ -53,9 +53,21 @@ public class NewHealthPlanFragment extends AppFragment {
     @BindView(R.id.et_intro)
     EditText et_intro;
 
+    @BindView(R.id.npl_cover)
+    BGANinePhotoLayout npl_cover;
+
+    @BindView(R.id.npl_intro)
+    BGANinePhotoLayout npl_intro;
+
+    @BindView(R.id.npl_detail)
+    BGANinePhotoLayout npl_detail;
+
     @BindView(R.id.layout_tasks_wrap)
     LinearLayout layout_tasks_wrap;
 
+    private static final int MAX_COVER = 1;
+    private static final int MAX_INTRO = 9;
+    private static final int MAX_DETAIL = 9;
     private TextView tv_base_time;
     private SwitchButton switch_button;
     private HomeActivity homeActivity;
@@ -63,7 +75,16 @@ public class NewHealthPlanFragment extends AppFragment {
     private SavePlanApi savePlanApi = new SavePlanApi();
     private boolean isChecked;
     private CommonPopupWindow popupWindow;
-    private String mDayCount;
+    private String mDayCount = "0";
+    private ArrayList<String> coverPhotos = new ArrayList<>();
+    private ArrayList<String> introPhotos = new ArrayList<>();
+    private ArrayList<String> detailPhotos = new ArrayList<>();
+    private List<UpdateImageApi> coverImages = new ArrayList<>();
+    private List<UpdateImageApi> introImages = new ArrayList<>();
+    private List<UpdateImageApi> detailImages = new ArrayList<>();
+    private ArrayList<String> coverFinal = new ArrayList<>();
+    private ArrayList<String> introFinal = new ArrayList<>();
+    private ArrayList<String> detailFinal = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -76,6 +97,7 @@ public class NewHealthPlanFragment extends AppFragment {
         switch_button = getView().findViewById(R.id.switch_button);
         homeActivity = (HomeActivity) getActivity();
         initSwitchButton();
+        initChoosePhotos();
         taskViews.add(task_first);
         sortTasks();
         task_first.setTaskViewCallBack(new TaskView.TaskViewCallBack() {
@@ -105,10 +127,52 @@ public class NewHealthPlanFragment extends AppFragment {
         });
     }
 
+    private void initChoosePhotos() {
+        npl_cover.setDelegate(new BGANinePhotoLayout.Delegate() {
+            @Override
+            public void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
+                ImagePreviewActivity.start(homeActivity, model);
+            }
+
+            @Override
+            public void onClickExpand(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
+                ninePhotoLayout.setIsExpand(true);
+                ninePhotoLayout.flushItems();
+            }
+        });
+        npl_cover.setData(coverPhotos);
+
+        npl_intro.setDelegate(new BGANinePhotoLayout.Delegate() {
+            @Override
+            public void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
+                ImagePreviewActivity.start(homeActivity, model);
+            }
+
+            @Override
+            public void onClickExpand(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
+                ninePhotoLayout.setIsExpand(true);
+                ninePhotoLayout.flushItems();
+            }
+        });
+        npl_intro.setData(introPhotos);
+
+        npl_detail.setDelegate(new BGANinePhotoLayout.Delegate() {
+            @Override
+            public void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
+                ImagePreviewActivity.start(homeActivity, model);
+            }
+
+            @Override
+            public void onClickExpand(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
+                ninePhotoLayout.setIsExpand(true);
+                ninePhotoLayout.flushItems();
+            }
+        });
+        npl_detail.setData(detailPhotos);
+    }
+
     private void initSwitchButton() {
         switch_button.setOnCheckedChangeListener(new SwitchButton.OnCheckedChangeListener() {
-
-
             @Override
             public void onCheckedChanged(SwitchButton buttonView, boolean isChecked) {
                 NewHealthPlanFragment.this.isChecked = isChecked;
@@ -121,16 +185,108 @@ public class NewHealthPlanFragment extends AppFragment {
 
     }
 
-    @OnClick({R.id.layout_base_time, R.id.layout_add_task, R.id.tv_save, R.id.img_back})
+    @OnClick({R.id.layout_base_time, R.id.layout_add_task, R.id.tv_save, R.id.img_back,
+            R.id.img_add_cover, R.id.img_add_intro, R.id.img_add_detail})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_base_time:
 //                pvTime.show();
-                showFullPop(R.layout.layout_choose_time);
-                InputMethodUtils.hideSoftInput(getActivity());
+//                showFullPop(R.layout.layout_choose_time);
+//                InputMethodUtils.hideSoftInput(getActivity());
                 break;
             case R.id.layout_add_task:
                 addTaskView();
+                break;
+            case R.id.img_add_cover:
+                Utils.checkPermission(getAttachActivity(), new Utils.PermissionCallBack() {
+                    @Override
+                    public void onPermissionResult(boolean permit) {
+                        int canSelectNun = MAX_COVER - coverPhotos.size();
+                        if (canSelectNun < 1) {
+                            ToastUtil.toastShortMessage("最多选择1张照片");
+                            return;
+                        }
+                        ImageSelectActivity.start(getAttachActivity(), canSelectNun, new ImageSelectActivity.OnPhotoSelectListener() {
+
+                            @Override
+                            public void onSelected(List<String> data) {
+                                if (null == data || data.size() == 0) {
+                                    return;
+                                }
+
+                                //去重
+//                                ArrayList<String> newList = new ArrayList<String>();
+//                                for (String cd : coverPhotos) {
+//                                    if (!newList.contains(cd)) {
+//                                        newList.add(cd);
+//                                    }
+//                                }
+                                coverPhotos.addAll(data);
+                                npl_cover.setData(coverPhotos);
+                            }
+
+                            @Override
+                            public void onCancel() {
+                            }
+                        });
+                    }
+                });
+                break;
+
+            case R.id.img_add_intro:
+                Utils.checkPermission(getAttachActivity(), new Utils.PermissionCallBack() {
+                    @Override
+                    public void onPermissionResult(boolean permit) {
+                        int canSelectNun = MAX_INTRO - introPhotos.size();
+                        if (canSelectNun < 1) {
+                            ToastUtil.toastShortMessage("最多选择9张照片");
+                            return;
+                        }
+                        ImageSelectActivity.start(getAttachActivity(), canSelectNun, new ImageSelectActivity.OnPhotoSelectListener() {
+
+                            @Override
+                            public void onSelected(List<String> data) {
+                                if (null == data || data.size() == 0) {
+                                    return;
+                                }
+                                introPhotos.addAll(data);
+                                npl_intro.setData(introPhotos);
+                            }
+
+                            @Override
+                            public void onCancel() {
+                            }
+                        });
+                    }
+                });
+                break;
+
+            case R.id.img_add_detail:
+                Utils.checkPermission(getAttachActivity(), new Utils.PermissionCallBack() {
+                    @Override
+                    public void onPermissionResult(boolean permit) {
+                        int canSelectNun = MAX_DETAIL - detailPhotos.size();
+                        if (canSelectNun < 1) {
+                            ToastUtil.toastShortMessage("最多选择9张照片");
+                            return;
+                        }
+                        ImageSelectActivity.start(getAttachActivity(), canSelectNun, new ImageSelectActivity.OnPhotoSelectListener() {
+
+                            @Override
+                            public void onSelected(List<String> data) {
+                                if (null == data || data.size() == 0) {
+                                    return;
+                                }
+                                detailPhotos.addAll(data);
+                                npl_detail.setData(detailPhotos);
+                            }
+
+                            @Override
+                            public void onCancel() {
+                            }
+                        });
+                    }
+                });
                 break;
             case R.id.tv_save:
                 checkAllDataAndSave();
@@ -203,12 +359,14 @@ public class NewHealthPlanFragment extends AppFragment {
         savePlanApi.disease = diseaseDTOS;
 
         //组装基准时间
-        if (tv_base_time.getText().toString().isEmpty()) {
-            ToastUtil.toastShortMessage("请选择基准时间");
-            return;
-        } else {
-            savePlanApi.basetimeType = mDayCount + "";
-        }
+//        if (tv_base_time.getText().toString().isEmpty()) {
+//            ToastUtil.toastShortMessage("请选择基准时间");
+//            return;
+//        } else {
+//            savePlanApi.basetimeType = mDayCount + "";
+//        }
+
+        savePlanApi.basetimeType = mDayCount + "";
 
         //任务列表
         for (int i = 0; i < taskViews.size(); i++) {
@@ -225,16 +383,68 @@ public class NewHealthPlanFragment extends AppFragment {
             ToastUtil.toastShortMessage("请输入健康管理计划套餐介绍");
             return;
         } else if (et_intro.getText().toString().length() < 6) {
-            ToastUtil.toastShortMessage("请输入任务名称长度超过5个字");
+            ToastUtil.toastShortMessage("请输入健康管理计划套餐介绍长度超过5个字");
             return;
+        }
+
+        if (coverPhotos.size() == 0) {
+            ToastUtil.toastShortMessage("请选择上传套餐封面");
+            return;
+        } else {
+            for (int i = 0; i < coverPhotos.size(); i++) {
+                UpdateImageApi updateImageApi = new UpdateImageApi();
+                File file = new File(coverPhotos.get(i));
+                if (!file.isDirectory() && file.exists()) {
+                    updateImageApi.file = file;
+                    coverImages.add(updateImageApi);
+                }
+            }
+        }
+
+        if (introPhotos.size() == 0) {
+            ToastUtil.toastShortMessage("请选择上传套餐介绍图片");
+            return;
+        } else {
+            for (int i = 0; i < introPhotos.size(); i++) {
+                UpdateImageApi updateImageApi = new UpdateImageApi();
+                File file = new File(introPhotos.get(i));
+                if (!file.isDirectory() && file.exists()) {
+                    updateImageApi.file = file;
+                    introImages.add(updateImageApi);
+                }
+            }
+        }
+
+        if (detailPhotos.size() == 0) {
+            ToastUtil.toastShortMessage("请选择上传套餐详情图片");
+            return;
+        } else {
+            for (int i = 0; i < detailPhotos.size(); i++) {
+                UpdateImageApi updateImageApi = new UpdateImageApi();
+                File file = new File(detailPhotos.get(i));
+                if (!file.isDirectory() && file.exists()) {
+                    updateImageApi.file = file;
+                    detailImages.add(updateImageApi);
+                }
+            }
         }
 
         SavePlanApi.GoodsInfoDTO goodsInfoDTO = new SavePlanApi.GoodsInfoDTO();
         goodsInfoDTO.goodsDescribe = et_intro.getText().toString();
         goodsInfoDTO.goodsName = et_name.getText().toString();
         goodsInfoDTO.status = isChecked ? "1" : "3";//1启用  0停用
+
         savePlanApi.goodsInfo = goodsInfoDTO;
 
+        showDialog();
+        uploadedCoverPic();
+//        commitTotal();
+    }
+
+    private void commitTotal() {
+        savePlanApi.goodsInfo.bannerList = getProcessString(introFinal);
+        savePlanApi.goodsInfo.imgList = getProcessString(detailFinal);
+        savePlanApi.goodsInfo.previewList = getProcessString(coverFinal);
         EasyHttp.post(this).api(savePlanApi).request(new HttpCallback<HttpData<SavePlanApi>>(this) {
             @Override
             public void onStart(Call call) {
@@ -244,6 +454,7 @@ public class NewHealthPlanFragment extends AppFragment {
             @Override
             public void onSucceed(HttpData<SavePlanApi> result) {
                 super.onSucceed(result);
+                hideDialog();
                 if (result.getCode() == 0) {
                     ToastUtil.toastShortMessage("保存成功");
                     EventBus.getDefault().post(new RefreshPlansObj());
@@ -256,8 +467,114 @@ public class NewHealthPlanFragment extends AppFragment {
             @Override
             public void onFail(Exception e) {
                 super.onFail(e);
+                hideDialog();
             }
         });
+    }
+
+    int[] j = {0};
+
+    private void uploadedCoverPic() {
+        FileUploadUtils.INSTANCE.uploadPic(NewHealthPlanFragment.this, coverImages.get(j[0]), new FileUploadUtils.OnAudioUploadCallback() {
+            @Override
+            public void onSuccess(HttpData<AudioUploadResultBean> result) {
+                if (result.getCode() != 0) {
+                    ToastUtil.toastLongMessage(result.getMessage());
+                    return;
+                }
+
+                coverFinal.add(result.getData().fileLinkUrl);
+
+                j[0]++;
+                if (j[0] < coverImages.size()) {
+                    uploadedCoverPic();
+                } else {
+                    introFinal.clear();
+                    k = new int[]{0};
+
+                    uploadedIntroPic();
+                }
+            }
+
+            @Override
+            public void onFail() {
+                ToastUtil.toastShortMessage("请求失败");
+                hideDialog();
+            }
+        });
+    }
+
+    int[] k = {0};
+
+    private void uploadedIntroPic() {
+        FileUploadUtils.INSTANCE.uploadPic(NewHealthPlanFragment.this, introImages.get(k[0]), new FileUploadUtils.OnAudioUploadCallback() {
+            @Override
+            public void onSuccess(HttpData<AudioUploadResultBean> result) {
+                if (result.getCode() != 0) {
+                    ToastUtil.toastLongMessage(result.getMessage());
+                    return;
+                }
+
+                introFinal.add(result.getData().fileLinkUrl);
+
+                k[0]++;
+                if (k[0] < introImages.size()) {
+                    uploadedIntroPic();
+                } else {
+                    detailFinal.clear();
+                    m = new int[]{0};
+
+                    uploadedDetailPic();
+                }
+            }
+
+            @Override
+            public void onFail() {
+                hideDialog();
+                ToastUtil.toastShortMessage("请求失败");
+            }
+        });
+    }
+
+    int[] m = {0};
+
+    private void uploadedDetailPic() {
+        FileUploadUtils.INSTANCE.uploadPic(NewHealthPlanFragment.this, detailImages.get(m[0]), new FileUploadUtils.OnAudioUploadCallback() {
+            @Override
+            public void onSuccess(HttpData<AudioUploadResultBean> result) {
+                if (result.getCode() != 0) {
+                    ToastUtil.toastLongMessage(result.getMessage());
+                    return;
+                }
+
+                detailFinal.add(result.getData().fileLinkUrl);
+
+                m[0]++;
+                if (m[0] < detailImages.size()) {
+                    uploadedDetailPic();
+                } else {
+                    commitTotal();
+                }
+            }
+
+            @Override
+            public void onFail() {
+                hideDialog();
+                ToastUtil.toastShortMessage("请求失败");
+            }
+        });
+    }
+
+    private String getProcessString(ArrayList<String> photosFinal) {
+        String total = "";
+        for (int i = 0; i < photosFinal.size(); i++) {
+            if (i != photosFinal.size() - 1) {
+                total = total + photosFinal.get(i) + ",";
+            } else {
+                total = total + photosFinal.get(i);
+            }
+        }
+        return total;
     }
 
     private void addTaskView() {

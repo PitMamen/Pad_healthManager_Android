@@ -33,8 +33,10 @@ public class SavePlanApi implements IRequestApi {
         public String goodsDescribe;
         public String goodsId;
         public String goodsSpec = "";
-        public String imgList = "";
         public String status;
+        public String imgList = "";//详情
+        public String bannerList = "";//轮播
+        public String previewList = "";//预览  封面
     }
 
     public static class DiseaseDTO {
@@ -46,6 +48,7 @@ public class SavePlanApi implements IRequestApi {
         public String execTime;
         public String taskName;
         public String templateId;
+        public String taskDescribe;
         public String taskId;
         public List<TemplateTaskContentDTO> templateTaskContent;
 

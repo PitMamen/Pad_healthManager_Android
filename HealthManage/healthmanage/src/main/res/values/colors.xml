@@ -22,4 +22,9 @@
     <!-- 对话框取消按钮的文本颜色 -->
     <color name="common_cancel_text_color">#F44336</color>
 
+    <!-- 18 图半透明黑色蒙层 -->
+    <color name="bga_pp_eighteen_maskColor">#CC000000</color>
+    <!-- 18 图半透明蒙层字体颜色 -->
+    <color name="bga_pp_eighteen_maskTextColor">#FFFFFF</color>
+
 </resources>
