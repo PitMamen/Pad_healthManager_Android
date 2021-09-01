@@ -158,6 +158,19 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
             mInputMoreActionList.add(actionUnit);
         }
 
+        //临时添加的视频通话
+        if (!mHealthMsgDisable) {
+            actionUnit = new InputMoreActionUnit() {
+                @Override
+                public void onAction(String chatInfoId, int chatType) {
+                    startVideoCommunicate();
+                }
+            };
+            actionUnit.setIconResId(R.drawable.video_communicate);
+            actionUnit.setTitleId(R.string.video_communicate);
+            mInputMoreActionList.add(actionUnit);
+        }
+
         //资料上传暂时不做
 //        if (!mHealthUploadDisable) {
 //            actionUnit = new InputMoreActionUnit() {
@@ -276,6 +289,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     protected abstract void startHealthPlan();
     protected abstract void startHealthAnalyse();
     protected abstract void startHealthMsg();
+    protected abstract void startVideoCommunicate();
     protected abstract void startUploadData();
 
     protected abstract void startSendPhoto();

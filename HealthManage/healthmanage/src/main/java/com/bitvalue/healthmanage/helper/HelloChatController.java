@@ -17,6 +17,7 @@ import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthPlanMessage;
+import com.bitvalue.sdk.collab.helper.CustomVideoCallMessage;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.IOnCustomMessageDrawListener;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.MessageBaseHolder;
@@ -49,43 +50,6 @@ public class HelloChatController implements TUIChatControllerListener {
                 return null;
             }
 
-//            if (null != customElem.getExtension()) {
-//                switch (new String(customElem.getExtension())) {
-//                    case "CustomHealthMessage":
-//                        CustomHealthMessage healthMessage = null;
-//                        try {
-//                            healthMessage = new Gson().fromJson(new String(customElem.getData()), CustomHealthMessage.class);
-//                        } catch (Exception e) {
-////                Logger.w(TAG, "invalid json: " + new String(customElem.getData()) + " " + e.getMessage());
-//                            TUIKitLog.e(TAG, "invalid json: " + new String(customElem.getData()) + " " + e.getMessage());
-//                        }
-//                        break;
-//                }
-//            }
-
-//            String dataJson = new String(customElem.getData());
-//            try {
-//                JSONObject jsonObject = new JSONObject(dataJson);
-//                String type = jsonObject.optString("type");
-//                switch (type) {
-//                    case "CustomHealthMessage":
-//                        CustomHealthMessage healthMessage = new Gson().fromJson(jsonObject.optString("data"), CustomHealthMessage.class);
-//                        if (healthMessage != null){
-//                            MessageInfo messageInfo = new HelloMessageInfo();
-//                            messageInfo.setMsgType(HelloMessageInfo.MSG_TYPE_HELLO);
-//                            MessageInfoUtil.setMessageInfoCommonAttributes(messageInfo, timMessage);
-//                            Context context = TUIKit.getAppContext();
-//                            if (context != null) {
-//                                messageInfo.setExtra(context.getString(R.string.custom_msg));
-//                            }
-//                            return messageInfo;
-//                        }
-//                        break;
-//                }
-//
-//            } catch (JSONException e) {
-//            }
-
             String dataFather = new String(customElem.getData());
             if (null != dataFather && !dataFather.isEmpty()) {
                 MessageInfo messageInfo = new HelloMessageInfo();
@@ -98,25 +62,6 @@ public class HelloChatController implements TUIChatControllerListener {
                 return messageInfo;
             }
 
-
-            //demo原本的代码，上面三块都是加的
-//            CustomHelloMessage helloMessage = null;
-//            try {
-//                helloMessage = new Gson().fromJson(new String(customElem.getData()), CustomHelloMessage.class);
-//            } catch (Exception e) {
-////                Logger.w(TAG, "invalid json: " + new String(customElem.getData()) + " " + e.getMessage());
-//                TUIKitLog.e(TAG, "invalid json: " + new String(customElem.getData()) + " " + e.getMessage());
-//            }
-//            if (helloMessage != null && TextUtils.equals(helloMessage.businessID, TUIKitConstants.BUSINESS_ID_CUSTOM_HELLO)) {
-//                MessageInfo messageInfo = new HelloMessageInfo();
-//                messageInfo.setMsgType(HelloMessageInfo.MSG_TYPE_HELLO);
-//                MessageInfoUtil.setMessageInfoCommonAttributes(messageInfo, timMessage);
-//                Context context = TUIKit.getAppContext();
-//                if (context != null) {
-//                    messageInfo.setExtra(context.getString(R.string.custom_msg));
-//                }
-//                return messageInfo;
-//            }
         }
         return null;
     }
@@ -215,11 +160,20 @@ public class HelloChatController implements TUIChatControllerListener {
                         }
                         break;
 
-                        case "CustomUploadMessage":
+                    case "CustomUploadMessage":
                         CustomHealthDataMessage customHealthDataMessage = new Gson().fromJson(dataJson, CustomHealthDataMessage.class);
                         if (customHealthDataMessage != null) {
                             if (parent instanceof MessageBaseHolder) {
                                 CustomHealthDataMessageController.onDraw(parent, customHealthDataMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                            }
+                        }
+                        break;
+
+                    case "CustomVideoCallMessage":
+                        CustomVideoCallMessage customVideoCallMessage = new Gson().fromJson(dataJson, CustomVideoCallMessage.class);
+                        if (customVideoCallMessage != null) {
+                            if (parent instanceof MessageBaseHolder) {
+                                CustomVideoCallMessageController.onDraw(parent, customVideoCallMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                             }
                         }
                         break;

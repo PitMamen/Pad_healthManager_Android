@@ -18,10 +18,9 @@ import com.bitvalue.sdk.collab.base.IUIKitCallBack;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.component.TitleBarLayout;
 import com.bitvalue.sdk.collab.helper.ChatLayoutHelper;
-import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
-import com.bitvalue.sdk.collab.helper.CustomHelloMessage;
 import com.bitvalue.sdk.collab.helper.CustomMessage;
+import com.bitvalue.sdk.collab.helper.CustomVideoCallMessage;
 import com.bitvalue.sdk.collab.modules.chat.ChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.AbsChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
@@ -264,6 +263,21 @@ public class ChatFragment extends AppFragment {
                 msgData.userIds = new ArrayList<>();
                 msgData.userIds.add(mChatInfo.getId());
                 homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_SEND_MSG, msgData);
+            }
+
+            @Override
+            public void onVideoCommunicate() {
+                CustomVideoCallMessage message = new CustomVideoCallMessage();
+                message.title = "视频看诊";
+                String rooId = System.currentTimeMillis() + "";
+                message.msgDetailId = rooId.substring(rooId.length() - 7, rooId.length());
+//                message.userId = mIds;
+                message.content = "点击接入视频通话";
+                //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
+                message.setType("CustomVideoCallMessage");
+                message.setDescription("视频看诊");
+                MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
+                mChatLayout.sendMessage(info, false);
             }
         });
     }

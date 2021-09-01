@@ -281,6 +281,13 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     }
 
     @Override
+    protected void startVideoCommunicate() {
+        if (null != onCustomClickListener){
+            onCustomClickListener.onVideoCommunicate();
+        }
+    }
+
+    @Override
     protected void startSendPhoto() {
         TUIKitLog.i(TAG, "startSendPhoto");
         if (!checkPermission(SEND_PHOTO)) {
@@ -486,6 +493,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         void onHealthPlanClick();
         void onHealthAnalyseClick();
         void onHealthMsgClick();
+        void onVideoCommunicate();
     }
 
     public void setOnCustomClickListener(InputLayout.OnCustomClickListener onCustomClickListener){
