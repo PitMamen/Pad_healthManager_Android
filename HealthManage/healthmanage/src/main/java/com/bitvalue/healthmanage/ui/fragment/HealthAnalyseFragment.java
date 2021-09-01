@@ -36,6 +36,7 @@ public class HealthAnalyseFragment extends AppFragment {
 
     private ArrayList<String> mIds;
     private HomeActivity homeActivity;
+    private String planId;
 
     @Override
     protected int getLayoutId() {
@@ -50,6 +51,7 @@ public class HealthAnalyseFragment extends AppFragment {
     @Override
     protected void initData() {
         mIds = getArguments().getStringArrayList(Constants.MSG_IDS);//要发送消息到患者的userId
+        planId = getArguments().getString(Constants.PLAN_ID);
     }
 
     private void commitTotalMsg() {
@@ -57,6 +59,7 @@ public class HealthAnalyseFragment extends AppFragment {
         saveAnalyseApi.evalContent = et_text_analyse.getText().toString();
         saveAnalyseApi.evalTime = TimeUtils.getTime(System.currentTimeMillis(), TimeUtils.YY_MM_DD_FORMAT_4);
         saveAnalyseApi.userId = mIds.get(0);
+        saveAnalyseApi.planId = planId;
         EasyHttp.post(this).api(saveAnalyseApi).request(new HttpCallback<HttpData<SaveAnalyseApi>>(this) {
             @Override
             public void onStart(Call call) {

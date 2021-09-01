@@ -8,10 +8,10 @@ import java.io.File;
 /**
  */
 public final class SaveAnalyseApi implements IRequestApi {
-
     public int contentId;
     public String evalContent;
     public String evalTime;
+    public String planId;
     public String evalUser;//医生的userId
     public String id;
     public String userId;//发送的患者的userId
@@ -21,5 +21,4 @@ public final class SaveAnalyseApi implements IRequestApi {
     public String getApi() {
         return Constants.API_HEALTH + "/health/doctor/sendUserEevaluate";
     }
-
 }

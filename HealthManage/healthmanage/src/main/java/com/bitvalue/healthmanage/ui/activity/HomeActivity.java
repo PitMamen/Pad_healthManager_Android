@@ -26,6 +26,7 @@ import com.bitvalue.healthmanage.http.response.TaskPlanDetailBean;
 import com.bitvalue.healthmanage.http.response.msg.AddVideoObject;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
+import com.bitvalue.healthmanage.ui.contacts.bean.MainRefreshObj;
 import com.bitvalue.healthmanage.ui.fragment.AddArticleFragment;
 import com.bitvalue.healthmanage.ui.fragment.AddQuestionFragment;
 import com.bitvalue.healthmanage.ui.fragment.AddVideoFragment;
@@ -53,6 +54,8 @@ import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -237,9 +240,11 @@ public class HomeActivity extends AppActivity {
         switch (view.getId()) {
             case R.id.layout_person:
 //                backAll();
+                EventBus.getDefault().post(new MainRefreshObj());
                 afterTabSelect(0);
                 break;
             case R.id.layout_settings:
+//                EventBus.getDefault().post(new MainRefreshObj());
 //                backAll();
                 afterTabSelect(1);
                 break;
@@ -395,6 +400,7 @@ public class HomeActivity extends AppActivity {
                 ChatFragment.NewMsgData msgDataAnalyse = (ChatFragment.NewMsgData) object;
 //                msgBundleAnalyse.putString(Constants.MSG_CUSTOM_ID, msgDataAnalyse.id);//显示详情的时候才要
                 msgBundleAnalyse.putStringArrayList(Constants.MSG_IDS, msgDataAnalyse.userIds);//传入消息接受者的userId
+                msgBundleAnalyse.putString(Constants.PLAN_ID,msgDataAnalyse.id);
                 healthAnalyseFragment.setArguments(msgBundleAnalyse);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_ANALYSE, healthAnalyseFragment);
                 break;

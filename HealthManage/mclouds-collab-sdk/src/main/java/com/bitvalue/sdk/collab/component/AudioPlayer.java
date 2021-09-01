@@ -45,7 +45,8 @@ public class AudioPlayer {
 
             //本来打算修改地址，调试发现 mAudioRecordPath 地址在发送自定义消息时也可用
             //String compressPath = Environment.getExternalStorageDirectory() + "/msg/audio/" + ".m4a";
-            mAudioRecordPath = CURRENT_RECORD_FILE + System.currentTimeMillis() + ".m4a";
+//            mAudioRecordPath = CURRENT_RECORD_FILE + System.currentTimeMillis() + ".m4a";
+            mAudioRecordPath = CURRENT_RECORD_FILE + System.currentTimeMillis() + ".mp3";
             mRecorder = new MediaRecorder();
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             // 使用mp4容器并且后缀改为.m4a，来兼容小程序的播放

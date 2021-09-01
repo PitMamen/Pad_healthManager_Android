@@ -120,7 +120,6 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
             return;
         }
         questionBeans.add(questionBean);
-//        paperAdapter.notifyDataSetChanged();//TODO 刷新数据
         questions.add(questionBean.id);
         questionQuickAdapter.setNewData(questionBeans);
     }
@@ -133,7 +132,7 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
                     ToastUtil.toastShortMessage("仅限添加一个问卷");
                     return;
                 }
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_QUESTION, "");//TODO 添加问卷
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_QUESTION, "");
                 break;
             case R.id.img_type:
                 if (null != missionViewCallBack) {
@@ -173,7 +172,7 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
         this.templateTaskContentDTO = DataUtil.getNotNullData(templateTaskContentDTO);
         QuestionResultBean.ListDTO listDTO = new QuestionResultBean.ListDTO();
         listDTO.name = templateTaskContentDTO.contentDetail.questName;
-        listDTO.id = templateTaskContentDTO.contentDetail.questId;
+//        listDTO.id = templateTaskContentDTO.contentDetail.questId;
         listDTO.key = templateTaskContentDTO.contentDetail.questId;
         questionBeans.add(listDTO);
         questionQuickAdapter.setNewData(questionBeans);

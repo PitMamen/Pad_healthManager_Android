@@ -166,6 +166,14 @@ public class HealthPlanDetailFragment extends AppFragment {
                         case "Remind":
                             homeActivity.switchSecondFragment(Constants.FRAGMENT_PLAN_MSG, result.getData());
                             break;
+                        case "Evaluate":
+                            ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
+                            if (null == result.getData()){
+                                return;
+                            }
+                            msgData.id = result.getData().id + "";
+                            homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_ANALYSE_DISPLAY, msgData);
+                            break;
                         case "Knowledge":
                             ArticleBean articleBean = new ArticleBean();
                             articleBean.content = result.getData().knowContent;
@@ -173,6 +181,7 @@ public class HealthPlanDetailFragment extends AppFragment {
                             AppApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL, articleBean);
                             break;
                         case "DrugGuide":
+                            ToastUtil.toastShortMessage("用药提醒详情二期内容开发中");
                             break;
                         case "OutsideInformation":
                             CustomHealthDataMessage customHealthDataMessage = new CustomHealthDataMessage();

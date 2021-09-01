@@ -19,9 +19,11 @@ import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.ClientsApi;
+import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
+import com.bitvalue.healthmanage.ui.contacts.bean.MainRefreshObj;
 import com.bitvalue.healthmanage.ui.contacts.view.ClientsRecyclerAdapter;
 import com.bitvalue.healthmanage.widget.mpopupwindow.MPopupWindow;
 import com.bitvalue.healthmanage.widget.mpopupwindow.TypeGravity;
@@ -34,6 +36,10 @@ import com.hjq.toast.ToastUtils;
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener;
 import com.thoughtbot.expandablerecyclerview.listeners.OnGroupClickListener;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +86,7 @@ public class ContactsFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        EventBus.getDefault().register(this);
         homeActivity = (HomeActivity) getActivity();
 
         is_need_toast = getArguments().getBoolean("is_need_toast");
@@ -162,6 +169,19 @@ public class ContactsFragment extends AppFragment {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MainRefreshObj mainRefreshObj) {
+        clientsResultBeans.clear();
+        clientsProcessBeans.clear();
+        getMyClients();
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @OnClick({R.id.layout_nav, R.id.tv_send_msg, R.id.tv_no_data})

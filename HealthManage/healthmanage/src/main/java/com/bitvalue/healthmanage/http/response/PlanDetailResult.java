@@ -19,7 +19,7 @@ public class PlanDetailResult {
         public String planDescribe;
         public long contentId;
         public String execTime;
-        public int execFlag;
+        public int execFlag;//计划执行完标识（1：已执行 0：未执行）
         public int noticeFlag;
 
 

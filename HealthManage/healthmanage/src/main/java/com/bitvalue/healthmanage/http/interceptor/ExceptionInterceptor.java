@@ -8,6 +8,7 @@ import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.util.SharedPreManager;
+import com.bitvalue.sdk.collab.utils.NetWorkUtils;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,6 +36,9 @@ public class ExceptionInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
+        if (!NetWorkUtils.isNetworkAvailable(AppApplication.instance())) {
+            ToastUtil.toastShortMessage("网络不可用，请打开网络或稍后重试");
+        }
         Request request = chain.request();
         Response response = chain.proceed(request);
 

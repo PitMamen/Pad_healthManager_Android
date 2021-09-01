@@ -88,6 +88,15 @@ public class TimeUtils {
         return MM_DD_HH_MM_FORMAT.format(date);
     }
 
+    public static Date parseDate(String dateString,SimpleDateFormat simpleDateFormat) {
+        try {
+            return simpleDateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static Date parseDate(String dateString) throws ParseException {
         return DEFAULT_DATE_FORMAT.parse(dateString);
     }

@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/qb_px_10"
-            android:text="健康管理团队将为您进行全面的身体检查，收集您的健康信息。对您进行健康风险评估， 对您可能或已发生疾病进行筛查。"
+            android:text=""
             android:textColor="@color/text_desc_dark"
             android:textSize="@dimen/qb_px_8"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -110,7 +110,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/qb_px_3"
-                android:text="健康体检报告"
+                android:text=""
                 android:textColor="@color/main_blue"
                 android:textSize="@dimen/qb_px_8"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -252,6 +252,7 @@ public class ChatFragment extends AppFragment {
                 NewMsgData msgData = new NewMsgData();
                 msgData.msgType = com.bitvalue.healthmanage.Constants.MSG_SINGLE;
                 msgData.userIds = new ArrayList<>();
+                msgData.id = planId + "";//这里id设置为 planId
                 msgData.userIds.add(mChatInfo.getId());
                 homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_ANALYSE, msgData);
             }
@@ -298,6 +299,7 @@ public class ChatFragment extends AppFragment {
         public ArrayList<String> userIds;
         public String msgType;
         public String id;
+        public String planId;
 //        public String msgType;
     }
 
