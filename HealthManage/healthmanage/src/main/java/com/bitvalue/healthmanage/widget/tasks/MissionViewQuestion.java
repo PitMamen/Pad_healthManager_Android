@@ -116,6 +116,9 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QuestionResultBean.ListDTO questionBean) {
+        if (questionBeans.size() == 1){
+            return;
+        }
         questionBeans.add(questionBean);
 //        paperAdapter.notifyDataSetChanged();//TODO 刷新数据
         questions.add(questionBean.id);
@@ -171,6 +174,7 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
         QuestionResultBean.ListDTO listDTO = new QuestionResultBean.ListDTO();
         listDTO.name = templateTaskContentDTO.contentDetail.questName;
         listDTO.id = templateTaskContentDTO.contentDetail.questId;
+        listDTO.key = templateTaskContentDTO.contentDetail.questId;
         questionBeans.add(listDTO);
         questionQuickAdapter.setNewData(questionBeans);
 

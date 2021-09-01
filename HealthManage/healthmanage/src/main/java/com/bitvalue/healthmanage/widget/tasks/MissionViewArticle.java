@@ -136,6 +136,9 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ArticleBean articleBean) {
+        if (articleBeans.size() == 1){
+            return;
+        }
         articleBeans.add(articleBean);
 //        paperAdapter.notifyDataSetChanged();//TODO 刷新数据
         articles.add(articleBean.articleId + "");
