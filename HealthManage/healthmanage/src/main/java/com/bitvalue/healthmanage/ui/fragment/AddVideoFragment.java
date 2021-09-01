@@ -1,6 +1,7 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,10 +30,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
 public class AddVideoFragment extends AppFragment {
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
     private HomeActivity homeActivity;
     private SmartRefreshLayout mRefreshLayout;
     private VideoAdapter mAdapter;
@@ -49,6 +54,7 @@ public class AddVideoFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        tv_title.setText("视频选择");
         list_normal = (WrapRecyclerView) findViewById(R.id.list_daily);
         homeActivity = (HomeActivity) getActivity();
 
@@ -57,10 +63,10 @@ public class AddVideoFragment extends AppFragment {
         initList();
     }
 
-    @OnClick({R.id.img_back})
+    @OnClick({R.id.layout_back})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
+            case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
                 }

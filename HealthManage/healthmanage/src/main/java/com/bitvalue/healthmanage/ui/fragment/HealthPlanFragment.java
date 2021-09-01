@@ -1,6 +1,7 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,10 +30,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
 public class HealthPlanFragment extends AppFragment {
+
+    @BindView(R.id.tv_title)
+    TextView tv_title;
 
     private WrapRecyclerView list_my_plans;
     private SmartRefreshLayout mRefreshLayout;
@@ -47,6 +52,7 @@ public class HealthPlanFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        tv_title.setText("套餐配置");
         EventBus.getDefault().register(this);
 //        setOnClickListener(R.id.layout_new_plan);
         list_my_plans = (WrapRecyclerView) findViewById(R.id.list_my_plans);
@@ -126,7 +132,7 @@ public class HealthPlanFragment extends AppFragment {
 
     }
 
-    @OnClick({R.id.layout_new_plan, R.id.img_back})
+    @OnClick({R.id.layout_new_plan, R.id.layout_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_new_plan:
@@ -140,7 +146,7 @@ public class HealthPlanFragment extends AppFragment {
 //                forward(homeActivity,fragment, true);
                 break;
 
-            case R.id.img_back:
+            case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
                 }

@@ -65,6 +65,9 @@ public class NewHealthPlanFragment extends AppFragment {
     @BindView(R.id.layout_tasks_wrap)
     LinearLayout layout_tasks_wrap;
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
     private static final int MAX_COVER = 1;
     private static final int MAX_INTRO = 9;
     private static final int MAX_DETAIL = 9;
@@ -93,6 +96,7 @@ public class NewHealthPlanFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        tv_title.setText("新增健康管理计划");
         tv_base_time = getView().findViewById(R.id.tv_base_time);
         switch_button = getView().findViewById(R.id.switch_button);
         homeActivity = (HomeActivity) getActivity();
@@ -185,7 +189,7 @@ public class NewHealthPlanFragment extends AppFragment {
 
     }
 
-    @OnClick({R.id.layout_base_time, R.id.layout_add_task, R.id.tv_save, R.id.img_back,
+    @OnClick({R.id.layout_base_time, R.id.layout_add_task, R.id.tv_save, R.id.layout_back,
             R.id.img_add_cover, R.id.img_add_intro, R.id.img_add_detail})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -294,7 +298,7 @@ public class NewHealthPlanFragment extends AppFragment {
 //            case R.id.layout_add_paper:
 //                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_PAPER, "");
 //                break;
-            case R.id.img_back:
+            case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
                 }

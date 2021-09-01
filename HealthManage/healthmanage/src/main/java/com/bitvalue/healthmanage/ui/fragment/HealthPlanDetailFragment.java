@@ -53,6 +53,9 @@ public class HealthPlanDetailFragment extends AppFragment {
     @BindView(R.id.tv_join_time)
     TextView tv_join_time;
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
     //    private SmartRefreshLayout mRefreshLayout;
     private HealthPlanDetailAdapter mAdapter;
     private WrapRecyclerView list_health_plan;
@@ -69,6 +72,7 @@ public class HealthPlanDetailFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        tv_title.setText("健康管理计划");
         homeActivity = (HomeActivity) getActivity();
         mIds = getArguments().getStringArrayList(Constants.MSG_IDS);
         planId = getArguments().getString(Constants.PLAN_ID);
@@ -76,10 +80,10 @@ public class HealthPlanDetailFragment extends AppFragment {
         initList();
     }
 
-    @OnClick({R.id.img_back})
+    @OnClick({R.id.layout_back})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
+            case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
                 }

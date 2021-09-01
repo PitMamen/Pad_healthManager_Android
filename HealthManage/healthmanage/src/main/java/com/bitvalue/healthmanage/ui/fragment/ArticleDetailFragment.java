@@ -35,10 +35,10 @@ public class ArticleDetailFragment extends AppFragment {
     private String url;
     private boolean is_loading_login_over;
 
-    @OnClick({R.id.img_back})
+    @OnClick({R.id.layout_back})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
+            case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
 //                    http://192.168.1.122/s/8a755f7c24ad49c9a2be6e6f79c3ee60   //内网地址

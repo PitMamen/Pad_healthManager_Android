@@ -42,6 +42,9 @@ import butterknife.OnClick;
 import okhttp3.Call;
 
 public class AddArticleFragment extends AppFragment {
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
     @BindView(R.id.layout_daily)
     LinearLayout layout_daily;
 
@@ -62,10 +65,10 @@ public class AddArticleFragment extends AppFragment {
     private List<ArticleBean> dailyArticles = new ArrayList<>();
     private List<ArticleBean> searchArticles = new ArrayList<>();
 
-    @OnClick({R.id.img_back})
+    @OnClick({R.id.layout_back})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
+            case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
                 }
@@ -80,6 +83,7 @@ public class AddArticleFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        tv_title.setText("文章选择");
         list_daily = (WrapRecyclerView) findViewById(R.id.list_daily);
         homeActivity = (HomeActivity) getActivity();
 

@@ -6,31 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/qb_px_50"
-        android:background="@color/white">
-
-        <ImageView
-            android:id="@+id/img_back"
-            android:layout_width="@dimen/dp_10"
-            android:layout_height="@dimen/qb_px_20"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/qb_px_15"
-            android:scaleType="fitCenter"
-            android:src="@drawable/nav_icon_back" />
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center_vertical"
-            android:text="新增健康管理计划"
-            android:textColor="@color/text_black"
-            android:textSize="@dimen/qb_px_12"
-            android:textStyle="bold" />
-    </RelativeLayout>
+    <include layout="@layout/layout_third_title"/>
 
     <View
         android:layout_width="match_parent"

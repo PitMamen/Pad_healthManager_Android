@@ -87,6 +87,9 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     @BindView(R.id.list_videos)
     RecyclerView list_videos;
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
     //    @BindView(R.id.list_photos)
 //    RecyclerView list_photos;
     private static final int PRC_PHOTO_PREVIEW = 1;
@@ -99,7 +102,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     protected static final int SEND_PHOTO = 4;
     protected static final int SEND_FILE = 5;
     private String msgType;
-    private TextView tv_title, tv_send_msg, tv_add_audio;
+    private TextView tv_send_msg, tv_add_audio;
     private EditText et_text_msg;
     private LinearLayout layout_add_audio, layout_add_video, layout_add_paper;
 
@@ -334,13 +337,13 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     }
 
     //    @SingleClick
-    @OnClick({R.id.img_back, R.id.layout_add_audio, R.id.layout_add_video, R.id.layout_add_paper, R.id.tv_send_msg, R.id.img_add_pic})
+    @OnClick({R.id.layout_back, R.id.layout_add_audio, R.id.layout_add_video, R.id.layout_add_paper, R.id.tv_send_msg, R.id.img_add_pic})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_add_audio:
                 checkPermission();
                 break;
-            case R.id.img_back:
+            case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
                 }

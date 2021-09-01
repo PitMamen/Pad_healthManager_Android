@@ -47,6 +47,9 @@ public class AddQuestionFragment extends AppFragment {
     @BindView(R.id.tv_question)
     TextView tv_question;
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
     private HomeActivity homeActivity;
     private SmartRefreshLayout mRefreshLayout;
     private QuestionAdapter mAdapter;
@@ -63,6 +66,7 @@ public class AddQuestionFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        tv_title.setText("问卷选择");
         list_normal = (WrapRecyclerView) findViewById(R.id.list_daily);
         homeActivity = (HomeActivity) getActivity();
 
@@ -72,10 +76,10 @@ public class AddQuestionFragment extends AppFragment {
         initSearchButton();
     }
 
-    @OnClick({R.id.img_back})
+    @OnClick({R.id.layout_back})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
+            case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
                 }

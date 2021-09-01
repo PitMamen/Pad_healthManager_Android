@@ -46,6 +46,9 @@ public class HealthUploadDataFragment extends AppFragment implements BGANinePhot
     @BindView(R.id.tv_result)
     TextView tv_result;
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
     private HomeActivity homeActivity;
     private CustomHealthDataMessage customHealthDataMessage;
     private ArrayList<String> photos = new ArrayList<>();
@@ -58,6 +61,7 @@ public class HealthUploadDataFragment extends AppFragment implements BGANinePhot
 
     @Override
     protected void initView() {
+        tv_title.setText("患者资料上传");
         EventBus.getDefault().register(this);
         homeActivity = (HomeActivity) getActivity();
     }
@@ -120,7 +124,7 @@ public class HealthUploadDataFragment extends AppFragment implements BGANinePhot
         }
     }
 
-    @OnClick({R.id.tv_send_analyse, R.id.img_back})
+    @OnClick({R.id.tv_send_analyse, R.id.layout_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_send_analyse:
@@ -130,7 +134,7 @@ public class HealthUploadDataFragment extends AppFragment implements BGANinePhot
                 msgData.userIds.add(customHealthDataMessage.userId);
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_ANALYSE, msgData);
                 break;
-            case R.id.img_back:
+            case R.id.layout_back:
                 backPress();
                 break;
         }

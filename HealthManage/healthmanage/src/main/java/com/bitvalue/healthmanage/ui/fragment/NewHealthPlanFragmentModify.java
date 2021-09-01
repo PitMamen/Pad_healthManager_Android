@@ -69,6 +69,9 @@ public class NewHealthPlanFragmentModify extends AppFragment {
     @BindView(R.id.npl_detail)
     BGANinePhotoLayout npl_detail;
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
     private static final int MAX_COVER = 1;
     private static final int MAX_INTRO = 9;
     private static final int MAX_DETAIL = 9;
@@ -98,6 +101,8 @@ public class NewHealthPlanFragmentModify extends AppFragment {
 
     @Override
     protected void initView() {
+        tv_title.setText("修改健康管理计划");
+
         planListBean = (PlanListBean) getArguments().getSerializable(Constants.PLAN_LIST_BEAN);
         getPlanDetail();
 
@@ -297,7 +302,7 @@ public class NewHealthPlanFragmentModify extends AppFragment {
 
     }
 
-    @OnClick({R.id.layout_base_time, R.id.layout_add_task, R.id.tv_save, R.id.img_back,
+    @OnClick({R.id.layout_base_time, R.id.layout_add_task, R.id.tv_save, R.id.layout_back,
             R.id.img_add_cover, R.id.img_add_intro, R.id.img_add_detail})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -406,7 +411,7 @@ public class NewHealthPlanFragmentModify extends AppFragment {
                 });
                 break;
 
-            case R.id.img_back:
+            case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
                 }

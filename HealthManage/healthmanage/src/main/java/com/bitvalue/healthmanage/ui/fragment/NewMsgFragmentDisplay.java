@@ -395,7 +395,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
     }
 
     //    @SingleClick
-    @OnClick({R.id.img_back, R.id.layout_add_audio, R.id.layout_add_video, R.id.layout_add_paper, R.id.tv_send_msg, R.id.img_add_pic})
+    @OnClick({R.id.layout_back, R.id.layout_add_audio, R.id.layout_add_video, R.id.layout_add_paper, R.id.tv_send_msg, R.id.img_add_pic})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_add_audio:
@@ -437,7 +437,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
                 checkTotalMsg();
 
                 break;
-            case R.id.img_back:
+            case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
                 }

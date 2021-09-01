@@ -34,6 +34,9 @@ public class HealthAnalyseFragment extends AppFragment {
     @BindView(R.id.tv_send_analyse)
     TextView tv_send_analyse;
 
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
     private ArrayList<String> mIds;
     private HomeActivity homeActivity;
     private String planId;
@@ -45,6 +48,7 @@ public class HealthAnalyseFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        tv_title.setText("健康评估");
         homeActivity = (HomeActivity) getActivity();
     }
 
@@ -94,7 +98,7 @@ public class HealthAnalyseFragment extends AppFragment {
         });
     }
 
-    @OnClick({R.id.tv_send_analyse, R.id.img_back})
+    @OnClick({R.id.tv_send_analyse, R.id.layout_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_send_analyse:
@@ -104,7 +108,7 @@ public class HealthAnalyseFragment extends AppFragment {
                 }
                 commitTotalMsg();
                 break;
-            case R.id.img_back:
+            case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
                 }
