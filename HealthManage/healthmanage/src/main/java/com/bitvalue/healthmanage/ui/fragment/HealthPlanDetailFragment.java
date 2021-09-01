@@ -164,7 +164,11 @@ public class HealthPlanDetailFragment extends AppFragment {
                     switch (userPlanDetailsDTO.planType) {
                         case "Quest":
                             QuestionResultBean.ListDTO listDTO = new QuestionResultBean.ListDTO();
-                            listDTO.questUrl = result.getData().questUrl;
+                            if (userPlanDetailsDTO.execFlag == 1) {
+                                listDTO.questUrl = result.getData().questUrl + "?userId=" + taskDetailApi.userId;
+                            } else {
+                                listDTO.questUrl = result.getData().questUrl;
+                            }
                             AppApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL, listDTO);
                             break;
                         case "Remind":
@@ -172,7 +176,7 @@ public class HealthPlanDetailFragment extends AppFragment {
                             break;
                         case "Evaluate":
                             ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
-                            if (null == result.getData()){
+                            if (null == result.getData()) {
                                 return;
                             }
                             msgData.id = result.getData().id + "";
