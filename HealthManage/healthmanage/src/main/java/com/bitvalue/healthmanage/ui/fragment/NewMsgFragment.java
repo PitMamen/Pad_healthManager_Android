@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.myhttp.FileUploadUtils;
@@ -33,6 +34,7 @@ import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.AudioAdapter;
 import com.bitvalue.healthmanage.ui.adapter.PaperQuickAdapter;
 import com.bitvalue.healthmanage.ui.adapter.VideoQuickAdapter;
+import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
 import com.bitvalue.healthmanage.ui.media.ImagePreviewActivity;
 import com.bitvalue.healthmanage.ui.media.ImageSelectActivity;
 import com.bitvalue.healthmanage.util.DensityUtil;
@@ -173,9 +175,19 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
         paperAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL, articleBeans.get(position));
             }
         });
         list_articles.setAdapter(paperAdapter);
+
+        paperAdapter.setOnItemDelete(new OnItemDelete() {
+            @Override
+            public void onItemDelete(int position) {
+                articleBeans.remove(position);
+                articles.remove(position);
+                paperAdapter.setNewData(articleBeans);
+            }
+        });
     }
 
     private void initVideoListView() {
@@ -189,28 +201,31 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
 
             }
         });
+        videoAdapter.setOnItemDelete(new OnItemDelete() {
+            @Override
+            public void onItemDelete(int position) {
+                videoBeans.remove(position);
+                videos.remove(position);
+                videoAdapter.setNewData(videoBeans);
+            }
+        });
         list_videos.setAdapter(videoAdapter);
     }
 
     private void initAudioListView() {
         list_audio.setLayoutManager(new LinearLayoutManager(getAttachActivity()));
         list_audio.addItemDecoration(MUtils.spaceDivider(
-                DensityUtil.dip2px(getAttachActivity(), getAttachActivity().getResources().getDimension(R.dimen.qb_px_3)), false));
+                DensityUtil.dip2px(getAttachActivity(), getAttachActivity().getResources().getDimension(R.dimen.qb_px_1)), false));
         adapter = new AudioAdapter(R.layout.item_audio, mUploadedAudios);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+
+        adapter.setOnItemDelete(new OnItemDelete() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                UploadFileApi uploadFileApi = mUploadedAudios.get(position);
-                ToastUtil.toastLongMessage("开始播放");
-                AudioPlayer.getInstance().startPlay(uploadFileApi.path, new AudioPlayer.Callback() {
-                    //                AudioPlayer.getInstance().startPlay(uploadFileApi.fileLinkUrl, new AudioPlayer.Callback() {
-                    @Override
-                    public void onCompletion(Boolean success) {
-                        ToastUtil.toastLongMessage("播放完成");
-                    }
-                });
+            public void onItemDelete(int position) {
+                mUploadedAudios.remove(position);
+                adapter.setNewData(mUploadedAudios);
             }
         });
+
         list_audio.setAdapter(adapter);
     }
 
@@ -221,6 +236,12 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ArticleBean articleBean) {
+        for (ArticleBean articleBeanOld : articleBeans) {//去重
+            if (articleBeanOld.articleId == articleBean.articleId) {
+                ToastUtil.toastShortMessage("请勿添加重复的文章");
+                return;
+            }
+        }
         articleBeans.add(articleBean);
         articles.add(articleBean.articleId + "");
         paperAdapter.setNewData(articleBeans);
@@ -234,6 +255,13 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(VideoResultBean.ListDTO listDTO) {
         if (listDTO.videoFor.equals(Constants.VIDEO_FOR_MSG)) {
+            for (VideoResultBean.ListDTO videoOld : videoBeans) {//去重
+                if (videoOld.vedioId == listDTO.vedioId) {
+                    ToastUtil.toastShortMessage("请勿添加重复的视频");
+                    return;
+                }
+            }
+
             videoBeans.add(listDTO);
             videos.add(listDTO.vedioId + "");
             videoAdapter.setNewData(videoBeans);
@@ -540,6 +568,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
                     CustomHealthMessage message = new CustomHealthMessage();
                     message.title = "健康消息";
                     message.msgDetailId = result.getData().get(0).id + "";
+                    message.contentId = result.getData().get(0).contentId;
                     message.userId = mIds;
                     message.content = saveTotalMsgApi.remindContent;
                     //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局

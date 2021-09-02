@@ -16,8 +16,10 @@ import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.PaperBean;
 import com.bitvalue.healthmanage.http.response.QuestionResultBean;
+import com.bitvalue.healthmanage.http.response.VideoResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.QuestionQuickAdapter;
+import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
 import com.bitvalue.healthmanage.widget.DataUtil;
@@ -100,10 +102,18 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
         list_question.addItemDecoration(MUtils.spaceDivider(
                 DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
         questionQuickAdapter = new QuestionQuickAdapter(R.layout.item_paper, questionBeans);
+        questionQuickAdapter.setOnItemDelete(new OnItemDelete() {
+            @Override
+            public void onItemDelete(int position) {
+                questionBeans.remove(position);
+                questions.remove(position);
+                questionQuickAdapter.setNewData(questionBeans);
+            }
+        });
         questionQuickAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                PaperBean uploadFileApi = mPapers.get(position);
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL, questionBeans.get(position));
             }
         });
         list_question.setAdapter(questionQuickAdapter);
@@ -116,9 +126,17 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(QuestionResultBean.ListDTO questionBean) {
-        if (questionBeans.size() == 1){
+        if (questionBeans.size() == 1) {
             return;
         }
+
+        for (QuestionResultBean.ListDTO questionOld : questionBeans) {//去重
+            if (questionOld.key.equals(questionBean.key)) {
+                ToastUtil.toastShortMessage("请勿添加重复的问卷");
+                return;
+            }
+        }
+
         questionBeans.add(questionBean);
         questions.add(questionBean.id);
         questionQuickAdapter.setNewData(questionBeans);
@@ -151,7 +169,7 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
         //写死的类型数据
         templateTaskContentDTO.taskType = "Quest";
 //        templateTaskContentDTO.contentDetail.remindName = "健康问卷";
-        if (!isModify){
+        if (!isModify) {
             templateTaskContentDTO.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
         }
         //填入的数据

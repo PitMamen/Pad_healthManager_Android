@@ -30,7 +30,7 @@ public class VideoAdapter extends AppAdapter<VideoResultBean.ListDTO> {
         private final TextView tv_name;
 
         private ViewHolder() {
-            super(R.layout.item_paper);
+            super(R.layout.item_add_video);
 //            tv_use_status = findViewById(R.id.tv_use_status);
             tv_name = findViewById(R.id.tv_name);
         }

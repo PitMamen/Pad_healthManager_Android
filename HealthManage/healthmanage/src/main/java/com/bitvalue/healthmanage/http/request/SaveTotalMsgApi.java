@@ -13,7 +13,6 @@ import java.util.List;
  */
 public final class SaveTotalMsgApi implements IRequestApi {
 
-    public int contentId;
     public String createTime;
     public String picList;
     public String videoList;
@@ -23,6 +22,7 @@ public final class SaveTotalMsgApi implements IRequestApi {
     public String remindUser;//发送者id，也就是医生的userId
     public String userId;
     public String articleList;
+    public String contentId;
     public int id;
     public int type;//类型（1：计划内提醒 2：计划外提醒 3：临时提醒）
     public List<ArticleBean> articleInfo;

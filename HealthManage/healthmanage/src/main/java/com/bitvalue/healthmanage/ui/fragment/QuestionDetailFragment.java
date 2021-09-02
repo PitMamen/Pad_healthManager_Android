@@ -140,6 +140,9 @@ public class QuestionDetailFragment extends AppFragment {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
+                if (null == tv_title || null == title){
+                    return;
+                }
                 tv_title.setText(title);
             }
         });

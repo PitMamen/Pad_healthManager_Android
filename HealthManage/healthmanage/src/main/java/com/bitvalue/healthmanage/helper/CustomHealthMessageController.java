@@ -26,7 +26,7 @@ public class CustomHealthMessageController {
     public static void onDraw(ICustomMessageViewGroup parent, final CustomHealthMessage data, final int position, final MessageLayout.OnItemLongClickListener onItemLongClickListener, final MessageInfo info) {
 
         // 把自定义消息view添加到TUIKit内部的父容器里
-        final View view = LayoutInflater.from(TUIKitImpl.getAppContext()).inflate(R.layout.layout_health_message, null, false);
+        final View view = LayoutInflater.from(AppApplication.instance()).inflate(R.layout.layout_health_message, null, false);
         parent.addMessageContentView(view);
 
         // 自定义消息view的实现，这里仅仅展示文本信息，并且实现超链接跳转

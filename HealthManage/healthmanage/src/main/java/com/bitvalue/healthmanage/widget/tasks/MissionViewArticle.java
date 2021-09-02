@@ -19,6 +19,7 @@ import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.PaperBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.PaperQuickAdapter;
+import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
 import com.bitvalue.healthmanage.widget.DataUtil;
@@ -104,7 +105,14 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
         paperAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                PaperBean uploadFileApi = mPapers.get(position);
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL, articleBeans.get(position));
+            }
+        });
+        paperAdapter.setOnItemDelete(new OnItemDelete() {
+            @Override
+            public void onItemDelete(int position) {
+                articleBeans.remove(position);
+                paperAdapter.setNewData(articleBeans);
             }
         });
         list_articles.setAdapter(paperAdapter);
@@ -139,8 +147,15 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
         if (articleBeans.size() == 1){
             return;
         }
+
+        for (ArticleBean articleBeanOld : articleBeans) {//去重
+            if (articleBeanOld.articleId == articleBean.articleId) {
+                ToastUtil.toastShortMessage("请勿添加重复的文章");
+                return;
+            }
+        }
+
         articleBeans.add(articleBean);
-//        paperAdapter.notifyDataSetChanged();//TODO 刷新数据
         articles.add(articleBean.articleId + "");
         paperAdapter.setNewData(articleBeans);
     }

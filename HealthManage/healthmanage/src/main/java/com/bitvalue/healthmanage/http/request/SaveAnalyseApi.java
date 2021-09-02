@@ -8,7 +8,7 @@ import java.io.File;
 /**
  */
 public final class SaveAnalyseApi implements IRequestApi {
-    public int contentId;
+    public String contentId;
     public String evalContent;
     public String evalTime;
     public String planId;

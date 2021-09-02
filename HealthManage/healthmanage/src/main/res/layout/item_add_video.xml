@@ -20,13 +20,13 @@
             android:textColor="@color/text_black"
             android:textSize="@dimen/qb_px_8" />
 
-        <ImageView
-            android:id="@+id/img_delete"
-            android:layout_width="@dimen/qb_px_9"
-            android:layout_height="@dimen/qb_px_9"
-            android:layout_marginLeft="@dimen/qb_px_8"
-            android:scaleType="centerCrop"
-            android:src="@drawable/delete_item" />
+<!--        <ImageView-->
+<!--            android:id="@+id/img_delete"-->
+<!--            android:layout_width="@dimen/qb_px_9"-->
+<!--            android:layout_height="@dimen/qb_px_9"-->
+<!--            android:layout_marginLeft="@dimen/qb_px_8"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            android:src="@drawable/delete_item" />-->
 
     </LinearLayout>
 

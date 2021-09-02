@@ -80,6 +80,7 @@ public class HealthAnalyseFragment extends AppFragment {
                     message.msgDetailId = result.getData().id + "";
                     message.userId = mIds;
                     message.content = result.getData().evalContent;
+                    message.contentId = result.getData().contentId;
 //                    message.content = saveTotalMsgApi.remindContent;
                     //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
                     message.setType("CustomAnalyseMessage");

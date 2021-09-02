@@ -63,10 +63,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
 public class HomeActivity extends AppActivity {
+
+    @BindView(R.id.layout_person)
+    LinearLayout layout_person;
+
+    @BindView(R.id.layout_settings)
+    LinearLayout layout_settings;
 
     private static final int chat_index = 0;
     private static final int settings = 1;
@@ -75,7 +82,6 @@ public class HomeActivity extends AppActivity {
     private AppFragment[] fragments;
     private int tabPosition = -1;
     private TextView tv_settings, tv_chat, tv_person;
-    private LinearLayout layout_person, layout_settings;
     private ImageView img_chat, img_settings, img_person;
     private Map<String, Fragment> mapFragments = new HashMap<>();
 
@@ -93,8 +99,6 @@ public class HomeActivity extends AppActivity {
         img_chat = findViewById(R.id.img_chat);
         img_settings = findViewById(R.id.img_settings);
         img_person = findViewById(R.id.img_person);
-        layout_person = findViewById(R.id.layout_person);
-        layout_settings = findViewById(R.id.layout_settings);
 
 //        setOnClickListener(R.id.layout_person, R.id.layout_settings);
         initFragments(0);

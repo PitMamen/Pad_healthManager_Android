@@ -26,6 +26,7 @@ import com.bitvalue.healthmanage.http.request.UploadFileApi;
 import com.bitvalue.healthmanage.http.response.AudioUploadResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.AudioAdapter;
+import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
@@ -106,18 +107,11 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
         list_audio.setLayoutManager(new LinearLayoutManager(homeActivity));
         list_audio.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
         adapter = new AudioAdapter(R.layout.item_audio, mUploadedAudios);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        adapter.setOnItemDelete(new OnItemDelete() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                UploadFileApi uploadFileApi = mUploadedAudios.get(position);
-                ToastUtil.toastLongMessage("开始播放");
-                AudioPlayer.getInstance().startPlay(uploadFileApi.path, new AudioPlayer.Callback() {
-                    //                AudioPlayer.getInstance().startPlay(uploadFileApi.fileLinkUrl, new AudioPlayer.Callback() {
-                    @Override
-                    public void onCompletion(Boolean success) {
-                        ToastUtil.toastLongMessage("播放完成");
-                    }
-                });
+            public void onItemDelete(int position) {
+                mUploadedAudios.remove(position);
+                adapter.setNewData(mUploadedAudios);
             }
         });
         list_audio.setAdapter(adapter);

@@ -161,6 +161,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
         list_videos.addItemDecoration(MUtils.spaceDivider(
                 DensityUtil.dip2px(getAttachActivity(), getAttachActivity().getResources().getDimension(R.dimen.qb_px_3)), false));
         videoAdapter = new VideoQuickAdapter(R.layout.item_paper, videoBeans);
+        videoAdapter.setIsNoDelete(true);
         videoAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -251,6 +252,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
         list_articles.addItemDecoration(MUtils.spaceDivider(
                 DensityUtil.dip2px(getAttachActivity(), getAttachActivity().getResources().getDimension(R.dimen.qb_px_3)), false));
         paperAdapter = new PaperQuickAdapter(R.layout.item_paper, articleBeans);
+        paperAdapter.setIsNoDelete(true);
         paperAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -264,25 +266,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
         list_audio.addItemDecoration(MUtils.spaceDivider(
                 DensityUtil.dip2px(getAttachActivity(), getAttachActivity().getResources().getDimension(R.dimen.qb_px_3)), false));
         adapter = new AudioAdapter(R.layout.item_audio, mUploadedAudios);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                UploadFileApi uploadFileApi = mUploadedAudios.get(position);
-                ToastUtil.toastLongMessage("开始播放");
-                String playPath = "";
-                if (null == uploadFileApi.path || uploadFileApi.path.isEmpty()) {
-                    playPath = uploadFileApi.fileLinkUrl;
-                } else {
-                    playPath = uploadFileApi.path;
-                }
-                AudioPlayer.getInstance().startPlay(playPath, new AudioPlayer.Callback() {
-                    @Override
-                    public void onCompletion(Boolean success) {
-                        ToastUtil.toastLongMessage("播放完成");
-                    }
-                });
-            }
-        });
+        adapter.setIsNoDelete(true);
         list_audio.setAdapter(adapter);
     }
 
