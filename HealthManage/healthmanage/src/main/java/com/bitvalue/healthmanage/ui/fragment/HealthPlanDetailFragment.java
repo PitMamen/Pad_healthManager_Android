@@ -160,6 +160,10 @@ public class HealthPlanDetailFragment extends AppFragment {
             @Override
             public void onSucceed(HttpData<TaskPlanDetailBean> result) {
                 super.onSucceed(result);
+                //增加判空
+                if (result == null || result.getData() ==null){
+                    return;
+                }
                 if (result.getCode() == 0) {
                     switch (userPlanDetailsDTO.planType) {
                         case "Quest":

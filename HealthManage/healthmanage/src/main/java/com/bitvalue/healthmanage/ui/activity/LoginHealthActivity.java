@@ -106,39 +106,45 @@ public class LoginHealthActivity extends AppActivity {
 
                     @Override
                     public void onSucceed(HttpData<LoginBean> data) {
-                        super.onSucceed(data);//10004 密码错误
+                        super.onSucceed(data);
+                        if (data == null){
+                            return;
+                        }
+                        //10004 密码错误
                         if (data.getCode() == 10004) {
                             ToastUtil.toastShortMessage("密码错误");
                             return;
                         }
                         if (data.getCode() == 0) {
                             LoginBean loginBean = data.getData();
-                            EasyConfig.getInstance().addHeader("Authorization", loginBean.getToken());
-                            SharedPreManager.putString(Constants.KEY_TOKEN, loginBean.getToken());
-                            SharedPreManager.putObject(Constants.KYE_USER_BEAN, loginBean);
-                            TUIKit.login(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig, new IUIKitCallBack() {
-                                @Override
-                                public void onError(String module, final int code, final String desc) {
-                                    runOnUiThread(new Runnable() {
-                                        public void run() {
-                                            DemoLog.e("TUIKit.login", "登录聊天失败" + ", errCode = " + code + ", errInfo = " + desc);
-                                        }
-                                    });
-                                }
+                            if (loginBean != null) {
+                                EasyConfig.getInstance().addHeader("Authorization", loginBean.getToken());
+                                SharedPreManager.putString(Constants.KEY_TOKEN, loginBean.getToken());
+                                SharedPreManager.putObject(Constants.KYE_USER_BEAN, loginBean);
+                                TUIKit.login(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig, new IUIKitCallBack() {
+                                    @Override
+                                    public void onError(String module, final int code, final String desc) {
+                                        runOnUiThread(new Runnable() {
+                                            public void run() {
+                                                DemoLog.e("TUIKit.login", "登录聊天失败" + ", errCode = " + code + ", errInfo = " + desc);
+                                            }
+                                        });
+                                    }
 
-                                @Override
-                                public void onSuccess(Object data) {
-                                    // 跳转到首页
-                                    // HomeActivity.start(getContext(), MeFragment.class);
-                                    SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, AppApplication.instance());
-                                    startActivity(new Intent(LoginHealthActivity.this, HomeActivity.class));
-                                    finish();
-                                }
-                            });
+                                    @Override
+                                    public void onSuccess(Object data) {
+                                        // 跳转到首页
+                                        // HomeActivity.start(getContext(), MeFragment.class);
+                                        SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, AppApplication.instance());
+                                        startActivity(new Intent(LoginHealthActivity.this, HomeActivity.class));
+                                        finish();
+                                    }
+                                });
 
-                        } else {
-                            ToastUtil.toastShortMessage("工号或密码错误");
-                            hideDialog();
+                            } else {
+                                ToastUtil.toastShortMessage("工号或密码错误");
+                                hideDialog();
+                            }
                         }
                     }
 

@@ -184,6 +184,10 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
             public void onSucceed(HttpData<SaveTotalMsgApi> result) {
                 super.onSucceed(result);
                 //TODO 展示获取到的信息
+                //增加判空
+                if (result == null || result.getData() ==null){
+                    return;
+                }
                 if (result.getCode() == 0) {
                     SaveTotalMsgApi saveTotalMsgApi = result.getData();
                     et_text_msg.setText(saveTotalMsgApi.remindContent);

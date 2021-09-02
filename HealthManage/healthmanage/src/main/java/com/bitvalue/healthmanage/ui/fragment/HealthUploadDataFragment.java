@@ -86,6 +86,10 @@ public class HealthUploadDataFragment extends AppFragment implements BGANinePhot
             @Override
             public void onSucceed(HttpData<TaskDetailBean> result) {
                 super.onSucceed(result);
+                //增加判空
+                if (result == null || result.getData() ==null){
+                    return;
+                }
                 if (result.getCode() == 0) {
                     taskDetailBean = result.getData();
                     if (null == taskDetailBean) {

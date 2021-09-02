@@ -199,6 +199,10 @@ public class AddQuestionFragment extends AppFragment {
             @Override
             public void onSucceed(HttpData<QuestionResultBean> result) {
                 super.onSucceed(result);
+                //增加判空
+                if (result == null || result.getData() == null){
+                    return;
+                }
                 if (result.getCode() == 0) {
                     if (getVideosApi.start == 1) {//下拉刷新,以及第一次加载
                         questionBeans = result.getData().list;

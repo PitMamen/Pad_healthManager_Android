@@ -458,6 +458,10 @@ public class NewHealthPlanFragment extends AppFragment {
             @Override
             public void onSucceed(HttpData<SavePlanApi> result) {
                 super.onSucceed(result);
+                //增加判空
+                if (result == null){
+                    return;
+                }
                 hideDialog();
                 if (result.getCode() == 0) {
                     ToastUtil.toastShortMessage("保存成功");

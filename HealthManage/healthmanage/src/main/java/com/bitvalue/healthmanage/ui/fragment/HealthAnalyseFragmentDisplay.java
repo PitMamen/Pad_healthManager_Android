@@ -77,6 +77,10 @@ public class HealthAnalyseFragmentDisplay extends AppFragment {
             @Override
             public void onSucceed(HttpData<SaveAnalyseApi> result) {
                 super.onSucceed(result);
+                //增加判空
+                if (result == null || result.getData() ==null){
+                    return;
+                }
                 if (result.getCode() == 0) {//TODO 处理健康评估自定义消息
                     ToastUtil.toastShortMessage("发送成功");
                     CustomAnalyseMessage message = new CustomAnalyseMessage();

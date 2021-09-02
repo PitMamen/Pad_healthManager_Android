@@ -103,6 +103,10 @@ public class SettingsFragment extends AppFragment {
             @Override
             public void onSucceed(HttpData<String> result) {
                 super.onSucceed(result);
+                //增加判空
+                if (result == null){
+                    return;
+                }
                 if (result.getCode() == 0) {
                     ToastUtil.toastShortMessage("退出登录成功");
                     Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);

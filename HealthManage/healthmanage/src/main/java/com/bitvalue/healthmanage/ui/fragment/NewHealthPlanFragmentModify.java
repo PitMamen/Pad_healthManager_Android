@@ -538,6 +538,10 @@ public class NewHealthPlanFragmentModify extends AppFragment {
             public void onSucceed(HttpData<SavePlanApi> result) {
                 hideDialog();
                 super.onSucceed(result);
+                //增加判空
+                if (result == null){
+                    return;
+                }
                 if (result.getCode() == 0) {
                     ToastUtil.toastShortMessage("保存成功");
                     EventBus.getDefault().post(new RefreshPlansObj());
@@ -603,6 +607,10 @@ public class NewHealthPlanFragmentModify extends AppFragment {
             @Override
             public void onSucceed(HttpData<SavePlanApi> result) {
                 super.onSucceed(result);
+                //增加判空
+                if (result == null){
+                    return;
+                }
                 if (result.getCode() == 0) {
                     ToastUtil.toastShortMessage("删除任务成功");
 
