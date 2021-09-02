@@ -274,16 +274,20 @@ public class AddArticleFragment extends AppFragment {
             @Override
             public void onSucceed(HttpData<SearchArticleResult> result) {
                 super.onSucceed(result);
-                searchArticles = result.getData().list;
-                if (null == searchArticles || searchArticles.size() == 0) {
-                    ToastUtil.toastShortMessage("未查询到结果");
-                    layout_daily.setVisibility(View.VISIBLE);
-                    layout_search_result.setVisibility(View.GONE);
-                } else {
-                    mSearchAdapter.setData(searchArticles);
-                    layout_daily.setVisibility(View.GONE);
-                    layout_search_result.setVisibility(View.VISIBLE);
+                //添加判空
+                if (result != null &&  result.getData() !=null){
+                    searchArticles = result.getData().list;
+                    if (null == searchArticles || searchArticles.size() == 0) {
+                        ToastUtil.toastShortMessage("未查询到结果");
+                        layout_daily.setVisibility(View.VISIBLE);
+                        layout_search_result.setVisibility(View.GONE);
+                    } else {
+                        mSearchAdapter.setData(searchArticles);
+                        layout_daily.setVisibility(View.GONE);
+                        layout_search_result.setVisibility(View.VISIBLE);
+                    }
                 }
+
             }
 
             @Override

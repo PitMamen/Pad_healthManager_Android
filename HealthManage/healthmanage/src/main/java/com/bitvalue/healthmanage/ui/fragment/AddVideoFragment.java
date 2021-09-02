@@ -141,6 +141,10 @@ public class AddVideoFragment extends AppFragment {
             public void onSucceed(HttpData<VideoResultBean> result) {
                 super.onSucceed(result);
                 //TODO 展示获取到的信息
+                //增加判空
+                if (result == null || result.getData() ==null){
+                    return;
+                }
                 if (result.getCode() == 0) {
                     if (getVideosApi.start == 1) {//下拉刷新,以及第一次加载
                         videoBeans = result.getData().list;

@@ -534,6 +534,10 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
             @Override
             public void onSucceed(HttpData<List<SaveTotalMsgApi>> result) {
                 super.onSucceed(result);
+                //增加判空
+                if (result == null || result.getData() ==null){
+                    return;
+                }
                 if (result.getCode() == 0) {
                     //step1 组装消息
                     ToastUtil.toastShortMessage("发送成功");
