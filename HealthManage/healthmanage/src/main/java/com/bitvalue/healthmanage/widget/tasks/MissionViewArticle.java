@@ -17,6 +17,7 @@ import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
 import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.PaperBean;
+import com.bitvalue.healthmanage.http.response.PlanDetailResult;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.PaperQuickAdapter;
 import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
@@ -144,7 +145,7 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ArticleBean articleBean) {
-        if (articleBeans.size() == 1){
+        if (articleBeans.size() == 1) {
             return;
         }
 
@@ -169,7 +170,7 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
         //写死的类型数据
         templateTaskContentDTO.taskType = "Knowledge";
 //        templateTaskContentDTO.contentDetail.remindName = "科普文章";
-        if(!isModify){
+        if (!isModify) {
             templateTaskContentDTO.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
         }
         //填入的数据
@@ -178,6 +179,21 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
         templateTaskContentDTO.contentDetail.articleId = articleBeans.get(0).articleId + "";
         return templateTaskContentDTO;
     }
+
+    @Override
+    public PlanDetailResult.UserPlanDetailsDTO getAssembleData() {
+        if (articleBeans.size() == 0) {
+            return null;
+        }
+        PlanDetailResult.UserPlanDetailsDTO userPlanDetailsDTO = new PlanDetailResult.UserPlanDetailsDTO();
+        userPlanDetailsDTO.planType = "Knowledge";
+        userPlanDetailsDTO.planDescribe = "专家团队对您近期的病情变化进行跟踪后，为您选择的科普文章，请及时查阅。";
+        userPlanDetailsDTO.execFlag = 0;
+        userPlanDetailsDTO.content = articleBeans.get(0).content;
+        userPlanDetailsDTO.title = articleBeans.get(0).title;
+        return userPlanDetailsDTO;
+    }
+
 
     public boolean isDataReady() {
         if (articleBeans.size() == 0) {

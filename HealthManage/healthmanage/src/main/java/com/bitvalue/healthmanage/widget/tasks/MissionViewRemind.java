@@ -24,6 +24,7 @@ import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.myhttp.FileUploadUtils;
 import com.bitvalue.healthmanage.http.request.UploadFileApi;
 import com.bitvalue.healthmanage.http.response.AudioUploadResultBean;
+import com.bitvalue.healthmanage.http.response.PlanDetailResult;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.AudioAdapter;
 import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
@@ -228,7 +229,7 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
     public SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO getData() {
         //写死的类型数据
         templateTaskContentDTO.taskType = "Remind";
-        if (!isModify){
+        if (!isModify) {
             templateTaskContentDTO.contentDetail = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO.ContentDetailDTO();
         }
         templateTaskContentDTO.contentDetail.remindName = "健康提醒";
@@ -238,6 +239,23 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
             templateTaskContentDTO.contentDetail.voiceList = getProcessString(audiosFinal);
         }
         return templateTaskContentDTO;
+    }
+
+    @Override
+    public PlanDetailResult.UserPlanDetailsDTO getAssembleData() {
+        if (et_text_msg.getText().toString().isEmpty()) {
+            return null;
+        }
+        if (mUploadedAudios.size() == 0) {
+            return null;
+        }
+        PlanDetailResult.UserPlanDetailsDTO userPlanDetailsDTO = new PlanDetailResult.UserPlanDetailsDTO();
+        userPlanDetailsDTO.planType = "Remind";
+        userPlanDetailsDTO.planDescribe = et_text_msg.getText().toString();
+        userPlanDetailsDTO.remindContent = et_text_msg.getText().toString();
+        userPlanDetailsDTO.execFlag = 0;
+        userPlanDetailsDTO.voiceList = getProcessString(audiosFinal);
+        return userPlanDetailsDTO;
     }
 
     private String getProcessString(ArrayList<String> photosFinal) {
@@ -260,7 +278,7 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
         if (et_text_msg.getText().toString().isEmpty()) {
             ToastUtil.toastShortMessage("请输入提醒内容");
             return false;
-        }else if (et_text_msg.getText().toString().length()<6){
+        } else if (et_text_msg.getText().toString().length() < 6) {
             ToastUtil.toastShortMessage("请输入提醒内容超过5个字");
             return false;
         }

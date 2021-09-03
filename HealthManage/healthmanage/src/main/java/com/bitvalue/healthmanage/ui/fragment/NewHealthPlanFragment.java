@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
@@ -15,10 +16,12 @@ import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.myhttp.FileUploadUtils;
 import com.bitvalue.healthmanage.http.request.UpdateImageApi;
 import com.bitvalue.healthmanage.http.response.AudioUploadResultBean;
+import com.bitvalue.healthmanage.http.response.PlanDetailResult;
 import com.bitvalue.healthmanage.http.response.RefreshPlansObj;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.media.ImagePreviewActivity;
 import com.bitvalue.healthmanage.ui.media.ImageSelectActivity;
+import com.bitvalue.healthmanage.util.TimeUtils;
 import com.bitvalue.healthmanage.util.UiUtil;
 import com.bitvalue.healthmanage.util.Utils;
 import com.bitvalue.healthmanage.widget.DataUtil;
@@ -190,7 +193,7 @@ public class NewHealthPlanFragment extends AppFragment {
     }
 
     @OnClick({R.id.layout_base_time, R.id.layout_add_task, R.id.tv_save, R.id.layout_back,
-            R.id.img_add_cover, R.id.img_add_intro, R.id.img_add_detail})
+            R.id.img_add_cover, R.id.img_add_intro, R.id.img_add_detail, R.id.tv_preview})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_base_time:
@@ -295,6 +298,15 @@ public class NewHealthPlanFragment extends AppFragment {
             case R.id.tv_save:
                 checkAllDataAndSave();
                 break;
+
+            case R.id.tv_preview:
+                PlanDetailResult planDetailResult = assemblePreviewData();
+                if (null == planDetailResult || planDetailResult.userPlanDetails.size() == 0) {
+                    return;
+                }
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW, planDetailResult);
+
+                break;
 //            case R.id.layout_add_paper:
 //                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_PAPER, "");
 //                break;
@@ -304,6 +316,34 @@ public class NewHealthPlanFragment extends AppFragment {
                 }
                 break;
         }
+    }
+
+    private PlanDetailResult assemblePreviewData() {
+        PlanDetailResult planDetailResult = new PlanDetailResult();
+        planDetailResult.startDate = TimeUtils.getTime(System.currentTimeMillis(), TimeUtils.YY_MM_DD_FORMAT_3);
+        if (et_name.getText().toString().isEmpty()) {
+            ToastUtil.toastShortMessage("请输入健康管理计划名称");
+            return null;
+        }
+        planDetailResult.planName = et_name.getText().toString();
+
+        if (taskViews.size() == 0) {
+            ToastUtil.toastShortMessage("请添加计划任务");
+            return null;
+        }
+        List<PlanDetailResult.UserPlanDetailsDTO> assembleDataTotal = new ArrayList<>();
+        //任务列表
+        for (int i = 0; i < taskViews.size(); i++) {
+            List<PlanDetailResult.UserPlanDetailsDTO> assembleData = taskViews.get(i).getAssembleData();
+            if (assembleData.size() != 0) {
+                assembleDataTotal.addAll(assembleData);
+            }
+        }
+        if (assembleDataTotal.size() == 0) {
+            ToastUtil.toastShortMessage("请添加计划任务项目");
+        }
+        planDetailResult.userPlanDetails = assembleDataTotal;
+        return planDetailResult;
     }
 
     private void showFullPop(int layoutResId) {
@@ -459,7 +499,7 @@ public class NewHealthPlanFragment extends AppFragment {
             public void onSucceed(HttpData<SavePlanApi> result) {
                 super.onSucceed(result);
                 //增加判空
-                if (result == null){
+                if (result == null) {
                     return;
                 }
                 hideDialog();

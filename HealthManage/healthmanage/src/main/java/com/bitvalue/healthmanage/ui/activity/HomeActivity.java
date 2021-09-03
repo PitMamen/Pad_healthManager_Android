@@ -20,6 +20,7 @@ import com.bitvalue.healthmanage.http.request.TestApi;
 import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.http.response.LoginBean;
+import com.bitvalue.healthmanage.http.response.PlanDetailResult;
 import com.bitvalue.healthmanage.http.response.PlanListBean;
 import com.bitvalue.healthmanage.http.response.QuestionResultBean;
 import com.bitvalue.healthmanage.http.response.TaskPlanDetailBean;
@@ -37,6 +38,7 @@ import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragmentDisplay;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanDetailFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanFragment;
+import com.bitvalue.healthmanage.ui.fragment.HealthPlanPreviewFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthUploadDataFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragmentModify;
@@ -312,7 +314,7 @@ public class HomeActivity extends AppActivity {
 //                chatInfo.setId("3");
                 chatInfo.setChatName(child.userName);
 
-                bundle.putInt(Constants.PLAN_ID,child.planId);
+                bundle.putInt(Constants.PLAN_ID, child.planId);
                 bundle.putSerializable(com.bitvalue.healthmanage.util.Constants.CHAT_INFO, chatInfo);
                 chatFragment.setArguments(bundle);
                 mapFragments.put(Constants.FRAGMENT_CHAT, chatFragment);
@@ -404,7 +406,7 @@ public class HomeActivity extends AppActivity {
                 ChatFragment.NewMsgData msgDataAnalyse = (ChatFragment.NewMsgData) object;
 //                msgBundleAnalyse.putString(Constants.MSG_CUSTOM_ID, msgDataAnalyse.id);//显示详情的时候才要
                 msgBundleAnalyse.putStringArrayList(Constants.MSG_IDS, msgDataAnalyse.userIds);//传入消息接受者的userId
-                msgBundleAnalyse.putString(Constants.PLAN_ID,msgDataAnalyse.id);
+                msgBundleAnalyse.putString(Constants.PLAN_ID, msgDataAnalyse.id);
                 healthAnalyseFragment.setArguments(msgBundleAnalyse);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_ANALYSE, healthAnalyseFragment);
                 break;
@@ -418,7 +420,7 @@ public class HomeActivity extends AppActivity {
 
                 Bundle bundleData = new Bundle();
                 CustomHealthDataMessage customHealthDataMessage = (CustomHealthDataMessage) object;
-                bundleData.putSerializable(Constants.DATA_MSG,customHealthDataMessage);
+                bundleData.putSerializable(Constants.DATA_MSG, customHealthDataMessage);
                 healthUploadDataFragment.setArguments(bundleData);
                 mapFragments.put(Constants.FRAGMENT_USER_DATA, healthUploadDataFragment);
                 break;
@@ -447,8 +449,8 @@ public class HomeActivity extends AppActivity {
                 }
                 healthPlanDetailFragment = new HealthPlanDetailFragment();
                 Bundle bundleDetail = new Bundle();
-                bundleDetail.putStringArrayList(Constants.MSG_IDS,msgDataDetail.userIds);
-                bundleDetail.putString(Constants.PLAN_ID,msgDataDetail.id);
+                bundleDetail.putStringArrayList(Constants.MSG_IDS, msgDataDetail.userIds);
+                bundleDetail.putString(Constants.PLAN_ID, msgDataDetail.id);
                 healthPlanDetailFragment.setArguments(bundleDetail);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_DETAIL, healthPlanDetailFragment);
                 break;
@@ -502,6 +504,19 @@ public class HomeActivity extends AppActivity {
                 planMsgFragment.setArguments(bundleTP);
                 mapFragments.put(Constants.FRAGMENT_PLAN_MSG, planMsgFragment);
                 break;
+
+            case Constants.FRAGMENT_HEALTH_PLAN_PREVIEW:
+                PlanDetailResult planDetailResult = (PlanDetailResult) object;
+                Bundle bundlePre = new Bundle();
+                bundlePre.putSerializable(Constants.PLAN_PREVIEW, planDetailResult);
+                HealthPlanPreviewFragment healthPlanPreviewFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                healthPlanPreviewFragment = new HealthPlanPreviewFragment();
+                healthPlanPreviewFragment.setArguments(bundlePre);
+                mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW, healthPlanPreviewFragment);
+                break;
         }
         Set<String> strings = mapFragments.keySet();
         List<String> stringList = new ArrayList<>(strings);
@@ -517,7 +532,7 @@ public class HomeActivity extends AppActivity {
         if (!mapFragments.get(keyFragment).isAdded()) {
             fragmentTransaction.add(R.id.layout_fragment_end, mapFragments.get(keyFragment));
         }
-        supportFragmentManager.popBackStack(keyFragment,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        supportFragmentManager.popBackStack(keyFragment, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         fragmentTransaction.addToBackStack(keyFragment);
         fragmentTransaction.show(mapFragments.get(keyFragment)).commit();
     }

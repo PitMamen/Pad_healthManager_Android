@@ -23,8 +23,10 @@ import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.DeleteMissionApi;
+import com.bitvalue.healthmanage.http.response.PlanDetailResult;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.util.InputMethodUtils;
+import com.bitvalue.healthmanage.util.TimeUtils;
 import com.bitvalue.healthmanage.util.UiUtil;
 import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.healthmanage.widget.TimePeriodView;
@@ -73,7 +75,7 @@ public class TaskView extends LinearLayout {
     private List<View> missionViews = new ArrayList<>();
     public SavePlanApi.TemplateTaskDTO templateTaskDTO = new SavePlanApi.TemplateTaskDTO();
     private boolean isModify;
-    private String mDayCount;
+    private String mDayCount = "0";
 
     public TaskView(Context context) {
         super(context);
@@ -452,6 +454,38 @@ public class TaskView extends LinearLayout {
             templateTaskDTO.templateTaskContent = missionData;
         }
         return templateTaskDTO;
+    }
+
+    public List<PlanDetailResult.UserPlanDetailsDTO> getAssembleData() {
+        List<PlanDetailResult.UserPlanDetailsDTO> userPlanDetailsDTOS = new ArrayList<>();
+        for (int i = 0; i < missionViews.size(); i++) {
+            View view = missionViews.get(i);
+            PlanDetailResult.UserPlanDetailsDTO data = null;
+            if (view instanceof MissionViewRemind) {
+                MissionViewRemind missionViewRemind = (MissionViewRemind) view;
+                data = missionViewRemind.getAssembleData();
+                if (null != data) {
+                    data.execTime = TimeUtils.getTime((System.currentTimeMillis() + Integer.parseInt(mDayCount) * 24 * 60 * 60 * 1000), TimeUtils.YY_MM_DD_FORMAT_3);
+                    userPlanDetailsDTOS.add(data);
+                }
+            } else if (view instanceof MissionViewArticle) {
+                MissionViewArticle missionViewArticle = (MissionViewArticle) view;
+                data = missionViewArticle.getAssembleData();
+                if (null != data) {
+                    data.execTime = TimeUtils.getTime((System.currentTimeMillis() + Integer.parseInt(mDayCount) * 24 * 60 * 60 * 1000), TimeUtils.YY_MM_DD_FORMAT_3);
+                    userPlanDetailsDTOS.add(data);
+                }
+            } else {
+                MissionViewQuestion missionViewQuestion = (MissionViewQuestion) view;
+                data = missionViewQuestion.getAssembleData();
+                if (null != data) {
+                    data.execTime = TimeUtils.getTime((System.currentTimeMillis() + Integer.parseInt(mDayCount) * 24 * 60 * 60 * 1000), TimeUtils.YY_MM_DD_FORMAT_3);
+//                    data.execTime = mDayCount + "天后";
+                    userPlanDetailsDTOS.add(data);
+                }
+            }
+        }
+        return userPlanDetailsDTOS;
     }
 
     public void setTaskData(SavePlanApi.TemplateTaskDTO templateTaskDTO) {

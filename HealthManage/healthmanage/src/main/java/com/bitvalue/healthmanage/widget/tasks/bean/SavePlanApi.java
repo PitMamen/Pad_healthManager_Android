@@ -64,6 +64,7 @@ public class SavePlanApi implements IRequestApi {
                 //健康问卷属性
                 public String questName = "";
                 public String questId = "";
+                public String questUrl = "";
 
                 //科普文章属性
                 public String knowUrl = "";

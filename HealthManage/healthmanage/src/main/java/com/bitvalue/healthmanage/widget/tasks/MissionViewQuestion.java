@@ -15,6 +15,7 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.PaperBean;
+import com.bitvalue.healthmanage.http.response.PlanDetailResult;
 import com.bitvalue.healthmanage.http.response.QuestionResultBean;
 import com.bitvalue.healthmanage.http.response.VideoResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
@@ -178,6 +179,19 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
         return templateTaskContentDTO;
     }
 
+    @Override
+    public PlanDetailResult.UserPlanDetailsDTO getAssembleData() {
+        if (questionBeans.size() == 0) {
+            return null;
+        }
+        PlanDetailResult.UserPlanDetailsDTO userPlanDetailsDTO = new PlanDetailResult.UserPlanDetailsDTO();
+        userPlanDetailsDTO.planType = "Quest";
+        userPlanDetailsDTO.planDescribe = "专家团队对您近期的病情变化进行跟踪后，为您选择的健康问卷，请及时查阅。";
+        userPlanDetailsDTO.execFlag = 0;
+        userPlanDetailsDTO.questUrl = questionBeans.get(0).questUrl;//接口没有返回 questUrl
+        return userPlanDetailsDTO;
+    }
+
     public boolean isDataReady() {
         if (questionBeans.size() == 0) {
             ToastUtil.toastShortMessage("请选择问卷");
@@ -192,6 +206,7 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
         listDTO.name = templateTaskContentDTO.contentDetail.questName;
 //        listDTO.id = templateTaskContentDTO.contentDetail.questId;
         listDTO.key = templateTaskContentDTO.contentDetail.questId;
+        listDTO.questUrl = templateTaskContentDTO.contentDetail.questUrl;
         questionBeans.add(listDTO);
         questionQuickAdapter.setNewData(questionBeans);
 

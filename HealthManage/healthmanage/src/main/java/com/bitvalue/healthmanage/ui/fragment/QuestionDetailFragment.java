@@ -18,6 +18,7 @@ import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.response.QuestionResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -58,6 +59,10 @@ public class QuestionDetailFragment extends AppFragment {
         questionBean = (QuestionResultBean.ListDTO) getArguments().getSerializable(Constants.QUESTION_DETAIL);
 
         //TODO 外网切内网
+        if (null == questionBean.questUrl){
+            ToastUtil.toastShortMessage("问卷数据错误");
+            return;
+        }
         url = questionBean.questUrl.replace("218.77.104.74:8008", "192.168.1.122");
 //        url = "http://192.168.1.122/s/8a755f7c24ad49c9a2be6e6f79c3ee60";
 //        url = "http://218.77.104.74:8008/s/8a755f7c24ad49c9a2be6e6f79c3ee60";
