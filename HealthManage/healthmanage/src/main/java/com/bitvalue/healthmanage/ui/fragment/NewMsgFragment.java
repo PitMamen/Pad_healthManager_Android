@@ -42,6 +42,7 @@ import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
 import com.bitvalue.healthmanage.util.TimeUtils;
 import com.bitvalue.healthmanage.util.Utils;
+import com.bitvalue.healthmanage.widget.tasks.bean.GetMissionObj;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
 import com.bitvalue.sdk.collab.base.TUIKitListenerManager;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
@@ -410,7 +411,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
 
                 break;
             case R.id.layout_add_paper:
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_PAPER, "");
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_PAPER, new GetMissionObj());
                 break;
             case R.id.tv_send_msg:
                 checkTotalMsg();

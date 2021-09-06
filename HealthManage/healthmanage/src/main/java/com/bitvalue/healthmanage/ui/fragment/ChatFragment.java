@@ -273,7 +273,7 @@ public class ChatFragment extends AppFragment {
                 String rooId = System.currentTimeMillis() + "";
                 message.msgDetailId = rooId.substring(rooId.length() - 7, rooId.length());
 //                message.userId = mIds;
-                message.content = "点击接入视频通话";
+                message.content = "点击接入视频看诊";
                 //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
                 message.setType("CustomVideoCallMessage");
                 message.setDescription("视频看诊");

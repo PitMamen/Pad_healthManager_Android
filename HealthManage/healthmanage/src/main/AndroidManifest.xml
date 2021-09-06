@@ -92,6 +92,7 @@
 
         <activity
             android:name=".ui.activity.LoginHealthActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/SplashTheme" />
 
@@ -104,8 +105,8 @@
         <!-- 图片选择 -->
         <activity
             android:name=".ui.media.ImageSelectActivity"
-            android:label="@string/image_select_title"
             android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
+            android:label="@string/image_select_title"
             android:screenOrientation="landscape" />
 
         <!-- 查看大图 -->

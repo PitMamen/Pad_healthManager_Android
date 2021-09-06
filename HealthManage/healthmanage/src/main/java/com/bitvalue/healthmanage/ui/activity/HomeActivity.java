@@ -36,6 +36,7 @@ import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
 import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragmentDisplay;
+import com.bitvalue.healthmanage.ui.fragment.HealthHistoryPreFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanDetailFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthPlanPreviewFragment;
@@ -46,6 +47,7 @@ import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragmentDisplay;
 import com.bitvalue.healthmanage.ui.fragment.PlanMsgFragment;
 import com.bitvalue.healthmanage.ui.fragment.QuestionDetailFragment;
+import com.bitvalue.healthmanage.ui.fragment.WriteHealthFragment;
 import com.bitvalue.healthmanage.ui.settings.fragment.SettingsFragment;
 import com.bitvalue.healthmanage.util.DemoLog;
 import com.bitvalue.healthmanage.util.SharedPreManager;
@@ -525,6 +527,23 @@ public class HomeActivity extends AppActivity {
                 healthPlanPreviewFragment = new HealthPlanPreviewFragment();
                 healthPlanPreviewFragment.setArguments(bundlePre);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW, healthPlanPreviewFragment);
+                break;
+
+            case Constants.FRAGMENT_WRITE_HEALTH:
+                WriteHealthFragment writeHealthFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                writeHealthFragment = new WriteHealthFragment();
+                mapFragments.put(Constants.FRAGMENT_WRITE_HEALTH, writeHealthFragment);
+                break;
+            case Constants.FRAGMENT_HEALTH_HISTORY_PREVIEW:
+                HealthHistoryPreFragment healthHistoryPreFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                healthHistoryPreFragment = new HealthHistoryPreFragment();
+                mapFragments.put(Constants.FRAGMENT_HEALTH_HISTORY_PREVIEW, healthHistoryPreFragment);
                 break;
         }
         Set<String> strings = mapFragments.keySet();

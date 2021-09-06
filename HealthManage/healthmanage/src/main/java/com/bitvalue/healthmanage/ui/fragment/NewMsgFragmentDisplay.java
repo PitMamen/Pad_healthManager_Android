@@ -260,6 +260,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
         paperAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL, articleBeans.get(position));
             }
         });
         list_articles.setAdapter(paperAdapter);

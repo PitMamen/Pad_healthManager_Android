@@ -31,6 +31,8 @@ public class Constants {
     public static final String FRAGMENT_USER_DATA = "fragment_user_data";
     public static final String FRAGMENT_PLAN_MSG = "fragment_plan_msg";
     public static final String FRAGMENT_HEALTH_PLAN_PREVIEW = "fragment_health_plan_preview";
+    public static final String FRAGMENT_WRITE_HEALTH = "fragment_write_health";
+    public static final String FRAGMENT_HEALTH_HISTORY_PREVIEW = "fragment_health_history_preview";
 
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";

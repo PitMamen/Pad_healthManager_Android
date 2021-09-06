@@ -86,8 +86,7 @@ public class SettingsFragment extends AppFragment {
                 });
                 break;
             case R.id.layout_rtc:
-                Intent intent = new Intent(homeActivity, VideoCallingEnterActivity.class);
-                startActivity(intent);
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_WRITE_HEALTH, "");
                 break;
         }
     }

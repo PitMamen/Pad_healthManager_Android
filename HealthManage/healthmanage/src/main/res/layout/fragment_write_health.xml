@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_third_title"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_gray"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/qb_px_15"
+            android:paddingTop="@dimen/qb_px_10">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_main"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_1"
+                    android:text="*  "
+                    android:textColor="@color/read_dot_bg"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_main_pot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="主述："
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toRightOf="@id/tv_main"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray"
+                    android:gravity="left|top"
+                    android:hint="患者自述的症状、体征及持续时间等"
+                    android:minHeight="@dimen/qb_px_50"
+                    android:paddingHorizontal="@dimen/qb_px_6"
+                    android:paddingVertical="@dimen/qb_px_6"
+                    android:textColor="@color/text_main"
+                    android:textSize="@dimen/qb_px_8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_main" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_1"
+                    android:text="*  "
+                    android:textColor="@color/read_dot_bg"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_history_pot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="现病史："
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toRightOf="@id/tv_history"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray"
+                    android:gravity="left|top"
+                    android:hint="记述患者病后的全过程，即发生、发展、演变和诊治经过"
+                    android:minHeight="@dimen/qb_px_50"
+                    android:paddingHorizontal="@dimen/qb_px_6"
+                    android:paddingVertical="@dimen/qb_px_6"
+                    android:textColor="@color/text_main"
+                    android:textSize="@dimen/qb_px_8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_history" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_history_before"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_1"
+                    android:text="*  "
+                    android:textColor="@color/read_dot_bg"
+                    android:visibility="invisible"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_history_before_pot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="既往史及其他病史："
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toRightOf="@id/tv_history_before"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_history_before"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray"
+                    android:gravity="left|top"
+                    android:hint="记述的患者既往的健康状况和过去曾经个人及家族患过的疾病、过敏等方面的问题"
+                    android:minHeight="@dimen/qb_px_50"
+                    android:paddingHorizontal="@dimen/qb_px_6"
+                    android:paddingVertical="@dimen/qb_px_6"
+                    android:textColor="@color/text_main"
+                    android:textSize="@dimen/qb_px_8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_history_before" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_body"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_1"
+                    android:text="*  "
+                    android:visibility="invisible"
+                    android:textColor="@color/read_dot_bg"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_body_pot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="体格检查："
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toRightOf="@id/tv_body"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray"
+                    android:gravity="left|top"
+                    android:hint="记述患者人体形态结构和机能发展水平进行检测和计量"
+                    android:minHeight="@dimen/qb_px_50"
+                    android:paddingHorizontal="@dimen/qb_px_6"
+                    android:paddingVertical="@dimen/qb_px_6"
+                    android:textColor="@color/text_main"
+                    android:textSize="@dimen/qb_px_8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_body" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_result"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_1"
+                    android:text="*  "
+                    android:textColor="@color/read_dot_bg"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_result_pot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="初步诊断："
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toRightOf="@id/tv_result"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray"
+                    android:gravity="left|top"
+                    android:hint="记述患者的诊断"
+                    android:minHeight="@dimen/qb_px_50"
+                    android:paddingHorizontal="@dimen/qb_px_6"
+                    android:paddingVertical="@dimen/qb_px_6"
+                    android:textColor="@color/text_main"
+                    android:textSize="@dimen/qb_px_8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_result" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_conclusion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_1"
+                    android:text="*  "
+                    android:textColor="@color/read_dot_bg"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_conclusion_pot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="处理意见："
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toRightOf="@id/tv_conclusion"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_conclusion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray"
+                    android:gravity="left|top"
+                    android:hint="记述该诊断的处理意见"
+                    android:minHeight="@dimen/qb_px_50"
+                    android:paddingHorizontal="@dimen/qb_px_6"
+                    android:paddingVertical="@dimen/qb_px_6"
+                    android:textColor="@color/text_main"
+                    android:textSize="@dimen/qb_px_8"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_conclusion" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:layout_marginBottom="@dimen/qb_px_10">
+
+                <TextView
+                    android:id="@+id/tv_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray_dark"
+                    android:paddingHorizontal="@dimen/qb_px_30"
+                    android:paddingVertical="@dimen/qb_px_5"
+                    android:text="取消"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <TextView
+                    android:id="@+id/tv_preview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/tv_cancel"
+                    android:layout_marginRight="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray_dark"
+                    android:paddingHorizontal="@dimen/qb_px_30"
+                    android:paddingVertical="@dimen/qb_px_5"
+                    android:text="预览"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <TextView
+                    android:id="@+id/tv_commit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/tv_preview"
+                    android:layout_marginRight="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_blue_dark"
+                    android:paddingHorizontal="@dimen/qb_px_30"
+                    android:paddingVertical="@dimen/qb_px_5"
+                    android:text="提交"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_10" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
