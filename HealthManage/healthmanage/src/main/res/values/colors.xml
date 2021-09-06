@@ -27,4 +27,7 @@
     <!-- 18 图半透明蒙层字体颜色 -->
     <color name="bga_pp_eighteen_maskTextColor">#FFFFFF</color>
 
+    <!-- 图片处于选中状态时的遮罩层颜色 -->
+    <color name="bga_pp_photo_selected_mask">#4DFFFFFF</color>
+
 </resources>

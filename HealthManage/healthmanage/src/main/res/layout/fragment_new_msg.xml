@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_third_title"/>
+    <include layout="@layout/layout_third_title" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -220,6 +220,26 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_img_msg" />
 
+                    <!--                    <com.bitvalue.healthmanage.widget.photo.BGASortableNinePhotoLayout-->
+                    <!--                        android:id="@+id/npl_item_moment_photos"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        app:bga_snpl_deleteDrawable="@mipmap/bga_pp_ic_delete"-->
+                    <!--                        app:bga_snpl_deleteDrawableOverlapQuarter="false"-->
+                    <!--                        app:bga_snpl_editable="true"-->
+                    <!--                        app:bga_snpl_itemCornerRadius="0dp"-->
+                    <!--                        app:bga_snpl_itemSpanCount="5"-->
+                    <!--                        app:bga_snpl_itemWhiteSpacing="@dimen/qb_px_4"-->
+                    <!--                        app:bga_snpl_itemWidth="@dimen/qb_px_60"-->
+                    <!--                        app:bga_snpl_maxItemCount="9"-->
+                    <!--                        app:bga_snpl_otherWhiteSpacing="@dimen/qb_px_100"-->
+                    <!--                        app:bga_snpl_placeholderDrawable="@mipmap/bga_pp_ic_holder_light"-->
+                    <!--                        app:bga_snpl_plusDrawable="@mipmap/bga_pp_ic_plus"-->
+                    <!--                        app:bga_snpl_plusEnable="true"-->
+                    <!--                        app:bga_snpl_sortable="true"-->
+                    <!--                        app:layout_constraintLeft_toLeftOf="parent"-->
+                    <!--                        app:layout_constraintTop_toBottomOf="@id/img_add_pic" />-->
+
                     <cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout
                         android:id="@+id/npl_item_moment_photos"
                         style="@style/MatchWrap"
@@ -233,6 +253,7 @@
                         app:bga_npl_showAsLargeWhenOnlyOne="true"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/img_add_pic" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -264,8 +285,8 @@
                         android:orientation="horizontal"
                         android:paddingHorizontal="@dimen/qb_px_47"
                         android:paddingVertical="@dimen/qb_px_6"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintRight_toRightOf="parent">
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <ImageView
                             android:layout_width="@dimen/qb_px_8"

@@ -22,6 +22,7 @@
     <string name="forbid_add_friend">对方已禁止加好友</string>
     <string name="set_in_blacklist">您已被被对方设置为黑名单</string>
     <string name="wait_agree_friend">等待好友审核同意</string>
+    <string name="bga_pp_format_remain_image">+%1$d</string>
 
     <!-- 通用的 -->
     <string name="common_crash_hint">应用出了点小意外，正在重新启动</string>

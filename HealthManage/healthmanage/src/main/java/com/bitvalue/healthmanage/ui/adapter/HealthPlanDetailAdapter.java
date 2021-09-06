@@ -62,8 +62,8 @@ public class HealthPlanDetailAdapter extends AppAdapter<PlanDetailResult.UserPla
                 tv_step_name.setText("健康评估");
                 tv_health_report.setText("健康评估");
             } else if (planDetailsDTO.planType.equals("DrugGuide")) {
-                tv_step_name.setText("用药提醒");
-                tv_health_report.setText("用药提醒");
+                tv_step_name.setText("用药指导");
+                tv_health_report.setText("用药指导");
             } else if (planDetailsDTO.planType.equals("OutsideInformation")) {
                 tv_step_name.setText("患者上传资料");
                 tv_health_report.setText("患者上传资料");

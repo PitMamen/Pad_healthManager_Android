@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,12 +70,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
+import cn.bingoogolapple.photopicker.widget.BGASortableNinePhotoLayout;
 import okhttp3.Call;
 import rx.functions.Action1;
 
 import static com.bitvalue.healthmanage.Constants.MAX_IMG;
 
 public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.Delegate {
+//public class NewMsgFragment extends AppFragment implements BGASortableNinePhotoLayout.Delegate {
 
     @BindView(R.id.img_add_pic)
     ImageView img_add_pic;
@@ -645,6 +648,47 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
         photos.addAll(data);
         ninePhotoLayout.setData(photos);
     }
+
+//    @Override
+//    public void onClickAddNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, ArrayList<String> models) {
+//        Utils.checkPermission(getAttachActivity(), new Utils.PermissionCallBack() {
+//            @Override
+//            public void onPermissionResult(boolean permit) {
+//                int canSelectNun = MAX_IMG - photos.size();
+//                if (canSelectNun < 1) {
+//                    ToastUtil.toastShortMessage("最多选择9张照片");
+//                    return;
+//                }
+//                ImageSelectActivity.start(getAttachActivity(), canSelectNun, new ImageSelectActivity.OnPhotoSelectListener() {
+//
+//                    @Override
+//                    public void onSelected(List<String> data) {
+//                        getImages(data);
+//                    }
+//
+//                    @Override
+//                    public void onCancel() {
+//                    }
+//                });
+//            }
+//        });
+//    }
+//
+//    @Override
+//    public void onClickDeleteNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models) {
+//        photos.remove(position);
+//        ninePhotoLayout.setData(photos);
+//    }
+//
+//    @Override
+//    public void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models) {
+//        ImagePreviewActivity.start(homeActivity, model);
+//    }
+//
+//    @Override
+//    public void onNinePhotoItemExchanged(BGASortableNinePhotoLayout sortableNinePhotoLayout, int fromPosition, int toPosition, ArrayList<String> models) {
+//        Toast.makeText(homeActivity, "排序发生变化", Toast.LENGTH_SHORT).show();
+//    }
 
     @Override
     public void onClickNinePhotoItem(BGANinePhotoLayout ninePhotoLayout, View view, int position, String model, List<String> models) {
