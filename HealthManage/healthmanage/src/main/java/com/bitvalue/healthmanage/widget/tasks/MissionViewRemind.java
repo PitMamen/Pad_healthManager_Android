@@ -67,6 +67,23 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
     @BindView(R.id.layout_add_item)
     LinearLayout layout_add_item;
 
+    private int TaskNo;
+    private int MissionNo;
+    public int getTaskNo() {
+        return TaskNo;
+    }
+
+    public void setTaskNo(int taskNo) {
+        TaskNo = taskNo;
+    }
+
+    public int getMissionNo() {
+        return MissionNo;
+    }
+
+    public void setMissionNo(int missionNo) {
+        MissionNo = missionNo;
+    }
     private HomeActivity homeActivity;
     private MissionViewCallBack missionViewCallBack;
     private List<UploadFileApi> mUploadedAudios = new ArrayList<>();
@@ -243,10 +260,7 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
 
     @Override
     public PlanDetailResult.UserPlanDetailsDTO getAssembleData() {
-        if (et_text_msg.getText().toString().isEmpty()) {
-            return null;
-        }
-        if (mUploadedAudios.size() == 0) {
+        if (et_text_msg.getText().toString().isEmpty() && mUploadedAudios.size() == 0){
             return null;
         }
         PlanDetailResult.UserPlanDetailsDTO userPlanDetailsDTO = new PlanDetailResult.UserPlanDetailsDTO();
@@ -254,7 +268,9 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
         userPlanDetailsDTO.planDescribe = et_text_msg.getText().toString();
         userPlanDetailsDTO.remindContent = et_text_msg.getText().toString();
         userPlanDetailsDTO.execFlag = 0;
-        userPlanDetailsDTO.voiceList = getProcessString(audiosFinal);
+        if (audiosFinal.size() > 0) {
+            userPlanDetailsDTO.voiceList = getProcessString(audiosFinal);
+        }
         return userPlanDetailsDTO;
     }
 
@@ -275,19 +291,17 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
     }
 
     public boolean isDataReady() {
-        if (et_text_msg.getText().toString().isEmpty()) {
-            ToastUtil.toastShortMessage("请输入提醒内容");
-            return false;
-        } else if (et_text_msg.getText().toString().length() < 6) {
-            ToastUtil.toastShortMessage("请输入提醒内容超过5个字");
-            return false;
+        boolean isReady = false;
+        if (et_text_msg.getText().toString().length() >= 6 || mUploadedAudios.size() > 0) {
+            isReady = true;
+        } else {
+            if (mUploadedAudios.size() == 0 && !et_text_msg.getText().toString().isEmpty() && et_text_msg.getText().toString().length() < 6) {
+                ToastUtil.toastShortMessage("请输入提醒内容超过5个字");
+            } else {
+                ToastUtil.toastShortMessage("请至少输入一种提醒消息");
+            }
         }
-
-        if (mUploadedAudios.size() == 0) {
-            ToastUtil.toastShortMessage("请录制语音");
-            return false;
-        }
-        return true;
+        return isReady;
     }
 
     /**

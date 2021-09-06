@@ -24,6 +24,7 @@ import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
 import com.bitvalue.healthmanage.widget.DataUtil;
+import com.bitvalue.healthmanage.widget.tasks.bean.GetMissionObj;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -52,6 +53,25 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
 
     @BindView(R.id.layout_add_item)
     LinearLayout layout_add_item;
+
+    private int TaskNo;
+    private int MissionNo;
+
+    public int getTaskNo() {
+        return TaskNo;
+    }
+
+    public void setTaskNo(int taskNo) {
+        TaskNo = taskNo;
+    }
+
+    public int getMissionNo() {
+        return MissionNo;
+    }
+
+    public void setMissionNo(int missionNo) {
+        MissionNo = missionNo;
+    }
 
     private HomeActivity homeActivity;
     private MissionViewCallBack missionViewCallBack;
@@ -128,7 +148,7 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
                     ToastUtil.toastShortMessage("仅限添加一篇文章");
                     return;
                 }
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_PAPER, "");
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_PAPER, new GetMissionObj(this.TaskNo,this.MissionNo));
                 break;
             case R.id.img_type:
                 if (null != missionViewCallBack) {
@@ -146,6 +166,11 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ArticleBean articleBean) {
         if (articleBeans.size() == 1) {
+            return;
+        }
+
+        //不是当前的任务和项目跳转的获取文章，不添加
+        if (articleBean.MissionNo != this.MissionNo || articleBean.TaskNo != this.TaskNo){
             return;
         }
 

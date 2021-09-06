@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
@@ -22,6 +23,7 @@ import com.bitvalue.healthmanage.http.response.PaperBean;
 import com.bitvalue.healthmanage.http.response.SearchArticleResult;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.ArticleAdapter;
+import com.bitvalue.healthmanage.widget.tasks.bean.GetMissionObj;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.base.BaseAdapter;
 import com.hjq.http.EasyHttp;
@@ -64,6 +66,8 @@ public class AddArticleFragment extends AppFragment {
     private WrapRecyclerView list_daily;
     private List<ArticleBean> dailyArticles = new ArrayList<>();
     private List<ArticleBean> searchArticles = new ArrayList<>();
+    private GetMissionObj getMissionObj;
+
 
     @OnClick({R.id.layout_back})
     public void onClick(View view) {
@@ -83,6 +87,7 @@ public class AddArticleFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        getMissionObj = (GetMissionObj) getArguments().getSerializable(Constants.GET_MISSION_OBJ);
         tv_title.setText("文章选择");
         list_daily = (WrapRecyclerView) findViewById(R.id.list_daily);
         homeActivity = (HomeActivity) getActivity();
@@ -143,7 +148,12 @@ public class AddArticleFragment extends AppFragment {
                 if (dailyArticles.size() == 0) {
                     return;
                 }
-                EventBus.getDefault().post(dailyArticles.get(position));
+                ArticleBean articleBean = dailyArticles.get(position);
+                if (null != getMissionObj) {
+                    articleBean.TaskNo = getMissionObj.getTaskNo();
+                    articleBean.MissionNo = getMissionObj.getMissionNo();
+                }
+                EventBus.getDefault().post(articleBean);
                 homeActivity.getSupportFragmentManager().popBackStack();
             }
         });

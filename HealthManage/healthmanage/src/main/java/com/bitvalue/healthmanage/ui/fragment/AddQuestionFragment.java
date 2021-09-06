@@ -20,6 +20,7 @@ import com.bitvalue.healthmanage.http.response.QuestionResultBean;
 import com.bitvalue.healthmanage.http.response.msg.AddQuestionObject;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.QuestionAdapter;
+import com.bitvalue.healthmanage.widget.tasks.bean.GetMissionObj;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.base.BaseAdapter;
 import com.hjq.http.EasyHttp;
@@ -32,6 +33,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,7 @@ public class AddQuestionFragment extends AppFragment {
     private GetQuestionApi getVideosApi;
     private int total;
     private AddQuestionObject addVideoObject;
+    private GetMissionObj getMissionObj;
 
     @Override
     protected int getLayoutId() {
@@ -66,6 +69,8 @@ public class AddQuestionFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        getMissionObj = (GetMissionObj) getArguments().getSerializable(Constants.GET_MISSION_OBJ);
+
         tv_title.setText("问卷选择");
         list_normal = (WrapRecyclerView) findViewById(R.id.list_daily);
         homeActivity = (HomeActivity) getActivity();
@@ -142,6 +147,10 @@ public class AddQuestionFragment extends AppFragment {
             public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
                 QuestionResultBean.ListDTO listDTO = questionBeans.get(position);
 //                listDTO.questionFor = addVideoObject.questionFor;
+                if (null != getMissionObj) {
+                    listDTO.TaskNo = getMissionObj.getTaskNo();
+                    listDTO.MissionNo = getMissionObj.getMissionNo();
+                }
                 EventBus.getDefault().post(listDTO);
                 homeActivity.getSupportFragmentManager().popBackStack();
             }
@@ -200,7 +209,7 @@ public class AddQuestionFragment extends AppFragment {
             public void onSucceed(HttpData<QuestionResultBean> result) {
                 super.onSucceed(result);
                 //增加判空
-                if (result == null || result.getData() == null){
+                if (result == null || result.getData() == null) {
                     return;
                 }
                 if (result.getCode() == 0) {

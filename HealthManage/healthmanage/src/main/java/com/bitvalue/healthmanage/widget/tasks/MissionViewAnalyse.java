@@ -28,6 +28,25 @@ public class MissionViewAnalyse extends LinearLayout {
     LinearLayout layout_add_item;
 
     private HomeActivity homeActivity;
+    private int TaskNo;
+    private int MissionNo;
+
+    public int getTaskNo() {
+        return TaskNo;
+    }
+
+    public void setTaskNo(int taskNo) {
+        TaskNo = taskNo;
+    }
+
+    public int getMissionNo() {
+        return MissionNo;
+    }
+
+    public void setMissionNo(int missionNo) {
+        MissionNo = missionNo;
+    }
+
     private MissionViewCallBack missionViewCallBack;
 
     public MissionViewAnalyse(Context context) {

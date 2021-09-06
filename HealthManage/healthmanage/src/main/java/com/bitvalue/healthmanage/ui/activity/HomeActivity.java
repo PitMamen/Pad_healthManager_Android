@@ -49,6 +49,7 @@ import com.bitvalue.healthmanage.ui.fragment.QuestionDetailFragment;
 import com.bitvalue.healthmanage.ui.settings.fragment.SettingsFragment;
 import com.bitvalue.healthmanage.util.DemoLog;
 import com.bitvalue.healthmanage.util.SharedPreManager;
+import com.bitvalue.healthmanage.widget.tasks.bean.GetMissionObj;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
@@ -350,19 +351,27 @@ public class HomeActivity extends AppActivity {
                 break;
 
             case Constants.FRAGMENT_ADD_PAPER:
+                GetMissionObj getMissionPaper = (GetMissionObj) object;
                 AddArticleFragment addArticleFragment;
                 if (isContain) {
                     mapFragments.remove(keyFragment);
                 }
                 addArticleFragment = new AddArticleFragment();
+                Bundle bundlePaper = new Bundle();
+                bundlePaper.putSerializable(Constants.GET_MISSION_OBJ, getMissionPaper);
+                addArticleFragment.setArguments(bundlePaper);
                 mapFragments.put(Constants.FRAGMENT_ADD_PAPER, addArticleFragment);
                 break;
             case Constants.FRAGMENT_ADD_QUESTION:
+                GetMissionObj getMissionObj = (GetMissionObj) object;
                 AddQuestionFragment addQuestionFragment;
                 if (isContain) {
                     mapFragments.remove(keyFragment);
                 }
                 addQuestionFragment = new AddQuestionFragment();
+                Bundle bundleQue = new Bundle();
+                bundleQue.putSerializable(Constants.GET_MISSION_OBJ, getMissionObj);
+                addQuestionFragment.setArguments(bundleQue);
                 mapFragments.put(Constants.FRAGMENT_ADD_QUESTION, addQuestionFragment);
                 break;
             case Constants.FRAGMENT_SEND_MSG:

@@ -22,5 +22,9 @@ public class QuestionResultBean {
 
         //新增的type字段，用以区分Eventbus消息的类型，用于不同的页面关注
         public String questionFor;
+
+        //用于区分不同任务不同项目的传参
+        public int TaskNo;
+        public int MissionNo;
     }
 }

@@ -162,8 +162,12 @@ public class PlanMsgFragment extends AppFragment implements BGANinePhotoLayout.D
 
 //        getMsgDetail();
 
-        et_text_msg.setText(taskPlanDetailBean.remindContent);
-        processAudios(taskPlanDetailBean.voiceList);
+        if (null != (taskPlanDetailBean.remindContent)){
+            et_text_msg.setText(taskPlanDetailBean.remindContent);
+        }
+        if (null != taskPlanDetailBean.voiceList){
+            processAudios(taskPlanDetailBean.voiceList);
+        }
     }
 
     private void initVideoListView() {

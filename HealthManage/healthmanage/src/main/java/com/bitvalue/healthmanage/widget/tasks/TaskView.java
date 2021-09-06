@@ -69,10 +69,22 @@ public class TaskView extends LinearLayout {
     @BindView(R.id.tv_mission_time_choose)
     public TextView tv_mission_time_choose;
 
+    private int TaskNo;
+
+    public int getTaskNo() {
+        return TaskNo;
+    }
+
+    //任务编号，从0开始
+    public void setTaskNo(int taskNo) {
+        TaskNo = taskNo;
+    }
+
     private HomeActivity homeActivity;
     private TaskViewCallBack taskViewCallBack;
     private CommonPopupWindow popupWindow;
     private List<View> missionViews = new ArrayList<>();
+    private int missionSize;
     public SavePlanApi.TemplateTaskDTO templateTaskDTO = new SavePlanApi.TemplateTaskDTO();
     private boolean isModify;
     private String mDayCount = "0";
@@ -204,11 +216,13 @@ public class TaskView extends LinearLayout {
                 DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定删除项目吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                     @Override
                     public void onPositive() {
-                        if (isModify) {
+                        if (null != templateTaskContentDTO) {
                             deleteMissionData(templateTaskContentDTO.id, missionViewQuestion);
                         } else {//修改的taskview需要调接口，新增的不需要
                             layout_mission_wrap.removeView(missionViewQuestion);
                             missionViews.remove(missionViewQuestion);
+                            missionSize--;
+                            sortMissionViews();
                         }
                     }
 
@@ -226,8 +240,28 @@ public class TaskView extends LinearLayout {
 
             }
         });
+        //项目编号，从0开始
+        missionViewQuestion.setMissionNo(missionSize);
+        missionViewQuestion.setTaskNo(getTaskNo());
         missionViews.add(missionViewQuestion);
+        missionSize++;
         layout_mission_wrap.addView(missionViewQuestion, layoutParams);
+    }
+
+    private void sortMissionViews() {
+        for (int i = 0; i < missionViews.size(); i++) {
+            View view = missionViews.get(i);
+            if (view instanceof MissionViewRemind) {
+                MissionViewRemind missionViewRemind = (MissionViewRemind) view;
+                missionViewRemind.setMissionNo(i);
+            } else if (view instanceof MissionViewArticle) {
+                MissionViewArticle missionViewArticle = (MissionViewArticle) view;
+                missionViewArticle.setMissionNo(i);
+            } else {
+                MissionViewQuestion missionViewQuestion = (MissionViewQuestion) view;
+                missionViewQuestion.setMissionNo(i);
+            }
+        }
     }
 
     private void deleteMissionData(String id, View view) {
@@ -250,6 +284,8 @@ public class TaskView extends LinearLayout {
                     ToastUtil.toastShortMessage("删除项目成功");
                     layout_mission_wrap.removeView(view);
                     missionViews.remove(view);
+                    missionSize--;
+                    sortMissionViews();
                 } else {
                     ToastUtil.toastShortMessage("删除项目失败");
                 }
@@ -279,11 +315,13 @@ public class TaskView extends LinearLayout {
                 DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定删除项目吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                     @Override
                     public void onPositive() {
-                        if (isModify) {
+                        if (null != templateTaskContentDTO) {
                             deleteMissionData(templateTaskContentDTO.id, missionViewArticle);
                         } else {//修改的taskview需要调接口，新增的不需要
                             layout_mission_wrap.removeView(missionViewArticle);
                             missionViews.remove(missionViewArticle);
+                            missionSize--;
+                            sortMissionViews();
                         }
                     }
 
@@ -300,7 +338,10 @@ public class TaskView extends LinearLayout {
 
             }
         });
+        missionViewArticle.setMissionNo(missionSize);
+        missionViewArticle.setTaskNo(getTaskNo());
         missionViews.add(missionViewArticle);
+        missionSize++;
         layout_mission_wrap.addView(missionViewArticle, layoutParams);
     }
 
@@ -321,11 +362,13 @@ public class TaskView extends LinearLayout {
                 DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定删除项目吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                     @Override
                     public void onPositive() {
-                        if (isModify) {
+                        if (null != templateTaskContentDTO) {
                             deleteMissionData(templateTaskContentDTO.id, missionViewRemind);
                         } else {//修改的taskview需要调接口，新增的不需要
                             layout_mission_wrap.removeView(missionViewRemind);
                             missionViews.remove(missionViewRemind);
+                            missionSize--;
+                            sortMissionViews();
                         }
                     }
 
@@ -342,7 +385,10 @@ public class TaskView extends LinearLayout {
 
             }
         });
+        missionViewRemind.setMissionNo(missionSize);
+        missionViewRemind.setTaskNo(getTaskNo());
         missionViews.add(missionViewRemind);
+        missionSize++;
         layout_mission_wrap.addView(missionViewRemind, layoutParams);
     }
 
@@ -356,8 +402,11 @@ public class TaskView extends LinearLayout {
                 DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定删除项目吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                     @Override
                     public void onPositive() {
-                        layout_mission_wrap.removeView(missionViewAnalyse);
-                        missionViews.remove(missionViewAnalyse);
+//                        if (isModify) {
+//                            deleteMissionData(templateTaskContentDTO.id, missionViewRemind);
+//                        } else {//修改的taskview需要调接口，新增的不需要
+//                            layout_mission_wrap.removeView(missionViewRemind);
+//                        }
                     }
 
                     @Override
@@ -374,7 +423,10 @@ public class TaskView extends LinearLayout {
 
             }
         });
+        missionViewAnalyse.setMissionNo(missionSize);
+        missionViewAnalyse.setTaskNo(getTaskNo());
         missionViews.add(missionViewAnalyse);
+        missionSize++;
         layout_mission_wrap.addView(missionViewAnalyse, layoutParams);
     }
 
@@ -465,6 +517,7 @@ public class TaskView extends LinearLayout {
                 MissionViewRemind missionViewRemind = (MissionViewRemind) view;
                 data = missionViewRemind.getAssembleData();
                 if (null != data) {
+                    data.planDescribe = et_task_intro.getText().toString();
                     data.execTime = TimeUtils.getTime((System.currentTimeMillis() + Integer.parseInt(mDayCount) * 24 * 60 * 60 * 1000), TimeUtils.YY_MM_DD_FORMAT_3);
                     userPlanDetailsDTOS.add(data);
                 }
@@ -472,6 +525,7 @@ public class TaskView extends LinearLayout {
                 MissionViewArticle missionViewArticle = (MissionViewArticle) view;
                 data = missionViewArticle.getAssembleData();
                 if (null != data) {
+                    data.planDescribe = et_task_intro.getText().toString();
                     data.execTime = TimeUtils.getTime((System.currentTimeMillis() + Integer.parseInt(mDayCount) * 24 * 60 * 60 * 1000), TimeUtils.YY_MM_DD_FORMAT_3);
                     userPlanDetailsDTOS.add(data);
                 }
@@ -479,6 +533,7 @@ public class TaskView extends LinearLayout {
                 MissionViewQuestion missionViewQuestion = (MissionViewQuestion) view;
                 data = missionViewQuestion.getAssembleData();
                 if (null != data) {
+                    data.planDescribe = et_task_intro.getText().toString();
                     data.execTime = TimeUtils.getTime((System.currentTimeMillis() + Integer.parseInt(mDayCount) * 24 * 60 * 60 * 1000), TimeUtils.YY_MM_DD_FORMAT_3);
 //                    data.execTime = mDayCount + "天后";
                     userPlanDetailsDTOS.add(data);

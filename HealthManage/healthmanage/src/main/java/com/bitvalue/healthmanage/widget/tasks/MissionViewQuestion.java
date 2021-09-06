@@ -24,6 +24,7 @@ import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
 import com.bitvalue.healthmanage.widget.DataUtil;
+import com.bitvalue.healthmanage.widget.tasks.bean.GetMissionObj;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -53,6 +54,24 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
     @BindView(R.id.layout_add_item)
     LinearLayout layout_add_item;
 
+    private int TaskNo;
+    private int MissionNo;
+    public int getTaskNo() {
+        return TaskNo;
+    }
+
+    public void setTaskNo(int taskNo) {
+        TaskNo = taskNo;
+    }
+
+    public int getMissionNo() {
+        return MissionNo;
+    }
+
+    //项目编号，从0开始
+    public void setMissionNo(int missionNo) {
+        MissionNo = missionNo;
+    }
     private HomeActivity homeActivity;
     private MissionViewCallBack missionViewCallBack;
     private SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO();
@@ -131,6 +150,11 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
             return;
         }
 
+        //不是当前的任务和项目跳转的获取问卷，不添加
+        if (questionBean.MissionNo != this.MissionNo || questionBean.TaskNo != this.TaskNo){
+            return;
+        }
+
         for (QuestionResultBean.ListDTO questionOld : questionBeans) {//去重
             if (questionOld.key.equals(questionBean.key)) {
                 ToastUtil.toastShortMessage("请勿添加重复的问卷");
@@ -151,7 +175,7 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
                     ToastUtil.toastShortMessage("仅限添加一个问卷");
                     return;
                 }
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_QUESTION, "");
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_ADD_QUESTION, new GetMissionObj(this.TaskNo,this.MissionNo));
                 break;
             case R.id.img_type:
                 if (null != missionViewCallBack) {

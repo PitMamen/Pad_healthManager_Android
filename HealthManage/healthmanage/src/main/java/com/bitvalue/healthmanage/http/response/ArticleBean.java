@@ -24,6 +24,8 @@ public class ArticleBean implements Serializable {
     public String title;
     public String updateTime;
 
+    public int MissionNo;
+    public int TaskNo;
 
     public ArticleBean() {
     }

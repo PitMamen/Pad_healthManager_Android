@@ -68,7 +68,9 @@ public class HealthPlanDetailAdapter extends AppAdapter<PlanDetailResult.UserPla
                 tv_step_name.setText("患者上传资料");
                 tv_health_report.setText("患者上传资料");
             }
-            tv_step_desc.setText(planDetailsDTO.planDescribe);
+            if (null != planDetailsDTO.planDescribe){
+                tv_step_desc.setText(planDetailsDTO.planDescribe);
+            }
             tv_step_time.setText(planDetailsDTO.execTime);
             int dateCount = TimeUtils.getDateCount(System.currentTimeMillis(), TimeUtils.parseDate(planDetailsDTO.execTime, TimeUtils.YY_MM_DD_FORMAT_3).getTime());
             if (planDetailsDTO.execFlag == 1) {//已执行

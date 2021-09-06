@@ -95,6 +95,7 @@ public class NewHealthPlanFragmentModify extends AppFragment {
     private ArrayList<String> coverFinal = new ArrayList<>();
     private ArrayList<String> introFinal = new ArrayList<>();
     private ArrayList<String> detailFinal = new ArrayList<>();
+    private int taskSize = 1;
 
     @Override
     protected int getLayoutId() {
@@ -220,8 +221,10 @@ public class NewHealthPlanFragmentModify extends AppFragment {
                 }
             });
             taskView.setIsModify(true);
+            taskView.setTaskNo(taskSize - 1);
             layout_tasks_wrap.addView(taskView, layoutParams);
             taskViews.add(taskView);
+            taskSize++;
             sortTasks();
         }
 
@@ -606,6 +609,7 @@ public class NewHealthPlanFragmentModify extends AppFragment {
                     public void onPositive() {
                         layout_tasks_wrap.removeView(taskView);
                         taskViews.remove(taskView);
+                        taskSize--;
                         sortTasks();
 
                         //点击添加的view删除不需要调接口
@@ -625,7 +629,9 @@ public class NewHealthPlanFragmentModify extends AppFragment {
 
             }
         });
+        taskView.setTaskNo(taskSize - 1);
         taskViews.add(taskView);
+        taskSize++;
         sortTasks();
         layout_tasks_wrap.addView(taskView, layoutParams);
     }
@@ -652,6 +658,7 @@ public class NewHealthPlanFragmentModify extends AppFragment {
 
                     layout_tasks_wrap.removeView(taskView);
                     taskViews.remove(taskView);
+                    taskSize--;
                     sortTasks();
                 }
             }
@@ -669,6 +676,7 @@ public class NewHealthPlanFragmentModify extends AppFragment {
         }
         for (int i = 0; i < taskViews.size(); i++) {
             taskViews.get(i).tv_mission_no.setText("第" + (i + 1) + "次任务");
+            taskViews.get(i).setTaskNo(i);
         }
     }
 }

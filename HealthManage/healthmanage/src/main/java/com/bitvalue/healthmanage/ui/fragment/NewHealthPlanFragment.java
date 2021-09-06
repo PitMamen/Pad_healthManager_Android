@@ -91,6 +91,7 @@ public class NewHealthPlanFragment extends AppFragment {
     private ArrayList<String> coverFinal = new ArrayList<>();
     private ArrayList<String> introFinal = new ArrayList<>();
     private ArrayList<String> detailFinal = new ArrayList<>();
+    private int taskSize;
 
     @Override
     protected int getLayoutId() {
@@ -107,6 +108,8 @@ public class NewHealthPlanFragment extends AppFragment {
         initChoosePhotos();
         taskViews.add(task_first);
         sortTasks();
+        task_first.setTaskNo(0);
+        taskSize = 1;
         task_first.setTaskViewCallBack(new TaskView.TaskViewCallBack() {
             @Override
             public void onDeleteTask() {
@@ -636,6 +639,7 @@ public class NewHealthPlanFragment extends AppFragment {
                     public void onPositive() {
                         layout_tasks_wrap.removeView(taskView);
                         taskViews.remove(taskView);
+                        taskSize--;
                         sortTasks();
                     }
 
@@ -652,7 +656,9 @@ public class NewHealthPlanFragment extends AppFragment {
 
             }
         });
+        taskView.setTaskNo(taskSize - 1);
         taskViews.add(taskView);
+        taskSize++;
         sortTasks();
         layout_tasks_wrap.addView(taskView, layoutParams);
     }
@@ -663,6 +669,7 @@ public class NewHealthPlanFragment extends AppFragment {
         }
         for (int i = 0; i < taskViews.size(); i++) {
             taskViews.get(i).tv_mission_no.setText("第" + (i + 1) + "次任务");
+            taskViews.get(i).setTaskNo(i);
         }
     }
 }

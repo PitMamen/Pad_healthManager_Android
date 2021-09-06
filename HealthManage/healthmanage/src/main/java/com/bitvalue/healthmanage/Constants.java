@@ -45,6 +45,7 @@ public class Constants {
     public static final int MAX_IMG = 9;
     public static final String MSG_CUSTOM_ID = "msg_custom_id";
     public static final String PLAN_LIST_BEAN = "plan_list_bean";
+    public static final String GET_MISSION_OBJ = "get_mission_obj";
     public static String VIDEO_FOR_MSG = "video_for_msg";
     public static final String PLAN_MSG = "plan_msg";
     public static final String PLAN_PREVIEW = "plan_preview";
