@@ -45,8 +45,11 @@ import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewHealthPlanFragmentModify;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
 import com.bitvalue.healthmanage.ui.fragment.NewMsgFragmentDisplay;
+import com.bitvalue.healthmanage.ui.fragment.PersonalDataFragment;
 import com.bitvalue.healthmanage.ui.fragment.PlanMsgFragment;
 import com.bitvalue.healthmanage.ui.fragment.QuestionDetailFragment;
+import com.bitvalue.healthmanage.ui.fragment.VideoContactsFragment;
+import com.bitvalue.healthmanage.ui.fragment.VideoPatientDataFragment;
 import com.bitvalue.healthmanage.ui.fragment.WriteHealthFragment;
 import com.bitvalue.healthmanage.ui.settings.fragment.SettingsFragment;
 import com.bitvalue.healthmanage.util.DemoLog;
@@ -80,8 +83,18 @@ public class HomeActivity extends AppActivity {
     @BindView(R.id.layout_settings)
     LinearLayout layout_settings;
 
+    @BindView(R.id.layout_group)
+    LinearLayout layout_group;
+
+    @BindView(R.id.tv_group)
+    TextView tv_group;
+
+    @BindView(R.id.img_group)
+    ImageView img_group;
+
     private static final int chat_index = 0;
     private static final int settings = 1;
+    private static final int video_index = 2;
     private SettingsFragment settingsFragment;
     private ContactsFragment contactsFragment;
     private AppFragment[] fragments;
@@ -89,6 +102,7 @@ public class HomeActivity extends AppActivity {
     private TextView tv_settings, tv_chat, tv_person;
     private ImageView img_chat, img_settings, img_person;
     private Map<String, Fragment> mapFragments = new HashMap<>();
+    private VideoContactsFragment videoContactsFragment;
 
     @Override
     protected int getLayoutId() {
@@ -105,7 +119,6 @@ public class HomeActivity extends AppActivity {
         img_settings = findViewById(R.id.img_settings);
         img_person = findViewById(R.id.img_person);
 
-//        setOnClickListener(R.id.layout_person, R.id.layout_settings);
         initFragments(0);
         loginIM();
     }
@@ -135,10 +148,12 @@ public class HomeActivity extends AppActivity {
         contactsFragment = ContactsFragment.getInstance(false);
 //        newsFragment = NewsFragment.getInstance(false);
         settingsFragment = SettingsFragment.getInstance(false);
-        fragments = new AppFragment[]{contactsFragment, settingsFragment};
+        videoContactsFragment = VideoContactsFragment.getInstance(false);
+        fragments = new AppFragment[]{contactsFragment, settingsFragment, videoContactsFragment};
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.layout_fragment, fragments[0]);
         transaction.add(R.id.layout_fragment, fragments[1]);
+        transaction.add(R.id.layout_fragment, fragments[2]);
         transaction.commitAllowingStateLoss();
         afterTabSelect(index);
     }
@@ -218,6 +233,12 @@ public class HomeActivity extends AppActivity {
                 tv_settings.setTextColor(getResources().getColor(R.color.white));
                 layout_settings.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
+
+            case video_index:
+                img_group.setImageResource(R.drawable.tab_icon_gr);
+                tv_group.setTextColor(getResources().getColor(R.color.white));
+                layout_group.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
+                break;
         }
     }
 
@@ -229,22 +250,13 @@ public class HomeActivity extends AppActivity {
         img_settings.setImageResource(R.drawable.tab_icon_set);
         tv_settings.setTextColor(getResources().getColor(R.color.gray));
         layout_settings.setBackgroundColor(getResources().getColor(R.color.home_blue));
+
+        img_group.setImageResource(R.drawable.tab_icon_gr);
+        tv_group.setTextColor(getResources().getColor(R.color.gray));
+        layout_group.setBackgroundColor(getResources().getColor(R.color.home_blue));
     }
 
-//    @SingleClick
-//    @Override
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.layout_person:
-//                afterTabSelect(0);
-//                break;
-//            case R.id.layout_settings:
-//                afterTabSelect(1);
-//                break;
-//        }
-//    }
-
-    @OnClick({R.id.layout_person, R.id.layout_settings})
+    @OnClick({R.id.layout_person, R.id.layout_settings, R.id.layout_group})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_person:
@@ -256,6 +268,12 @@ public class HomeActivity extends AppActivity {
 //                EventBus.getDefault().post(new MainRefreshObj());
 //                backAll();
                 afterTabSelect(1);
+                break;
+
+            case R.id.layout_group:
+//                EventBus.getDefault().post(new MainRefreshObj());
+//                backAll();
+                afterTabSelect(2);
                 break;
         }
     }
@@ -544,6 +562,23 @@ public class HomeActivity extends AppActivity {
                 }
                 healthHistoryPreFragment = new HealthHistoryPreFragment();
                 mapFragments.put(Constants.FRAGMENT_HEALTH_HISTORY_PREVIEW, healthHistoryPreFragment);
+                break;
+
+            case Constants.FRAGMENT_VIDEO_PATIENT_DATA:
+                VideoPatientDataFragment videoPatientDataFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                videoPatientDataFragment = new VideoPatientDataFragment();
+                mapFragments.put(Constants.FRAGMENT_VIDEO_PATIENT_DATA, videoPatientDataFragment);
+                break;
+            case Constants.FRAGMENT_PERSONAL_DATA:
+                PersonalDataFragment personalDataFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                personalDataFragment = new PersonalDataFragment();
+                mapFragments.put(Constants.FRAGMENT_PERSONAL_DATA, personalDataFragment);
                 break;
         }
         Set<String> strings = mapFragments.keySet();

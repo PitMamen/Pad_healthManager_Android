@@ -48,7 +48,6 @@ public class LoginHealthActivity extends AppActivity {
         img_remember = findViewById(R.id.img_remember);
         et_work_no = findViewById(R.id.et_work_no);
         et_psd = findViewById(R.id.et_psd);
-//        setOnClickListener(R.id.layout_remember, R.id.btn_login);
     }
 
     @Override
@@ -70,17 +69,14 @@ public class LoginHealthActivity extends AppActivity {
                 String userId = et_work_no.getText().toString();
                 String passWord = et_psd.getText().toString();
                 if (userId.isEmpty()) {
-//                    ToastUtils.show("请输入工号");
                     Toast.makeText(this, "请输入工号", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (passWord.isEmpty()) {
                     Toast.makeText(this, "请输入密码", Toast.LENGTH_LONG).show();
-//                    ToastUtils.show("请输入密码");
                     return;
                 }
                 goLogin();
-//                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                 break;
         }
     }
@@ -101,7 +97,7 @@ public class LoginHealthActivity extends AppActivity {
 
                     @Override
                     public void onEnd(Call call) {
-                        super.onEnd(call);
+//                        super.onEnd(call);
                     }
 
                     @Override
@@ -133,6 +129,7 @@ public class LoginHealthActivity extends AppActivity {
 
                                     @Override
                                     public void onSuccess(Object data) {
+                                        hideDialog();
                                         // 跳转到首页
                                         // HomeActivity.start(getContext(), MeFragment.class);
                                         SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, AppApplication.instance());
@@ -151,9 +148,7 @@ public class LoginHealthActivity extends AppActivity {
                     @Override
                     public void onFail(Exception e) {
                         super.onFail(e);
-//                        postDelayed(() -> {
-////                            mCommitView.showError(3000);
-//                        }, 1000);
+                        hideDialog();
                     }
 
                 });

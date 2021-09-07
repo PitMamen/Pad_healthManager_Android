@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_third_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_gray"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/qb_px_15"
+            android:paddingTop="@dimen/qb_px_10">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_gray_bigger"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_head"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="头像"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <ImageView
+                    android:id="@+id/img_head"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/icon_corner" />
+
+                <View
+                    android:id="@+id/divider_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/tv_head"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@color/divider"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/img_head" />
+
+                <TextView
+                    android:id="@+id/tv_name_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider_head"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="姓名"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider_head"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="周少"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <View
+                    android:id="@+id/divider_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/tv_name"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@color/divider"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+                <TextView
+                    android:id="@+id/tv_qr_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider_name"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="二维码名片"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <ImageView
+                    android:id="@+id/img_qr_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_qr_code"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/icon_corner" />
+
+                <View
+                    android:id="@+id/divider_qr"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/tv_qr_code"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@color/divider"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/img_head" />
+
+                <TextView
+                    android:id="@+id/tv_complete_info_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider_qr"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="信息完善"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <TextView
+                    android:id="@+id/tv_complete_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider_qr"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="未完善"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_gray_bigger"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_hospital_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="医院"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <TextView
+                    android:id="@+id/tv_hospital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="湘雅二"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <View
+                    android:id="@+id/divider_hospital"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/tv_hospital_des"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@color/divider" />
+
+                <TextView
+                    android:id="@+id/tv_depart_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider_hospital"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="课时"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <TextView
+                    android:id="@+id/tv_depart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider_hospital"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="呼吸内科"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <View
+                    android:id="@+id/divider_depart"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/tv_depart_des"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@color/divider" />
+
+                <TextView
+                    android:id="@+id/tv_level_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider_depart"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="职称"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <TextView
+                    android:id="@+id/tv_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/divider_depart"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:text="主任医师"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:orientation="vertical"
+                android:background="@drawable/shape_bg_gray_bigger"
+                android:padding="@dimen/qb_px_13">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_good_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="擅长疾病"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/qb_px_10" />
+
+                    <TextView
+                        android:id="@+id/tv_good"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="心脏病"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/qb_px_10" />
+
+                    <View
+                        android:id="@+id/divider_good"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tv_good_des"
+                        android:layout_marginTop="@dimen/qb_px_10"
+                        android:background="@color/divider" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:layout_marginBottom="@dimen/qb_px_10">
+
+                <TextView
+                    android:id="@+id/tv_logout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginRight="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_blue_dark"
+                    android:paddingHorizontal="@dimen/qb_px_30"
+                    android:paddingVertical="@dimen/qb_px_5"
+                    android:text="退出登录"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_10" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

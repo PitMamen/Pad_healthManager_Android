@@ -25,6 +25,45 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/qb_px_15">
+
+        <RelativeLayout
+            android:id="@+id/layout_personal_data"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/qb_px_40">
+
+            <ImageView
+                android:id="@+id/img_rtc_personal_data"
+                android:layout_width="@dimen/qb_px_14"
+                android:layout_height="@dimen/qb_px_14"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon_set" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/qb_px_7"
+                android:layout_toRightOf="@id/img_rtc_personal_data"
+                android:text="个人信息"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/qb_px_10" />
+
+            <ImageView
+                android:layout_width="@dimen/qb_px_4"
+                android:layout_height="@dimen/qb_px_7"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_you" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/qb_px_1"
+                android:layout_alignParentBottom="true"
+                android:background="@color/divider" />
+        </RelativeLayout>
+
+
         <RelativeLayout
             android:id="@+id/layout_plans"
             android:layout_width="match_parent"
@@ -62,42 +101,42 @@
                 android:background="@color/divider" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/layout_logout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/qb_px_40">
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/layout_logout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/qb_px_40">-->
 
-            <ImageView
-                android:id="@+id/img_logout"
-                android:layout_width="@dimen/qb_px_14"
-                android:layout_height="@dimen/qb_px_14"
-                android:layout_centerVertical="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/icon_set" />
+<!--            <ImageView-->
+<!--                android:id="@+id/img_logout"-->
+<!--                android:layout_width="@dimen/qb_px_14"-->
+<!--                android:layout_height="@dimen/qb_px_14"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/icon_set" />-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/qb_px_7"
-                android:layout_toRightOf="@id/img_logout"
-                android:text="退出登录"
-                android:textColor="@color/text_black"
-                android:textSize="@dimen/qb_px_10" />
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginLeft="@dimen/qb_px_7"-->
+<!--                android:layout_toRightOf="@id/img_logout"-->
+<!--                android:text="退出登录"-->
+<!--                android:textColor="@color/text_black"-->
+<!--                android:textSize="@dimen/qb_px_10" />-->
 
-            <ImageView
-                android:layout_width="@dimen/qb_px_4"
-                android:layout_height="@dimen/qb_px_7"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/icon_you" />
+<!--            <ImageView-->
+<!--                android:layout_width="@dimen/qb_px_4"-->
+<!--                android:layout_height="@dimen/qb_px_7"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:src="@drawable/icon_you" />-->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/qb_px_1"
-                android:layout_alignParentBottom="true"
-                android:background="@color/divider" />
-        </RelativeLayout>
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="@dimen/qb_px_1"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:background="@color/divider" />-->
+<!--        </RelativeLayout>-->
 
         <RelativeLayout
             android:id="@+id/layout_rtc"
@@ -119,6 +158,43 @@
                 android:layout_marginLeft="@dimen/qb_px_7"
                 android:layout_toRightOf="@id/img_rtc"
                 android:text="视频通话"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/qb_px_10" />
+
+            <ImageView
+                android:layout_width="@dimen/qb_px_4"
+                android:layout_height="@dimen/qb_px_7"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_you" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/qb_px_1"
+                android:layout_alignParentBottom="true"
+                android:background="@color/divider" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_log"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/qb_px_40">
+
+            <ImageView
+                android:id="@+id/img_log"
+                android:layout_width="@dimen/qb_px_14"
+                android:layout_height="@dimen/qb_px_14"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon_set" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/qb_px_7"
+                android:layout_toRightOf="@id/img_log"
+                android:text="我的看诊记录"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/qb_px_10" />
 

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_top"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_height="@dimen/qb_px_60">
+
+        <LinearLayout
+            android:id="@+id/layout_tabs"
+            android:padding="0.5dp"
+            android:background="@drawable/shape_bg_blue_solid"
+            android:layout_width="@dimen/qb_px_170"
+            android:layout_height="@dimen/qb_px_28"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_wait"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="待/就诊中"
+                android:paddingHorizontal="@dimen/qb_px_20"
+                android:textColor="@color/white"
+                android:textSize="@dimen/qb_px_10" />
+
+            <TextView
+                android:id="@+id/tv_end"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_bg_white_solid_2"
+                android:layout_centerInParent="true"
+                android:paddingHorizontal="@dimen/qb_px_20"
+                android:gravity="center"
+                android:text="已结束"
+                android:textColor="@color/main_blue"
+                android:textSize="@dimen/qb_px_10" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/view_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        android:layout_below="@id/layout_top"
+        android:background="@color/divider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/contact_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/view_line"
+        android:layout_marginTop="@dimen/qb_px_5" />
+
+    <TextView
+        android:id="@+id/tv_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/view_line"
+        android:gravity="center"
+        android:text="暂无数据，点击刷新"
+        android:textColor="@color/text_desc_dark"
+        android:textSize="@dimen/qb_px_8"
+        android:visibility="gone" />
+
+
+</RelativeLayout>

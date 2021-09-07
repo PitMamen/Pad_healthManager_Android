@@ -49,6 +49,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 
+/**
+ * 健康管理联系人列表
+ */
 public class ContactsFragment extends AppFragment {
     @BindView(R.id.layout_choose)
     RelativeLayout layout_choose;
