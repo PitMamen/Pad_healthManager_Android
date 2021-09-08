@@ -29,6 +29,7 @@ import com.bitvalue.healthmanage.widget.mpopupwindow.MPopupWindow;
 import com.bitvalue.healthmanage.widget.mpopupwindow.TypeGravity;
 import com.bitvalue.healthmanage.widget.mpopupwindow.ViewCallback;
 import com.bitvalue.healthmanage.widget.popupwindow.CommonPopupWindow;
+import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
@@ -105,7 +106,12 @@ public class ContactsFragment extends AppFragment {
             @Override
             public void onChildItemClick(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex, int flatPosition) {
                 ClientsResultBean clientsResultBean = (ClientsResultBean) group;
-
+                //TODO 演示看诊数据，本来全是健康管理数据，这里本来全部赋值 100
+                if (childIndex == 0) {
+                    child.chatType = InputLayoutUI.CHAT_TYPE_VIDEO;
+                } else {
+                    child.chatType = InputLayoutUI.CHAT_TYPE_HEALTH;
+                }
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
             }
         });

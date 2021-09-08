@@ -29,6 +29,8 @@ dependencies {
 //    api(name: 'LiteAVSDK_TRTC_9.0.10437', ext: 'aar')
 //    implementation rootProject.ext.liteavSdk
 //    implementation 'com.tencent.liteav:LiteAVSDK_TRTC:latest.release'
+    implementation 'io.reactivex:rxjava:1.1.0'
+    implementation 'io.reactivex:rxandroid:1.1.0'
     implementation project(':Debug')
     implementation project(':Common')
 }

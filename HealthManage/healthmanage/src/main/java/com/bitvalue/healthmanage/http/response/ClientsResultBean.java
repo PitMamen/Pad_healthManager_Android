@@ -34,6 +34,9 @@ public class ClientsResultBean extends ExpandableGroup<ClientsResultBean.UserInf
         public String relationship;
         public String goodsName;
 
+        //区别云门诊和健康管理的标记 100健康管理  101云门诊
+        public int chatType;
+
 
         public boolean isChecked = false;
         public boolean isShowCheck = false;

@@ -19,7 +19,8 @@ public class ChatInfo implements Serializable {
     private String groupType;
     private boolean isTopChat;
     private V2TIMMessage mLocateTimMessage;
-
+    //区别云门诊和健康管理的标记 100健康管理  101云门诊
+    public int chatType;
     private static List<V2TIMGroupAtInfo> atInfoList;
     /**
      * 草稿

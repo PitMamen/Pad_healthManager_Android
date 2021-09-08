@@ -3,6 +3,7 @@
 
     <application>
         <activity android:name="com.tencent.trtc.videocall.VideoCallingActivity"/>
+        <activity android:name="com.tencent.trtc.videocall.VideoConsultActivity"/>
         <activity android:name="com.tencent.trtc.videocall.VideoCallingEnterActivity" />
     </application>
 

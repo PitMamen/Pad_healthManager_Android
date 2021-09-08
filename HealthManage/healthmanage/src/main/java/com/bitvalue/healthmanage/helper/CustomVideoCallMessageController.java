@@ -19,6 +19,7 @@ import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessage
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 import com.tencent.trtc.videocall.VideoCallingActivity;
 import com.tencent.trtc.videocall.VideoCallingEnterActivity;
+import com.tencent.trtc.videocall.VideoConsultActivity;
 
 public class CustomVideoCallMessageController {
 
@@ -48,7 +49,7 @@ public class CustomVideoCallMessageController {
             @Override
             public void onClick(View v) {
                 AppApplication appApplication = (AppApplication) view.getContext();
-                Intent intent = new Intent(appApplication, VideoCallingActivity.class);
+                Intent intent = new Intent(appApplication, VideoConsultActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(Constants.ROOM_ID, data.msgDetailId);
                 int userId = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, appApplication).getUser().user.userId;

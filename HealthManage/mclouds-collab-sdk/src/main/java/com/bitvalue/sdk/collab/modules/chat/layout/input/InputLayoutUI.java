@@ -27,7 +27,7 @@ import com.bitvalue.sdk.collab.utils.PermissionUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
+public abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
     protected static final int CAPTURE = 1;
     protected static final int AUDIO_RECORD = 2;
@@ -85,6 +85,16 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     private boolean mHealthAnalyseDisable;
     private boolean mHealthMsgDisable;
     private boolean mHealthUploadDisable;
+    private boolean mHealthVideoDisable;
+    /**
+     * 健康管理聊天类型
+     */
+    public static final int CHAT_TYPE_HEALTH = 100;
+    /**
+     * 云看诊聊天类型
+     */
+    public static final int CHAT_TYPE_VIDEO = 101;
+    private int chatType;
 
     public InputLayoutUI(Context context) {
         super(context);
@@ -121,55 +131,87 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
         mInputMoreActionList.clear();
         InputMoreActionUnit actionUnit;
 
-        if (!mHealthPlanDisable) {
-            actionUnit = new InputMoreActionUnit() {
-                @Override
-                public void onAction(String chatInfoId, int chatType) {
-                    startHealthPlan();
+        switch (chatType) {
+            case CHAT_TYPE_HEALTH:
+                if (!mHealthPlanDisable) {
+                    actionUnit = new InputMoreActionUnit() {
+                        @Override
+                        public void onAction(String chatInfoId, int chatType) {
+                            startHealthPlan();
+                        }
+                    };
+                    actionUnit.setIconResId(R.drawable.icon_jkjh);
+                    actionUnit.setTitleId(R.string.health);
+                    mInputMoreActionList.add(actionUnit);
                 }
-            };
-            actionUnit.setIconResId(R.drawable.icon_jkjh);
-            actionUnit.setTitleId(R.string.health);
-            mInputMoreActionList.add(actionUnit);
-        }
 
 
-        if (!mHealthAnalyseDisable) {
-            actionUnit = new InputMoreActionUnit() {
-                @Override
-                public void onAction(String chatInfoId, int chatType) {
-                    startHealthAnalyse();
+                if (!mHealthAnalyseDisable) {
+                    actionUnit = new InputMoreActionUnit() {
+                        @Override
+                        public void onAction(String chatInfoId, int chatType) {
+                            startHealthAnalyse();
+                        }
+                    };
+                    actionUnit.setIconResId(R.drawable.icon_jkpg);
+                    actionUnit.setTitleId(R.string.analyse);
+                    mInputMoreActionList.add(actionUnit);
                 }
-            };
-            actionUnit.setIconResId(R.drawable.icon_jkpg);
-            actionUnit.setTitleId(R.string.analyse);
-            mInputMoreActionList.add(actionUnit);
+
+                if (!mHealthMsgDisable) {
+                    actionUnit = new InputMoreActionUnit() {
+                        @Override
+                        public void onAction(String chatInfoId, int chatType) {
+                            startHealthMsg();
+                        }
+                    };
+                    actionUnit.setIconResId(R.drawable.icon_jkxx);
+                    actionUnit.setTitleId(R.string.heal_msg);
+                    mInputMoreActionList.add(actionUnit);
+                }
+                break;
+
+            case CHAT_TYPE_VIDEO:
+                //视频看诊
+                if (!mHealthVideoDisable) {
+                    actionUnit = new InputMoreActionUnit() {
+                        @Override
+                        public void onAction(String chatInfoId, int chatType) {
+                            startVideoCommunicate();
+                        }
+                    };
+                    actionUnit.setIconResId(R.drawable.icon_video_communicate);
+                    actionUnit.setTitleId(R.string.video_communicate);
+                    mInputMoreActionList.add(actionUnit);
+                }
+
+                //书写病历
+                if (!mHealthVideoDisable) {
+                    actionUnit = new InputMoreActionUnit() {
+                        @Override
+                        public void onAction(String chatInfoId, int chatType) {
+                            writeConsultConclusion();
+                        }
+                    };
+                    actionUnit.setIconResId(R.drawable.icon_write);
+                    actionUnit.setTitleId(R.string.write_conclusion);
+                    mInputMoreActionList.add(actionUnit);
+                }
+
+                //结束看诊
+                if (!mHealthVideoDisable) {
+                    actionUnit = new InputMoreActionUnit() {
+                        @Override
+                        public void onAction(String chatInfoId, int chatType) {
+                            endVideoConsult();
+                        }
+                    };
+                    actionUnit.setIconResId(R.drawable.icon_end);
+                    actionUnit.setTitleId(R.string.video_end_consult);
+                    mInputMoreActionList.add(actionUnit);
+                }
         }
 
-        if (!mHealthMsgDisable) {
-            actionUnit = new InputMoreActionUnit() {
-                @Override
-                public void onAction(String chatInfoId, int chatType) {
-                    startHealthMsg();
-                }
-            };
-            actionUnit.setIconResId(R.drawable.icon_jkxx);
-            actionUnit.setTitleId(R.string.heal_msg);
-            mInputMoreActionList.add(actionUnit);
-        }
-
-        //临时添加的视频通话
-        if (!mHealthMsgDisable) {
-            actionUnit = new InputMoreActionUnit() {
-                @Override
-                public void onAction(String chatInfoId, int chatType) {
-                    startVideoCommunicate();
-                }
-            };
-            actionUnit.setIconResId(R.drawable.video_communicate);
-            actionUnit.setTitleId(R.string.video_communicate);
-            mInputMoreActionList.add(actionUnit);
-        }
 
         //资料上传暂时不做
 //        if (!mHealthUploadDisable) {
@@ -242,7 +284,7 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
             return;
         }
 
-        for(TUIChatControllerListener chatListener : TUIKitListenerManager.getInstance().getTUIChatListeners()) {
+        for (TUIChatControllerListener chatListener : TUIKitListenerManager.getInstance().getTUIChatListeners()) {
             List<IBaseAction> actionList = chatListener.onRegisterMoreActions();
             if (actionList == null) {
                 continue;
@@ -287,9 +329,17 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
     protected abstract void init();
 
     protected abstract void startHealthPlan();
+
     protected abstract void startHealthAnalyse();
+
     protected abstract void startHealthMsg();
+
     protected abstract void startVideoCommunicate();
+
+    protected abstract void writeConsultConclusion();
+
+    protected abstract void endVideoConsult();
+
     protected abstract void startUploadData();
 
     protected abstract void startSendPhoto();
@@ -404,5 +454,9 @@ abstract class InputLayoutUI extends LinearLayout implements IInputLayout {
 
     public ChatInfo getChatInfo() {
         return mChatInfo;
+    }
+
+    public void setChatType(int chatType) {
+        this.chatType = chatType;
     }
 }

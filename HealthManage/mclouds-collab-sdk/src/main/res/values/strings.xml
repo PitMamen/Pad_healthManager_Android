@@ -10,6 +10,8 @@
     <string name="analyse">健康评估</string>
     <string name="heal_msg">健康消息</string>
     <string name="video_communicate">视频看诊</string>
+    <string name="write_conclusion">病历书写</string>
+    <string name="video_end_consult">结束看诊</string>
     <string name="data_upload">资料上传</string>
 
     <string name="cancel">取消</string>

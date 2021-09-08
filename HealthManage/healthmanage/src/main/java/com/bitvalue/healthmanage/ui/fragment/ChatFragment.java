@@ -14,6 +14,7 @@ import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.util.Constants;
 import com.bitvalue.healthmanage.util.DemoLog;
+import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.component.TitleBarLayout;
@@ -26,6 +27,7 @@ import com.bitvalue.sdk.collab.modules.chat.base.AbsChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatManagerKit;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayout;
+import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.MessageLayout;
 import com.bitvalue.sdk.collab.modules.forward.ForwardSelectActivity;
 import com.bitvalue.sdk.collab.modules.forward.base.ConversationBean;
@@ -34,6 +36,7 @@ import com.bitvalue.sdk.collab.modules.group.info.StartGroupMemberSelectActivity
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.TUIKitConstants;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
@@ -104,10 +107,7 @@ public class ChatFragment extends AppFragment {
         mTitleBar.setOnLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                getActivity().finish();
-                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                    homeActivity.getSupportFragmentManager().popBackStack();
-                }
+                backPress();
             }
         });
         if (mChatInfo.getType() == V2TIMConversation.V2TIM_C2C) {
@@ -179,6 +179,8 @@ public class ChatFragment extends AppFragment {
                 startActivityForResult(intent, 1);
             }
         });
+
+        mChatLayout.getInputLayout().setChatType(mChatInfo.chatType);
 
         if (false/*mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP*/) {
             V2TIMManager.getConversationManager().getConversation(mChatInfo.getId(), new V2TIMValueCallback<V2TIMConversation>() {
@@ -280,7 +282,35 @@ public class ChatFragment extends AppFragment {
                 MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
                 mChatLayout.sendMessage(info, false);
             }
+
+            @Override
+            public void onWriteConsultConclusion() {
+                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_WRITE_HEALTH, "");
+            }
+
+            @Override
+            public void oneEdVideoConsult() {
+                DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定结束看诊吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
+                    @Override
+                    public void onPositive() {
+                        ToastUtil.toastShortMessage("已结束看诊");
+                        backPress();
+                    }
+
+                    @Override
+                    public void onNegative() {
+
+                    }
+                });
+
+            }
         });
+    }
+
+    private void backPress() {
+        if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            homeActivity.getSupportFragmentManager().popBackStack();
+        }
     }
 
     /**
