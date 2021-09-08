@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_third_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/qb_px_10"
+        android:background="@drawable/shape_bg_white"
+        android:orientation="vertical"
+        android:padding="@dimen/qb_px_10">
+
+
+        <!--    tab-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/layout_all"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_all"
+                    android:layout_width="@dimen/qb_px_25"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/qb_px_7"
+                    android:layout_toRightOf="@id/img_rtc_personal_data"
+                    android:gravity="center"
+                    android:text="全部"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <View
+                    android:id="@+id/line_all"
+                    android:layout_width="@dimen/qb_px_25"
+                    android:layout_height="@dimen/qb_px_1"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/qb_px_6"
+                    android:layout_marginTop="@dimen/qb_px_2"
+                    android:background="@color/main_blue" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_video"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_video"
+                    android:layout_width="@dimen/qb_px_35"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/qb_px_7"
+                    android:layout_toRightOf="@id/img_rtc_personal_data"
+                    android:text="云门诊"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <View
+                    android:id="@+id/line_video"
+                    android:layout_width="@dimen/qb_px_35"
+                    android:layout_height="@dimen/qb_px_1"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/qb_px_5"
+                    android:layout_marginTop="@dimen/qb_px_2"
+                    android:background="@color/main_blue" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_health"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_health"
+                    android:layout_width="@dimen/qb_px_45"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/qb_px_7"
+                    android:layout_toRightOf="@id/img_rtc_personal_data"
+                    android:text="健康管理"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <View
+                    android:id="@+id/line_health"
+                    android:layout_width="@dimen/qb_px_45"
+                    android:layout_height="@dimen/qb_px_1"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="@dimen/qb_px_5"
+                    android:layout_marginTop="@dimen/qb_px_2"
+                    android:background="@color/main_blue" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--搜索框-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/shape_bg_gray_bigger"
+                android:hint="搜索患者"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:paddingHorizontal="@dimen/qb_px_6"
+                android:paddingVertical="@dimen/qb_px_6"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/qb_px_8" />
+
+            <ImageView
+                android:layout_width="@dimen/qb_px_10"
+                android:layout_height="@dimen/qb_px_11"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/qb_px_10"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_set_sous" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_patients"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_10" />
+    </LinearLayout>
+</LinearLayout>

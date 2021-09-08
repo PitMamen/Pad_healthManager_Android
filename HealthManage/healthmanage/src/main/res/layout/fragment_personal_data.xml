@@ -178,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/divider_hospital"
                     android:layout_marginTop="@dimen/qb_px_10"
-                    android:text="课时"
+                    android:text="科室"
                     android:textColor="@color/text_black"
                     android:textSize="@dimen/qb_px_10" />
 
@@ -262,8 +262,87 @@
                         android:background="@color/divider" />
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_good_detail_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="擅长"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/qb_px_10" />
+
+                    <TextView
+                        android:id="@+id/tv_good_detail_notice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="擅长信息将展示在【医生详情】供患者查看"
+                        android:textColor="@color/text_desc"
+                        android:textSize="@dimen/qb_px_8" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_good_detail"
+                    android:padding="@dimen/qb_px_2"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="心脏病"
+                    android:background="@drawable/shape_bg_gray"
+                    android:minHeight="@dimen/qb_px_40"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_10" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_intro_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="简介"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/qb_px_10" />
+
+                    <TextView
+                        android:id="@+id/tv_intro_notice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="简介信息将展示在【医生详情】供患者查看"
+                        android:textColor="@color/text_desc"
+                        android:textSize="@dimen/qb_px_8" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_intro_detail"
+                    android:padding="@dimen/qb_px_2"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text=""
+                    android:background="@drawable/shape_bg_gray"
+                    android:minHeight="@dimen/qb_px_60"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_10" />
+
 
             </LinearLayout>
+
+
 
             <RelativeLayout
                 android:layout_width="match_parent"

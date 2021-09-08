@@ -33,6 +33,7 @@ import com.bitvalue.healthmanage.ui.fragment.AddQuestionFragment;
 import com.bitvalue.healthmanage.ui.fragment.AddVideoFragment;
 import com.bitvalue.healthmanage.ui.fragment.ArticleDetailFragment;
 import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
+import com.bitvalue.healthmanage.ui.fragment.ChatLogFragment;
 import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragmentDisplay;
@@ -579,6 +580,14 @@ public class HomeActivity extends AppActivity {
                 }
                 personalDataFragment = new PersonalDataFragment();
                 mapFragments.put(Constants.FRAGMENT_PERSONAL_DATA, personalDataFragment);
+                break;
+            case Constants.FRAGMENT_CHAT_LOG:
+                ChatLogFragment chatLogFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                chatLogFragment = new ChatLogFragment();
+                mapFragments.put(Constants.FRAGMENT_CHAT_LOG, chatLogFragment);
                 break;
         }
         Set<String> strings = mapFragments.keySet();

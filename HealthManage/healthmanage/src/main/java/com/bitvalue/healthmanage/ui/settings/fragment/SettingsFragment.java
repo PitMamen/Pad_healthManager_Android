@@ -92,7 +92,7 @@ public class SettingsFragment extends AppFragment {
                 break;
 
             case R.id.layout_log:
-
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT_LOG, "");
                 break;
         }
     }
