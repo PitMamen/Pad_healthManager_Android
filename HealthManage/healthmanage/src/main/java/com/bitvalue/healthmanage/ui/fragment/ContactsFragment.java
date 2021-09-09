@@ -23,6 +23,7 @@ import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
+import com.bitvalue.healthmanage.ui.activity.NewMsgActivity;
 import com.bitvalue.healthmanage.ui.contacts.bean.MainRefreshObj;
 import com.bitvalue.healthmanage.ui.contacts.view.ClientsRecyclerAdapter;
 import com.bitvalue.healthmanage.widget.mpopupwindow.MPopupWindow;
@@ -171,7 +172,7 @@ public class ContactsFragment extends AppFragment {
                     for (int i = 0; i < clientsProcessBeans.size(); i++) {
                         for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
                             clientsProcessBeans.get(i).userInfo.get(j).isChecked = false;
-                            clientsProcessBeans.get(i).userInfo.get(j).isShowCheck = false;
+//                            clientsProcessBeans.get(i).userInfo.get(j).isShowCheck = false;
                         }
                     }
                 }
@@ -273,6 +274,10 @@ public class ContactsFragment extends AppFragment {
                     view.findViewById(R.id.tv_mul_msg).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+//                            if (mIds.size() == 0) {
+//                                homeActivity.startActivity(new Intent(homeActivity, NewMsgActivity.class));
+//                                return;
+//                            }
 
                             //step1 先将所有用户置为可选取
                             for (int i = 0; i < clientsProcessBeans.size(); i++) {

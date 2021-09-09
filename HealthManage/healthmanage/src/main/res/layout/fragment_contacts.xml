@@ -82,43 +82,44 @@
         android:orientation="horizontal"
         android:visibility="gone">
 
+        <TextView
+            android:id="@+id/tv_send_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/qb_px_2"
+            android:layout_marginRight="@dimen/qb_px_5"
+            android:background="@drawable/shape_bg_blue_dark_small"
+            android:paddingHorizontal="@dimen/qb_px_10"
+            android:paddingVertical="@dimen/qb_px_2"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="@dimen/qb_px_10" />
+
         <CheckBox
             android:id="@+id/cb_choose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/qb_px_15"
-            android:layout_marginBottom="@dimen/qb_px_5"
+            android:layout_marginRight="@dimen/qb_px_2"
+            android:layout_marginBottom="@dimen/qb_px_2"
+            android:layout_toLeftOf="@id/tv_send_msg"
             android:text="全选"
             android:textColor="@color/text_black"
             android:textSize="@dimen/qb_px_8"
             android:visibility="visible" />
 
-        <TextView
-            android:id="@+id/tv_send_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/cb_choose"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/qb_px_11"
-            android:background="@drawable/shape_bg_blue_dark_small"
-            android:paddingHorizontal="@dimen/qb_px_17"
-            android:paddingVertical="@dimen/qb_px_5"
-            android:text="确定"
-            android:textColor="@color/white"
-            android:textSize="@dimen/qb_px_10" />
 
         <TextView
             android:id="@+id/tv_send_notice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cb_choose"
-            android:layout_marginRight="@dimen/qb_px_3"
-            android:layout_toLeftOf="@id/tv_send_msg"
-            android:paddingVertical="@dimen/qb_px_5"
+            android:layout_below="@id/tv_send_msg"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/qb_px_2"
+            android:layout_marginRight="@dimen/qb_px_11"
             android:text="* 请选择群发用户"
             android:textColor="@color/read_dot_bg"
-            android:textSize="@dimen/qb_px_8" />
+            android:textSize="@dimen/qb_px_6" />
 
     </RelativeLayout>
 
