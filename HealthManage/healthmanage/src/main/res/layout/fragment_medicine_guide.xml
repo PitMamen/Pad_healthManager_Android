@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_third_title" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_gray"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/qb_px_15"
+            android:paddingTop="@dimen/qb_px_10">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_text_analyse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="基本情况"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_name_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="患者姓名:"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_3"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="张三"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_name_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
+
+                <TextView
+                    android:id="@+id/tv_gender_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_80"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="性别:"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_name_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
+
+                <TextView
+                    android:id="@+id/tv_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_3"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="男"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_gender_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
+
+                <TextView
+                    android:id="@+id/tv_time_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_170"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="年龄:"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_name_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
+
+                <TextView
+                    android:id="@+id/tv_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_3"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="30岁"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_time_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
+
+
+                <TextView
+                    android:id="@+id/tv_conclusion_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="临床诊断:"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name_notice" />
+
+                <TextView
+                    android:id="@+id/tv_conclusion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_3"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="高血压"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_name_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name_notice" />
+
+                <TextView
+                    android:id="@+id/tv_disease_notice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="病情描述:"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_conclusion" />
+
+                <TextView
+                    android:id="@+id/tv_disease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_3"
+                    android:layout_marginTop="@dimen/sp_12"
+                    android:text="无明显病变"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/tv_disease_notice"
+                    app:layout_constraintTop_toBottomOf="@id/tv_conclusion" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--        用药细节-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_10">
+
+                <ImageView
+                    android:id="@+id/img_medicine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_no_voice"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_notice_big"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_2"
+                    android:text="如何用药"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/img_medicine"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_notice_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_2"
+                    android:text="（如与医嘱不符，以医嘱为准）"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    app:layout_constraintBaseline_toBaselineOf="@id/tv_notice_big"
+                    app:layout_constraintLeft_toRightOf="@id/tv_notice_big"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_medicine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_notice_small">
+
+                    <ImageView
+                        android:id="@+id/img_boll"
+                        android:layout_width="@dimen/qb_px_7"
+                        android:layout_height="@dimen/qb_px_7"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/shape_boll_blue"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_medicine_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/qb_px_2"
+                        android:text="秋水仙碱"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/qb_px_9"
+                        android:textStyle="bold"
+                        app:layout_constraintLeft_toRightOf="@id/img_boll"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_medicine_specification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/qb_px_5"
+                        android:text="规格：1mg*12片"
+                        android:textColor="@color/text_desc_dark"
+                        android:textSize="@dimen/qb_px_8"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_medicine_name"
+                        app:layout_constraintLeft_toRightOf="@id/tv_medicine_name"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_medicine_instruction"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/qb_px_5"
+                        android:layout_marginTop="@dimen/qb_px_5"
+                        android:text="口服，一日三次，一次三片。"
+                        android:textColor="@color/text_desc_dark"
+                        android:textSize="@dimen/qb_px_8"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_medicine_specification" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/view_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/qb_px_1"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@color/divider"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_medicine" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_attention"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_line">
+
+                    <ImageView
+                        android:id="@+id/img_attention"
+                        android:layout_width="@dimen/qb_px_14"
+                        android:layout_height="@dimen/qb_px_14"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/qb_px_10"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/icon_set" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/qb_px_7"
+                        android:layout_toRightOf="@id/img_attention"
+                        android:text="用药期间需要注意"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/qb_px_10"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="@dimen/qb_px_4"
+                        android:layout_height="@dimen/qb_px_7"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_you" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_attention_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_attention" />
+
+                <View
+                    android:id="@+id/divider_attention"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/qb_px_1"
+                    android:background="@color/divider"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_attention_content" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_end_condition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_attention">
+
+                    <ImageView
+                        android:id="@+id/img_end_condition"
+                        android:layout_width="@dimen/qb_px_14"
+                        android:layout_height="@dimen/qb_px_14"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/qb_px_10"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/icon_set" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/qb_px_7"
+                        android:layout_toRightOf="@id/img_end_condition"
+                        android:text="停药须知"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/qb_px_10"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="@dimen/qb_px_4"
+                        android:layout_height="@dimen/qb_px_7"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_you" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_end_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_end_condition" />
+
+                <View
+                    android:id="@+id/divider_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/qb_px_1"
+                    android:background="@color/divider"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_end_content" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_bad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_end">
+
+                    <ImageView
+                        android:id="@+id/img_bad"
+                        android:layout_width="@dimen/qb_px_14"
+                        android:layout_height="@dimen/qb_px_14"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/qb_px_10"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/icon_set" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/qb_px_7"
+                        android:layout_toRightOf="@id/img_bad"
+                        android:text="不良反应及处理方法"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/qb_px_10"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="@dimen/qb_px_4"
+                        android:layout_height="@dimen/qb_px_7"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_you" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_bad_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_bad" />
+
+                <View
+                    android:id="@+id/divider_bad"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/qb_px_1"
+                    android:background="@color/divider"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_bad_content" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_not"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_bad">
+
+                    <ImageView
+                        android:id="@+id/img_not"
+                        android:layout_width="@dimen/qb_px_14"
+                        android:layout_height="@dimen/qb_px_14"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/qb_px_10"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/icon_set" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/qb_px_7"
+                        android:layout_toRightOf="@id/img_not"
+                        android:text="禁慎用"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/qb_px_10"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:layout_width="@dimen/qb_px_4"
+                        android:layout_height="@dimen/qb_px_7"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/icon_you" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_not_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。口服，一日三次，一次三片。"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="@dimen/qb_px_8"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_not" />
+
+                <View
+                    android:id="@+id/divider_not"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/qb_px_1"
+                    android:background="@color/divider"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_not_content" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.example.basic.TRTCBaseActivity;
 import com.tencent.liteav.TXLiteAVCode;
 import com.tencent.liteav.device.TXDeviceManager;
@@ -80,12 +82,14 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
     private String mUserId;
     private boolean mAudioRouteFlag = true;
     private FloatingView mFloatingView;
-    private LinearLayout layout_switch_camera, layout_close_camera, layout_switch_audio, layout_close_audio, layout_handle;
+    private LinearLayout layout_switch_camera, layout_close_camera, layout_switch_audio, layout_close_audio, layout_handle, layout_end;
     private TextView tv_switch_camera, tv_close_camera, tv_switch_audio, tv_close_audio;
     private boolean isCameraOpen = true;
     private boolean isAudioOpen = true;
     private Subscription hideSubscribe;
-
+    private TXCloudVideoView trtc_view_1;
+    private String mRemoteUid;
+    private boolean isSwitched = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +125,7 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
         layout_close_camera = findViewById(R.id.layout_close_camera);
         layout_switch_audio = findViewById(R.id.layout_switch_audio);
         layout_close_audio = findViewById(R.id.layout_close_audio);
+        layout_end = findViewById(R.id.layout_end);
         layout_handle = findViewById(R.id.layout_handle);
         tv_switch_camera = findViewById(R.id.tv_switch_camera);
         tv_close_camera = findViewById(R.id.tv_close_camera);
@@ -138,10 +143,13 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
         layout_switch_audio.setOnClickListener(this);
         mTXCVVLocalPreviewView.setOnClickListener(this);
         layout_close_audio.setOnClickListener(this);
+        layout_end.setOnClickListener(this);
 
         mRemoteUidList = new ArrayList<>();
         mRemoteViewList = new ArrayList<>();
-        mRemoteViewList.add((TXCloudVideoView) findViewById(R.id.trtc_view_1));
+        trtc_view_1 = (TXCloudVideoView) findViewById(R.id.trtc_view_1);
+        mRemoteViewList.add(trtc_view_1);
+        trtc_view_1.setOnClickListener(this);
         mRemoteViewList.add((TXCloudVideoView) findViewById(R.id.trtc_view_2));
         mRemoteViewList.add((TXCloudVideoView) findViewById(R.id.trtc_view_3));
         mRemoteViewList.add((TXCloudVideoView) findViewById(R.id.trtc_view_4));
@@ -210,6 +218,7 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
         enterRoom();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -230,6 +239,23 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
             layout_handle.setVisibility(View.VISIBLE);
 
             startCountAndHide();
+        } else if (id == R.id.layout_end) {
+            //TODO 挂断
+            finish();
+        } else if (id == R.id.trtc_view_1) {//TODO 处理点击切换大小窗逻辑
+            if (mRemoteUid == null || mRemoteUid.isEmpty()) {
+                return;
+            }
+            if (!isSwitched) {
+                mTRTCCloud.startLocalPreview(mIsFrontCamera, trtc_view_1);
+
+//            mTRTCCloud.startRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, mTXCVVLocalPreviewView);
+                mTRTCCloud.startRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, mTXCVVLocalPreviewView);
+            } else {
+                mTRTCCloud.startLocalPreview(mIsFrontCamera, mTXCVVLocalPreviewView);
+                mTRTCCloud.startRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, trtc_view_1);
+            }
+            isSwitched = true;
         }
     }
 
@@ -337,6 +363,7 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
                 if (i < mRemoteUidList.size()) {
                     String remoteUid = mRemoteUidList.get(i);
                     mRemoteViewList.get(i).setVisibility(View.VISIBLE);
+                    mRemoteUid = remoteUid;
                     mTRTCCloud.startRemoteView(remoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, mRemoteViewList.get(i));
                 } else {
                     mRemoteViewList.get(i).setVisibility(View.GONE);

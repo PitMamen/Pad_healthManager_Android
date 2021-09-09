@@ -36,6 +36,7 @@ public class Constants {
     public static final String FRAGMENT_VIDEO_PATIENT_DATA = "fragment_video_patient_data";
     public static final String FRAGMENT_PERSONAL_DATA = "fragment_personal_data";
     public static final String FRAGMENT_CHAT_LOG = "fragment_chat_log";
+    public static final String FRAGMENT_MEDICINE_GUIDE = "fragment_medicine_guide";
 
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";

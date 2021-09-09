@@ -69,22 +69,9 @@ public class SettingsFragment extends AppFragment {
     @OnClick({R.id.layout_rtc, R.id.layout_personal_data, R.id.layout_log})
     public void onViewClick(View view) {
         switch (view.getId()) {
-//            case R.id.layout_logout:
-//                DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定退出登录吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
-//                    @Override
-//                    public void onPositive() {
-//                        logOut();
-//                    }
-//
-//                    @Override
-//                    public void onNegative() {
-//
-//                    }
-//                });
-//                break;
             case R.id.layout_rtc:
                 //书写病历
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_WRITE_HEALTH, "");
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_MEDICINE_GUIDE, "");
                 break;
 
             case R.id.layout_personal_data:
