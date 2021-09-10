@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/qb_px_15"
+        android:paddingHorizontal="@dimen/qb_px_10"
         android:paddingVertical="@dimen/qb_px_8">
 
         <!--    http://img.duoziwang.com/2021/03/1623076080632524.jpg -->

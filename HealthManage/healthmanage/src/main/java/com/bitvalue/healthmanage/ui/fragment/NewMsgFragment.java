@@ -38,6 +38,7 @@ import com.bitvalue.healthmanage.ui.adapter.VideoQuickAdapter;
 import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
 import com.bitvalue.healthmanage.ui.media.ImagePreviewActivity;
 import com.bitvalue.healthmanage.ui.media.ImageSelectActivity;
+import com.bitvalue.healthmanage.ui.media.VideoPlayActivity;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
 import com.bitvalue.healthmanage.util.TimeUtils;
@@ -202,7 +203,10 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
         videoAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                new VideoPlayActivity.Builder()
+                        .setVideoTitle(videoBeans.get(position).title)
+                        .setVideoSource(videoBeans.get(position).vedioUrl)
+                        .start(getAttachActivity());
             }
         });
         videoAdapter.setOnItemDelete(new OnItemDelete() {

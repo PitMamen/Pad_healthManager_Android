@@ -18,7 +18,12 @@ import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.response.QuestionResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
+import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -28,6 +33,9 @@ public class QuestionDetailFragment extends AppFragment {
     @BindView(R.id.tv_title)
     TextView tv_title;
 
+    @BindView(R.id.tv_right_btn)
+    TextView tv_right_btn;
+
     private HomeActivity homeActivity;
     private QuestionResultBean.ListDTO questionBean;
     private WebView webView;
@@ -35,9 +43,24 @@ public class QuestionDetailFragment extends AppFragment {
     private String url;
     private boolean is_loading_login_over;
 
-    @OnClick({R.id.layout_back})
+    @OnClick({R.id.layout_back, R.id.tv_right_btn})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.tv_right_btn:
+                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
+                msgData.msgType = com.bitvalue.healthmanage.Constants.MSG_SINGLE;
+                msgData.userIds = new ArrayList<>();
+                Map<String, List<String>> queryParams = DataUtil.getQueryParams(url);
+                List<String> userIds = new ArrayList<>();
+                if (null != queryParams) {
+                    userIds = queryParams.get("userId");
+                }
+                if (null != userIds && userIds.size() > 0) {
+                    msgData.userIds.add(userIds.get(0));
+                }
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_ANALYSE, msgData);
+                //TODO 可能要处理发消息的逻辑
+                break;
             case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
@@ -59,7 +82,7 @@ public class QuestionDetailFragment extends AppFragment {
         questionBean = (QuestionResultBean.ListDTO) getArguments().getSerializable(Constants.QUESTION_DETAIL);
 
         //TODO 外网切内网
-        if (null == questionBean.questUrl){
+        if (null == questionBean.questUrl) {
             ToastUtil.toastShortMessage("问卷数据错误");
             return;
         }
@@ -67,6 +90,10 @@ public class QuestionDetailFragment extends AppFragment {
 //        url = "http://192.168.1.122/s/8a755f7c24ad49c9a2be6e6f79c3ee60";
 //        url = "http://218.77.104.74:8008/s/8a755f7c24ad49c9a2be6e6f79c3ee60";
         initWebView();
+
+        if (url.contains("?userId=")) {
+            tv_right_btn.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initWebView() {
@@ -145,7 +172,7 @@ public class QuestionDetailFragment extends AppFragment {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                if (null == tv_title || null == title){
+                if (null == tv_title || null == title) {
                     return;
                 }
                 tv_title.setText(title);

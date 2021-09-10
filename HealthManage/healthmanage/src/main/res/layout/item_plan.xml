@@ -4,14 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/qb_px_30">
 
-    <!--        <ImageView-->
-    <!--            android:id="@+id/img_plan"-->
-    <!--            android:layout_width="@dimen/qb_px_14"-->
-    <!--            android:layout_height="@dimen/qb_px_14"-->
-    <!--            android:layout_centerVertical="true"-->
-    <!--            android:scaleType="centerCrop"-->
-    <!--            android:src="@drawable/icon_set_jkgljh" />-->
-
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
@@ -40,6 +32,17 @@
         android:layout_marginRight="@dimen/qb_px_7"
         android:layout_toLeftOf="@id/img_goto"
         android:text="启用" />
+
+    <TextView
+        android:id="@+id/tv_use_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/qb_px_8"
+        android:textColor="@color/text_desc_dark"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/qb_px_17"
+        android:layout_toLeftOf="@id/tv_use_status"
+        android:text="5人使用中" />
 
     <View
         android:layout_width="match_parent"

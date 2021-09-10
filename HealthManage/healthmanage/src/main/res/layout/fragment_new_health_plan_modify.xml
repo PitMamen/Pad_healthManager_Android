@@ -242,6 +242,54 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_plan_intro" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_intro">
+
+                    <TextView
+                        android:id="@+id/tv_plan_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="套餐价格"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/qb_px_10"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_plan_price_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/qb_px_5"
+                        android:text="(单位/元)"
+                        android:textColor="@color/text_desc_dark"
+                        android:textSize="@dimen/qb_px_8"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tv_plan_price"
+                        app:layout_constraintLeft_toRightOf="@id/tv_plan_price"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/et_plan_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_10"
+                        android:background="@drawable/shape_bg_gray"
+                        android:hint="请输入套餐价格"
+                        android:inputType="number"
+                        android:maxLength="20"
+                        android:paddingHorizontal="@dimen/qb_px_6"
+                        android:paddingVertical="@dimen/qb_px_6"
+                        android:textColor="@color/text_main"
+                        android:textSize="@dimen/qb_px_8"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_plan_price" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_cover"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -249,7 +297,7 @@
                     android:layout_marginBottom="@dimen/qb_px_10"
                     android:background="@drawable/shape_bg_white"
                     android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@id/et_intro">
+                    app:layout_constraintTop_toBottomOf="@id/layout_price">
 
                     <TextView
                         android:id="@+id/tv_cover"
@@ -463,6 +511,105 @@
                 <!--                        android:visibility="visible" />-->
                 <!--                </RelativeLayout>-->
 
+                <LinearLayout
+                    android:id="@+id/layout_num"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:orientation="vertical"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_detail">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_chat_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="图文咨询次数"
+                                android:textColor="@color/text_black"
+                                android:textSize="@dimen/qb_px_10"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <EditText
+                                android:id="@+id/et_chat_num"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/qb_px_10"
+                                android:layout_marginRight="@dimen/qb_px_20"
+                                android:background="@drawable/shape_bg_gray"
+                                android:hint="请输入次数"
+                                android:inputType="number"
+                                android:maxLength="20"
+                                android:paddingHorizontal="@dimen/qb_px_6"
+                                android:paddingVertical="@dimen/qb_px_6"
+                                android:textColor="@color/text_main"
+                                android:textSize="@dimen/qb_px_8"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/tv_plan_price" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_video_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="云门诊复诊次数"
+                                android:textColor="@color/text_black"
+                                android:textSize="@dimen/qb_px_10"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <EditText
+                                android:id="@+id/et_video_num"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/qb_px_10"
+                                android:layout_marginRight="@dimen/qb_px_20"
+                                android:background="@drawable/shape_bg_gray"
+                                android:hint="请输入次数"
+                                android:inputType="number"
+                                android:maxLength="20"
+                                android:paddingHorizontal="@dimen/qb_px_6"
+                                android:paddingVertical="@dimen/qb_px_6"
+                                android:textColor="@color/text_main"
+                                android:textSize="@dimen/qb_px_8"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/tv_plan_price" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_num_notice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_2"
+                        android:text="* 套餐内患者免费发起图文咨询以及云门诊复诊次的次数，超出需要另外付费。"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/qb_px_7"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layout_base_time" />
+
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/tv_plan_status"
                     android:layout_width="wrap_content"
@@ -472,7 +619,7 @@
                     android:textColor="@color/text_black"
                     android:textSize="@dimen/qb_px_10"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/layout_detail" />
+                    app:layout_constraintTop_toBottomOf="@id/layout_num" />
 
 
                 <!--                app:switch_bg_color="@color/main_blue"-->
@@ -484,7 +631,7 @@
                     android:layout_marginTop="@dimen/qb_px_10"
                     android:checked="false"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/layout_detail" />
+                    app:layout_constraintTop_toBottomOf="@id/layout_num" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

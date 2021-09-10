@@ -273,7 +273,7 @@ public class HomeActivity extends AppActivity {
                 break;
 
             case R.id.layout_group:
-//                EventBus.getDefault().post(new MainRefreshObj());
+                EventBus.getDefault().post(new MainRefreshObj());
 //                backAll();
                 afterTabSelect(2);
                 break;

@@ -31,6 +31,9 @@ public class SavePlanApi implements IRequestApi {
     public static class GoodsInfoDTO {
         public String goodsName;
         public String goodsDescribe;
+        public int pirce;
+        public int numberInquiries;//套餐可咨询次数
+        public int medicalFreeNum;//套餐可免费云门诊复诊次数
         public String goodsId;
         public String goodsSpec = "";
         public String status;

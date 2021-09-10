@@ -89,39 +89,39 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
-                <TextView
-                    android:id="@+id/tv_qr_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/divider_name"
-                    android:layout_marginTop="@dimen/qb_px_10"
-                    android:text="二维码名片"
-                    android:textColor="@color/text_black"
-                    android:textSize="@dimen/qb_px_10" />
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_qr_code"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/divider_name"-->
+<!--                    android:layout_marginTop="@dimen/qb_px_10"-->
+<!--                    android:text="二维码名片"-->
+<!--                    android:textColor="@color/text_black"-->
+<!--                    android:textSize="@dimen/qb_px_10" />-->
 
-                <ImageView
-                    android:id="@+id/img_qr_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_qr_code"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/icon_corner" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/img_qr_code"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/tv_qr_code"-->
+<!--                    android:layout_alignParentRight="true"-->
+<!--                    android:src="@drawable/icon_corner" />-->
 
-                <View
-                    android:id="@+id/divider_qr"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@id/tv_qr_code"
-                    android:layout_marginTop="@dimen/qb_px_10"
-                    android:background="@color/divider"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/img_head" />
+<!--                <View-->
+<!--                    android:id="@+id/divider_qr"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="1dp"-->
+<!--                    android:layout_below="@id/tv_qr_code"-->
+<!--                    android:layout_marginTop="@dimen/qb_px_10"-->
+<!--                    android:background="@color/divider"-->
+<!--                    app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/img_head" />-->
 
                 <TextView
                     android:id="@+id/tv_complete_info_des"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/divider_qr"
+                    android:layout_below="@id/divider_name"
                     android:layout_marginTop="@dimen/qb_px_10"
                     android:text="信息完善"
                     android:textColor="@color/text_black"
@@ -131,7 +131,7 @@
                     android:id="@+id/tv_complete_info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/divider_qr"
+                    android:layout_below="@id/divider_name"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/qb_px_10"
                     android:text="未完善"

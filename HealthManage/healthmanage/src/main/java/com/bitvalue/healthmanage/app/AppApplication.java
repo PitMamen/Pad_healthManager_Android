@@ -23,7 +23,7 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.DebugLog;
 import com.bitvalue.healthmanage.helper.HelloChatController;
-import com.bitvalue.healthmanage.http.glide.GlideApp;
+//import com.bitvalue.healthmanage.http.glide.GlideApp;
 import com.bitvalue.healthmanage.http.interceptor.ExceptionInterceptor;
 import com.bitvalue.healthmanage.http.model.RequestHandler;
 import com.bitvalue.healthmanage.http.model.RequestServer;

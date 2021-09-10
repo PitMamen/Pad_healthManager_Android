@@ -59,6 +59,15 @@ public class NewHealthPlanFragmentModify extends AppFragment {
     @BindView(R.id.et_intro)
     EditText et_intro;
 
+    @BindView(R.id.et_plan_price)
+    EditText et_plan_price;
+
+    @BindView(R.id.et_chat_num)
+    EditText et_chat_num;
+
+    @BindView(R.id.et_video_num)
+    EditText et_video_num;
+
     @BindView(R.id.layout_tasks_wrap)
     LinearLayout layout_tasks_wrap;
 
@@ -191,6 +200,11 @@ public class NewHealthPlanFragmentModify extends AppFragment {
         et_name.setText(savePlanApi.templateName);
 //        tv_base_time.setText(savePlanApi.basetimeType);
         et_intro.setText(savePlanApi.goodsInfo.goodsDescribe);
+//        if (null != savePlanApi.goodsInfo.pirce) {
+        et_plan_price.setText(savePlanApi.goodsInfo.pirce + "");
+//        }
+        et_chat_num.setText(savePlanApi.goodsInfo.numberInquiries + "");
+        et_video_num.setText(savePlanApi.goodsInfo.medicalFreeNum + "");
 
         //任务列表
         for (int i = 0; i < savePlanApi.templateTask.size(); i++) {
@@ -519,6 +533,21 @@ public class NewHealthPlanFragmentModify extends AppFragment {
             return;
         }
 
+        if (et_plan_price.getText().toString().isEmpty()) {
+            ToastUtil.toastShortMessage("请输入套餐价格");
+            return;
+        }
+
+        if (et_chat_num.getText().toString().isEmpty()) {
+            ToastUtil.toastShortMessage("请输入图文咨询次数");//云门诊复诊次数
+            return;
+        }
+
+        if (et_video_num.getText().toString().isEmpty()) {
+            ToastUtil.toastShortMessage("云门诊复诊次数");
+            return;
+        }
+
 //        if (coverPhotos.size() == 0) {
 //            ToastUtil.toastShortMessage("请选择上传套餐封面");
 //            return;
@@ -562,6 +591,9 @@ public class NewHealthPlanFragmentModify extends AppFragment {
 //        }
 
         savePlanApi.goodsInfo.goodsDescribe = et_intro.getText().toString();
+        savePlanApi.goodsInfo.pirce = Integer.parseInt(et_plan_price.getText().toString());
+        savePlanApi.goodsInfo.numberInquiries = Integer.parseInt(et_chat_num.getText().toString());
+        savePlanApi.goodsInfo.medicalFreeNum = Integer.parseInt(et_video_num.getText().toString());
         savePlanApi.goodsInfo.goodsName = et_name.getText().toString();
         savePlanApi.goodsInfo.status = isChecked ? "1" : "3";//1启用  0停用
 //        savePlanApi.goodsInfo = goodsInfoDTO;

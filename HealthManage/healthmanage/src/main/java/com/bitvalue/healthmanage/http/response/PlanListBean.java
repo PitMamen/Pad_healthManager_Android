@@ -10,4 +10,5 @@ public class PlanListBean implements Serializable {
     public String status = "0";
     public long createTime;
     public long updateTime;
+    public int userNum;
 }

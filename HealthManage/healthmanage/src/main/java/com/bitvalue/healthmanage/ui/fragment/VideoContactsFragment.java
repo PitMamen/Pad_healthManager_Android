@@ -2,7 +2,6 @@ package com.bitvalue.healthmanage.ui.fragment;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,15 +11,17 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
-import com.bitvalue.healthmanage.http.request.ClientsApi;
-import com.bitvalue.healthmanage.http.response.ArticleBean;
+import com.bitvalue.healthmanage.http.request.VideoClientsApi;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
+import com.bitvalue.healthmanage.http.response.VideoClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.VideoPatientQuickAdapter;
 import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
 import com.bitvalue.healthmanage.ui.contacts.bean.MainRefreshObj;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
+import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
@@ -56,10 +57,9 @@ public class VideoContactsFragment extends AppFragment {
     private boolean is_need_toast;
     private HomeActivity homeActivity;
     private ArrayList<String> mIds = new ArrayList<>();
-    private ArrayList<ClientsResultBean> clientsResultBeans = new ArrayList<>();
-    private ArrayList<ClientsResultBean> clientsProcessBeans = new ArrayList<>();
-    private List<ArticleBean> articleBeans = new ArrayList<>();
+    private List<VideoClientsResultBean> videoClientsResultBeans = new ArrayList<>();
     private VideoPatientQuickAdapter videoPatientQuickAdapter;
+    private VideoClientsApi videoClientsApi;
 
     @Override
     protected int getLayoutId() {
@@ -78,23 +78,19 @@ public class VideoContactsFragment extends AppFragment {
         contact_list.setLayoutManager(new LinearLayoutManager(getAttachActivity()));
         contact_list.addItemDecoration(MUtils.spaceDivider(
                 DensityUtil.dip2px(getAttachActivity(), getAttachActivity().getResources().getDimension(R.dimen.qb_px_3)), false));
-        videoPatientQuickAdapter = new VideoPatientQuickAdapter(R.layout.item_video_patient, articleBeans);
+        videoPatientQuickAdapter = new VideoPatientQuickAdapter(R.layout.item_video_patient, videoClientsResultBeans);
         videoPatientQuickAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL, articleBeans.get(position));
+                VideoClientsResultBean videoClientsResultBean = videoClientsResultBeans.get(position);
+                ClientsResultBean.UserInfoDTO userInfoDTO = new ClientsResultBean.UserInfoDTO();
+                userInfoDTO.userId = videoClientsResultBean.userInfo.userId;
+                userInfoDTO.userName = videoClientsResultBean.userInfo.userName;
+                userInfoDTO.chatType = InputLayoutUI.CHAT_TYPE_VIDEO;
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, userInfoDTO);
             }
         });
         contact_list.setAdapter(videoPatientQuickAdapter);
-
-        videoPatientQuickAdapter.setOnItemDelete(new OnItemDelete() {
-            @Override
-            public void onItemDelete(int position) {
-//                articleBeans.remove(position);
-//                articles.remove(position);
-//                videoPatientQuickAdapter.setNewData(articleBeans);
-            }
-        });
     }
 
     @Override
@@ -102,14 +98,14 @@ public class VideoContactsFragment extends AppFragment {
         homeActivity = (HomeActivity) getActivity();
         EventBus.getDefault().register(this);
         initPatientListView();
-        getMyClients();
 
+        videoClientsApi = new VideoClientsApi();
+        getMyClients();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MainRefreshObj mainRefreshObj) {
-        clientsResultBeans.clear();
-        clientsProcessBeans.clear();
+        videoClientsResultBeans.clear();
         getMyClients();
     }
 
@@ -133,7 +129,10 @@ public class VideoContactsFragment extends AppFragment {
                 tv_end.setTextColor(homeActivity.getResources().getColor(R.color.main_blue));
                 tv_end.setBackgroundResource(R.drawable.shape_bg_white_solid_2);
 
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_VIDEO_PATIENT_DATA,"");
+//                homeActivity.switchSecondFragment(Constants.FRAGMENT_VIDEO_PATIENT_DATA,"");
+
+                videoClientsApi.attendanceStatus = "";
+                getMyClients();
                 break;
 
             case R.id.tv_end:
@@ -142,32 +141,36 @@ public class VideoContactsFragment extends AppFragment {
 
                 tv_wait.setTextColor(homeActivity.getResources().getColor(R.color.main_blue));
                 tv_wait.setBackgroundResource(R.drawable.shape_bg_white_solid_1);
+
+                videoClientsApi.attendanceStatus = "3";
+                getMyClients();
                 break;
         }
     }
 
 
     private void getMyClients() {
-        EasyHttp.post(this).api(new ClientsApi()).request(new HttpCallback<HttpData<ArrayList<ClientsResultBean>>>(this) {
+        EasyHttp.get(this).api(videoClientsApi).request(new HttpCallback<HttpData<ArrayList<VideoClientsResultBean>>>(this) {
             @Override
             public void onStart(Call call) {
                 super.onStart(call);
             }
 
             @Override
-            public void onSucceed(HttpData<ArrayList<ClientsResultBean>> result) {
+            public void onSucceed(HttpData<ArrayList<VideoClientsResultBean>> result) {
                 super.onSucceed(result);
-//                clientsResultBeans = result.getData();
-//                if (null == clientsResultBeans || clientsResultBeans.size() == 0) {
-//                    ToastUtil.toastShortMessage("暂无客户数据");
-//                    contact_list.setVisibility(View.GONE);
-//                    tv_no_data.setVisibility(View.VISIBLE);
-//                    return;
-//                } else {
-//                    contact_list.setVisibility(View.VISIBLE);
-//                    tv_no_data.setVisibility(View.GONE);
-//                }
-//                videoPatientQuickAdapter.notifyDataSetChanged();
+                videoClientsResultBeans.clear();
+                videoClientsResultBeans = result.getData();
+                if (null == videoClientsResultBeans || videoClientsResultBeans.size() == 0) {
+                    ToastUtil.toastShortMessage("暂无客户数据");
+                    contact_list.setVisibility(View.GONE);
+                    tv_no_data.setVisibility(View.VISIBLE);
+                    return;
+                } else {
+                    contact_list.setVisibility(View.VISIBLE);
+                    tv_no_data.setVisibility(View.GONE);
+                }
+                videoPatientQuickAdapter.setNewData(videoClientsResultBeans);
             }
 
             @Override

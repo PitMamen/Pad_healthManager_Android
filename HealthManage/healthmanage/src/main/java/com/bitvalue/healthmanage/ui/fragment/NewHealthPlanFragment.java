@@ -56,6 +56,15 @@ public class NewHealthPlanFragment extends AppFragment {
     @BindView(R.id.et_intro)
     EditText et_intro;
 
+    @BindView(R.id.et_plan_price)
+    EditText et_plan_price;
+
+    @BindView(R.id.et_chat_num)
+    EditText et_chat_num;
+
+    @BindView(R.id.et_video_num)
+    EditText et_video_num;
+
     @BindView(R.id.npl_cover)
     BGANinePhotoLayout npl_cover;
 
@@ -434,6 +443,21 @@ public class NewHealthPlanFragment extends AppFragment {
             return;
         }
 
+        if (et_plan_price.getText().toString().isEmpty()) {
+            ToastUtil.toastShortMessage("请输入套餐价格");
+            return;
+        }
+
+        if (et_chat_num.getText().toString().isEmpty()) {
+            ToastUtil.toastShortMessage("请输入图文咨询次数");//云门诊复诊次数
+            return;
+        }
+
+        if (et_video_num.getText().toString().isEmpty()) {
+            ToastUtil.toastShortMessage("云门诊复诊次数");
+            return;
+        }
+
         if (coverPhotos.size() == 0) {
             ToastUtil.toastShortMessage("请选择上传套餐封面");
             return;
@@ -478,6 +502,9 @@ public class NewHealthPlanFragment extends AppFragment {
 
         SavePlanApi.GoodsInfoDTO goodsInfoDTO = new SavePlanApi.GoodsInfoDTO();
         goodsInfoDTO.goodsDescribe = et_intro.getText().toString();
+        goodsInfoDTO.pirce = Integer.parseInt(et_plan_price.getText().toString());
+        goodsInfoDTO.numberInquiries = Integer.parseInt(et_chat_num.getText().toString());
+        goodsInfoDTO.medicalFreeNum = Integer.parseInt(et_video_num.getText().toString());
         goodsInfoDTO.goodsName = et_name.getText().toString();
         goodsInfoDTO.status = isChecked ? "1" : "3";//1启用  0停用
 

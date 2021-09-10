@@ -48,9 +48,6 @@ public class PersonalDataFragment extends AppFragment {
     @BindView(R.id.tv_name)
     TextView tv_name;
 
-    @BindView(R.id.img_qr_code)
-    ImageView img_qr_code;
-
     @BindView(R.id.tv_complete_info)
     TextView tv_complete_info;
 
