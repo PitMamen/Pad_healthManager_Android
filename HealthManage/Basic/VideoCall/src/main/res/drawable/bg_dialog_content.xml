@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--背景色 这是我自己定义的 一般使用#FFFFFFFF这种格式 -->
+    <solid android:color="@color/white" />
+
+    <!--圆角半径 设置圆角弧度 -->
+    <corners android:radius="@dimen/qb_px_5"/>
+
+    <!--主要是设置边框的颜色，这里设置为红色-->
+    <!--<stroke android:width="1px" android:color="@color/trans_gray" />-->
+</shape>

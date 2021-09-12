@@ -60,6 +60,7 @@ import com.bitvalue.healthmanage.widget.tasks.bean.GetMissionObj;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
+import com.bitvalue.sdk.collab.helper.CustomPatientDataMessage;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
@@ -551,19 +552,27 @@ public class HomeActivity extends AppActivity {
                 break;
 
             case Constants.FRAGMENT_WRITE_HEALTH:
+                ChatFragment.NewMsgData msgDataWrite = (ChatFragment.NewMsgData) object;
                 WriteHealthFragment writeHealthFragment;
                 if (isContain) {
                     mapFragments.remove(keyFragment);
                 }
                 writeHealthFragment = new WriteHealthFragment();
+                Bundle bundleWrite = new Bundle();
+                bundleWrite.putStringArrayList(Constants.MSG_IDS, msgDataWrite.userIds);
+                writeHealthFragment.setArguments(bundleWrite);
                 mapFragments.put(Constants.FRAGMENT_WRITE_HEALTH, writeHealthFragment);
                 break;
             case Constants.FRAGMENT_HEALTH_HISTORY_PREVIEW:
+                ChatFragment.NewMsgData msgPreview = (ChatFragment.NewMsgData) object;
                 HealthHistoryPreFragment healthHistoryPreFragment;
                 if (isContain) {
                     mapFragments.remove(keyFragment);
                 }
                 healthHistoryPreFragment = new HealthHistoryPreFragment();
+                Bundle bundlePreview = new Bundle();
+                bundlePreview.putSerializable(Constants.DATA_MSG, msgPreview);
+                healthHistoryPreFragment.setArguments(bundlePreview);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_HISTORY_PREVIEW, healthHistoryPreFragment);
                 break;
 
@@ -573,6 +582,10 @@ public class HomeActivity extends AppActivity {
                     mapFragments.remove(keyFragment);
                 }
                 videoPatientDataFragment = new VideoPatientDataFragment();
+                CustomPatientDataMessage customPatientDataMessage = (CustomPatientDataMessage) object;
+                Bundle bundlePatient = new Bundle();
+                bundlePatient.putSerializable(Constants.DATA_MSG, customPatientDataMessage);
+                videoPatientDataFragment.setArguments(bundlePatient);
                 mapFragments.put(Constants.FRAGMENT_VIDEO_PATIENT_DATA, videoPatientDataFragment);
                 break;
             case Constants.FRAGMENT_PERSONAL_DATA:

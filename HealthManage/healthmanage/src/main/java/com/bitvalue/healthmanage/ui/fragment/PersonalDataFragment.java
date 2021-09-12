@@ -1,6 +1,7 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
 import android.content.Intent;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,8 +10,10 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
+import com.bitvalue.healthmanage.http.glide.GlideApp;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.LogoutApi;
+import com.bitvalue.healthmanage.http.request.PersonalDataApi;
 import com.bitvalue.healthmanage.http.request.TaskDetailApi;
 import com.bitvalue.healthmanage.http.response.TaskDetailBean;
 import com.bitvalue.healthmanage.manager.ActivityManager;
@@ -23,6 +26,7 @@ import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomMessage;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 
@@ -91,41 +95,69 @@ public class PersonalDataFragment extends AppFragment {
 
     @Override
     protected void initData() {
-//        customHealthDataMessage = (CustomHealthDataMessage) getArguments().getSerializable(Constants.DATA_MSG);
-//        getDetail();
+        getDetail();
     }
 
     private void getDetail() {
-        TaskDetailApi taskDetailApi = new TaskDetailApi();
-        taskDetailApi.contentId = customHealthDataMessage.contentId;
-        taskDetailApi.planType = "OutsideInformation";
-        taskDetailApi.userId = customHealthDataMessage.userId;
-        EasyHttp.get(this).api(taskDetailApi).request(new HttpCallback<HttpData<TaskDetailBean>>(this) {
+        PersonalDataApi personalDataApi = new PersonalDataApi();
+        EasyHttp.get(this).api(personalDataApi).request(new HttpCallback<HttpData<PersonalDataApi>>(this) {
             @Override
             public void onStart(Call call) {
                 super.onStart(call);
             }
 
             @Override
-            public void onSucceed(HttpData<TaskDetailBean> result) {
+            public void onSucceed(HttpData<PersonalDataApi> result) {
                 super.onSucceed(result);
 //                //增加判空
-//                if (result == null || result.getData() ==null){
-//                    return;
-//                }
-//                if (result.getCode() == 0) {
-//                    taskDetailBean = result.getData();
-//                    if (null == taskDetailBean) {
-//                        return;
-//                    }
-//                    setData();
-//                    processPhotos();
-//
-//                    ninePhotoLayout.setDelegate(PersonalDataFragment.this);
-//                    ninePhotoLayout.setData(photos);
-//                } else {
-//                    ToastUtil.toastShortMessage(result.getMessage());
-//                }
+                if (result == null) {
+                    return;
+                }
+                if (result.getCode() == 0) {
+                    if (null == result.getData()) {
+                        return;
+                    }
+                    PersonalDataApi personalDataResult = result.getData();
+
+                    if (null != personalDataResult.avatarUrl) {
+                        GlideApp.with(img_head)
+                                .load(personalDataResult.avatarUrl)
+                                .transform(new RoundedCorners((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                                        20, AppApplication.instance().getResources().getDisplayMetrics())))
+                                .into(img_head);
+                    }
+
+                    if (null != personalDataResult.userName) {
+                        tv_name.setText(personalDataResult.userName);
+                    }
+
+                    if (null != personalDataResult.hospitalName) {
+                        tv_hospital.setText(personalDataResult.hospitalName);
+                    }
+
+                    if (null != personalDataResult.departmentName) {
+                        tv_depart.setText(personalDataResult.departmentName);
+                    }
+
+                    if (null != personalDataResult.professionalTitle) {
+                        tv_level.setText(personalDataResult.professionalTitle);
+                    }
+
+                    if (null != personalDataResult.userName) {
+                        tv_good.setText(personalDataResult.expertInDisease);
+                    }
+
+                    if (null != personalDataResult.userName) {
+                        tv_good_detail.setText(personalDataResult.expertInDiseaseWord);
+                    }
+
+                    if (null != personalDataResult.doctorBrief) {
+                        tv_intro_detail.setText(personalDataResult.doctorBrief);
+                    }
+
+                } else {
+                    ToastUtil.toastShortMessage(result.getMessage());
+                }
             }
 
             @Override

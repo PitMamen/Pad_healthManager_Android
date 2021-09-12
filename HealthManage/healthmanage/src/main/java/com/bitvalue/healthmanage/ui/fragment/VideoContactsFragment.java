@@ -20,6 +20,7 @@ import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
 import com.bitvalue.healthmanage.ui.contacts.bean.MainRefreshObj;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
+import com.bitvalue.sdk.collab.helper.CustomPatientDataMessage;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -129,10 +130,17 @@ public class VideoContactsFragment extends AppFragment {
                 tv_end.setTextColor(homeActivity.getResources().getColor(R.color.main_blue));
                 tv_end.setBackgroundResource(R.drawable.shape_bg_white_solid_2);
 
-//                homeActivity.switchSecondFragment(Constants.FRAGMENT_VIDEO_PATIENT_DATA,"");
 
                 videoClientsApi.attendanceStatus = "";
                 getMyClients();
+
+                //TODO 做的入口数据调试
+                CustomPatientDataMessage customPatientDataMessage = new CustomPatientDataMessage();
+                if (videoClientsResultBeans.size()== 0){
+                    return;
+                }
+                customPatientDataMessage.userId = videoClientsResultBeans.get(0).userInfo.userId + "";
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_VIDEO_PATIENT_DATA,customPatientDataMessage);
                 break;
 
             case R.id.tv_end:
@@ -160,6 +168,9 @@ public class VideoContactsFragment extends AppFragment {
             public void onSucceed(HttpData<ArrayList<VideoClientsResultBean>> result) {
                 super.onSucceed(result);
                 videoClientsResultBeans.clear();
+                if (null == result.getData()) {
+                    return;
+                }
                 videoClientsResultBeans = result.getData();
                 if (null == videoClientsResultBeans || videoClientsResultBeans.size() == 0) {
                     ToastUtil.toastShortMessage("暂无客户数据");

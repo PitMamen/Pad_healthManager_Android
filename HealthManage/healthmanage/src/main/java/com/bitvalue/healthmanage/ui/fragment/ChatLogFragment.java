@@ -8,24 +8,26 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
+import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.request.ChatLogApi;
+import com.bitvalue.healthmanage.http.response.PatientResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.bitvalue.healthmanage.ui.adapter.ArticleAdapter;
 import com.bitvalue.healthmanage.ui.adapter.SearchPatientAdapter;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.base.BaseAdapter;
-import com.scwang.smart.refresh.layout.api.RefreshLayout;
-import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.HttpCallback;
 
-import org.greenrobot.eventbus.EventBus;
-import org.jetbrains.annotations.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
 
 public class ChatLogFragment extends AppFragment {
 
@@ -56,9 +58,14 @@ public class ChatLogFragment extends AppFragment {
     @BindView(R.id.list_patients)
     RecyclerView list_patients;
 
+    @BindView(R.id.tv_no_data)
+    TextView tv_no_data;
+
     private HomeActivity homeActivity;
     private int tabPosition;
     private SearchPatientAdapter mSearchPatientAdapter;
+    private ChatLogApi chatLogApi;
+    private List<PatientResultBean> patientResultBeans = new ArrayList<>();
 
     @Override
     protected int getLayoutId() {
@@ -71,12 +78,50 @@ public class ChatLogFragment extends AppFragment {
         homeActivity = (HomeActivity) getActivity();
         initSearchButton();
         initSearchList();
+        chatLogApi = new ChatLogApi();
         onSelectTab();
     }
 
     @Override
     protected void initData() {
+    }
 
+    private void getLogs() {
+        EasyHttp.get(this).api(chatLogApi).request(new HttpCallback<HttpData<List<PatientResultBean>>>(this) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<List<PatientResultBean>> result) {
+                super.onSucceed(result);
+//                //增加判空
+                if (result == null || null == result.getData()) {
+                    return;
+                }
+                if (result.getCode() == 0) {
+                    if (result.getData().size() > 0) {
+                        list_patients.setVisibility(View.VISIBLE);
+                        tv_no_data.setVisibility(View.GONE);
+                        patientResultBeans.clear();
+                        patientResultBeans = result.getData();
+                        mSearchPatientAdapter.setData(patientResultBeans);
+                        mSearchPatientAdapter.notifyDataSetChanged();
+                    } else {
+                        list_patients.setVisibility(View.GONE);
+                        tv_no_data.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    ToastUtil.toastShortMessage(result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
     }
 
     private void initSearchButton() {
@@ -85,14 +130,15 @@ public class ChatLogFragment extends AppFragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (et_search.getText().toString().isEmpty()) {
-
+                        chatLogApi.keyWord = "";
                         ToastUtil.toastShortMessage("请输入搜索内容");
                         return true;
                     }
 
                     //关闭软键盘
                     hideKeyboard(et_search);
-//                    getSearchArticles();
+                    chatLogApi.keyWord = et_search.getText().toString();
+                    getLogs();
                     return true;
                 }
                 return false;
@@ -108,8 +154,8 @@ public class ChatLogFragment extends AppFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().isEmpty()) {
-//                    layout_daily.setVisibility(View.VISIBLE);
-//                    layout_search_result.setVisibility(View.GONE);
+                    chatLogApi.keyWord = "";
+                    getLogs();
                 }
             }
 
@@ -129,36 +175,6 @@ public class ChatLogFragment extends AppFragment {
         });
         list_patients.setAdapter(mSearchPatientAdapter);
 
-//        TextView headerView = list_my_plans.addHeaderView(R.layout.picker_item);
-//        headerView.setText("我是头部");
-//        headerView.setOnClickListener(v -> toast("点击了头部"));
-//
-//        TextView footerView = list_my_plans.addFooterView(R.layout.picker_item);
-//        footerView.setText("我是尾部");
-//        footerView.setOnClickListener(v -> toast("点击了尾部"));
-
-//        layout_search_result.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
-//            @Override
-//            public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
-//                postDelayed(() -> {
-//                    mSearchAdapter.addData(analogData());//TODO
-//                    layout_search_result.finishLoadMore();
-//
-//                    mSearchAdapter.setLastPage(mSearchAdapter.getItemCount() >= 11);
-//                    layout_search_result.setNoMoreData(mSearchAdapter.isLastPage());
-//                }, 1000);
-//            }
-//
-//            @Override
-//            public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
-//                postDelayed(() -> {
-//                    mSearchAdapter.clearData();
-//                    mSearchAdapter.setData(analogData());//TODO
-//                    layout_search_result.finishRefresh();
-//                }, 1000);
-//            }
-//        });
-
     }
 
     @OnClick({R.id.layout_back, R.id.layout_all, R.id.layout_video, R.id.tv_health})
@@ -171,14 +187,17 @@ public class ChatLogFragment extends AppFragment {
                 break;
             case R.id.layout_all:
                 tabPosition = 0;
+                chatLogApi.type = "";
                 onSelectTab();
                 break;
             case R.id.layout_video:
                 tabPosition = 1;
+                chatLogApi.type = "2";
                 onSelectTab();
                 break;
             case R.id.tv_health:
                 tabPosition = 2;
+                chatLogApi.type = "1";
                 onSelectTab();
                 break;
         }
@@ -216,6 +235,6 @@ public class ChatLogFragment extends AppFragment {
                 break;
         }
 
-        //TODO 获取数据
+        getLogs();
     }
 }

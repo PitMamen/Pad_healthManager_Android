@@ -54,13 +54,14 @@
             app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
         <TextView
-            android:id="@+id/tv_sex"
+            android:id="@+id/tv_sex_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/qb_px_10"
             android:text="男"
-            android:textColor="@color/text_desc_dark"
-            android:textSize="@dimen/qb_px_8"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/qb_px_10"
+            android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_name"
             app:layout_constraintLeft_toRightOf="@id/tv_name"
             app:layout_constraintTop_toTopOf="parent" />
@@ -72,19 +73,20 @@
             android:layout_marginLeft="@dimen/qb_px_5"
             android:layout_marginTop="@dimen/qb_px_7"
             android:background="@color/text_desc_dark"
-            app:layout_constraintLeft_toRightOf="@id/tv_sex"
+            android:visibility="gone"
+            app:layout_constraintLeft_toRightOf="@id/tv_sex_age"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_age"
+            android:id="@+id/tv_disease"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/qb_px_5"
-            android:text="30岁"
-            android:textColor="@color/text_desc_dark"
-            android:textSize="@dimen/qb_px_8"
+            android:text="糖尿病"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/qb_px_10"
             app:layout_constraintBaseline_toBaselineOf="@id/tv_name"
-            app:layout_constraintLeft_toRightOf="@id/view_line"
+            app:layout_constraintLeft_toRightOf="@id/tv_sex_age"
             app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -95,7 +97,7 @@
             android:layout_marginLeft="@dimen/qb_px_7"
             android:layout_marginTop="@dimen/qb_px_3"
             android:text="云门诊"
-            android:textColor="@color/orange"
+            android:textColor="@color/green"
             android:textSize="@dimen/qb_px_10"
             android:textStyle="bold"
             app:layout_constraintRight_toRightOf="parent"
@@ -105,11 +107,11 @@
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
             android:layout_marginLeft="@dimen/qb_px_5"
-            android:text="就诊中"
+            android:text="2021-8-27"
             android:textColor="@color/text_desc_dark"
             android:textSize="@dimen/qb_px_8"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 

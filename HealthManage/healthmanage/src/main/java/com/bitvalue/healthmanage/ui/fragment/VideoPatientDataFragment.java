@@ -7,13 +7,13 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
-import com.bitvalue.healthmanage.http.request.TaskDetailApi;
-import com.bitvalue.healthmanage.http.response.TaskDetailBean;
+import com.bitvalue.healthmanage.http.request.PatientDataApi;
+import com.bitvalue.healthmanage.http.response.PatientDataResult;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.media.ImagePreviewActivity;
 import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
-import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomMessage;
+import com.bitvalue.sdk.collab.helper.CustomPatientDataMessage;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
@@ -53,9 +53,9 @@ public class VideoPatientDataFragment extends AppFragment implements BGANinePhot
     TextView tv_disease;
 
     private HomeActivity homeActivity;
-    private CustomHealthDataMessage customHealthDataMessage;
+    private CustomPatientDataMessage customPatientDataMessage;
     private ArrayList<String> photos = new ArrayList<>();
-    private TaskDetailBean taskDetailBean;
+    private PatientDataResult patientDataResult;
 
     @Override
     protected int getLayoutId() {
@@ -71,31 +71,29 @@ public class VideoPatientDataFragment extends AppFragment implements BGANinePhot
 
     @Override
     protected void initData() {
-//        customHealthDataMessage = (CustomHealthDataMessage) getArguments().getSerializable(Constants.DATA_MSG);
-//        getDetail();
+        customPatientDataMessage = (CustomPatientDataMessage) getArguments().getSerializable(Constants.DATA_MSG);
+        getDetail();
     }
 
     private void getDetail() {
-        TaskDetailApi taskDetailApi = new TaskDetailApi();
-        taskDetailApi.contentId = customHealthDataMessage.contentId;
-        taskDetailApi.planType = "OutsideInformation";
-        taskDetailApi.userId = customHealthDataMessage.userId;
-        EasyHttp.get(this).api(taskDetailApi).request(new HttpCallback<HttpData<TaskDetailBean>>(this) {
+        PatientDataApi patientDataApi = new PatientDataApi();
+        patientDataApi.userId = customPatientDataMessage.userId;
+        EasyHttp.post(this).api(patientDataApi).request(new HttpCallback<HttpData<List<PatientDataResult>>>(this) {
             @Override
             public void onStart(Call call) {
                 super.onStart(call);
             }
 
             @Override
-            public void onSucceed(HttpData<TaskDetailBean> result) {
+            public void onSucceed(HttpData<List<PatientDataResult>> result) {
                 super.onSucceed(result);
                 //增加判空
                 if (result == null || result.getData() ==null){
                     return;
                 }
                 if (result.getCode() == 0) {
-                    taskDetailBean = result.getData();
-                    if (null == taskDetailBean) {
+                    patientDataResult = result.getData().get(0);
+                    if (null == patientDataResult) {
                         return;
                     }
                     setData();
@@ -116,19 +114,16 @@ public class VideoPatientDataFragment extends AppFragment implements BGANinePhot
     }
 
     private void setData() {
-        tv_name.setText(taskDetailBean.hospital);
-        tv_gender.setText(taskDetailBean.visitType);
-        tv_age.setText(taskDetailBean.visitTime);
-        tv_conclusion.setText(taskDetailBean.diagnosis);
-        tv_disease.setText(taskDetailBean.diagnosis);
+        tv_name.setText(patientDataResult.userInfo.userName);
+        tv_gender.setText(patientDataResult.userInfo.userSex);
+        tv_age.setText(patientDataResult.userInfo.userAge + "岁");
+        tv_conclusion.setText(patientDataResult.diagnosis);
+        tv_disease.setText(patientDataResult.dept);
     }
 
     private void processPhotos() {
-        for (int i = 0; i < taskDetailBean.healthImages.size(); i++) {
-//            photos.add(taskDetailBean.healthImages.get(i).fileUrl);
-            photos.add(taskDetailBean.healthImages.get(i).fileUrl.replace("218.77.104.74:8008", "192.168.1.122"));
-//            photos.add(taskDetailBean.healthImages.get(i).fileUrl.replace("192.168.1.122", "218.77.104.74:8008"));
-//            photos.add(taskDetailBean.healthImages.get(i).previewFileUrl.replace("218.77.104.74:8008", "192.168.1.122"));
+        for (int i = 0; i < patientDataResult.healthImagesList.size(); i++) {
+            photos.add(patientDataResult.healthImagesList.get(i).fileUrl.replace("218.77.104.74:8008", "192.168.1.122"));
         }
     }
 

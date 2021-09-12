@@ -8,4 +8,5 @@ public class CustomVideoCallMessage extends CustomMessage {
     public String content;
     public String msgDetailId;
     public ArrayList<String> userId;
+    public long timeStamp;
 }

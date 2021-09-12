@@ -159,5 +159,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/qb_px_10" />
+
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/view_line"
+            android:gravity="center"
+            android:text="暂无数据，点击刷新"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="@dimen/qb_px_8"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

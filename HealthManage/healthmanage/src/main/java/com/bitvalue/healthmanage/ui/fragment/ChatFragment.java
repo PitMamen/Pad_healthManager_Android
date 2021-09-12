@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
+import com.bitvalue.healthmanage.http.request.SaveCaseApi;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.util.Constants;
@@ -49,6 +50,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -272,10 +274,12 @@ public class ChatFragment extends AppFragment {
             public void onVideoCommunicate() {
                 CustomVideoCallMessage message = new CustomVideoCallMessage();
                 message.title = "视频看诊";
-                String rooId = System.currentTimeMillis() + "";
+                long currentTimeMillis = System.currentTimeMillis();
+                String rooId = currentTimeMillis + "";
                 message.msgDetailId = rooId.substring(rooId.length() - 7, rooId.length());
 //                message.userId = mIds;
                 message.content = "点击接入视频看诊";
+                message.timeStamp = currentTimeMillis;
                 //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
                 message.setType("CustomVideoCallMessage");
                 message.setDescription("视频看诊");
@@ -285,7 +289,10 @@ public class ChatFragment extends AppFragment {
 
             @Override
             public void onWriteConsultConclusion() {
-                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_WRITE_HEALTH, "");
+                NewMsgData msgData = new NewMsgData();
+                msgData.userIds = new ArrayList<>();
+                msgData.userIds.add(mChatInfo.getId());
+                homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_WRITE_HEALTH, msgData);
             }
 
             @Override
@@ -325,11 +332,13 @@ public class ChatFragment extends AppFragment {
     }
 
 
-    public static class NewMsgData {
+    public static class NewMsgData implements Serializable {
         public ArrayList<String> userIds;
         public String msgType;
         public String id;
         public String planId;
+
+        public SaveCaseApi saveCaseApi;
 //        public String msgType;
     }
 

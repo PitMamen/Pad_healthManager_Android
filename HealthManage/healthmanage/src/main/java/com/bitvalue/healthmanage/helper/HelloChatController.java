@@ -14,6 +14,7 @@ import com.bitvalue.sdk.collab.base.IBaseViewHolder;
 import com.bitvalue.sdk.collab.base.TUIChatControllerListener;
 import com.bitvalue.sdk.collab.base.TUIConversationControllerListener;
 import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
+import com.bitvalue.sdk.collab.helper.CustomCaseHistoryMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthPlanMessage;
@@ -174,6 +175,14 @@ public class HelloChatController implements TUIChatControllerListener {
                         if (customVideoCallMessage != null) {
                             if (parent instanceof MessageBaseHolder) {
                                 CustomVideoCallMessageController.onDraw(parent, customVideoCallMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                            }
+                        }
+                        break;
+                    case "CustomCaseHistoryMessage":
+                        CustomCaseHistoryMessage customCaseHistoryMessage = new Gson().fromJson(dataJson, CustomCaseHistoryMessage.class);
+                        if (customCaseHistoryMessage != null) {
+                            if (parent instanceof MessageBaseHolder) {
+                                CustomCaseHistoryMessageController.onDraw(parent, customCaseHistoryMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                             }
                         }
                         break;

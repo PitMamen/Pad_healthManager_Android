@@ -8,7 +8,6 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.tencent.trtc.util.DataUtil;
 import com.example.basic.TRTCBaseActivity;
 import com.tencent.liteav.TXLiteAVCode;
 import com.tencent.liteav.device.TXDeviceManager;
@@ -223,7 +223,17 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.iv_back) {
-            finish();
+            DataUtil.showNormalDialog(this, "温馨提示", "确定退出并挂断吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
+                @Override
+                public void onPositive() {
+                    finish();
+                }
+
+                @Override
+                public void onNegative() {
+
+                }
+            });
         } else if (id == R.id.iv_return) {
             floatViewClick();
         } else if (id == R.id.layout_close_camera) {
@@ -240,8 +250,18 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
 
             startCountAndHide();
         } else if (id == R.id.layout_end) {
-            //TODO 挂断
-            finish();
+            DataUtil.showNormalDialog(this, "温馨提示", "确定挂断吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
+                @Override
+                public void onPositive() {
+                    finish();
+                }
+
+                @Override
+                public void onNegative() {
+
+                }
+            });
+
         } else if (id == R.id.trtc_view_1) {//TODO 处理点击切换大小窗逻辑
             if (mRemoteUid == null || mRemoteUid.isEmpty()) {
                 return;

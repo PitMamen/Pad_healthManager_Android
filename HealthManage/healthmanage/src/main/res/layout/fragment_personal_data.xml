@@ -75,8 +75,8 @@
                     android:layout_below="@id/divider_head"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/qb_px_10"
-                    android:text="周少"
-                    android:textColor="@color/text_black"
+                    android:text=""
+                    android:textColor="@color/text_desc_dark"
                     android:textSize="@dimen/qb_px_10" />
 
                 <View
@@ -135,7 +135,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/qb_px_10"
                     android:text="未完善"
-                    android:textColor="@color/text_black"
+                    android:textColor="@color/text_desc_dark"
                     android:textSize="@dimen/qb_px_10" />
 
             </RelativeLayout>
@@ -160,8 +160,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="湘雅二"
-                    android:textColor="@color/text_black"
+                    android:text=""
+                    android:textColor="@color/text_desc_dark"
                     android:textSize="@dimen/qb_px_10" />
 
                 <View
@@ -189,8 +189,8 @@
                     android:layout_below="@id/divider_hospital"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/qb_px_10"
-                    android:text="呼吸内科"
-                    android:textColor="@color/text_black"
+                    android:text=""
+                    android:textColor="@color/text_desc_dark"
                     android:textSize="@dimen/qb_px_10" />
 
                 <View
@@ -218,8 +218,8 @@
                     android:layout_below="@id/divider_depart"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/qb_px_10"
-                    android:text="主任医师"
-                    android:textColor="@color/text_black"
+                    android:text=""
+                    android:textColor="@color/text_desc_dark"
                     android:textSize="@dimen/qb_px_10" />
 
             </RelativeLayout>
@@ -249,8 +249,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="心脏病"
-                        android:textColor="@color/text_black"
+                        android:text=""
+                        android:textColor="@color/text_desc_dark"
                         android:textSize="@dimen/qb_px_10" />
 
                     <View
