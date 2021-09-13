@@ -49,17 +49,28 @@ public class VideoPatientQuickAdapter extends BaseQuickAdapter<VideoClientsResul
 
         ImageView img_head = holder.getView(R.id.img_head);
 
-        GlideApp.with(img_head)
-                .load("http://img.duoziwang.com/2021/03/1623076080632524.jpg")
-                .transform(new RoundedCorners((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                        20, AppApplication.instance().getResources().getDisplayMetrics())))
-                .into(img_head);
+        if (null != videoClientsResultBean.headUrl && !videoClientsResultBean.headUrl.isEmpty()) {
+            GlideApp.with(img_head)
+//                        .load("http://img.duoziwang.com/2021/03/1623076080632524.jpg")
+                    .load(videoClientsResultBean.headUrl)
+                    .transform(new RoundedCorners((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                            20, AppApplication.instance().getResources().getDisplayMetrics())))
+                    .into(img_head);
+        } else {
+            img_head.setImageDrawable(AppApplication.instance().getResources().getDrawable(R.drawable.default_head_img));
+        }
 
         holder.setText(R.id.tv_name, videoClientsResultBean.userInfo.userName);
         holder.setText(R.id.tv_sex, videoClientsResultBean.userInfo.userSex);
         holder.setText(R.id.tv_age, videoClientsResultBean.userInfo.userAge + "岁");
         holder.setText(R.id.tv_time, TimeUtils.getTime(videoClientsResultBean.appointmentTime,
                 TimeUtils.YY_MM_DD_FORMAT_3).substring(0, 10) + " " + videoClientsResultBean.seeTime);
+
+        if (videoClientsResultBean.isClicked) {
+            holder.setBackgroundColor(R.id.layout_item, mContext.getResources().getColor(R.color.divider));
+        } else {
+            holder.setBackgroundColor(R.id.layout_item, mContext.getResources().getColor(R.color.white));
+        }
 
         //就诊状态（1：待就诊 2：就诊中 3：已完成）
         switch (videoClientsResultBean.attendanceStatus) {

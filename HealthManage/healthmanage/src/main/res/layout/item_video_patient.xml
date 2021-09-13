@@ -11,6 +11,7 @@
         android:background="@color/divider" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -23,7 +24,7 @@
             android:layout_width="@dimen/qb_px_33"
             android:layout_height="@dimen/qb_px_33"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_jkda"
+            android:src="@drawable/default_head_img"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -105,11 +106,11 @@
             android:id="@+id/tv_patient_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
             android:layout_marginLeft="@dimen/qb_px_5"
             android:text="就诊中"
             android:textColor="@color/text_desc_dark"
             android:textSize="@dimen/qb_px_8"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 

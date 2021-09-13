@@ -10,6 +10,7 @@ public class PatientResultBean {
     public long beginTime;
     public int type;
     public String userId;
+    public String headUrl;
 
     public static class UserInfoDTO {
         public String userSex;

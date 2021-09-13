@@ -4,6 +4,7 @@ public class Constant {
 
     public static final String ROOM_ID = "room_id";
     public static final String USER_ID = "user_id";
+    public static final String PLAN_ID = "plan_id";
     public static final String ROLE_TYPE = "role_type";
     public static final String CUSTOM_VIDEO = "custom_video";
 

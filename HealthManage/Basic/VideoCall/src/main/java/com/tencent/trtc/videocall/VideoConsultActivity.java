@@ -84,12 +84,14 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
     private FloatingView mFloatingView;
     private LinearLayout layout_switch_camera, layout_close_camera, layout_switch_audio, layout_close_audio, layout_handle, layout_end;
     private TextView tv_switch_camera, tv_close_camera, tv_switch_audio, tv_close_audio;
+    private ImageView img_switch_camera, img_close_camera, img_switch_audio, img_close_audio;
     private boolean isCameraOpen = true;
     private boolean isAudioOpen = true;
     private Subscription hideSubscribe;
     private TXCloudVideoView trtc_view_1;
     private String mRemoteUid;
     private boolean isSwitched = false;
+    private String mPlanId;//看诊预约id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,12 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
             initView();
             enterRoom();
         }
+
+        reportStart();
+    }
+
+    private void reportStart() {
+
     }
 
     private void handleIntent() {
@@ -112,6 +120,10 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
             }
             if (intent.getStringExtra(Constant.ROOM_ID) != null) {
                 mRoomId = intent.getStringExtra(Constant.ROOM_ID);
+            }
+
+            if (intent.getStringExtra(Constant.PLAN_ID) != null) {
+                mPlanId = intent.getStringExtra(Constant.PLAN_ID);
             }
         }
     }
@@ -131,6 +143,11 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
         tv_close_camera = findViewById(R.id.tv_close_camera);
         tv_switch_audio = findViewById(R.id.tv_switch_audio);
         tv_close_audio = findViewById(R.id.tv_close_audio);
+
+        img_switch_camera = findViewById(R.id.img_switch_camera);
+        img_close_camera = findViewById(R.id.img_close_camera);
+        img_switch_audio = findViewById(R.id.img_switch_audio);
+        img_close_audio = findViewById(R.id.img_close_audio);
 
         if (!TextUtils.isEmpty(mRoomId)) {
 //            mTextTitle.setText(getString(R.string.videocall_roomid) + mRoomId);
@@ -309,9 +326,11 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
         if (!isCameraOpen) {
             mTRTCCloud.stopLocalPreview();
             tv_close_camera.setText("打开摄像头");
+            img_close_camera.setImageResource(R.mipmap.icon_kqsp);
         } else {
             mTRTCCloud.startLocalPreview(mIsFrontCamera, mTXCVVLocalPreviewView);
             tv_close_camera.setText("关闭摄像头");
+            img_close_camera.setImageResource(R.mipmap.icon_gbsxt);
         }
     }
 
@@ -320,9 +339,11 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
         if (!isAudioOpen) {
             mTRTCCloud.muteLocalAudio(true);
             tv_close_audio.setText("打开麦克风");
+            img_close_audio.setImageResource(R.mipmap.icon_yunyin);
         } else {
             mTRTCCloud.muteLocalAudio(false);
             tv_close_audio.setText("关闭麦克风");
+            img_close_audio.setImageResource(R.mipmap.icon_gbyy);
         }
     }
 
@@ -341,10 +362,12 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
             mAudioRouteFlag = false;
             mTXDeviceManager.setAudioRoute(TXDeviceManager.TXAudioRoute.TXAudioRouteEarpiece);
             tv_switch_audio.setText("切换扬声器");
+            img_switch_audio.setImageResource(R.mipmap.icon_yangsq);
         } else {
             mAudioRouteFlag = true;
             mTXDeviceManager.setAudioRoute(TXDeviceManager.TXAudioRoute.TXAudioRouteSpeakerphone);
             tv_switch_audio.setText("切换听筒");
+            img_switch_audio.setImageResource(R.mipmap.icon_tingtong);
         }
     }
 

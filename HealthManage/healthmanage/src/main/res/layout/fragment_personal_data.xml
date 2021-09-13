@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/icon_corner" />
+                    android:src="@drawable/default_head_img" />
 
                 <View
                     android:id="@+id/divider_head"

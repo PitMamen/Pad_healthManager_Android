@@ -125,7 +125,7 @@
 
                     android:layout_height="@dimen/qb_px_20"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_no_camera" />
+                    android:src="@mipmap/icon_switch_camera" />
 
                 <TextView
                     android:id="@+id/tv_switch_camera"
@@ -153,7 +153,7 @@
 
                     android:layout_height="@dimen/qb_px_20"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_no_camera" />
+                    android:src="@mipmap/icon_gbsxt" />
 
                 <TextView
                     android:id="@+id/tv_close_camera"
@@ -180,7 +180,7 @@
                     android:layout_width="@dimen/qb_px_20"
                     android:layout_height="@dimen/qb_px_20"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_no_voice" />
+                    android:src="@mipmap/icon_tingtong" />
 
                 <TextView
                     android:id="@+id/tv_switch_audio"
@@ -207,7 +207,7 @@
                     android:layout_width="@dimen/qb_px_20"
                     android:layout_height="@dimen/qb_px_20"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_no_voice" />
+                    android:src="@mipmap/icon_gbyy" />
 
                 <TextView
                     android:id="@+id/tv_close_audio"
@@ -234,7 +234,7 @@
                     android:layout_width="@dimen/qb_px_20"
                     android:layout_height="@dimen/qb_px_20"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_no_voice" />
+                    android:src="@mipmap/icon_guaduan" />
 
                 <TextView
                     android:id="@+id/tv_end"

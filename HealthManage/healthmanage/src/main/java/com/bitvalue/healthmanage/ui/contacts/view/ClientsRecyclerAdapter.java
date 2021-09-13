@@ -10,6 +10,8 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
@@ -124,6 +126,7 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
         private TextView name, tv_sex, tv_age, tv_date, tv_project_name;
         private ImageView img_head;
         private CheckBox cb_choose;
+        private ConstraintLayout layout_item;
 
         public ChildContentViewHolder(View itemView) {
             super(itemView);
@@ -134,6 +137,7 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
             tv_date = itemView.findViewById(R.id.tv_date);
             cb_choose = itemView.findViewById(R.id.cb_choose);
             tv_project_name = itemView.findViewById(R.id.tv_project_name);
+            layout_item = itemView.findViewById(R.id.layout_item);
         }
 
         public void onBind(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex) {
@@ -160,11 +164,22 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
                 }
             });
 
-            GlideApp.with(img_head)
-                    .load("http://img.duoziwang.com/2021/03/1623076080632524.jpg")
-                    .transform(new RoundedCorners((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                            20, AppApplication.instance().getResources().getDisplayMetrics())))
-                    .into(img_head);
+            if (child.isClicked) {
+                layout_item.setBackgroundColor(AppApplication.instance().getResources().getColor(R.color.divider));
+            } else {
+                layout_item.setBackgroundColor(AppApplication.instance().getResources().getColor(R.color.white));
+            }
+
+            if (null != child.headUrl && !child.headUrl.isEmpty()) {
+                GlideApp.with(img_head)
+//                        .load("http://img.duoziwang.com/2021/03/1623076080632524.jpg")
+                        .load(child.headUrl)
+                        .transform(new RoundedCorners((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                                20, AppApplication.instance().getResources().getDisplayMetrics())))
+                        .into(img_head);
+            } else {
+                img_head.setImageDrawable(AppApplication.instance().getResources().getDrawable(R.drawable.default_head_img));
+            }
 
 
 //            if (group.getTitle().equals("水果")) {
