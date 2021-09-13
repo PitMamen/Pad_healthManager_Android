@@ -15,10 +15,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.bitvalue.sdk.collab.R;
@@ -297,7 +295,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     @Override
     protected void endVideoConsult() {
         if (null != onCustomClickListener){
-            onCustomClickListener.oneEdVideoConsult();
+            onCustomClickListener.onEndVideoConsult();
         }
     }
 
@@ -511,7 +509,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
         void onWriteConsultConclusion();
 
-        void oneEdVideoConsult();
+        void onEndVideoConsult();
     }
 
     public void setOnCustomClickListener(InputLayout.OnCustomClickListener onCustomClickListener){

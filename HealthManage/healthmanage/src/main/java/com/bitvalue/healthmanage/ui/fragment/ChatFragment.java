@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
+import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.request.ReportStatusApi;
 import com.bitvalue.healthmanage.http.request.SaveCaseApi;
+import com.bitvalue.healthmanage.http.response.VideoClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.util.Constants;
@@ -39,6 +42,8 @@ import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.TUIKitConstants;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.gson.Gson;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.HttpCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 import com.tencent.imsdk.v2.V2TIMManager;
@@ -53,6 +58,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -283,6 +290,7 @@ public class ChatFragment extends AppFragment {
                 //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
                 message.setType("CustomVideoCallMessage");
                 message.setDescription("视频看诊");
+                message.id = planId + "";//这里id设置为视频看诊的预约id
                 MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
                 mChatLayout.sendMessage(info, false);
             }
@@ -296,12 +304,11 @@ public class ChatFragment extends AppFragment {
             }
 
             @Override
-            public void oneEdVideoConsult() {
+            public void onEndVideoConsult() {
                 DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定结束看诊吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                     @Override
                     public void onPositive() {
-                        ToastUtil.toastShortMessage("已结束看诊");
-                        backPress();
+                        reportStatus();//上报已完成
                     }
 
                     @Override
@@ -318,6 +325,36 @@ public class ChatFragment extends AppFragment {
         if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
             homeActivity.getSupportFragmentManager().popBackStack();
         }
+    }
+
+    private void reportStatus() {
+        ReportStatusApi reportStatusApi = new ReportStatusApi();
+        reportStatusApi.id = planId + "";
+        reportStatusApi.attendanceStatus = "3";
+        EasyHttp.post(AppApplication.instance().getHomeActivity()).api(reportStatusApi).request(new HttpCallback<HttpData<ArrayList<VideoClientsResultBean>>>(AppApplication.instance().getHomeActivity()) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<ArrayList<VideoClientsResultBean>> result) {
+                super.onSucceed(result);
+                if (result.getData() == null) {
+                    return;
+                }
+
+                if (result.getCode() == 0) {
+                    ToastUtil.toastShortMessage("已结束看诊");
+                    backPress();
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
     }
 
     /**

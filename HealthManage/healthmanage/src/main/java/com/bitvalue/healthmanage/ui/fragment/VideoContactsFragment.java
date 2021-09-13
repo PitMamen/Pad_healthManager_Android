@@ -88,7 +88,16 @@ public class VideoContactsFragment extends AppFragment {
                 userInfoDTO.userId = videoClientsResultBean.userInfo.userId;
                 userInfoDTO.userName = videoClientsResultBean.userInfo.userName;
                 userInfoDTO.chatType = InputLayoutUI.CHAT_TYPE_VIDEO;
+                userInfoDTO.planId = videoClientsResultBean.id;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, userInfoDTO);
+
+                for (int i = 0; i < videoClientsResultBeans.size(); i++) {
+                    videoClientsResultBeans.get(i).isClicked = false;
+                    if (videoClientsResultBeans.get(i).userInfo.userId == videoClientsResultBean.userInfo.userId){
+                        videoClientsResultBeans.get(i).isClicked = true;
+                    }
+                }
+                videoPatientQuickAdapter.setNewData(videoClientsResultBeans);
             }
         });
         contact_list.setAdapter(videoPatientQuickAdapter);
@@ -136,11 +145,11 @@ public class VideoContactsFragment extends AppFragment {
 
                 //TODO 做的入口数据调试
                 CustomPatientDataMessage customPatientDataMessage = new CustomPatientDataMessage();
-                if (videoClientsResultBeans.size()== 0){
+                if (videoClientsResultBeans.size() == 0) {
                     return;
                 }
                 customPatientDataMessage.userId = videoClientsResultBeans.get(0).userInfo.userId + "";
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_VIDEO_PATIENT_DATA,customPatientDataMessage);
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_VIDEO_PATIENT_DATA, customPatientDataMessage);
                 break;
 
             case R.id.tv_end:

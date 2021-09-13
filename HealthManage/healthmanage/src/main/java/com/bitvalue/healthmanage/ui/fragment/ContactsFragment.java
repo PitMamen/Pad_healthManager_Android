@@ -108,6 +108,16 @@ public class ContactsFragment extends AppFragment {
             public void onChildItemClick(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex, int flatPosition) {
                 child.chatType = InputLayoutUI.CHAT_TYPE_HEALTH;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
+
+                for (int i = 0; i < clientsProcessBeans.size(); i++) {
+                    for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
+                        clientsProcessBeans.get(i).userInfo.get(j).isClicked = false;
+                        if (clientsProcessBeans.get(i).group.equals(child.goodsName) && clientsProcessBeans.get(i).userInfo.get(j).userId == child.userId) {
+                            clientsProcessBeans.get(i).userInfo.get(j).isClicked = true;
+                        }
+                    }
+                }
+                adapter.notifyDataSetChanged();
             }
         });
 
