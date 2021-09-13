@@ -143,12 +143,12 @@ public class PersonalDataFragment extends AppFragment {
                         tv_level.setText(personalDataResult.professionalTitle);
                     }
 
-                    if (null != personalDataResult.userName) {
-                        tv_good.setText(personalDataResult.expertInDisease);
+                    if (null != personalDataResult.expertInDiseaseWord) {
+                        tv_good.setText(personalDataResult.expertInDiseaseWord);
                     }
 
-                    if (null != personalDataResult.userName) {
-                        tv_good_detail.setText(personalDataResult.expertInDiseaseWord);
+                    if (null != personalDataResult.expertInDisease) {
+                        tv_good_detail.setText(personalDataResult.expertInDisease);
                     }
 
                     if (null != personalDataResult.doctorBrief) {

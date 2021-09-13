@@ -173,6 +173,7 @@
                     android:paddingVertical="@dimen/qb_px_9"
                     android:text="登录"
                     android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_14"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layout_remember" />
 

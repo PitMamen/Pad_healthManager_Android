@@ -18,6 +18,7 @@ import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.VideoPatientQuickAdapter;
 import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
 import com.bitvalue.healthmanage.ui.contacts.bean.MainRefreshObj;
+import com.bitvalue.healthmanage.ui.contacts.bean.VideoRefreshObj;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
 import com.bitvalue.sdk.collab.helper.CustomPatientDataMessage;
@@ -93,7 +94,7 @@ public class VideoContactsFragment extends AppFragment {
 
                 for (int i = 0; i < videoClientsResultBeans.size(); i++) {
                     videoClientsResultBeans.get(i).isClicked = false;
-                    if (videoClientsResultBeans.get(i).userInfo.userId == videoClientsResultBean.userInfo.userId){
+                    if (videoClientsResultBeans.get(i).userInfo.userId == videoClientsResultBean.userInfo.userId) {
                         videoClientsResultBeans.get(i).isClicked = true;
                     }
                 }
@@ -114,7 +115,7 @@ public class VideoContactsFragment extends AppFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MainRefreshObj mainRefreshObj) {
+    public void onEvent(VideoRefreshObj mainRefreshObj) {
         videoClientsResultBeans.clear();
         getMyClients();
     }
@@ -182,7 +183,7 @@ public class VideoContactsFragment extends AppFragment {
                 }
                 videoClientsResultBeans = result.getData();
                 if (null == videoClientsResultBeans || videoClientsResultBeans.size() == 0) {
-                    ToastUtil.toastShortMessage("暂无客户数据");
+//                    ToastUtil.toastShortMessage("暂无客户数据");
                     contact_list.setVisibility(View.GONE);
                     tv_no_data.setVisibility(View.VISIBLE);
                     return;

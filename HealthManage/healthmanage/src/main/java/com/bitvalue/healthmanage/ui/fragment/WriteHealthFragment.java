@@ -28,6 +28,7 @@ import com.bitvalue.healthmanage.base.BaseAdapter;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.bitvalue.healthmanage.widget.layout.WrapRecyclerView;
+import com.tencent.trtc.util.DataUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -82,8 +83,10 @@ public class WriteHealthFragment extends AppFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_back:
+                backPress("确定退出吗？");
+                break;
             case R.id.tv_cancel:
-                backPress();
+                backPress("确定取消并退出吗？");
                 break;
             case R.id.tv_preview:
                 if (ifReady()) {
@@ -100,10 +103,22 @@ public class WriteHealthFragment extends AppFragment {
         }
     }
 
-    private void backPress() {
-        if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            homeActivity.getSupportFragmentManager().popBackStack();
-        }
+    private void backPress(String title) {
+        DataUtil.showNormalDialog(homeActivity, "温馨提示", title, "确定", "取消", new DataUtil.OnNormalDialogClicker() {
+            @Override
+            public void onPositive() {
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
+            }
+
+            @Override
+            public void onNegative() {
+
+            }
+        });
+
+
     }
 
     @Override
@@ -169,7 +184,9 @@ public class WriteHealthFragment extends AppFragment {
                     message.setType("CustomCaseHistoryMessage");
                     message.setDescription("病历记录消息");
                     EventBus.getDefault().post(message);
-                    backPress();
+                    if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                        homeActivity.getSupportFragmentManager().popBackStack();
+                    }
                 }
             }
 

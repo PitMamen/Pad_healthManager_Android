@@ -294,7 +294,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:text="心脏病"
+                    android:text=""
                     android:background="@drawable/shape_bg_gray"
                     android:minHeight="@dimen/qb_px_40"
                     android:textColor="@color/text_desc_dark"

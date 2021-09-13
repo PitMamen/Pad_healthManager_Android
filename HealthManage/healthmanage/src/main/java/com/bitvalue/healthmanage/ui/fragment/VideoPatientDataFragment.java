@@ -88,10 +88,13 @@ public class VideoPatientDataFragment extends AppFragment implements BGANinePhot
             public void onSucceed(HttpData<List<PatientDataResult>> result) {
                 super.onSucceed(result);
                 //增加判空
-                if (result == null || result.getData() ==null){
+                if (result == null || result.getData() == null) {
                     return;
                 }
                 if (result.getCode() == 0) {
+                    if (result.getData().size() == 0) {
+                        return;
+                    }
                     patientDataResult = result.getData().get(0);
                     if (null == patientDataResult) {
                         return;
@@ -127,7 +130,7 @@ public class VideoPatientDataFragment extends AppFragment implements BGANinePhot
         }
     }
 
-    @OnClick({ R.id.layout_back})
+    @OnClick({R.id.layout_back})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_back:

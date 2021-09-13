@@ -500,7 +500,8 @@ public class TaskView extends LinearLayout {
         templateTaskDTO.execTime = mDayCount + "";
 
         List<SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO> missionData = getMissionData();
-        if (null == missionData) {
+        if (null == missionData || missionData.size() == 0) {
+            ToastUtil.toastShortMessage("请至少添加一个任务项目");
             return null;
         } else {
             templateTaskDTO.templateTaskContent = missionData;

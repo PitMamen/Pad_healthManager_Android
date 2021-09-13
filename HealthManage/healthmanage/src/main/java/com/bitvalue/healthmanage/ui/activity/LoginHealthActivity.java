@@ -101,7 +101,7 @@ public class LoginHealthActivity extends AppActivity {
 
                     @Override
                     public void onEnd(Call call) {
-//                        super.onEnd(call);
+                        super.onEnd(call);
                     }
 
                     @Override
@@ -113,6 +113,7 @@ public class LoginHealthActivity extends AppActivity {
                         //10004 密码错误
                         if (data.getCode() == 10004) {
                             ToastUtil.toastShortMessage("密码错误");
+                            hideDialog();
                             return;
                         }
                         if (data.getCode() == 0) {
@@ -149,6 +150,9 @@ public class LoginHealthActivity extends AppActivity {
                                 ToastUtil.toastShortMessage("工号或密码错误");
                                 hideDialog();
                             }
+                        } else {
+                            ToastUtil.toastShortMessage("工号或密码错误");
+                            hideDialog();
                         }
                     }
 

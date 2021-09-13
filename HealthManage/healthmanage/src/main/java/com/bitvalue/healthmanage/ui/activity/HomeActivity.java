@@ -28,6 +28,7 @@ import com.bitvalue.healthmanage.http.response.msg.AddVideoObject;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
 import com.bitvalue.healthmanage.ui.contacts.bean.MainRefreshObj;
+import com.bitvalue.healthmanage.ui.contacts.bean.VideoRefreshObj;
 import com.bitvalue.healthmanage.ui.fragment.AddArticleFragment;
 import com.bitvalue.healthmanage.ui.fragment.AddQuestionFragment;
 import com.bitvalue.healthmanage.ui.fragment.AddVideoFragment;
@@ -274,7 +275,7 @@ public class HomeActivity extends AppActivity {
                 break;
 
             case R.id.layout_group:
-                EventBus.getDefault().post(new MainRefreshObj());
+                EventBus.getDefault().post(new VideoRefreshObj());
 //                backAll();
                 afterTabSelect(2);
                 break;
