@@ -60,7 +60,7 @@
 
         </FrameLayout>
 
-        <com.hjq.widget.view.CountdownView
+        <com.bitvalue.healthmanage.widget.view.CountdownView
             android:id="@+id/cv_safe_countdown"
             style="@style/CountdownViewStyle" />
 

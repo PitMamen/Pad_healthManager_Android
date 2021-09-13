@@ -10,7 +10,7 @@
     android:paddingBottom="15dp"
     tools:context=".ui.dialog.ShareDialog">
 
-    <com.hjq.widget.view.ScaleImageView
+    <com.bitvalue.healthmanage.widget.view.ScaleImageView
         android:id="@+id/iv_share_image"
         android:layout_width="50dp"
         android:layout_height="50dp"

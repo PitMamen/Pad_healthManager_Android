@@ -53,6 +53,10 @@ public class LoginHealthActivity extends AppActivity {
     @Override
     protected void initData() {
         isRememberPwd = SharedPreManager.getBoolean(Constants.KEY_REMEMBER_PSD, false, this);
+        String psd = SharedPreManager.getString(Constants.KEY_PSD);
+        if (null != psd && isRememberPwd) {
+            et_psd.setText(psd);
+        }
         updateIsRememberPwdImage();
     }
 
@@ -60,7 +64,7 @@ public class LoginHealthActivity extends AppActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_remember:
-                isRememberPwd = isRememberPwd ? false : true;
+                isRememberPwd = !isRememberPwd;
                 SharedPreManager.putBoolean(Constants.KEY_REMEMBER_PSD, isRememberPwd, this);
                 updateIsRememberPwdImage();
                 break;
@@ -103,7 +107,7 @@ public class LoginHealthActivity extends AppActivity {
                     @Override
                     public void onSucceed(HttpData<LoginBean> data) {
                         super.onSucceed(data);
-                        if (data == null){
+                        if (data == null) {
                             return;
                         }
                         //10004 密码错误
@@ -116,6 +120,9 @@ public class LoginHealthActivity extends AppActivity {
                             if (loginBean != null) {
                                 EasyConfig.getInstance().addHeader("Authorization", loginBean.getToken());
                                 SharedPreManager.putString(Constants.KEY_TOKEN, loginBean.getToken());
+                                if (isRememberPwd) {
+                                    SharedPreManager.putString(Constants.KEY_PSD, et_psd.getText().toString());
+                                }
                                 SharedPreManager.putObject(Constants.KYE_USER_BEAN, loginBean);
                                 TUIKit.login(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig, new IUIKitCallBack() {
                                     @Override
