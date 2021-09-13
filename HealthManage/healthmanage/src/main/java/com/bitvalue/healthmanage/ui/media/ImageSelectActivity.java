@@ -32,8 +32,8 @@ import com.bitvalue.healthmanage.widget.StatusLayout;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.hjq.base.BaseActivity;
-import com.hjq.base.BaseAdapter;
+import com.bitvalue.healthmanage.base.BaseActivity;
+import com.bitvalue.healthmanage.base.BaseAdapter;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -220,7 +220,8 @@ public final class ImageSelectActivity extends AppActivity
                             mAdapter.setData(mAllAlbum.get(bean.getName()));
                         }
                         // 执行列表动画
-                        mRecyclerView.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.from_right_layout));
+                        mRecyclerView.setLayoutAnimation(AnimationUtils.
+                                loadLayoutAnimation(getActivity(), R.anim.from_right_layout));
                         mRecyclerView.scheduleLayoutAnimation();
                     });
         }

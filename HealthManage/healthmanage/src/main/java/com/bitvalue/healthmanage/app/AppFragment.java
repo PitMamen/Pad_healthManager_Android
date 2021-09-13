@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bitvalue.healthmanage.action.ToastAction;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.hjq.base.BaseFragment;
+import com.bitvalue.healthmanage.base.BaseFragment;
 import com.hjq.http.listener.OnHttpListener;
 
 import okhttp3.Call;

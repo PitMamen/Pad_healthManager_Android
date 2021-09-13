@@ -17,7 +17,7 @@ import com.bitvalue.healthmanage.app.AppActivity;
 import com.bitvalue.healthmanage.other.AppConfig;
 import com.bitvalue.healthmanage.other.IntentKey;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
-import com.hjq.base.BaseActivity;
+import com.bitvalue.healthmanage.base.BaseActivity;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
 import com.tbruyelle.rxpermissions.RxPermissions;

@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppAdapter;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
-import com.hjq.base.BaseAdapter;
-import com.hjq.base.BaseDialog;
-import com.hjq.base.BottomSheetDialog;
+import com.bitvalue.healthmanage.base.BaseAdapter;
+import com.bitvalue.healthmanage.base.BaseDialog;
+import com.bitvalue.healthmanage.base.BottomSheetDialog;
 
 import java.util.List;
 

@@ -47,7 +47,7 @@ import com.hjq.http.model.HttpParams;
 import com.hjq.permissions.XXPermissions;
 import com.hjq.toast.ToastUtils;
 import com.hjq.toast.style.ToastBlackStyle;
-import com.hjq.umeng.UmengClient;
+//import com.hjq.umeng.UmengClient;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -156,7 +156,7 @@ public final class AppApplication extends Application {
         CrashHandler.register(application);
 
         // 友盟统计、登录、分享 SDK
-        UmengClient.init(application);
+        //UmengClient.init(application);
 
         // Bugly 异常捕捉
         CrashReport.initCrashReport(application, AppConfig.getBuglyId(), AppConfig.isDebug());

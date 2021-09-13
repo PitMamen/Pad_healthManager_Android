@@ -19,8 +19,8 @@ import com.bitvalue.healthmanage.other.IntentKey;
 import com.bitvalue.healthmanage.ui.adapter.ImagePreviewAdapter;
 import com.gyf.immersionbar.BarHide;
 import com.gyf.immersionbar.ImmersionBar;
-import com.hjq.base.BaseAdapter;
-import com.hjq.base.RecyclerPagerAdapter;
+import com.bitvalue.healthmanage.base.BaseAdapter;
+import com.bitvalue.healthmanage.base.RecyclerPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -3,7 +3,7 @@ package com.bitvalue.healthmanage.ui.popup;
 import android.content.Context;
 
 import com.bitvalue.healthmanage.R;
-import com.hjq.base.BasePopupWindow;
+import com.bitvalue.healthmanage.base.BasePopupWindow;
 
 /**
  *    author : Android 轮子哥

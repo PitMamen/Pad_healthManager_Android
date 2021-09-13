@@ -16,7 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 
 import com.tencent.trtc.util.DataUtil;
-import com.example.basic.TRTCBaseActivity;
+import com.tencent.trtc.basic.TRTCBaseActivity;
 import com.tencent.liteav.TXLiteAVCode;
 import com.tencent.liteav.device.TXDeviceManager;
 import com.tencent.rtmp.ui.TXCloudVideoView;

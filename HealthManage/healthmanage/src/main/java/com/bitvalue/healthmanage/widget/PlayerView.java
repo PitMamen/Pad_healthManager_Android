@@ -33,8 +33,8 @@ import androidx.lifecycle.LifecycleOwner;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bitvalue.healthmanage.R;
-import com.hjq.base.action.ActivityAction;
-import com.hjq.widget.layout.SimpleLayout;
+import com.bitvalue.healthmanage.base.action.ActivityAction;
+import com.bitvalue.healthmanage.widget.layout.SimpleLayout;
 
 import java.io.File;
 import java.util.Formatter;

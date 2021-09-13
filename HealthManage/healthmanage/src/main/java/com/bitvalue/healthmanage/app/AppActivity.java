@@ -24,8 +24,8 @@ import com.bitvalue.sdk.collab.base.IMEventListener;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hjq.bar.TitleBar;
-import com.hjq.base.BaseActivity;
-import com.hjq.base.BaseDialog;
+import com.bitvalue.healthmanage.base.BaseActivity;
+import com.bitvalue.healthmanage.base.BaseDialog;
 import com.hjq.http.listener.OnHttpListener;
 
 import okhttp3.Call;

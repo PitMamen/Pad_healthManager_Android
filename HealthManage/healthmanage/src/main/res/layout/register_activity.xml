@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
 
-                <com.hjq.widget.view.RegexEditText
+                <com.bitvalue.healthmanage.widget.view.RegexEditText
                     android:id="@+id/et_register_phone"
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
@@ -61,7 +61,7 @@
                     android:layout_gravity="bottom" />
             </FrameLayout>
 
-            <com.hjq.widget.view.CountdownView
+            <com.bitvalue.healthmanage.widget.view.CountdownView
                 android:id="@+id/cv_register_countdown"
                 style="@style/CountdownViewStyle" />
         </LinearLayout>
@@ -79,7 +79,7 @@
 
         <View style="@style/HorizontalLineStyle" />
 
-        <com.hjq.widget.view.PasswordEditText
+        <com.bitvalue.healthmanage.widget.view.PasswordEditText
             android:id="@+id/et_register_password1"
             style="@style/EditTextStyle"
             android:layout_width="match_parent"
@@ -91,7 +91,7 @@
 
         <View style="@style/HorizontalLineStyle" />
 
-        <com.hjq.widget.view.PasswordEditText
+        <com.bitvalue.healthmanage.widget.view.PasswordEditText
             android:id="@+id/et_register_password2"
             style="@style/EditTextStyle"
             android:layout_width="match_parent"
@@ -104,7 +104,7 @@
 
         <View style="@style/HorizontalLineStyle" />
 
-        <com.hjq.widget.view.SubmitButton
+        <com.bitvalue.healthmanage.widget.view.SubmitButton
             android:id="@+id/btn_register_commit"
             style="@style/ButtonStyle"
             android:layout_width="match_parent"

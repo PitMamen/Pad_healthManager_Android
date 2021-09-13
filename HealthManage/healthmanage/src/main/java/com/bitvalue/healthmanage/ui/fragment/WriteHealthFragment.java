@@ -24,10 +24,10 @@ import com.bitvalue.sdk.collab.helper.CustomCaseHistoryMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
-import com.hjq.base.BaseAdapter;
+import com.bitvalue.healthmanage.base.BaseAdapter;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
-import com.hjq.widget.layout.WrapRecyclerView;
+import com.bitvalue.healthmanage.widget.layout.WrapRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 

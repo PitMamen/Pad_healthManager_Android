@@ -8,7 +8,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.hjq.base.BaseAdapter;
+import com.bitvalue.healthmanage.base.BaseAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -11,7 +11,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.StringRes;
 
 import com.bitvalue.healthmanage.R;
-import com.hjq.base.BaseDialog;
+import com.bitvalue.healthmanage.base.BaseDialog;
 
 /**
  *    author : Android 轮子哥

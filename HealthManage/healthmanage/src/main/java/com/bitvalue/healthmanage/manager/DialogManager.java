@@ -5,7 +5,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 
-import com.hjq.base.BaseDialog;
+import com.bitvalue.healthmanage.base.BaseDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;

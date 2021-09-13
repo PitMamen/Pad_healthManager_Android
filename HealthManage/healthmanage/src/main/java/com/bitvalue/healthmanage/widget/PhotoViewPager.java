@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.hjq.widget.layout.NestedViewPager;
+import com.bitvalue.healthmanage.widget.layout.NestedViewPager;
 
 /**
  *    author : Android 轮子哥

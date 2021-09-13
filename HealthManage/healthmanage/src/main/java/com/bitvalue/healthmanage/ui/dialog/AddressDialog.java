@@ -18,7 +18,7 @@ import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.aop.SingleClick;
 import com.bitvalue.healthmanage.app.AppAdapter;
 import com.google.android.material.tabs.TabLayout;
-import com.hjq.base.BaseDialog;
+import com.bitvalue.healthmanage.base.BaseDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;

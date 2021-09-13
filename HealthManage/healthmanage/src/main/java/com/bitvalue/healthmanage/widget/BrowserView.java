@@ -34,12 +34,13 @@ import com.bitvalue.healthmanage.other.PermissionCallback;
 import com.bitvalue.healthmanage.ui.dialog.HintDialog;
 import com.bitvalue.healthmanage.ui.dialog.InputDialog;
 import com.bitvalue.healthmanage.ui.dialog.MessageDialog;
-import com.hjq.base.BaseActivity;
-import com.hjq.base.BaseDialog;
-import com.hjq.base.action.ActivityAction;
+import com.bitvalue.healthmanage.widget.layout.NestedScrollWebView;
+import com.bitvalue.healthmanage.base.BaseActivity;
+import com.bitvalue.healthmanage.base.BaseDialog;
+import com.bitvalue.healthmanage.base.action.ActivityAction;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
-import com.hjq.widget.layout.NestedScrollWebView;
+
 
 import java.util.List;
 

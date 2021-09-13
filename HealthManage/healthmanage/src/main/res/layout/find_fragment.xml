@@ -44,7 +44,7 @@
                     app:srcCompat="@drawable/example_bg"
                     tools:scaleType="centerCrop" />
 
-                <com.hjq.widget.view.ScaleImageView
+                <com.bitvalue.healthmanage.widget.view.ScaleImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginStart="20dp"
@@ -56,7 +56,7 @@
 
             </LinearLayout>
 
-            <com.hjq.widget.layout.SettingBar
+            <com.bitvalue.healthmanage.widget.layout.SettingBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
@@ -162,20 +162,20 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.hjq.widget.view.SwitchButton
+                <com.bitvalue.healthmanage.widget.view.SwitchButton
                     android:id="@+id/sb_find_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:checked="true" />
 
-                <com.hjq.widget.view.SwitchButton
+                <com.bitvalue.healthmanage.widget.view.SwitchButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:checked="false" />
 
-                <com.hjq.widget.view.SwitchButton
+                <com.bitvalue.healthmanage.widget.view.SwitchButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -191,17 +191,17 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.hjq.widget.view.CountdownView
+                <com.bitvalue.healthmanage.widget.view.CountdownView
                     android:id="@+id/cv_find_countdown"
                     style="@style/CountdownViewStyle" />
 
-                <com.hjq.widget.view.CountdownView
+                <com.bitvalue.healthmanage.widget.view.CountdownView
                     style="@style/CountdownViewStyle"
                     android:enabled="false" />
 
             </LinearLayout>
 
-            <com.hjq.widget.view.ClearEditText
+            <com.bitvalue.healthmanage.widget.view.ClearEditText
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -209,7 +209,7 @@
                 android:layout_marginTop="20dp"
                 android:text="这是一个带清除的按钮的EditText" />
 
-            <com.hjq.widget.view.PasswordEditText
+            <com.bitvalue.healthmanage.widget.view.PasswordEditText
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -219,7 +219,7 @@
                 android:singleLine="true"
                 android:text="78797078" />
 
-            <com.hjq.widget.view.RegexEditText
+            <com.bitvalue.healthmanage.widget.view.RegexEditText
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -228,7 +228,7 @@
                 android:hint="这里只能输入手机号（只能以 1 开头）"
                 app:regexType="mobile" />
 
-            <com.hjq.widget.view.RegexEditText
+            <com.bitvalue.healthmanage.widget.view.RegexEditText
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -236,7 +236,7 @@
                 android:hint="这里只能输入中文（普通的中文字符）"
                 app:regexType="chinese" />
 
-            <com.hjq.widget.view.RegexEditText
+            <com.bitvalue.healthmanage.widget.view.RegexEditText
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -244,7 +244,7 @@
                 android:hint="这里只能输入英文（大写和小写的英文）"
                 app:regexType="english" />
 
-            <com.hjq.widget.view.RegexEditText
+            <com.bitvalue.healthmanage.widget.view.RegexEditText
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -252,7 +252,7 @@
                 android:hint="这里只能输入数量（非 0 开头的数字）"
                 app:regexType="count" />
 
-            <com.hjq.widget.view.RegexEditText
+            <com.bitvalue.healthmanage.widget.view.RegexEditText
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -260,7 +260,7 @@
                 android:hint="这里只能输入用户名（中文、英文、数字）"
                 app:regexType="name" />
 
-            <com.hjq.widget.view.RegexEditText
+            <com.bitvalue.healthmanage.widget.view.RegexEditText
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -279,7 +279,7 @@
 
             <View style="@style/HorizontalLineStyle" />
 
-            <com.hjq.widget.layout.RatioFrameLayout
+            <com.bitvalue.healthmanage.widget.layout.RatioFrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/common_accent_color"
@@ -292,7 +292,7 @@
                     android:text="这是一个宽高比 2:1 的FrameLayout"
                     android:textColor="@color/white" />
 
-            </com.hjq.widget.layout.RatioFrameLayout>
+            </com.bitvalue.healthmanage.widget.layout.RatioFrameLayout>
 
         </LinearLayout>
 

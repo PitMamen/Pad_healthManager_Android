@@ -18,7 +18,7 @@ import com.bitvalue.healthmanage.http.response.PatientResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.SearchPatientAdapter;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
-import com.hjq.base.BaseAdapter;
+import com.bitvalue.healthmanage.base.BaseAdapter;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 

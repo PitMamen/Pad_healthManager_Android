@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppAdapter;
 import com.bitvalue.healthmanage.other.ArrowDrawable;
-import com.hjq.base.BaseAdapter;
-import com.hjq.base.BasePopupWindow;
-import com.hjq.base.action.AnimAction;
+import com.bitvalue.healthmanage.base.BaseAdapter;
+import com.bitvalue.healthmanage.base.BasePopupWindow;
+import com.bitvalue.healthmanage.base.action.AnimAction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
