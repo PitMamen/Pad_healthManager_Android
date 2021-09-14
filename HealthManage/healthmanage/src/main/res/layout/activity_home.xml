@@ -6,16 +6,15 @@
 
     <LinearLayout
         android:id="@+id/layout_tabs"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/qb_px_45"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:background="@color/home_blue"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2"
+            android:layout_height="@dimen/qb_px_50"
+            android:background="#182152"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -50,8 +49,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/layout_house"
@@ -81,12 +80,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/layout_cy"
@@ -117,8 +116,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="@dimen/qb_px_33"
+            android:layout_marginTop="@dimen/qb_px_32"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -142,9 +141,9 @@
 
                 <ImageView
                     android:id="@+id/img_person"
-                    android:layout_width="@dimen/qb_px_11"
-                    android:layout_height="@dimen/qb_px_11"
-                    android:scaleType="fitCenter"
+                    android:layout_width="@dimen/qb_px_15"
+                    android:layout_height="@dimen/qb_px_15"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/tab_icon_ct" />
             </LinearLayout>
 
@@ -152,11 +151,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="@dimen/qb_px_33"
+            android:layout_marginTop="@dimen/qb_px_10"
             android:gravity="center"
-            android:visibility="visible"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <LinearLayout
                 android:id="@+id/layout_group"
@@ -177,9 +176,9 @@
 
                 <ImageView
                     android:id="@+id/img_group"
-                    android:layout_width="@dimen/qb_px_11"
-                    android:layout_height="@dimen/qb_px_11"
-                    android:scaleType="fitCenter"
+                    android:layout_width="@dimen/qb_px_15"
+                    android:layout_height="@dimen/qb_px_15"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/tab_icon_gr" />
             </LinearLayout>
 
@@ -189,9 +188,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:visibility="gone"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/layout_send"
@@ -225,8 +224,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/layout_of"
@@ -259,9 +258,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:visibility="gone"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="invisible">
 
             <LinearLayout
                 android:id="@+id/layout_chat"
@@ -292,8 +291,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="@dimen/qb_px_33"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -316,6 +314,37 @@
 
                 <ImageView
                     android:id="@+id/img_settings"
+                    android:layout_width="@dimen/qb_px_15"
+                    android:layout_height="@dimen/qb_px_15"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/tab_icon_set" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/qb_px_33"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="消息"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <ImageView
                     android:layout_width="@dimen/qb_px_2"
                     android:layout_height="wrap_content"
                     android:scaleType="fitCenter"
@@ -339,13 +368,13 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <View
             android:layout_width="@dimen/qb_px_1"
-            android:background="@color/transparent"
-            android:layout_height="@dimen/qb_px_50"/>
+            android:layout_height="@dimen/qb_px_50"
+            android:background="@color/transparent" />
 
         <View
             android:layout_width="@dimen/qb_px_1"

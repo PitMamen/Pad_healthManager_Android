@@ -7,6 +7,7 @@ public class Constants {
     public static final String IM_PRIVATE_KEY ="ecaa6c9a3ffa3c93837f0fedf36ff93af28631a82c921027d1323ccf6f1e3616";
     public static final String ROOM_ID = "room_id";
     public static final String USER_ID = "user_id";
+    public static final String NEED_TOAST = "need_toast";
 
     public static int screenWidth, screenHeight;
     public static final String KEY_REMEMBER_PSD = "key_remember_psd";

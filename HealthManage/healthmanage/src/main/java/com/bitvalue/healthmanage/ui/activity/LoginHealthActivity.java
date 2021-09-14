@@ -1,6 +1,7 @@
 package com.bitvalue.healthmanage.ui.activity;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyConfig;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
+import com.hjq.toast.ToastUtils;
 
 //import butterknife.OnClick;
 import butterknife.OnClick;
@@ -37,6 +39,7 @@ public class LoginHealthActivity extends AppActivity {
     private EditText et_work_no;
     private EditText et_psd;
     private boolean isRememberPwd;
+    private boolean needToast;
 
     @Override
     protected int getLayoutId() {
@@ -52,12 +55,21 @@ public class LoginHealthActivity extends AppActivity {
 
     @Override
     protected void initData() {
+        needToast = getIntent().getBooleanExtra(Constants.NEED_TOAST, false);
         isRememberPwd = SharedPreManager.getBoolean(Constants.KEY_REMEMBER_PSD, false, this);
         String psd = SharedPreManager.getString(Constants.KEY_PSD);
         if (null != psd && isRememberPwd) {
             et_psd.setText(psd);
         }
         updateIsRememberPwdImage();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (needToast) {
+            ToastUtils.show("账号已过期，请重新登录");
+        }
     }
 
     @OnClick({R.id.layout_remember, R.id.btn_login})

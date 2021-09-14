@@ -335,6 +335,7 @@ public class HomeActivity extends AppActivity {
                 Bundle bundle = new Bundle();
                 ChatInfo chatInfo = new ChatInfo();
                 chatInfo.chatType = child.chatType;
+                chatInfo.noInput = child.noInput;
                 chatInfo.setType(V2TIMConversation.V2TIM_C2C);
                 chatInfo.setId(child.userId + "");
 //                chatInfo.setId("3");
@@ -561,6 +562,7 @@ public class HomeActivity extends AppActivity {
                 writeHealthFragment = new WriteHealthFragment();
                 Bundle bundleWrite = new Bundle();
                 bundleWrite.putStringArrayList(Constants.MSG_IDS, msgDataWrite.userIds);
+                bundleWrite.putString(Constants.PLAN_ID,msgDataWrite.id);
                 writeHealthFragment.setArguments(bundleWrite);
                 mapFragments.put(Constants.FRAGMENT_WRITE_HEALTH, writeHealthFragment);
                 break;

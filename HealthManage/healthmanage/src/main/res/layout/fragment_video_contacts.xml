@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:gravity="center"
         android:layout_centerHorizontal="true"
-        android:layout_height="@dimen/qb_px_60">
+        android:layout_height="@dimen/qb_px_50">
 
         <LinearLayout
             android:id="@+id/layout_tabs"
@@ -61,8 +61,7 @@
         android:id="@+id/contact_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/view_line"
-        android:layout_marginTop="@dimen/qb_px_5" />
+        android:layout_below="@id/view_line" />
 
     <TextView
         android:id="@+id/tv_no_data"

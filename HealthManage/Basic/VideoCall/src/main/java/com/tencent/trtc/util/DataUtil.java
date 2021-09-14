@@ -106,7 +106,7 @@ public class DataUtil {
      * 弹出基本的对话框
      * 对MessageDialog再封装一层
      */
-    public static void showNormalDialog(Activity context, String title, String message, String positive, String nagative, final OnNormalDialogClicker onNormalDialogClicker) {
+    public static void showNormalDialog(Context context, String title, String message, String positive, String nagative, final OnNormalDialogClicker onNormalDialogClicker) {
         final MessageDialog messageDialog = new MessageDialog(context);
         messageDialog.setOnExecuteClickListener(new MessageDialog.OnExecuteClickListener() {
             @Override

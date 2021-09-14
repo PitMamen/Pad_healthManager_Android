@@ -91,9 +91,9 @@ public class ExceptionInterceptor implements Interceptor {
                     int result = responseEntity.getCode();
                     // result为10001时，接口需要登录
                     if (result == 10001) {
-                        ToastUtil.toastShortMessage("账号已过期，请重新登录");
                         Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra(Constants.NEED_TOAST,true);
                         AppApplication.instance().startActivity(intent);
                         SharedPreManager.putString(Constants.KEY_TOKEN, "");
                         // 进行内存优化，销毁除登录页之外的所有界面

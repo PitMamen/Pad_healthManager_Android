@@ -153,7 +153,7 @@ public class ContactsFragment extends AppFragment {
         });
         contact_list.setAdapter(adapter);
 
-        getMyClients();
+        getMyClients(false);
 
         cb_choose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -189,7 +189,7 @@ public class ContactsFragment extends AppFragment {
     public void onEvent(MainRefreshObj mainRefreshObj) {
         clientsResultBeans.clear();
         clientsProcessBeans.clear();
-        getMyClients();
+        getMyClients(false);
     }
 
     @Override
@@ -206,7 +206,7 @@ public class ContactsFragment extends AppFragment {
                 break;
 
             case R.id.tv_no_data:
-                getMyClients();
+                getMyClients(true);
                 break;
 
             case R.id.tv_send_msg:
@@ -313,7 +313,7 @@ public class ContactsFragment extends AppFragment {
         }
     };
 
-    private void getMyClients() {
+    private void getMyClients(boolean needToast) {
         EasyHttp.post(this).api(new ClientsApi()).request(new HttpCallback<HttpData<ArrayList<ClientsResultBean>>>(this) {
             @Override
             public void onStart(Call call) {
@@ -325,7 +325,9 @@ public class ContactsFragment extends AppFragment {
                 super.onSucceed(result);
                 clientsResultBeans = result.getData();
                 if (null == clientsResultBeans || clientsResultBeans.size() == 0) {
-                    ToastUtil.toastShortMessage("暂无客户数据");
+                    if (needToast) {
+                        ToastUtil.toastShortMessage("暂无客户数据");
+                    }
                     contact_list.setVisibility(View.GONE);
                     tv_no_data.setVisibility(View.VISIBLE);
                     return;
@@ -361,9 +363,8 @@ public class ContactsFragment extends AppFragment {
             clientsProcessBeans.add(newOne);
         }
 
-        //检测数据，无数据提高刷新按钮
+        //检测数据，无数据显示刷新按钮
         if (clientsProcessBeans.size() == 0) {
-            ToastUtil.toastShortMessage("暂无客户数据");
             contact_list.setVisibility(View.GONE);
             tv_no_data.setVisibility(View.VISIBLE);
         } else {

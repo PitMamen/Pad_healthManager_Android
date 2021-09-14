@@ -104,7 +104,7 @@ public class DataUtil {
      * 弹出基本的对话框
      * 对MessageDialog再封装一层
      */
-    public static void showNormalDialog(Activity context, String title, String message, String positive, String nagative, OnNormalDialogClicker onNormalDialogClicker) {
+    public static void showNormalDialog(Context context, String title, String message, String positive, String nagative, OnNormalDialogClicker onNormalDialogClicker) {
         MessageDialog messageDialog = new MessageDialog(context);
         messageDialog.setOnExecuteClickListener(new MessageDialog.OnExecuteClickListener() {
             @Override
@@ -201,6 +201,45 @@ public class DataUtil {
         messageDialog.setMessage(message);
         messageDialog.setNegativeTxt(nagative);
         messageDialog.setPositiveTxt(positive);
+        if (isForce) {
+            messageDialog.setCancelable(false);
+            messageDialog.setCanceledOnTouchOutside(false);
+            messageDialog.getTxt_negative().setVisibility(View.GONE);
+        }
+
+        if (messageDialog != null && !messageDialog.isShowing()) {
+            messageDialog.show();
+        }
+    }
+
+    /**
+     * 弹出基本的对话框
+     * 对MessageDialog再封装一层
+     */
+    public static void showNormalDialog(Activity context, String title, String message, String positive, String nagative, OnNormalDialogClicker onNormalDialogClicker, boolean isForce,boolean isSingle) {
+        MessageDialog messageDialog = new MessageDialog(context);
+        messageDialog.setOnExecuteClickListener(new MessageDialog.OnExecuteClickListener() {
+            @Override
+            public void onNegativeClick() {
+                messageDialog.dismiss();
+                if (onNormalDialogClicker != null) {
+                    onNormalDialogClicker.onNegative();
+                }
+            }
+
+            @Override
+            public void onPositiveClick() {
+                messageDialog.dismiss();
+                if (onNormalDialogClicker != null) {
+                    onNormalDialogClicker.onPositive();
+                }
+            }
+        });
+        messageDialog.setTitle(title);
+        messageDialog.setMessage(message);
+        messageDialog.setNegativeTxt(nagative);
+        messageDialog.setPositiveTxt(positive);
+        messageDialog.setIsSingle(isSingle);
         if (isForce) {
             messageDialog.setCancelable(false);
             messageDialog.setCanceledOnTouchOutside(false);

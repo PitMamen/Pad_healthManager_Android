@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -35,19 +36,26 @@ public class MessageDialog extends Dialog {
     }
 
     public void setNegativeTxt(String txt) {
-        if (txt_negative != null ) {
+        if (txt_negative != null) {
             txt_negative.setText(txt);
         }
     }
 
     public void setPositiveTxt(String txt) {
-        if (txt_positive != null ) {
+        if (txt_positive != null) {
             txt_positive.setText(txt);
+        }
+    }
+
+    public void setIsSingle(boolean isSingle) {
+        if (isSingle) {
+            txt_negative.setVisibility(View.GONE);
         }
     }
 
     public interface OnExecuteClickListener {
         void onNegativeClick();
+
         void onPositiveClick();
     }
 

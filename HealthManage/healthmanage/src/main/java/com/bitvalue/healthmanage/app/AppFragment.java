@@ -94,15 +94,15 @@ public abstract class AppFragment<A extends AppActivity> extends BaseFragment<A>
     @Override
     public void onSucceed(Object result) {
         if (result instanceof HttpData) {
-            toast(((HttpData<?>) result).getMessage());
+//            toast(((HttpData<?>) result).getMessage());
         }
     }
 
     @Override
     public void onFail(Exception e) {
-        if (!e.getMessage().isEmpty()){
-            toast(e.getMessage());
-        }
+//        if (!e.getMessage().isEmpty()){
+//            toast(e.getMessage());
+//        }
     }
 
     @Override

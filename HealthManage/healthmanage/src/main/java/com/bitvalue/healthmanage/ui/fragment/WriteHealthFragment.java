@@ -15,11 +15,13 @@ import com.bitvalue.healthmanage.http.request.GetPlanDetailApi;
 import com.bitvalue.healthmanage.http.request.SaveCaseApi;
 import com.bitvalue.healthmanage.http.request.TaskDetailApi;
 import com.bitvalue.healthmanage.http.response.ArticleBean;
+import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.http.response.PlanDetailResult;
 import com.bitvalue.healthmanage.http.response.QuestionResultBean;
 import com.bitvalue.healthmanage.http.response.TaskPlanDetailBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.HealthPlanDetailAdapter;
+import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.sdk.collab.helper.CustomCaseHistoryMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
@@ -77,6 +79,9 @@ public class WriteHealthFragment extends AppFragment {
         mIds = getArguments().getStringArrayList(Constants.MSG_IDS);
         homeActivity = (HomeActivity) getActivity();
         saveCaseApi = new SaveCaseApi();
+//        saveCaseApi.userId = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, AppApplication.instance()).getUser().user.userId + "";
+        saveCaseApi.userId = mIds.get(0);
+        saveCaseApi.appointmentId = getArguments().getString(Constants.PLAN_ID);
     }
 
     @OnClick({R.id.layout_back, R.id.tv_cancel, R.id.tv_preview, R.id.tv_commit})
@@ -89,11 +94,10 @@ public class WriteHealthFragment extends AppFragment {
                 backPress("确定取消并退出吗？");
                 break;
             case R.id.tv_preview:
-                if (ifReady()) {
-                    ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
-                    msgData.saveCaseApi = saveCaseApi;
-                    homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_HISTORY_PREVIEW, msgData);
-                }
+                getData();
+                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
+                msgData.saveCaseApi = saveCaseApi;
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_HISTORY_PREVIEW, msgData);
                 break;
             case R.id.tv_commit:
                 if (ifReady()) {
@@ -101,6 +105,15 @@ public class WriteHealthFragment extends AppFragment {
                 }
                 break;
         }
+    }
+
+    private void getData() {
+        saveCaseApi.chiefComplaint = et_main.getText().toString();
+        saveCaseApi.presentIllness = et_history.getText().toString();
+        saveCaseApi.diagnosis = et_result.getText().toString();
+        saveCaseApi.suggestion = et_conclusion.getText().toString();
+        saveCaseApi.pastIllness = et_history_before.getText().toString();
+        saveCaseApi.generalInspection = et_body.getText().toString();
     }
 
     private void backPress(String title) {

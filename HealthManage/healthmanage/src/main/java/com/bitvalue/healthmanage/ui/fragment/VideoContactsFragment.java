@@ -16,12 +16,9 @@ import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.http.response.VideoClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.VideoPatientQuickAdapter;
-import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
-import com.bitvalue.healthmanage.ui.contacts.bean.MainRefreshObj;
 import com.bitvalue.healthmanage.ui.contacts.bean.VideoRefreshObj;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
-import com.bitvalue.sdk.collab.helper.CustomPatientDataMessage;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -89,6 +86,9 @@ public class VideoContactsFragment extends AppFragment {
                 userInfoDTO.userId = videoClientsResultBean.userInfo.userId;
                 userInfoDTO.userName = videoClientsResultBean.userInfo.userName;
                 userInfoDTO.chatType = InputLayoutUI.CHAT_TYPE_VIDEO;
+                if (videoClientsApi.attendanceStatus.equals("4")) {
+                    userInfoDTO.noInput = true;
+                }
                 userInfoDTO.planId = videoClientsResultBean.id;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, userInfoDTO);
 
@@ -111,13 +111,14 @@ public class VideoContactsFragment extends AppFragment {
         initPatientListView();
 
         videoClientsApi = new VideoClientsApi();
-        getMyClients();
+        videoClientsApi.attendanceStatus = "";
+        getMyClients(false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(VideoRefreshObj mainRefreshObj) {
         videoClientsResultBeans.clear();
-        getMyClients();
+        getMyClients(false);
     }
 
     @Override
@@ -130,7 +131,7 @@ public class VideoContactsFragment extends AppFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_no_data:
-                getMyClients();
+                getMyClients(true);
                 break;
 
             case R.id.tv_wait:
@@ -142,15 +143,15 @@ public class VideoContactsFragment extends AppFragment {
 
 
                 videoClientsApi.attendanceStatus = "";
-                getMyClients();
+                getMyClients(false);
 
                 //TODO 做的入口数据调试
-                CustomPatientDataMessage customPatientDataMessage = new CustomPatientDataMessage();
-                if (videoClientsResultBeans.size() == 0) {
-                    return;
-                }
-                customPatientDataMessage.userId = videoClientsResultBeans.get(0).userInfo.userId + "";
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_VIDEO_PATIENT_DATA, customPatientDataMessage);
+//                CustomPatientDataMessage customPatientDataMessage = new CustomPatientDataMessage();
+//                if (videoClientsResultBeans.size() == 0) {
+//                    return;
+//                }
+//                customPatientDataMessage.userId = videoClientsResultBeans.get(0).userInfo.userId + "";
+//                homeActivity.switchSecondFragment(Constants.FRAGMENT_VIDEO_PATIENT_DATA, customPatientDataMessage);
                 break;
 
             case R.id.tv_end:
@@ -160,14 +161,14 @@ public class VideoContactsFragment extends AppFragment {
                 tv_wait.setTextColor(homeActivity.getResources().getColor(R.color.main_blue));
                 tv_wait.setBackgroundResource(R.drawable.shape_bg_white_solid_1);
 
-                videoClientsApi.attendanceStatus = "3";
-                getMyClients();
+                videoClientsApi.attendanceStatus = "4";
+                getMyClients(false);
                 break;
         }
     }
 
 
-    private void getMyClients() {
+    private void getMyClients(boolean needToast) {
         EasyHttp.get(this).api(videoClientsApi).request(new HttpCallback<HttpData<ArrayList<VideoClientsResultBean>>>(this) {
             @Override
             public void onStart(Call call) {
@@ -183,7 +184,9 @@ public class VideoContactsFragment extends AppFragment {
                 }
                 videoClientsResultBeans = result.getData();
                 if (null == videoClientsResultBeans || videoClientsResultBeans.size() == 0) {
-//                    ToastUtil.toastShortMessage("暂无客户数据");
+                    if (needToast) {
+                        ToastUtil.toastShortMessage("暂无客户数据");
+                    }
                     contact_list.setVisibility(View.GONE);
                     tv_no_data.setVisibility(View.VISIBLE);
                     return;

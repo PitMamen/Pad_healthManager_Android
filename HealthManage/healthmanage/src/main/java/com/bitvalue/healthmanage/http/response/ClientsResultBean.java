@@ -42,6 +42,7 @@ public class ClientsResultBean extends ExpandableGroup<ClientsResultBean.UserInf
         public boolean isClicked = false;
         public boolean isShowCheck = false;
         public String headUrl;
+        public boolean noInput;
 
         public UserInfoDTO() {
         }

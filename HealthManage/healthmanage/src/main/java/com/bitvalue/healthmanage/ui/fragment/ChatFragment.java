@@ -23,7 +23,6 @@ import com.bitvalue.sdk.collab.base.IUIKitCallBack;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.component.TitleBarLayout;
 import com.bitvalue.sdk.collab.helper.ChatLayoutHelper;
-import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.helper.CustomMessage;
 import com.bitvalue.sdk.collab.helper.CustomVideoCallMessage;
 import com.bitvalue.sdk.collab.modules.chat.ChatLayout;
@@ -31,7 +30,6 @@ import com.bitvalue.sdk.collab.modules.chat.base.AbsChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatManagerKit;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayout;
-import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.MessageLayout;
 import com.bitvalue.sdk.collab.modules.forward.ForwardSelectActivity;
 import com.bitvalue.sdk.collab.modules.forward.base.ConversationBean;
@@ -189,6 +187,10 @@ public class ChatFragment extends AppFragment {
             }
         });
 
+        if (mChatInfo.noInput) {
+            mChatLayout.getInputLayout().setVisibility(GONE);
+        }
+
         mChatLayout.getInputLayout().setChatType(mChatInfo.chatType);
 
         if (false/*mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP*/) {
@@ -300,6 +302,7 @@ public class ChatFragment extends AppFragment {
                 NewMsgData msgData = new NewMsgData();
                 msgData.userIds = new ArrayList<>();
                 msgData.userIds.add(mChatInfo.getId());
+                msgData.id = planId + "";
                 homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_WRITE_HEALTH, msgData);
             }
 
@@ -330,7 +333,7 @@ public class ChatFragment extends AppFragment {
     private void reportStatus() {
         ReportStatusApi reportStatusApi = new ReportStatusApi();
         reportStatusApi.id = planId + "";
-        reportStatusApi.attendanceStatus = "3";
+        reportStatusApi.attendanceStatus = "4";
         EasyHttp.post(AppApplication.instance().getHomeActivity()).api(reportStatusApi).request(new HttpCallback<HttpData<ArrayList<VideoClientsResultBean>>>(AppApplication.instance().getHomeActivity()) {
             @Override
             public void onStart(Call call) {

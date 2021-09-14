@@ -67,7 +67,7 @@ public class VideoPatientQuickAdapter extends BaseQuickAdapter<VideoClientsResul
                 TimeUtils.YY_MM_DD_FORMAT_3).substring(0, 10) + " " + videoClientsResultBean.seeTime);
 
         if (videoClientsResultBean.isClicked) {
-            holder.setBackgroundColor(R.id.layout_item, mContext.getResources().getColor(R.color.divider));
+            holder.setBackgroundColor(R.id.layout_item, mContext.getResources().getColor(R.color.bg_gray_light));
         } else {
             holder.setBackgroundColor(R.id.layout_item, mContext.getResources().getColor(R.color.white));
         }
@@ -84,7 +84,7 @@ public class VideoPatientQuickAdapter extends BaseQuickAdapter<VideoClientsResul
                 holder.setTextColor(R.id.tv_patient_status, mContext.getResources().getColor(R.color.main_blue));
                 holder.setBackgroundRes(R.id.tv_patient_status, R.drawable.shape_bg_blue_small);
                 break;
-            case 3:
+            case 4:
                 holder.setText(R.id.tv_patient_status, "已完成");
                 holder.setTextColor(R.id.tv_patient_status, mContext.getResources().getColor(R.color.text_desc_dark));
                 holder.setBackgroundRes(R.id.tv_patient_status, 0);

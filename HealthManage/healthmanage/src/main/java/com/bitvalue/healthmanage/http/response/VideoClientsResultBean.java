@@ -5,7 +5,7 @@ public class VideoClientsResultBean{
     public String appointmentPeriodTime;
     public long appointmentTime;
     public int appointmentType;
-    public int attendanceStatus;//就诊状态（1：待就诊 2：就诊中 3：已完成）
+    public int attendanceStatus;//就诊状态（1：待就诊 2：就诊中 3：待书写病历 4:已完成）
     public int bookingStatus;
     public String createTime;
     public String departmentCode;

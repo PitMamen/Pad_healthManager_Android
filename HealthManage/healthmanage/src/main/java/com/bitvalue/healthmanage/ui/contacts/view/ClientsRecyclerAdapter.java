@@ -165,7 +165,7 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
             });
 
             if (child.isClicked) {
-                layout_item.setBackgroundColor(AppApplication.instance().getResources().getColor(R.color.divider));
+                layout_item.setBackgroundColor(AppApplication.instance().getResources().getColor(R.color.bg_gray_light));
             } else {
                 layout_item.setBackgroundColor(AppApplication.instance().getResources().getColor(R.color.white));
             }

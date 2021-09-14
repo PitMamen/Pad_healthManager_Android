@@ -15,6 +15,7 @@ import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.action.TitleBarAction;
 import com.bitvalue.healthmanage.action.ToastAction;
 import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.ui.dialog.WaitDialog;
@@ -31,22 +32,30 @@ import com.hjq.http.listener.OnHttpListener;
 import okhttp3.Call;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/AndroidProject
- *    time   : 2018/10/18
- *    desc   : 业务 Activity 基类
+ * author : Android 轮子哥
+ * github : https://github.com/getActivity/AndroidProject
+ * time   : 2018/10/18
+ * desc   : 业务 Activity 基类
  */
 public abstract class AppActivity extends BaseActivity
         implements ToastAction, TitleBarAction, OnHttpListener<Object> {
 
-    /** 标题栏对象 */
+    /**
+     * 标题栏对象
+     */
     private TitleBar mTitleBar;
-    /** 状态栏沉浸 */
+    /**
+     * 状态栏沉浸
+     */
     private ImmersionBar mImmersionBar;
 
-    /** 加载对话框 */
+    /**
+     * 加载对话框
+     */
     private BaseDialog mDialog;
-    /** 对话框数量 */
+    /**
+     * 对话框数量
+     */
     private int mDialogTotal;
 
     /**
@@ -122,14 +131,20 @@ public abstract class AppActivity extends BaseActivity
 
         @Override
         public void onUserSigExpired() {
-            ToastUtil.toastLongMessage(AppApplication.instance().getString(R.string.expired_login_tip));
-            logout(AppApplication.instance());
+            /**
+             * 加判断解决多次toast和启动页面的问题
+             */
+            LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, AppApplication.instance());
+            if (null != loginBean) {
+                ToastUtil.toastLongMessage(AppApplication.instance().getString(R.string.expired_login_tip));
+                logout(AppApplication.instance());
+            }
         }
     };
 
     public static void logout(Context context) {
         SharedPreManager.putObject(Constants.KYE_USER_BEAN, null);
-        SharedPreManager.putString(Constants.KEY_TOKEN,"");
+        SharedPreManager.putString(Constants.KEY_TOKEN, "");
         Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         AppApplication.instance().startActivity(intent);
@@ -233,14 +248,14 @@ public abstract class AppActivity extends BaseActivity
     @Override
     public void onSucceed(Object result) {
         if (result instanceof HttpData) {//TODO 接口弹toast
-            toast(((HttpData<?>) result).getMessage());
+//            toast(((HttpData<?>) result).getMessage());
         }
     }
 
     @Override
     public void onFail(Exception e) {
 //        Log.d("dd","dd");
-        toast(e.getMessage());
+//        toast(e.getMessage());
         hideDialog();
     }
 
