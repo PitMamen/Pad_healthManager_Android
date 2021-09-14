@@ -33,11 +33,11 @@
 
             <ImageView
                 android:id="@+id/img_rtc_personal_data"
-                android:layout_width="@dimen/qb_px_14"
-                android:layout_height="@dimen/qb_px_14"
+                android:layout_width="@dimen/qb_px_20"
+                android:layout_height="@dimen/qb_px_20"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/icon_set" />
+                android:src="@drawable/icon_set_tx" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -71,11 +71,11 @@
 
             <ImageView
                 android:id="@+id/img_plan"
-                android:layout_width="@dimen/qb_px_14"
-                android:layout_height="@dimen/qb_px_14"
+                android:layout_width="@dimen/qb_px_20"
+                android:layout_height="@dimen/qb_px_20"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/icon_set_jkgljh" />
+                android:src="@drawable/icon_set_tc" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -183,11 +183,11 @@
 
             <ImageView
                 android:id="@+id/img_log"
-                android:layout_width="@dimen/qb_px_14"
-                android:layout_height="@dimen/qb_px_14"
+                android:layout_width="@dimen/qb_px_20"
+                android:layout_height="@dimen/qb_px_20"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/icon_set" />
+                android:src="@drawable/icon_set_jl" />
 
             <TextView
                 android:layout_width="wrap_content"

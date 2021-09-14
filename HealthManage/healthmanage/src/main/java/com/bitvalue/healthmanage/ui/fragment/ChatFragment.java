@@ -16,6 +16,7 @@ import com.bitvalue.healthmanage.http.request.SaveCaseApi;
 import com.bitvalue.healthmanage.http.response.VideoClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
+import com.bitvalue.healthmanage.ui.contacts.bean.VideoRefreshObj;
 import com.bitvalue.healthmanage.util.Constants;
 import com.bitvalue.healthmanage.util.DemoLog;
 import com.bitvalue.healthmanage.widget.DataUtil;
@@ -75,7 +76,7 @@ public class ChatFragment extends AppFragment {
 
     private static final String TAG = ChatFragment.class.getSimpleName();
     private HomeActivity homeActivity;
-    private int planId;
+    private String planId;
 
     @Override
     protected int getLayoutId() {
@@ -89,7 +90,7 @@ public class ChatFragment extends AppFragment {
     protected void initView() {
         EventBus.getDefault().register(this);
         Bundle bundle = getArguments();
-        planId = bundle.getInt(com.bitvalue.healthmanage.Constants.PLAN_ID);
+        planId = bundle.getString(com.bitvalue.healthmanage.Constants.PLAN_ID);
         mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
 //        getActivity();
         homeActivity = (HomeActivity) getActivity();
@@ -349,6 +350,7 @@ public class ChatFragment extends AppFragment {
 
                 if (result.getCode() == 0) {
                     ToastUtil.toastShortMessage("已结束看诊");
+                    EventBus.getDefault().post(new VideoRefreshObj());
                     backPress();
                 }
             }
@@ -377,6 +379,7 @@ public class ChatFragment extends AppFragment {
         public String msgType;
         public String id;
         public String planId;
+        public String appointmentId;
 
         public SaveCaseApi saveCaseApi;
 //        public String msgType;

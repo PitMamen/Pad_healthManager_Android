@@ -181,6 +181,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
                         }
                     };
                     actionUnit.setIconResId(R.drawable.icon_video_communicate);
+//                    actionUnit.setIconResId(R.drawable.icon_spkz);
                     actionUnit.setTitleId(R.string.video_communicate);
                     mInputMoreActionList.add(actionUnit);
                 }

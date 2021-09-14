@@ -341,7 +341,7 @@ public class HomeActivity extends AppActivity {
 //                chatInfo.setId("3");
                 chatInfo.setChatName(child.userName);
 
-                bundle.putInt(Constants.PLAN_ID, child.planId);
+                bundle.putString(Constants.PLAN_ID, child.planId);
                 bundle.putSerializable(com.bitvalue.healthmanage.util.Constants.CHAT_INFO, chatInfo);
                 chatFragment.setArguments(bundle);
                 mapFragments.put(Constants.FRAGMENT_CHAT, chatFragment);

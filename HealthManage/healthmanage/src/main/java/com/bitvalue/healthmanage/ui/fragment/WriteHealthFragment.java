@@ -4,32 +4,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
-import com.bitvalue.healthmanage.http.request.GetPlanDetailApi;
+import com.bitvalue.healthmanage.http.request.GetHistoryApi;
 import com.bitvalue.healthmanage.http.request.SaveCaseApi;
-import com.bitvalue.healthmanage.http.request.TaskDetailApi;
-import com.bitvalue.healthmanage.http.response.ArticleBean;
-import com.bitvalue.healthmanage.http.response.LoginBean;
-import com.bitvalue.healthmanage.http.response.PlanDetailResult;
-import com.bitvalue.healthmanage.http.response.QuestionResultBean;
-import com.bitvalue.healthmanage.http.response.TaskPlanDetailBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.bitvalue.healthmanage.ui.adapter.HealthPlanDetailAdapter;
-import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.sdk.collab.helper.CustomCaseHistoryMessage;
-import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
-import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
-import com.bitvalue.healthmanage.base.BaseAdapter;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
-import com.bitvalue.healthmanage.widget.layout.WrapRecyclerView;
 import com.tencent.trtc.util.DataUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -67,6 +52,8 @@ public class WriteHealthFragment extends AppFragment {
     private HomeActivity homeActivity;
     private SaveCaseApi saveCaseApi;
     private ArrayList<String> mIds = new ArrayList<>();
+    private GetHistoryApi getHistoryApi;
+    private int oldId;
 
     @Override
     protected int getLayoutId() {
@@ -75,7 +62,7 @@ public class WriteHealthFragment extends AppFragment {
 
     @Override
     protected void initView() {
-        tv_title.setText("病例书写");
+        tv_title.setText("病历书写");
         mIds = getArguments().getStringArrayList(Constants.MSG_IDS);
         homeActivity = (HomeActivity) getActivity();
         saveCaseApi = new SaveCaseApi();
@@ -88,10 +75,14 @@ public class WriteHealthFragment extends AppFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_back:
-                backPress("确定退出吗？");
-                break;
             case R.id.tv_cancel:
-                backPress("确定取消并退出吗？");
+                if (ifHasData()) {
+                    backPress();
+                } else {
+                    if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                        homeActivity.getSupportFragmentManager().popBackStack();
+                    }
+                }
                 break;
             case R.id.tv_preview:
                 getData();
@@ -116,8 +107,19 @@ public class WriteHealthFragment extends AppFragment {
         saveCaseApi.generalInspection = et_body.getText().toString();
     }
 
-    private void backPress(String title) {
-        DataUtil.showNormalDialog(homeActivity, "温馨提示", title, "确定", "取消", new DataUtil.OnNormalDialogClicker() {
+    private boolean ifHasData() {
+        boolean hasData = false;
+        if (et_main.getText().toString().isEmpty() && et_history.getText().toString().isEmpty() && et_result.getText().toString().isEmpty()
+                && et_conclusion.getText().toString().isEmpty() && et_history_before.getText().toString().isEmpty() && et_body.getText().toString().isEmpty()) {
+            hasData = false;
+        } else {
+            hasData = true;
+        }
+        return hasData;
+    }
+
+    private void backPress() {
+        DataUtil.showNormalDialog(homeActivity, "温馨提示", "您已创建并书写了病历，取消后您当前所创建的内容将消失，是否取消本次书写？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
             @Override
             public void onPositive() {
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
@@ -136,7 +138,7 @@ public class WriteHealthFragment extends AppFragment {
 
     @Override
     protected void initData() {
-
+        getCaseData();
     }
 
     private boolean ifReady() {
@@ -174,7 +176,50 @@ public class WriteHealthFragment extends AppFragment {
         return true;
     }
 
+    private void getCaseData() {
+        getHistoryApi = new GetHistoryApi();
+        getHistoryApi.userId = mIds.get(0);
+        getHistoryApi.appointmentId = saveCaseApi.appointmentId;
+        EasyHttp.post(this).api(getHistoryApi).request(new HttpCallback<HttpData<List<SaveCaseApi>>>(this) {
+
+
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(HttpData<List<SaveCaseApi>> result) {
+                super.onSucceed(result);
+                if (result.getCode() == 0) {
+                    if (null == result.getData() || result.getData().size() == 0) {
+                        return;
+                    }
+                    SaveCaseApi saveCaseApi = result.getData().get(0);
+
+                    oldId = saveCaseApi.id;
+
+                    et_main.setText(saveCaseApi.chiefComplaint);
+
+                    et_history.setText(saveCaseApi.presentIllness);
+                    et_history_before.setText(saveCaseApi.pastIllness);
+                    et_body.setText(saveCaseApi.generalInspection);
+                    et_result.setText(saveCaseApi.diagnosis);
+                    et_conclusion.setText(saveCaseApi.suggestion);
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
+    }
+
     private void commitCase() {
+        if (oldId != 0) {
+            saveCaseApi.id = oldId;
+        }
         EasyHttp.post(this).api(saveCaseApi).request(new HttpCallback<HttpData<SaveCaseApi>>(this) {
             @Override
             public void onStart(Call call) {
@@ -193,6 +238,7 @@ public class WriteHealthFragment extends AppFragment {
                     message.msgDetailId = result.getData().id + "";
                     message.userId = mIds.get(0);
                     message.content = result.getData().diagnosis;
+                    message.appointmentId = saveCaseApi.appointmentId;
                     //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
                     message.setType("CustomCaseHistoryMessage");
                     message.setDescription("病历记录消息");

@@ -80,6 +80,7 @@ public class VideoPatientQuickAdapter extends BaseQuickAdapter<VideoClientsResul
                 holder.setBackgroundRes(R.id.tv_patient_status, 0);
                 break;
             case 2:
+            case 3:
                 holder.setText(R.id.tv_patient_status, "就诊中");
                 holder.setTextColor(R.id.tv_patient_status, mContext.getResources().getColor(R.color.main_blue));
                 holder.setBackgroundRes(R.id.tv_patient_status, R.drawable.shape_bg_blue_small);

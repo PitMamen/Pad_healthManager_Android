@@ -6,7 +6,7 @@ import com.hjq.http.config.IRequestApi;
 /**
  */
 public final class GetCaseApi implements IRequestApi {
-    public int appointmentId;
+    public String appointmentId;
     public String chargeDocId;
     public String chargeDocName;
     public String checkDocId;

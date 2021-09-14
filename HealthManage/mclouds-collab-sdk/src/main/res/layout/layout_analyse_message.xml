@@ -8,25 +8,25 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="@dimen/qb_px_10"
-            android:src="@drawable/icon_analyse"
-            android:scaleType="centerCrop"
+            android:layout_height="@dimen/qb_px_10"
             android:layout_marginTop="@dimen/qb_px_2"
-            android:layout_height="@dimen/qb_px_10"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_analyse" />
 
         <TextView
             android:id="@+id/tv_title"
-            android:textStyle="bold"
-            android:layout_marginLeft="@dimen/qb_px_5"
-            android:textSize="@dimen/qb_px_10"
-            android:text="标题"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_black" />
+            android:layout_marginLeft="@dimen/qb_px_5"
+            android:text="标题"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/qb_px_10"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/qb_px_8"
         android:text="详情"
-        android:textSize="@dimen/qb_px_8"
-        android:textColor="@color/text_desc_dark" />
+        android:textColor="@color/text_desc_dark"
+        android:textSize="@dimen/qb_px_8" />
 
 </LinearLayout>

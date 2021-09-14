@@ -94,6 +94,7 @@ public class HealthHistoryPreFragment extends AppFragment {
         if (null != newMsgData && newMsgData.saveCaseApi == null) {
             mSaveCaseApi = new GetCaseApi();
             mSaveCaseApi.id = Integer.parseInt(newMsgData.id);
+            mSaveCaseApi.appointmentId = newMsgData.appointmentId;
             getCaseData();
         } else {
             tv_time.setText(TimeUtils.getTime(System.currentTimeMillis(), TimeUtils.YY_MM_DD_FORMAT_3));
@@ -120,7 +121,7 @@ public class HealthHistoryPreFragment extends AppFragment {
             public void onSucceed(HttpData<List<SaveCaseApi>> result) {
                 super.onSucceed(result);
                 if (result.getCode() == 0) {
-                    if (null == result.getData()) {
+                    if (null == result.getData() || result.getData().size() == 0) {
                         return;
                     }
                     SaveCaseApi saveCaseApi = result.getData().get(0);

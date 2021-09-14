@@ -424,6 +424,11 @@ public class NewHealthPlanFragment extends AppFragment {
 
         savePlanApi.basetimeType = mDayCount + "";
 
+        if (taskViews.size() == 0) {
+            ToastUtil.toastShortMessage("请添加至少一个健康任务");
+            return;
+        }
+
         //任务列表
         for (int i = 0; i < taskViews.size(); i++) {
             SavePlanApi.TemplateTaskDTO taskData = taskViews.get(i).getTaskData();

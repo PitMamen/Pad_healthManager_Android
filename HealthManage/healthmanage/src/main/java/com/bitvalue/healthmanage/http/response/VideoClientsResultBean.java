@@ -10,7 +10,7 @@ public class VideoClientsResultBean{
     public String createTime;
     public String departmentCode;
     public String doctorId;
-    public int id;
+    public String id;
     public int patientId;
     public String seeTime;
     public long updateTime;

@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/qb_px_1"
                     android:gravity="center"
-                    android:text="云门诊病例"
+                    android:text="云门诊病历"
                     android:textColor="@color/text_black"
                     android:textSize="@dimen/qb_px_15"
                     app:layout_constraintLeft_toLeftOf="parent"

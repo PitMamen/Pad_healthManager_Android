@@ -49,6 +49,7 @@ public class CustomCaseHistoryMessageController {
                 msgData.userIds = new ArrayList<>();
                 msgData.userIds.add(data.userId);
                 msgData.id = data.msgDetailId;
+                msgData.appointmentId = data.appointmentId;
                 appApplication.getHomeActivity().switchSecondFragment(Constants.FRAGMENT_HEALTH_HISTORY_PREVIEW, msgData);
             }
         });
