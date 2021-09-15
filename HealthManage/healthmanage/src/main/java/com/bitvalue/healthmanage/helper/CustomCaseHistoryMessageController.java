@@ -30,6 +30,7 @@ public class CustomCaseHistoryMessageController {
         // 自定义消息view的实现，这里仅仅展示文本信息，并且实现超链接跳转
         TextView tv_title = view.findViewById(R.id.tv_title);
         TextView tv_content = view.findViewById(R.id.tv_content);
+        TextView tv_suggestion = view.findViewById(R.id.tv_suggestion);
         final String text = TUIKitImpl.getAppContext().getString(R.string.no_support_msg);
         if (tv_content == null || tv_title == null) {
             return;
@@ -40,6 +41,7 @@ public class CustomCaseHistoryMessageController {
             tv_title.setText(data.title);
         }
         tv_content.setText(data.content);
+        tv_suggestion.setText(data.suggestion);
         view.setClickable(true);
         view.setOnClickListener(new View.OnClickListener() {
             @Override

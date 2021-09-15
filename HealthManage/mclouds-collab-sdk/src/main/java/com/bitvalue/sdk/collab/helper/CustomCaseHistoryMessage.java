@@ -9,6 +9,7 @@ public class CustomCaseHistoryMessage extends CustomMessage implements Serializa
     public String msgDetailId;
 
 
+    public String suggestion;
     public String userId;
     public String appointmentId;
     public String cbzd;

@@ -194,7 +194,8 @@ public class ChatFragment extends AppFragment {
 
         mChatLayout.getInputLayout().setChatType(mChatInfo.chatType);
 
-        if (false/*mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP*/) {
+//        if (false/*mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP*/) {
+        if (mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP) {
             V2TIMManager.getConversationManager().getConversation(mChatInfo.getId(), new V2TIMValueCallback<V2TIMConversation>() {
                 @Override
                 public void onError(int code, String desc) {
@@ -344,7 +345,7 @@ public class ChatFragment extends AppFragment {
             @Override
             public void onSucceed(HttpData<ArrayList<VideoClientsResultBean>> result) {
                 super.onSucceed(result);
-                if (result.getData() == null) {
+                if (result == null) {
                     return;
                 }
 

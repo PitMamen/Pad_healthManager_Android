@@ -15,6 +15,7 @@ import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.LogoutApi;
 import com.bitvalue.healthmanage.http.request.PersonalDataApi;
 import com.bitvalue.healthmanage.http.request.TaskDetailApi;
+import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.http.response.TaskDetailBean;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
@@ -25,6 +26,7 @@ import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomMessage;
+import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.hjq.http.EasyHttp;
@@ -183,7 +185,7 @@ public class PersonalDataFragment extends AppFragment {
         }
     }
 
-    @OnClick({R.id.tv_logout, R.id.layout_back})
+    @OnClick({R.id.tv_logout, R.id.layout_back, R.id.tv_name})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_logout:
@@ -201,6 +203,13 @@ public class PersonalDataFragment extends AppFragment {
                 break;
             case R.id.layout_back:
                 backPress();
+                break;
+            case R.id.tv_name://TODO 加的测试入口
+//                ClientsResultBean.UserInfoDTO child = new ClientsResultBean.UserInfoDTO();
+////                child.userId = 31111;
+//                child.chatType = InputLayoutUI.CHAT_TYPE_VIDEO;
+//                child.userId = 100;
+//                homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
                 break;
         }
     }

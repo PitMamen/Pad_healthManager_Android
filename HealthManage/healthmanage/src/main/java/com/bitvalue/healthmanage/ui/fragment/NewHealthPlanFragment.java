@@ -511,6 +511,7 @@ public class NewHealthPlanFragment extends AppFragment {
         goodsInfoDTO.numberInquiries = Integer.parseInt(et_chat_num.getText().toString());
         goodsInfoDTO.medicalFreeNum = Integer.parseInt(et_video_num.getText().toString());
         goodsInfoDTO.goodsName = et_name.getText().toString();
+        goodsInfoDTO.theLastTime = "12";//TODO 套餐服务时长（单位月）,现在写死1年
         goodsInfoDTO.status = isChecked ? "1" : "3";//1启用  0停用
 
         savePlanApi.goodsInfo = goodsInfoDTO;

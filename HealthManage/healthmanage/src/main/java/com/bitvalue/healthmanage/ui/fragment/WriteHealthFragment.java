@@ -238,6 +238,7 @@ public class WriteHealthFragment extends AppFragment {
                     message.msgDetailId = result.getData().id + "";
                     message.userId = mIds.get(0);
                     message.content = result.getData().diagnosis;
+                    message.suggestion = result.getData().suggestion;
                     message.appointmentId = saveCaseApi.appointmentId;
                     //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
                     message.setType("CustomCaseHistoryMessage");

@@ -16,25 +16,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.ClientsApi;
 import com.bitvalue.healthmanage.http.response.ArticleBean;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
+import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.ui.activity.NewMsgActivity;
 import com.bitvalue.healthmanage.ui.contacts.bean.MainRefreshObj;
 import com.bitvalue.healthmanage.ui.contacts.view.ClientsRecyclerAdapter;
+import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.healthmanage.widget.mpopupwindow.MPopupWindow;
 import com.bitvalue.healthmanage.widget.mpopupwindow.TypeGravity;
 import com.bitvalue.healthmanage.widget.mpopupwindow.ViewCallback;
 import com.bitvalue.healthmanage.widget.popupwindow.CommonPopupWindow;
+import com.bitvalue.sdk.collab.TUIKit;
+import com.bitvalue.sdk.collab.base.IMEventListener;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
+import com.tencent.imsdk.message.Message;
+import com.tencent.imsdk.v2.V2TIMMessage;
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener;
 import com.thoughtbot.expandablerecyclerview.listeners.OnGroupClickListener;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
@@ -92,6 +99,7 @@ public class ContactsFragment extends AppFragment {
     @Override
     protected void initView() {
         EventBus.getDefault().register(this);
+        TUIKit.addIMEventListener(mIMEventListener);
         homeActivity = (HomeActivity) getActivity();
 
         is_need_toast = getArguments().getBoolean("is_need_toast");
@@ -107,6 +115,7 @@ public class ContactsFragment extends AppFragment {
             @Override
             public void onChildItemClick(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex, int flatPosition) {
                 child.chatType = InputLayoutUI.CHAT_TYPE_HEALTH;
+//                child.userId = 31111;//TODO 写死数据
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
 
                 for (int i = 0; i < clientsProcessBeans.size(); i++) {
@@ -191,6 +200,20 @@ public class ContactsFragment extends AppFragment {
         clientsProcessBeans.clear();
         getMyClients(false);
     }
+
+    // 监听做成静态可以让每个子类重写时都注册相同的一份。
+    private static IMEventListener mIMEventListener = new IMEventListener() {
+        @Override
+        public void onNewMessage(V2TIMMessage v2TIMMessage) {
+            super.onNewMessage(v2TIMMessage);
+            if (null != v2TIMMessage){
+                Message message = v2TIMMessage.getMessage();
+                if (message.getSenderUserID().equals("")){
+                    //TODO 处理获取到新消息
+                }
+            }
+        }
+    };
 
     @Override
     public void onDestroy() {
@@ -357,10 +380,19 @@ public class ContactsFragment extends AppFragment {
 //                userInfo.add(userInfoDTO);
             }
             ClientsResultBean newOne = new ClientsResultBean(clientsResultBean.group, userInfo);
+
+            //TODO 改数据
+//            for (int x = 0;x<userInfo.size();x++){
+//                userInfo.get(x).userId = 45;
+//                userInfo.get(x).userName = "向侠2";
+//            }
+
             newOne.userInfo = userInfo;
             newOne.num = clientsResultBean.num;
             newOne.group = clientsResultBean.group;
             clientsProcessBeans.add(newOne);
+
+//            clientsProcessBeans.add(newOne);//TODO 改数据
         }
 
         //检测数据，无数据显示刷新按钮

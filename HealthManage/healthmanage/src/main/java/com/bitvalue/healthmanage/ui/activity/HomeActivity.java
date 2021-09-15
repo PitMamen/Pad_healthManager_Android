@@ -129,6 +129,9 @@ public class HomeActivity extends AppActivity {
 
     private void loginIM() {
         LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, this);
+        if (loginBean == null){
+            return;
+        }
         TUIKit.login(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig, new IUIKitCallBack() {
             @Override
             public void onError(String module, final int code, final String desc) {
@@ -264,28 +267,34 @@ public class HomeActivity extends AppActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_person:
-//                backAll();
+                if (tabPosition != 0) {
+                    backAllThirdAct();
+                }
                 EventBus.getDefault().post(new MainRefreshObj());
                 afterTabSelect(0);
                 break;
             case R.id.layout_settings:
-//                EventBus.getDefault().post(new MainRefreshObj());
-//                backAll();
+                if (tabPosition != 1) {
+                    backAllThirdAct();
+                }
                 afterTabSelect(1);
                 break;
 
             case R.id.layout_group:
                 EventBus.getDefault().post(new VideoRefreshObj());
-//                backAll();
+                if (tabPosition != 2) {
+                    backAllThirdAct();
+                }
                 afterTabSelect(2);
                 break;
         }
     }
 
-    private void backAll() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+    //切换tab时回退所有的三级页面
+    private void backAllThirdAct() {
+        int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
+        for (int i = 0; i < backStackEntryCount; i++) {
             getSupportFragmentManager().popBackStack();
-            backAll();
         }
     }
 
@@ -336,7 +345,8 @@ public class HomeActivity extends AppActivity {
                 ChatInfo chatInfo = new ChatInfo();
                 chatInfo.chatType = child.chatType;
                 chatInfo.noInput = child.noInput;
-                chatInfo.setType(V2TIMConversation.V2TIM_C2C);
+//                chatInfo.setType(V2TIMConversation.V2TIM_C2C);//TODO 测试群组
+                chatInfo.setType(V2TIMConversation.V2TIM_GROUP);
                 chatInfo.setId(child.userId + "");
 //                chatInfo.setId("3");
                 chatInfo.setChatName(child.userName);
@@ -562,7 +572,7 @@ public class HomeActivity extends AppActivity {
                 writeHealthFragment = new WriteHealthFragment();
                 Bundle bundleWrite = new Bundle();
                 bundleWrite.putStringArrayList(Constants.MSG_IDS, msgDataWrite.userIds);
-                bundleWrite.putString(Constants.PLAN_ID,msgDataWrite.id);
+                bundleWrite.putString(Constants.PLAN_ID, msgDataWrite.id);
                 writeHealthFragment.setArguments(bundleWrite);
                 mapFragments.put(Constants.FRAGMENT_WRITE_HEALTH, writeHealthFragment);
                 break;

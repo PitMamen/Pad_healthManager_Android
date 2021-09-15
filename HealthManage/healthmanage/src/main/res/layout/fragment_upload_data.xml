@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_third_title"/>
+    <include layout="@layout/layout_third_title" />
 
     <View
         android:layout_width="match_parent"
@@ -66,7 +66,6 @@
                     android:text="长号医院"
                     android:textColor="@color/text_desc_dark"
                     android:textSize="@dimen/qb_px_8"
-                    android:textStyle="bold"
                     app:layout_constraintLeft_toRightOf="@id/tv_hospital_notice"
                     app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
 
@@ -92,7 +91,6 @@
                     android:text="2021.7.5"
                     android:textColor="@color/text_desc_dark"
                     android:textSize="@dimen/qb_px_8"
-                    android:textStyle="bold"
                     app:layout_constraintLeft_toRightOf="@id/tv_time_notice"
                     app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
 
@@ -118,7 +116,6 @@
                     android:text="门诊"
                     android:textColor="@color/text_desc_dark"
                     android:textSize="@dimen/qb_px_8"
-                    android:textStyle="bold"
                     app:layout_constraintLeft_toRightOf="@id/tv_hospital_notice"
                     app:layout_constraintTop_toBottomOf="@id/tv_hospital_notice" />
 
@@ -144,7 +141,6 @@
                     android:text="无明显病变"
                     android:textColor="@color/text_desc_dark"
                     android:textSize="@dimen/qb_px_8"
-                    android:textStyle="bold"
                     app:layout_constraintLeft_toRightOf="@id/tv_time_notice"
                     app:layout_constraintTop_toBottomOf="@id/tv_hospital_notice" />
 

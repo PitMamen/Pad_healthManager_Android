@@ -493,8 +493,8 @@ public class NewHealthPlanFragmentModify extends AppFragment {
 //        diseaseDTO.diseaseName = "通用";
 //        List<SavePlanApi.DiseaseDTO> diseaseDTOS = new ArrayList<>();
 //        diseaseDTOS.add(diseaseDTO);
-        savePlanApi.disease.get(0).diseaseName = "通用";
-        savePlanApi.disease.get(0).diseaseCode = "S001";
+//        savePlanApi.disease.get(0).diseaseName = "通用";
+//        savePlanApi.disease.get(0).diseaseCode = "S001";
 
 //        //组装基准时间
 //        if (tv_base_time.getText().toString().isEmpty()) {
@@ -514,6 +514,7 @@ public class NewHealthPlanFragmentModify extends AppFragment {
 
         savePlanApi.basetimeType = mDayCount + "";
 
+        savePlanApi.templateTask.clear();
         //任务列表
         for (int i = 0; i < taskViews.size(); i++) {
             SavePlanApi.TemplateTaskDTO taskData = taskViews.get(i).getTaskData();

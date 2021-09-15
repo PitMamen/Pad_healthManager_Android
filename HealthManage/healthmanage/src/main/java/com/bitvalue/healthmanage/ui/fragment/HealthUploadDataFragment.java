@@ -87,7 +87,7 @@ public class HealthUploadDataFragment extends AppFragment implements BGANinePhot
             public void onSucceed(HttpData<TaskDetailBean> result) {
                 super.onSucceed(result);
                 //增加判空
-                if (result == null || result.getData() ==null){
+                if (result == null || result.getData() == null) {
                     return;
                 }
                 if (result.getCode() == 0) {
@@ -136,6 +136,7 @@ public class HealthUploadDataFragment extends AppFragment implements BGANinePhot
                 msgData.msgType = com.bitvalue.healthmanage.Constants.MSG_SINGLE;
                 msgData.userIds = new ArrayList<>();
                 msgData.userIds.add(customHealthDataMessage.userId);
+                msgData.id = taskDetailBean.userGoodsId;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_ANALYSE, msgData);
                 break;
             case R.id.layout_back:

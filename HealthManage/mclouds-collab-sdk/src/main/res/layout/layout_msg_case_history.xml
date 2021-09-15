@@ -56,5 +56,31 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="@dimen/qb_px_110"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_8"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_5"
+            android:text="处理意见:"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/qb_px_8"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_suggestion"
+            android:layout_width="@dimen/qb_px_80"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_10"
+            android:text="详情"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="@dimen/qb_px_8" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

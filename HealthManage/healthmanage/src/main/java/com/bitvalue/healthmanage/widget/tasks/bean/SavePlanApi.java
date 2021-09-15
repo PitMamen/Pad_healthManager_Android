@@ -37,6 +37,7 @@ public class SavePlanApi implements IRequestApi {
         public String goodsId;
         public String goodsSpec = "";
         public String status;
+        public String theLastTime;
         public String imgList = "";//详情
         public String bannerList = "";//轮播
         public String previewList = "";//预览  封面
