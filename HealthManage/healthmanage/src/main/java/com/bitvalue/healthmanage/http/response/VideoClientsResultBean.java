@@ -17,6 +17,7 @@ public class VideoClientsResultBean{
     public UserInfoDTO userInfo;
     public String yljgdm;
     public boolean isClicked = false;
+    public boolean hasNew = false;
     public String headUrl;
 
     public static class UserInfoDTO {

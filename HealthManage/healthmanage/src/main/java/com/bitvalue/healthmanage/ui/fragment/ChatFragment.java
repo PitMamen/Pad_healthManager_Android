@@ -49,6 +49,7 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMergerElem;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
+import com.tencent.trtc.util.OnRefreshEndObj;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -194,7 +195,6 @@ public class ChatFragment extends AppFragment {
 
         mChatLayout.getInputLayout().setChatType(mChatInfo.chatType);
 
-//        if (false/*mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP*/) {
         if (mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP) {
             V2TIMManager.getConversationManager().getConversation(mChatInfo.getId(), new V2TIMValueCallback<V2TIMConversation>() {
                 @Override
@@ -313,7 +313,7 @@ public class ChatFragment extends AppFragment {
                 DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定结束看诊吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                     @Override
                     public void onPositive() {
-                        reportStatus();//上报已完成
+                        reportStatus("4");//上报已完成
                     }
 
                     @Override
@@ -332,10 +332,10 @@ public class ChatFragment extends AppFragment {
         }
     }
 
-    private void reportStatus() {
+    private void reportStatus(String status) {
         ReportStatusApi reportStatusApi = new ReportStatusApi();
         reportStatusApi.id = planId + "";
-        reportStatusApi.attendanceStatus = "4";
+        reportStatusApi.attendanceStatus = status;
         EasyHttp.post(AppApplication.instance().getHomeActivity()).api(reportStatusApi).request(new HttpCallback<HttpData<ArrayList<VideoClientsResultBean>>>(AppApplication.instance().getHomeActivity()) {
             @Override
             public void onStart(Call call) {
@@ -350,9 +350,11 @@ public class ChatFragment extends AppFragment {
                 }
 
                 if (result.getCode() == 0) {
-                    ToastUtil.toastShortMessage("已结束看诊");
                     EventBus.getDefault().post(new VideoRefreshObj());
-                    backPress();
+                    if (status.equals("4")) {
+                        ToastUtil.toastShortMessage("已结束看诊");
+                        backPress();
+                    }
                 }
             }
 
@@ -372,6 +374,11 @@ public class ChatFragment extends AppFragment {
     public void onEvent(CustomMessage message) {//不用区分类型，全部直接转换成json发送消息出去
         MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
         mChatLayout.sendMessage(info, false);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(OnRefreshEndObj onRefreshEndObj) {//不用区分类型，全部直接转换成json发送消息出去
+        reportStatus("3");
     }
 
 

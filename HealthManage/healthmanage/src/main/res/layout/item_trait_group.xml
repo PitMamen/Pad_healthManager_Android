@@ -5,17 +5,12 @@
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
-<!--    <View-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:background="@color/divider"-->
-<!--        android:layout_height="@dimen/qb_px_1"/>-->
-
     <LinearLayout
         android:id="@+id/layout_arrow"
         android:layout_width="@dimen/qb_px_20"
-        android:paddingLeft="@dimen/qb_px_10"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:gravity="center"
+        android:paddingLeft="@dimen/qb_px_10">
 
         <ImageView
             android:id="@+id/iv_trait_group"
@@ -38,14 +33,34 @@
         android:textColor="@color/text_black"
         android:textSize="@dimen/qb_px_8" />
 
+    <LinearLayout
+        android:id="@+id/layout_pot"
+        android:layout_width="@dimen/qb_px_9"
+        android:layout_height="@dimen/qb_px_9"
+        android:layout_marginTop="@dimen/qb_px_6"
+        android:layout_toRightOf="@id/tv_trait_group"
+        android:background="@drawable/shape_boll_red"
+        android:gravity="center"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_new_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/qb_px_6" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tv_group_no"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/qb_px_15"
         android:gravity="center"
         android:text="8"
-        android:layout_marginRight="@dimen/qb_px_15"
         android:textColor="@color/text_desc_dark"
         android:textSize="@dimen/qb_px_8" />
 

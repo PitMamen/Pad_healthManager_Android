@@ -12,6 +12,7 @@ public class ClientsResultBean extends ExpandableGroup<ClientsResultBean.UserInf
     public List<UserInfoDTO> userInfo;
     public int num;
     public String group;
+    public int newMsgNum = 0;
 
     public ClientsResultBean(String title, List<UserInfoDTO> items) {
         super(title, items);
@@ -21,7 +22,7 @@ public class ClientsResultBean extends ExpandableGroup<ClientsResultBean.UserInf
         public String userSex;
         public int identificationType;
         public String userName;
-        public int userId;
+        public String userId;
         public String planId;
         public String cardNo;
         public int userAge;
@@ -33,6 +34,8 @@ public class ClientsResultBean extends ExpandableGroup<ClientsResultBean.UserInf
         public Long beginTime;
         public String relationship;
         public String goodsName;
+        public String goodsId;
+        public String groupID;
 
         //区别云门诊和健康管理的标记 100健康管理  101云门诊
         public int chatType;
@@ -40,6 +43,8 @@ public class ClientsResultBean extends ExpandableGroup<ClientsResultBean.UserInf
 
         public boolean isChecked = false;
         public boolean isClicked = false;
+        public boolean hasNew = false;
+        public int newMsgNum;
         public boolean isShowCheck = false;
         public String headUrl;
         public boolean noInput;
@@ -55,7 +60,7 @@ public class ClientsResultBean extends ExpandableGroup<ClientsResultBean.UserInf
             userSex = in.readString();
             identificationType = in.readInt();
             userName = in.readString();
-            userId = in.readInt();
+            userId = in.readString();
             cardNo = in.readString();
             userAge = in.readInt();
             accountId = in.readInt();
@@ -95,7 +100,7 @@ public class ClientsResultBean extends ExpandableGroup<ClientsResultBean.UserInf
             dest.writeString(userSex);
             dest.writeInt(identificationType);
             dest.writeString(userName);
-            dest.writeInt(userId);
+            dest.writeString(userId);
             dest.writeString(cardNo);
             dest.writeInt(userAge);
             dest.writeInt(accountId);

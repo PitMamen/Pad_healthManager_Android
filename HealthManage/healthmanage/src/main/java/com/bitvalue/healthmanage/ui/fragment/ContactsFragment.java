@@ -2,6 +2,7 @@ package com.bitvalue.healthmanage.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -37,6 +38,7 @@ import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IMEventListener;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
+import com.google.gson.Gson;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
@@ -82,6 +84,7 @@ public class ContactsFragment extends AppFragment {
     private ArrayList<String> mIds = new ArrayList<>();
     private ArrayList<ClientsResultBean> clientsResultBeans = new ArrayList<>();
     private ArrayList<ClientsResultBean> clientsProcessBeans = new ArrayList<>();
+    private int newCount = 0;
 
     @Override
     protected int getLayoutId() {
@@ -115,7 +118,6 @@ public class ContactsFragment extends AppFragment {
             @Override
             public void onChildItemClick(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex, int flatPosition) {
                 child.chatType = InputLayoutUI.CHAT_TYPE_HEALTH;
-//                child.userId = 31111;//TODO 写死数据
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
 
                 for (int i = 0; i < clientsProcessBeans.size(); i++) {
@@ -123,6 +125,12 @@ public class ContactsFragment extends AppFragment {
                         clientsProcessBeans.get(i).userInfo.get(j).isClicked = false;
                         if (clientsProcessBeans.get(i).group.equals(child.goodsName) && clientsProcessBeans.get(i).userInfo.get(j).userId == child.userId) {
                             clientsProcessBeans.get(i).userInfo.get(j).isClicked = true;
+
+                            //找到点击的子项目，如果有新信息，置为已查阅;并把父级的消息数减去子消息数
+                            if (clientsProcessBeans.get(i).userInfo.get(j).hasNew) {
+                                clientsProcessBeans.get(i).userInfo.get(j).hasNew = false;
+                                clientsProcessBeans.get(i).newMsgNum = clientsProcessBeans.get(i).newMsgNum - clientsProcessBeans.get(i).userInfo.get(j).newMsgNum;
+                            }
                         }
                     }
                 }
@@ -152,7 +160,14 @@ public class ContactsFragment extends AppFragment {
         adapter.setOnGroupExpandCollapseListener(new GroupExpandCollapseListener() {
             @Override
             public void onGroupExpanded(ExpandableGroup group) {
+                ClientsResultBean clientsResultBean = (ClientsResultBean) group;
+                for (int i = 0; i < clientsProcessBeans.size(); i++) {
+                    if (clientsProcessBeans.get(i).group.equals(clientsResultBean.group)) {
+                        clientsProcessBeans.get(i).newMsgNum = 0;
+                    }
+                }
 
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -202,14 +217,24 @@ public class ContactsFragment extends AppFragment {
     }
 
     // 监听做成静态可以让每个子类重写时都注册相同的一份。
-    private static IMEventListener mIMEventListener = new IMEventListener() {
+    private IMEventListener mIMEventListener = new IMEventListener() {
         @Override
         public void onNewMessage(V2TIMMessage v2TIMMessage) {
             super.onNewMessage(v2TIMMessage);
-            if (null != v2TIMMessage){
+            String s = new Gson().toJson(v2TIMMessage);
+            Log.d("http", s);
+            if (null != v2TIMMessage) {
                 Message message = v2TIMMessage.getMessage();
-                if (message.getSenderUserID().equals("")){
-                    //TODO 处理获取到新消息
+                for (int i = 0; i < clientsProcessBeans.size(); i++) {
+                    for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
+                        if (clientsProcessBeans.get(i).userInfo.get(j).groupID.equals(message.getGroupID())) {
+                            clientsProcessBeans.get(i).userInfo.get(j).hasNew = true;
+                            clientsProcessBeans.get(i).userInfo.get(j).newMsgNum = clientsProcessBeans.get(i).userInfo.get(j).newMsgNum + 1;
+                            clientsProcessBeans.get(i).newMsgNum++;
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             }
         }
@@ -381,18 +406,18 @@ public class ContactsFragment extends AppFragment {
             }
             ClientsResultBean newOne = new ClientsResultBean(clientsResultBean.group, userInfo);
 
-            //TODO 改数据
-//            for (int x = 0;x<userInfo.size();x++){
-//                userInfo.get(x).userId = 45;
-//                userInfo.get(x).userName = "向侠2";
-//            }
+            LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
+            if (loginBean == null) {
+                return;
+            }
+            for (int x = 0; x < userInfo.size(); x++) {
+                userInfo.get(x).groupID = userInfo.get(x).goodsId + loginBean.getUser().user.userId + userInfo.get(x).userId;
+            }
 
             newOne.userInfo = userInfo;
             newOne.num = clientsResultBean.num;
             newOne.group = clientsResultBean.group;
             clientsProcessBeans.add(newOne);
-
-//            clientsProcessBeans.add(newOne);//TODO 改数据
         }
 
         //检测数据，无数据显示刷新按钮

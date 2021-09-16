@@ -1,7 +1,9 @@
 package com.bitvalue.healthmanage.ui.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,11 +21,17 @@ import com.bitvalue.healthmanage.ui.adapter.VideoPatientQuickAdapter;
 import com.bitvalue.healthmanage.ui.contacts.bean.VideoRefreshObj;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
+import com.bitvalue.sdk.collab.TUIKit;
+import com.bitvalue.sdk.collab.base.IMEventListener;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
+import com.hjq.toast.ToastUtils;
+import com.tencent.imsdk.message.Message;
+import com.tencent.imsdk.v2.V2TIMMessage;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -50,6 +58,12 @@ public class VideoContactsFragment extends AppFragment {
     @BindView(R.id.tv_end)
     TextView tv_end;
 
+    @BindView(R.id.tv_new_count)
+    TextView tv_new_count;
+
+    @BindView(R.id.layout_pot)
+    LinearLayout layout_pot;
+
     @BindView(R.id.contact_list)
     RecyclerView contact_list;
 
@@ -59,6 +73,7 @@ public class VideoContactsFragment extends AppFragment {
     private List<VideoClientsResultBean> videoClientsResultBeans = new ArrayList<>();
     private VideoPatientQuickAdapter videoPatientQuickAdapter;
     private VideoClientsApi videoClientsApi;
+    private int newCount = 0;
 
     @Override
     protected int getLayoutId() {
@@ -82,22 +97,39 @@ public class VideoContactsFragment extends AppFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 VideoClientsResultBean videoClientsResultBean = videoClientsResultBeans.get(position);
+
+                if (videoClientsResultBean.attendanceStatus == 1) {
+                    ToastUtils.show("患者未到就诊状态，现处于待就诊状态");
+                    return;
+                }
+
                 ClientsResultBean.UserInfoDTO userInfoDTO = new ClientsResultBean.UserInfoDTO();
-                userInfoDTO.userId = videoClientsResultBean.userInfo.userId;
+                userInfoDTO.userId = videoClientsResultBean.userInfo.userId + "";
                 userInfoDTO.userName = videoClientsResultBean.userInfo.userName;
                 userInfoDTO.chatType = InputLayoutUI.CHAT_TYPE_VIDEO;
-                if (videoClientsApi.attendanceStatus.equals("4")) {
+                if (videoClientsResultBean.attendanceStatus == 4) {
                     userInfoDTO.noInput = true;
                 }
                 userInfoDTO.planId = videoClientsResultBean.id;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, userInfoDTO);
 
+                //将点击的那个置成已点击的状态
                 for (int i = 0; i < videoClientsResultBeans.size(); i++) {
                     videoClientsResultBeans.get(i).isClicked = false;
                     if (videoClientsResultBeans.get(i).userInfo.userId == videoClientsResultBean.userInfo.userId) {
                         videoClientsResultBeans.get(i).isClicked = true;
                     }
                 }
+
+                //点击的那个如果是有新信息的，给置成没新信息的状态
+                if (videoClientsResultBeans.get(position).hasNew) {
+                    videoClientsResultBeans.get(position).hasNew = false;
+                    newCount--;
+                    if (newCount == 0) {
+                        layout_pot.setVisibility(View.GONE);
+                    }
+                }
+
                 videoPatientQuickAdapter.setNewData(videoClientsResultBeans);
             }
         });
@@ -106,6 +138,7 @@ public class VideoContactsFragment extends AppFragment {
 
     @Override
     protected void initView() {
+        TUIKit.addIMEventListener(mIMEventListener);
         homeActivity = (HomeActivity) getActivity();
         EventBus.getDefault().register(this);
         initPatientListView();
@@ -120,6 +153,35 @@ public class VideoContactsFragment extends AppFragment {
         videoClientsResultBeans.clear();
         getMyClients(false);
     }
+
+    // 监听做成静态可以让每个子类重写时都注册相同的一份。
+    private IMEventListener mIMEventListener = new IMEventListener() {
+        @Override
+        public void onNewMessage(V2TIMMessage v2TIMMessage) {
+            super.onNewMessage(v2TIMMessage);
+            String s = new Gson().toJson(v2TIMMessage);
+            Log.d("httpVIDEO", s);
+            if (null != v2TIMMessage) {
+                Message message = v2TIMMessage.getMessage();
+
+                for (int i = 0; i < videoClientsResultBeans.size(); i++) {
+                    if (message.getGroupID().isEmpty()) {
+                        return;
+                    }
+                    if (message.getSenderUserID().equals(videoClientsResultBeans.get(i).userInfo.userId + "")) {
+                        videoClientsResultBeans.get(i).hasNew = true;
+                        newCount++;
+
+                        tv_new_count.setText(newCount + "");
+                        layout_pot.setVisibility(View.VISIBLE);
+                        videoPatientQuickAdapter.setNewData(videoClientsResultBeans);
+                        break;
+                    }
+                }
+
+            }
+        }
+    };
 
     @Override
     public void onDestroy() {
@@ -141,6 +203,8 @@ public class VideoContactsFragment extends AppFragment {
                 tv_end.setTextColor(homeActivity.getResources().getColor(R.color.main_blue));
                 tv_end.setBackgroundResource(R.drawable.shape_bg_white_solid_2);
 
+                newCount = 0;
+                layout_pot.setVisibility(View.GONE);
 
                 videoClientsApi.attendanceStatus = "";
                 getMyClients(false);

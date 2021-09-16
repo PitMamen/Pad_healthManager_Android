@@ -72,6 +72,12 @@ public class VideoPatientQuickAdapter extends BaseQuickAdapter<VideoClientsResul
             holder.setBackgroundColor(R.id.layout_item, mContext.getResources().getColor(R.color.white));
         }
 
+        if (videoClientsResultBean.hasNew) {
+            holder.setVisible(R.id.img_boll, true);
+        } else {
+            holder.setVisible(R.id.img_boll, false);
+        }
+
         //就诊状态（1：待就诊 2：就诊中 3：已完成）
         switch (videoClientsResultBean.attendanceStatus) {
             case 1:

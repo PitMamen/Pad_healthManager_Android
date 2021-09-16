@@ -5,47 +5,68 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layout_top"
         android:layout_width="wrap_content"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_height="@dimen/qb_px_50">
+        android:layout_height="@dimen/qb_px_50"
+        android:layout_centerHorizontal="true">
 
         <LinearLayout
             android:id="@+id/layout_tabs"
-            android:padding="0.5dp"
-            android:background="@drawable/shape_bg_blue_solid"
             android:layout_width="@dimen/qb_px_170"
             android:layout_height="@dimen/qb_px_28"
-            android:orientation="horizontal">
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_bg_blue_solid"
+            android:orientation="horizontal"
+            android:padding="0.5dp">
 
             <TextView
                 android:id="@+id/tv_wait"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
+                android:layout_weight="1"
                 android:gravity="center"
-                android:text="待/就诊中"
                 android:paddingHorizontal="@dimen/qb_px_20"
+                android:text="待/就诊中"
                 android:textColor="@color/white"
                 android:textSize="@dimen/qb_px_10" />
 
             <TextView
                 android:id="@+id/tv_end"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:background="@drawable/shape_bg_white_solid_2"
                 android:layout_centerInParent="true"
-                android:paddingHorizontal="@dimen/qb_px_20"
+                android:layout_weight="1"
+                android:background="@drawable/shape_bg_white_solid_2"
                 android:gravity="center"
+                android:paddingHorizontal="@dimen/qb_px_20"
                 android:text="已结束"
                 android:textColor="@color/main_blue"
                 android:textSize="@dimen/qb_px_10" />
         </LinearLayout>
-    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_pot"
+            android:layout_width="@dimen/qb_px_11"
+            android:layout_height="@dimen/qb_px_11"
+            android:layout_marginLeft="@dimen/qb_px_70"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/qb_px_6"
+            android:background="@drawable/shape_boll_red"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_new_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/qb_px_8" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
 
     <View

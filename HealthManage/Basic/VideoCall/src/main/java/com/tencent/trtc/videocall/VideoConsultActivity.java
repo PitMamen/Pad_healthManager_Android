@@ -25,6 +25,9 @@ import com.tencent.trtc.TRTCCloudDef;
 import com.tencent.trtc.TRTCCloudListener;
 import com.tencent.trtc.debug.Constant;
 import com.tencent.trtc.debug.GenerateTestUserSig;
+import com.tencent.trtc.util.OnRefreshEndObj;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -243,6 +246,8 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
             DataUtil.showNormalDialog(this, "温馨提示", "确定退出并挂断吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                 @Override
                 public void onPositive() {
+//                    mTRTCCloud.destroySubCloud(mTRTCCloud);
+                    EventBus.getDefault().post(new OnRefreshEndObj());
                     finish();
                 }
 
@@ -270,6 +275,7 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
             DataUtil.showNormalDialog(this, "温馨提示", "确定挂断吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                 @Override
                 public void onPositive() {
+                    EventBus.getDefault().post(new OnRefreshEndObj());
                     finish();
                 }
 

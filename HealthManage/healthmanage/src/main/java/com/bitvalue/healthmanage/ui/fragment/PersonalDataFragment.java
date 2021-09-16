@@ -205,11 +205,11 @@ public class PersonalDataFragment extends AppFragment {
                 backPress();
                 break;
             case R.id.tv_name://TODO 加的测试入口
-//                ClientsResultBean.UserInfoDTO child = new ClientsResultBean.UserInfoDTO();
-////                child.userId = 31111;
-//                child.chatType = InputLayoutUI.CHAT_TYPE_VIDEO;
-//                child.userId = 100;
-//                homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
+                ClientsResultBean.UserInfoDTO child = new ClientsResultBean.UserInfoDTO();
+//                child.userId = 31111;
+                child.chatType = InputLayoutUI.CHAT_TYPE_VIDEO;
+                child.userId = "13511131";
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
                 break;
         }
     }

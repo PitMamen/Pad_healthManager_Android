@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -93,16 +94,26 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
         public void onBind(int flatPosition, ExpandableGroup group) {
             ClientsResultBean clientsResultBean = (ClientsResultBean) group;
             tv_group_no.setText(clientsResultBean.num + "");
+            if (clientsResultBean.newMsgNum > 0) {
+                layout_pot.setVisibility(View.VISIBLE);
+                tv_new_count.setText(clientsResultBean.newMsgNum + "");
+            } else {
+                layout_pot.setVisibility(View.GONE);
+            }
         }
 
-        private TextView name, tv_group_no;
+        private TextView name, tv_group_no, tv_new_count;
         private ImageView iv_trait_group;
+        private LinearLayout layout_pot;
 
         public GroupContentViewHolder(View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.tv_trait_group);
-            tv_group_no = (TextView) itemView.findViewById(R.id.tv_group_no);
-            iv_trait_group = (ImageView) itemView.findViewById(R.id.iv_trait_group);
+            name = itemView.findViewById(R.id.tv_trait_group);
+            tv_group_no = itemView.findViewById(R.id.tv_group_no);
+            iv_trait_group = itemView.findViewById(R.id.iv_trait_group);
+
+            layout_pot = itemView.findViewById(R.id.layout_pot);
+            tv_new_count = itemView.findViewById(R.id.tv_new_count);
         }
 
         @Override
@@ -124,7 +135,7 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
 
     public static class ChildContentViewHolder extends ChildViewHolder {
         private TextView name, tv_sex, tv_age, tv_date, tv_project_name;
-        private ImageView img_head;
+        private ImageView img_head, img_boll;
         private CheckBox cb_choose;
         private ConstraintLayout layout_item;
 
@@ -138,6 +149,8 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
             cb_choose = itemView.findViewById(R.id.cb_choose);
             tv_project_name = itemView.findViewById(R.id.tv_project_name);
             layout_item = itemView.findViewById(R.id.layout_item);
+
+            img_boll = itemView.findViewById(R.id.img_boll);
         }
 
         public void onBind(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex) {
@@ -151,6 +164,12 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
                 cb_choose.setVisibility(View.VISIBLE);
             } else {
                 cb_choose.setVisibility(View.GONE);
+            }
+
+            if (child.hasNew) {
+                img_boll.setVisibility(View.VISIBLE);
+            } else {
+                img_boll.setVisibility(View.GONE);
             }
 
             cb_choose.setChecked(child.isChecked);

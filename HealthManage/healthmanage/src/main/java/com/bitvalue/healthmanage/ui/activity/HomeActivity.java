@@ -129,7 +129,7 @@ public class HomeActivity extends AppActivity {
 
     private void loginIM() {
         LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, this);
-        if (loginBean == null){
+        if (loginBean == null) {
             return;
         }
         TUIKit.login(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig, new IUIKitCallBack() {
@@ -345,10 +345,19 @@ public class HomeActivity extends AppActivity {
                 ChatInfo chatInfo = new ChatInfo();
                 chatInfo.chatType = child.chatType;
                 chatInfo.noInput = child.noInput;
-//                chatInfo.setType(V2TIMConversation.V2TIM_C2C);//TODO 测试群组
-                chatInfo.setType(V2TIMConversation.V2TIM_GROUP);
-                chatInfo.setId(child.userId + "");
-//                chatInfo.setId("3");
+                //健康管理群组聊天，云门诊单聊
+                if (chatInfo.chatType == 100) {
+                    chatInfo.setType(V2TIMConversation.V2TIM_GROUP);
+                    LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, AppApplication.instance());
+                    if (null == loginBean) {
+                        return;
+                    }
+                    //群组聊天用goodsId+医生ID+患者ID拼接groupID
+                    chatInfo.setId(child.goodsId + loginBean.getUser().user.userId + child.userId);
+                } else {
+                    chatInfo.setType(V2TIMConversation.V2TIM_C2C);
+                    chatInfo.setId(child.userId + "");
+                }
                 chatInfo.setChatName(child.userName);
 
                 bundle.putString(Constants.PLAN_ID, child.planId);

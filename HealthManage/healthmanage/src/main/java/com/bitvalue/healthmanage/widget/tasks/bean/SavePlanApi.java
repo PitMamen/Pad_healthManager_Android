@@ -44,6 +44,7 @@ public class SavePlanApi implements IRequestApi {
     }
 
     public static class DiseaseDTO {
+        public String id;
         public String diseaseCode;
         public String diseaseName;
     }
