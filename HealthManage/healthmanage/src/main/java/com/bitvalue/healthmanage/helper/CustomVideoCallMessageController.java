@@ -71,7 +71,11 @@ public class CustomVideoCallMessageController {
                     Intent intent = new Intent(AppApplication.instance(), VideoConsultActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(Constants.ROOM_ID, data.msgDetailId);
-                    int userId = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, AppApplication.instance()).getUser().user.userId;
+                    LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, AppApplication.instance());
+                    if (null == loginBean){
+                        return;
+                    }
+                    int userId = loginBean.getUser().user.userId;
                     intent.putExtra(Constants.USER_ID, userId + "");
                     intent.putExtra(Constants.PLAN_ID, data.id);//data.id就是云看诊预约id
                     AppApplication.instance().startActivity(intent);

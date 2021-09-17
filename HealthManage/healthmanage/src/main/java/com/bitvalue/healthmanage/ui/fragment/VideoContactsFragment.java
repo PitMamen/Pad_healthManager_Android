@@ -124,7 +124,8 @@ public class VideoContactsFragment extends AppFragment {
                 //点击的那个如果是有新信息的，给置成没新信息的状态
                 if (videoClientsResultBeans.get(position).hasNew) {
                     videoClientsResultBeans.get(position).hasNew = false;
-                    newCount--;
+                    newCount = newCount - videoClientsResultBeans.get(position).newMsgNum;
+                    tv_new_count.setText(newCount + "");
                     if (newCount == 0) {
                         layout_pot.setVisibility(View.GONE);
                     }
@@ -174,6 +175,7 @@ public class VideoContactsFragment extends AppFragment {
                 for (int i = 0; i < videoClientsResultBeans.size(); i++) {
                     if (message.getSenderUserID().equals(videoClientsResultBeans.get(i).userInfo.userId + "")) {
                         videoClientsResultBeans.get(i).hasNew = true;
+                        videoClientsResultBeans.get(i).newMsgNum++;
                         newCount++;
 
                         tv_new_count.setText(newCount + "");

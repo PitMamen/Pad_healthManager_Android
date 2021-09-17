@@ -60,7 +60,7 @@ public abstract class MessageContentHolder extends MessageEmptyHolder {
             rightUserIcon.setDefaultImageResId(properties.getAvatar());
         } else {
             leftUserIcon.setDefaultImageResId(R.drawable.default_im_head);
-            rightUserIcon.setDefaultImageResId(R.drawable.default_im_head);
+            rightUserIcon.setDefaultImageResId(R.drawable.default_im_head_doc);
         }
         if (properties.getAvatarRadius() != 0) {
             leftUserIcon.setRadius(properties.getAvatarRadius());
