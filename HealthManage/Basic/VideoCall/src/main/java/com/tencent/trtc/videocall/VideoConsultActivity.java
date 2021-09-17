@@ -290,7 +290,6 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
                 return;
             }
             if (!isSwitched) {
-//            mTRTCCloud.startRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, mTXCVVLocalPreviewView);
                 mTRTCCloud.startRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, mTXCVVLocalPreviewView);
                 mTRTCCloud.startLocalPreview(mIsFrontCamera, trtc_view_1);
 
@@ -298,10 +297,10 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
 //                mTRTCCloud.startLocalPreview(mIsFrontCamera, trtc_view_1);
             } else {
                 mTRTCCloud.startLocalPreview(mIsFrontCamera, mTXCVVLocalPreviewView);
-                mTRTCCloud.startRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, trtc_view_1);
+                mTRTCCloud.startRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, trtc_view_1);
 
 //                mTRTCCloud.startLocalPreview(mIsFrontCamera, mTXCVVLocalPreviewView);
-//                mTRTCCloud.updateRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, trtc_view_1);
+//                mTRTCCloud.updateRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, trtc_view_1);
             }
             isSwitched = !isSwitched;
         }
