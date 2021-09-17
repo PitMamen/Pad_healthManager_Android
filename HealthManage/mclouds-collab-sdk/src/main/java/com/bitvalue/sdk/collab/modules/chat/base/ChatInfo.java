@@ -21,6 +21,7 @@ public class ChatInfo implements Serializable {
     private V2TIMMessage mLocateTimMessage;
     //区别云门诊和健康管理的标记 100健康管理  101云门诊
     public int chatType;
+    public String userId;//要发送给消息的userID
     public boolean noInput = false;
     private static List<V2TIMGroupAtInfo> atInfoList;
     /**

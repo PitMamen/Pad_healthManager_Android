@@ -354,6 +354,7 @@ public class HomeActivity extends AppActivity {
                     }
                     //群组聊天用goodsId+医生ID+患者ID拼接groupID
                     chatInfo.setId(child.goodsId + loginBean.getUser().user.userId + child.userId);
+                    chatInfo.userId = child.userId + "";
                 } else {
                     chatInfo.setType(V2TIMConversation.V2TIM_C2C);
                     chatInfo.setId(child.userId + "");

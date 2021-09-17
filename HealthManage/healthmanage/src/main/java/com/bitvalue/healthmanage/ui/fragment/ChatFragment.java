@@ -257,7 +257,7 @@ public class ChatFragment extends AppFragment {
             public void onHealthPlanClick() {
                 NewMsgData msgData = new NewMsgData();
                 msgData.userIds = new ArrayList<>();
-                msgData.userIds.add(mChatInfo.getId());
+                msgData.userIds.add(mChatInfo.userId);//mChatInfo.getId()是健康管理群组聊天的groupId，userId才是每个页面需要的传参
                 msgData.id = planId + "";//这里id设置为 planId
                 homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_PLAN_DETAIL, msgData);
             }
@@ -267,8 +267,8 @@ public class ChatFragment extends AppFragment {
                 NewMsgData msgData = new NewMsgData();
                 msgData.msgType = com.bitvalue.healthmanage.Constants.MSG_SINGLE;
                 msgData.userIds = new ArrayList<>();
+                msgData.userIds.add(mChatInfo.userId);
                 msgData.id = planId + "";//这里id设置为 planId
-                msgData.userIds.add(mChatInfo.getId());
                 homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_HEALTH_ANALYSE, msgData);
             }
 
@@ -277,7 +277,7 @@ public class ChatFragment extends AppFragment {
                 NewMsgData msgData = new NewMsgData();
                 msgData.msgType = com.bitvalue.healthmanage.Constants.MSG_SINGLE;
                 msgData.userIds = new ArrayList<>();
-                msgData.userIds.add(mChatInfo.getId());
+                msgData.userIds.add(mChatInfo.userId);
                 homeActivity.switchSecondFragment(com.bitvalue.healthmanage.Constants.FRAGMENT_SEND_MSG, msgData);
             }
 
