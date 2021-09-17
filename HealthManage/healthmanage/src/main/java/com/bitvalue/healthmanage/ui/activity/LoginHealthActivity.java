@@ -137,9 +137,11 @@ public class LoginHealthActivity extends AppActivity {
                                     SharedPreManager.putString(Constants.KEY_PSD, et_psd.getText().toString());
                                 }
                                 SharedPreManager.putObject(Constants.KYE_USER_BEAN, loginBean);
+                                showDialog();
                                 TUIKit.login(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig, new IUIKitCallBack() {
                                     @Override
                                     public void onError(String module, final int code, final String desc) {
+                                        hideDialog();
                                         runOnUiThread(new Runnable() {
                                             public void run() {
                                                 DemoLog.e("TUIKit.login", "登录聊天失败" + ", errCode = " + code + ", errInfo = " + desc);

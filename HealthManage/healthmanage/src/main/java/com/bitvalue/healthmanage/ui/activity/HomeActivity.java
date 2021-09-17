@@ -346,7 +346,7 @@ public class HomeActivity extends AppActivity {
                 chatInfo.chatType = child.chatType;
                 chatInfo.noInput = child.noInput;
                 //健康管理群组聊天，云门诊单聊
-                if (chatInfo.chatType == 100) {
+                if (chatInfo.chatType == 100) {//健康管理
                     chatInfo.setType(V2TIMConversation.V2TIM_GROUP);
                     LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, AppApplication.instance());
                     if (null == loginBean) {

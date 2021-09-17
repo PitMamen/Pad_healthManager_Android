@@ -12,6 +12,7 @@ import com.bitvalue.sdk.collab.utils.NetWorkUtils;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.hjq.toast.ToastUtils;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -93,11 +94,17 @@ public class ExceptionInterceptor implements Interceptor {
                     if (result == 10001) {
                         Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.putExtra(Constants.NEED_TOAST,true);
+                        intent.putExtra(Constants.NEED_TOAST, true);
                         AppApplication.instance().startActivity(intent);
                         SharedPreManager.putString(Constants.KEY_TOKEN, "");
                         // 进行内存优化，销毁除登录页之外的所有界面
                         ActivityManager.getInstance().finishAllActivities(LoginHealthActivity.class);
+                        return response;
+                    }
+
+                    //统一处理提示
+                    if (result != 0) {
+                        ToastUtils.show("服务器异常，请稍后再试");
                     }
                 }
             }

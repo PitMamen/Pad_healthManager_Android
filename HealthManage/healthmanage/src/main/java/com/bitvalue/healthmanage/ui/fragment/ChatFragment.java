@@ -293,6 +293,8 @@ public class ChatFragment extends AppFragment {
                 message.timeStamp = currentTimeMillis;
                 //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
                 message.setType("CustomVideoCallMessage");
+                message.userId =new ArrayList<>();
+                message.userId.add(mChatInfo.getId());//传入userid
                 message.setDescription("视频看诊");
                 message.id = planId + "";//这里id设置为视频看诊的预约id
                 MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);

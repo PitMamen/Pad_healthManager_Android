@@ -197,7 +197,11 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
                                 20, AppApplication.instance().getResources().getDisplayMetrics())))
                         .into(img_head);
             } else {
-                img_head.setImageDrawable(AppApplication.instance().getResources().getDrawable(R.drawable.default_head_img));
+                if (child.userSex.equals("男")) {
+                    img_head.setImageDrawable(AppApplication.instance().getResources().getDrawable(R.drawable.head_male));
+                } else {
+                    img_head.setImageDrawable(AppApplication.instance().getResources().getDrawable(R.drawable.head_female));
+                }
             }
 
 

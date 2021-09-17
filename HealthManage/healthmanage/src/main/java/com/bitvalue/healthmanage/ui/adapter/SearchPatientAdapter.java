@@ -67,7 +67,11 @@ public class SearchPatientAdapter extends AppAdapter<PatientResultBean> {
                                 20, AppApplication.instance().getResources().getDisplayMetrics())))
                         .into(img_head);
             } else {
-                img_head.setImageDrawable(AppApplication.instance().getResources().getDrawable(R.drawable.default_head_img));
+                if (patientResultBean.userInfo.userSex.equals("男")) {
+                    img_head.setImageDrawable(AppApplication.instance().getResources().getDrawable(R.drawable.head_male));
+                } else {
+                    img_head.setImageDrawable(AppApplication.instance().getResources().getDrawable(R.drawable.head_female));
+                }
             }
         }
     }

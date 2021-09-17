@@ -57,7 +57,11 @@ public class VideoPatientQuickAdapter extends BaseQuickAdapter<VideoClientsResul
                             20, AppApplication.instance().getResources().getDisplayMetrics())))
                     .into(img_head);
         } else {
-            img_head.setImageDrawable(AppApplication.instance().getResources().getDrawable(R.drawable.default_head_img));
+            if (videoClientsResultBean.userInfo.userSex.equals("男")) {
+                img_head.setImageDrawable(AppApplication.instance().getResources().getDrawable(R.drawable.head_male));
+            } else {
+                img_head.setImageDrawable(AppApplication.instance().getResources().getDrawable(R.drawable.head_female));
+            }
         }
 
         holder.setText(R.id.tv_name, videoClientsResultBean.userInfo.userName);
@@ -86,6 +90,10 @@ public class VideoPatientQuickAdapter extends BaseQuickAdapter<VideoClientsResul
                 holder.setBackgroundRes(R.id.tv_patient_status, 0);
                 break;
             case 2:
+                holder.setText(R.id.tv_patient_status, "已就绪");
+                holder.setTextColor(R.id.tv_patient_status, mContext.getResources().getColor(R.color.main_blue));
+                holder.setBackgroundRes(R.id.tv_patient_status, R.drawable.shape_bg_blue_small);
+                break;
             case 3:
                 holder.setText(R.id.tv_patient_status, "就诊中");
                 holder.setTextColor(R.id.tv_patient_status, mContext.getResources().getColor(R.color.main_blue));

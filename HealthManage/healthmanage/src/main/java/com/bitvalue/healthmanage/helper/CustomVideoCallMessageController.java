@@ -8,9 +8,11 @@ import android.widget.TextView;
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.http.model.HttpData;
+import com.bitvalue.healthmanage.http.request.GetStatusApi;
 import com.bitvalue.healthmanage.http.request.ReportStatusApi;
 import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.http.response.VideoClientsResultBean;
+import com.bitvalue.healthmanage.http.response.VideoPatientStatusBean;
 import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKitImpl;
@@ -20,6 +22,7 @@ import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessage
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
+import com.hjq.toast.ToastUtils;
 import com.tencent.trtc.videocall.VideoConsultActivity;
 
 import java.util.ArrayList;
@@ -29,6 +32,8 @@ import okhttp3.Call;
 public class CustomVideoCallMessageController {
 
     private static final String TAG = CustomVideoCallMessageController.class.getSimpleName();
+    private static TextView tv_content;
+    private static VideoPatientStatusBean videoPatientStatusBean;
 
     public static void onDraw(ICustomMessageViewGroup parent, final CustomVideoCallMessage data, final int position, final MessageLayout.OnItemLongClickListener onItemLongClickListener, final MessageInfo info) {
 
@@ -38,7 +43,7 @@ public class CustomVideoCallMessageController {
 
         // 自定义消息view的实现，这里仅仅展示文本信息，并且实现超链接跳转
         TextView tv_title = view.findViewById(R.id.tv_title);
-        TextView tv_content = view.findViewById(R.id.tv_content);
+        tv_content = view.findViewById(R.id.tv_content);
         final String text = TUIKitImpl.getAppContext().getString(R.string.no_support_msg);
         if (tv_content == null || tv_title == null) {
             return;
@@ -50,25 +55,33 @@ public class CustomVideoCallMessageController {
         }
         tv_content.setText(data.content);
         view.setClickable(true);
+
+        getDetail(data);
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppApplication appApplication = (AppApplication) view.getContext();
-                Intent intent = new Intent(appApplication, VideoConsultActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(Constants.ROOM_ID, data.msgDetailId);
-                int userId = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, appApplication).getUser().user.userId;
-                intent.putExtra(Constants.USER_ID, userId + "");
-                intent.putExtra(Constants.PLAN_ID, data.id);
-                appApplication.startActivity(intent);
-
-                reportStatus(data);
+                if (videoPatientStatusBean == null) {
+                    return;
+                }
+                if (videoPatientStatusBean.attendanceStatus.equals("4")) {
+                    tv_content.setText("视频看诊已结束");
+                    ToastUtils.show("视频看诊已结束");
+                } else {
+                    Intent intent = new Intent(AppApplication.instance(), VideoConsultActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra(Constants.ROOM_ID, data.msgDetailId);
+                    int userId = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, AppApplication.instance()).getUser().user.userId;
+                    intent.putExtra(Constants.USER_ID, userId + "");
+                    intent.putExtra(Constants.PLAN_ID, data.id);//data.id就是云看诊预约id
+                    AppApplication.instance().startActivity(intent);
+                }
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (onItemLongClickListener != null){
+                if (onItemLongClickListener != null) {
                     onItemLongClickListener.onMessageLongClick(v, position, info);
                 }
                 return false;
@@ -76,21 +89,24 @@ public class CustomVideoCallMessageController {
         });
     }
 
-    private static void reportStatus(CustomVideoCallMessage data) {
-        ReportStatusApi reportStatusApi = new ReportStatusApi();
-        reportStatusApi.id = data.id;
-        reportStatusApi.attendanceStatus = "2";
-        EasyHttp.post(AppApplication.instance().getHomeActivity()).api(reportStatusApi).request(new HttpCallback<HttpData<ArrayList<VideoClientsResultBean>>>(AppApplication.instance().getHomeActivity()) {
+    private static void getDetail(CustomVideoCallMessage data) {
+        GetStatusApi getStatusApi = new GetStatusApi();
+        getStatusApi.id = data.id;
+        EasyHttp.get(AppApplication.instance().getHomeActivity()).api(getStatusApi).request(new HttpCallback<HttpData<VideoPatientStatusBean>>(AppApplication.instance().getHomeActivity()) {
             @Override
             public void onStart(Call call) {
                 super.onStart(call);
             }
 
             @Override
-            public void onSucceed(HttpData<ArrayList<VideoClientsResultBean>> result) {
+            public void onSucceed(HttpData<VideoPatientStatusBean> result) {
                 super.onSucceed(result);
-                if (result.getData() == null){
+                videoPatientStatusBean = result.getData();
+                if (videoPatientStatusBean == null) {
                     return;
+                }
+                if (videoPatientStatusBean.attendanceStatus.equals("4")) {
+                    tv_content.setText("视频看诊已结束");
                 }
             }
 

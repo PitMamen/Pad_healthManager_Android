@@ -110,7 +110,7 @@ public class VideoContactsFragment extends AppFragment {
                 if (videoClientsResultBean.attendanceStatus == 4) {
                     userInfoDTO.noInput = true;
                 }
-                userInfoDTO.planId = videoClientsResultBean.id;
+                userInfoDTO.planId = videoClientsResultBean.id;//预约id
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, userInfoDTO);
 
                 //将点击的那个置成已点击的状态
@@ -151,6 +151,11 @@ public class VideoContactsFragment extends AppFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(VideoRefreshObj mainRefreshObj) {
         videoClientsResultBeans.clear();
+
+        newCount = 0;
+
+        tv_new_count.setText(newCount + "");
+        layout_pot.setVisibility(View.GONE);
         getMyClients(false);
     }
 
@@ -163,22 +168,20 @@ public class VideoContactsFragment extends AppFragment {
             Log.d("httpVIDEO", s);
             if (null != v2TIMMessage) {
                 Message message = v2TIMMessage.getMessage();
-
+                if (!message.getGroupID().isEmpty()) {//区分健康咨询消息，这里不关注健康咨询消息
+                    return;
+                }
                 for (int i = 0; i < videoClientsResultBeans.size(); i++) {
-                    if (message.getGroupID().isEmpty()) {
-                        return;
-                    }
                     if (message.getSenderUserID().equals(videoClientsResultBeans.get(i).userInfo.userId + "")) {
                         videoClientsResultBeans.get(i).hasNew = true;
                         newCount++;
 
                         tv_new_count.setText(newCount + "");
                         layout_pot.setVisibility(View.VISIBLE);
-                        videoPatientQuickAdapter.setNewData(videoClientsResultBeans);
-                        break;
                     }
                 }
 
+                videoPatientQuickAdapter.setNewData(videoClientsResultBeans);
             }
         }
     };
