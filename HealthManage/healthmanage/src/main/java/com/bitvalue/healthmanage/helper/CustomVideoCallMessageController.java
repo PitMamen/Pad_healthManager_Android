@@ -56,30 +56,12 @@ public class CustomVideoCallMessageController {
         tv_content.setText(data.content);
         view.setClickable(true);
 
-        getDetail(data);
+        getDetail(data, false);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (videoPatientStatusBean == null) {
-                    return;
-                }
-                if (videoPatientStatusBean.attendanceStatus.equals("4")) {
-                    tv_content.setText("视频看诊已结束");
-                    ToastUtils.show("视频看诊已结束");
-                } else {
-                    Intent intent = new Intent(AppApplication.instance(), VideoConsultActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra(Constants.ROOM_ID, data.msgDetailId);
-                    LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, AppApplication.instance());
-                    if (null == loginBean){
-                        return;
-                    }
-                    int userId = loginBean.getUser().user.userId;
-                    intent.putExtra(Constants.USER_ID, userId + "");
-                    intent.putExtra(Constants.PLAN_ID, data.id);//data.id就是云看诊预约id
-                    AppApplication.instance().startActivity(intent);
-                }
+                getDetail(data, true);
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -93,7 +75,7 @@ public class CustomVideoCallMessageController {
         });
     }
 
-    private static void getDetail(CustomVideoCallMessage data) {
+    private static void getDetail(CustomVideoCallMessage data, boolean ifClick) {
         GetStatusApi getStatusApi = new GetStatusApi();
         getStatusApi.id = data.id;
         EasyHttp.get(AppApplication.instance().getHomeActivity()).api(getStatusApi).request(new HttpCallback<HttpData<VideoPatientStatusBean>>(AppApplication.instance().getHomeActivity()) {
@@ -111,6 +93,25 @@ public class CustomVideoCallMessageController {
                 }
                 if (videoPatientStatusBean.attendanceStatus.equals("4")) {
                     tv_content.setText("视频看诊已结束");
+                }
+
+                if (ifClick) {
+                    if (videoPatientStatusBean.attendanceStatus.equals("4")) {
+                        tv_content.setText("视频看诊已结束");
+                        ToastUtils.show("视频看诊已结束");
+                    } else {
+                        Intent intent = new Intent(AppApplication.instance(), VideoConsultActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra(Constants.ROOM_ID, data.msgDetailId);
+                        LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, AppApplication.instance());
+                        if (null == loginBean) {
+                            return;
+                        }
+                        int userId = loginBean.getUser().user.userId;
+                        intent.putExtra(Constants.USER_ID, userId + "");
+                        intent.putExtra(Constants.PLAN_ID, data.id);//data.id就是云看诊预约id
+                        AppApplication.instance().startActivity(intent);
+                    }
                 }
             }
 

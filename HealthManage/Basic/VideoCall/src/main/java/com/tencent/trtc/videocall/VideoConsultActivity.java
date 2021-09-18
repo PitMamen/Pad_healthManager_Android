@@ -192,7 +192,7 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
         trtcParams.roomId = Integer.parseInt(mRoomId);
         trtcParams.userSig = GenerateTestUserSig.genTestUserSig(trtcParams.userId);
 
-        mTRTCCloud.startLocalPreview(mIsFrontCamera, mTXCVVLocalPreviewView);
+        mTRTCCloud.startLocalPreview(mIsFrontCamera, trtc_view_1);
         mTRTCCloud.startLocalAudio(TRTCCloudDef.TRTC_AUDIO_QUALITY_SPEECH);
         mTRTCCloud.enterRoom(trtcParams, TRTCCloudDef.TRTC_APP_SCENE_VIDEOCALL);
         startCountAndHide();
@@ -289,19 +289,19 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
             if (mRemoteUid == null || mRemoteUid.isEmpty()) {
                 return;
             }
-            if (!isSwitched) {
-                mTRTCCloud.startRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, mTXCVVLocalPreviewView);
-                mTRTCCloud.startLocalPreview(mIsFrontCamera, trtc_view_1);
-
-//                mTRTCCloud.updateRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, mTXCVVLocalPreviewView);
+//            if (!isSwitched) {
+//                mTRTCCloud.startRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, mTXCVVLocalPreviewView);
 //                mTRTCCloud.startLocalPreview(mIsFrontCamera, trtc_view_1);
-            } else {
-                mTRTCCloud.startLocalPreview(mIsFrontCamera, mTXCVVLocalPreviewView);
-                mTRTCCloud.startRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, trtc_view_1);
-
+//
+////                mTRTCCloud.updateRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, mTXCVVLocalPreviewView);
+////                mTRTCCloud.startLocalPreview(mIsFrontCamera, trtc_view_1);
+//            } else {
 //                mTRTCCloud.startLocalPreview(mIsFrontCamera, mTXCVVLocalPreviewView);
-//                mTRTCCloud.updateRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, trtc_view_1);
-            }
+//                mTRTCCloud.startRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, trtc_view_1);
+//
+////                mTRTCCloud.startLocalPreview(mIsFrontCamera, mTXCVVLocalPreviewView);
+////                mTRTCCloud.updateRemoteView(mRemoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_BIG, trtc_view_1);
+//            }
             isSwitched = !isSwitched;
         }
     }
@@ -338,7 +338,7 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
             tv_close_camera.setText("打开摄像头");
             img_close_camera.setImageResource(R.mipmap.icon_kqsp);
         } else {
-            mTRTCCloud.startLocalPreview(mIsFrontCamera, mTXCVVLocalPreviewView);
+            mTRTCCloud.startLocalPreview(mIsFrontCamera, trtc_view_1);
             tv_close_camera.setText("关闭摄像头");
             img_close_camera.setImageResource(R.mipmap.icon_gbsxt);
         }
@@ -417,7 +417,7 @@ public class VideoConsultActivity extends TRTCBaseActivity implements View.OnCli
                     String remoteUid = mRemoteUidList.get(i);
                     mRemoteViewList.get(i).setVisibility(View.VISIBLE);
                     mRemoteUid = remoteUid;
-                    mTRTCCloud.startRemoteView(remoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, mRemoteViewList.get(i));
+                    mTRTCCloud.startRemoteView(remoteUid, TRTCCloudDef.TRTC_VIDEO_STREAM_TYPE_SMALL, mTXCVVLocalPreviewView);
                 } else {
                     mRemoteViewList.get(i).setVisibility(View.GONE);
                 }

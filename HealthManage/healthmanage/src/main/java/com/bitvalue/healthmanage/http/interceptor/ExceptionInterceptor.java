@@ -43,6 +43,10 @@ public class ExceptionInterceptor implements Interceptor {
         Request request = chain.request();
         Response response = chain.proceed(request);
 
+        if (response.code() != 200) {
+            ToastUtils.show("服务器异常，请稍后再试");
+        }
+
         ResponseBody responseBody = response.body();
         long contentLength = responseBody.contentLength();
 
@@ -102,10 +106,6 @@ public class ExceptionInterceptor implements Interceptor {
                         return response;
                     }
 
-                    //统一处理提示
-                    if (result != 0) {
-                        ToastUtils.show("服务器异常，请稍后再试");
-                    }
                 }
             }
 

@@ -106,7 +106,7 @@
             android:layout_marginTop="@dimen/qb_px_3"
             android:text="云门诊"
             android:textColor="@color/orange"
-            android:textSize="@dimen/qb_px_10"
+            android:textSize="@dimen/qb_px_8"
             android:textStyle="bold"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -120,7 +120,7 @@
             android:paddingVertical="@dimen/qb_px_2"
             android:text="就诊中"
             android:textColor="@color/text_desc_dark"
-            android:textSize="@dimen/qb_px_8"
+            android:textSize="@dimen/qb_px_7"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
