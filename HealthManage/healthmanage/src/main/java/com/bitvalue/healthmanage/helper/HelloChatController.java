@@ -19,6 +19,7 @@ import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthPlanMessage;
 import com.bitvalue.sdk.collab.helper.CustomVideoCallMessage;
+import com.bitvalue.sdk.collab.helper.CustomWenJuanMessage;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.IOnCustomMessageDrawListener;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.MessageBaseHolder;
@@ -183,6 +184,15 @@ public class HelloChatController implements TUIChatControllerListener {
                         if (customCaseHistoryMessage != null) {
                             if (parent instanceof MessageBaseHolder) {
                                 CustomCaseHistoryMessageController.onDraw(parent, customCaseHistoryMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                            }
+                        }
+                        break;
+
+                    case "CustomWenJuanMessage":
+                        CustomWenJuanMessage customWenJuanMessage = new Gson().fromJson(dataJson, CustomWenJuanMessage.class);
+                        if (customWenJuanMessage != null) {
+                            if (parent instanceof MessageBaseHolder) {
+                                CustomQuestionMessageController.onDraw(parent, customWenJuanMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                             }
                         }
                         break;
