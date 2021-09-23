@@ -33,4 +33,5 @@ dependencies {
     api rootProject.ext.imSdk
     api project(':videocall:Beauty')
     implementation project(':videocall:UVCCamera')
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
 }
