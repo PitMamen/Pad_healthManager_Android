@@ -1,6 +1,6 @@
 package com.bitvalue.healthmanage.helper;
 
-import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -9,9 +9,7 @@ import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.GetStatusApi;
-import com.bitvalue.healthmanage.http.request.ReportStatusApi;
 import com.bitvalue.healthmanage.http.response.LoginBean;
-import com.bitvalue.healthmanage.http.response.VideoClientsResultBean;
 import com.bitvalue.healthmanage.http.response.VideoPatientStatusBean;
 import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.sdk.collab.R;
@@ -23,9 +21,7 @@ import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
-import com.tencent.trtc.videocall.VideoConsultActivity;
-
-import java.util.ArrayList;
+import com.tencent.liteav.meeting.ui.MeetingMainActivity;
 
 import okhttp3.Call;
 
@@ -100,6 +96,7 @@ public class CustomVideoCallMessageController {
                         tv_content.setText("视频看诊已结束");
                         ToastUtils.show("视频看诊已结束");
                     } else {
+                        /*
                         Intent intent = new Intent(AppApplication.instance(), VideoConsultActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra(Constants.ROOM_ID, data.msgDetailId);
@@ -111,6 +108,25 @@ public class CustomVideoCallMessageController {
                         intent.putExtra(Constants.USER_ID, userId + "");
                         intent.putExtra(Constants.PLAN_ID, data.id);//data.id就是云看诊预约id
                         AppApplication.instance().startActivity(intent);
+
+                         */
+
+                        LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, AppApplication.instance());
+                        if (loginBean == null) {
+                            Log.e(TAG, "Failed to get login bean.");
+                            return;
+                        }
+
+                        MeetingMainActivity.enterRoom(AppApplication.instance().getApplicationContext(),
+                                data.msgDetailId, // room_id
+                                String.valueOf(loginBean.getUser().user.userId),
+                                loginBean.getUser().user.userName,
+                                loginBean.getUser().user.avatarUrl,
+                                Constants.IM_APPId,
+                                loginBean.getUserSig(),
+                                true, // 是否默认打开摄像头
+                                true, // 是否默认打开麦克风
+                                true); // 是否支持USB摄像头/视频采集盒
                     }
                 }
             }

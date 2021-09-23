@@ -42,9 +42,6 @@ allprojects {
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         // 友盟仓库：https://bintray.com/umsdk/release
         maven { url 'https://dl.bintray.com/umsdk/release' }
-        flatDir {
-            dirs 'libs',project(':Basic:VideoCall').file('libs')
-        }
         jcenter()
         google()
         mavenCentral()
@@ -67,13 +64,14 @@ allprojects {
 ext {
     compileSdkVersion = 29
     buildToolsVersion = "29.0.3"
-//    minSdkVersion = 21
-//    targetSdkVersion = 26
-//    liteavSdk="com.tencent.liteav:LiteAVSDK_TRTC:latest.release"
-//    versionCode = 1
-//    versionName = "v1.0"
-//    ndkAbi = 'armeabi'//,'armeabi-v7a', 'arm64-v8a'
-//    aekit_version = '1.0.10-cloud'
+    minSdkVersion = 23
+    targetSdkVersion = 26
+    liteavSdk="com.tencent.liteav:LiteAVSDK_TRTC:latest.release"
+    imSdk = "com.tencent.imsdk:imsdk-plus:5.5.892"
+    versionCode = 1
+    versionName = "v1.0"
+    ndkAbi = 'armeabi'//,'armeabi-v7a', 'arm64-v8a'
+    aekit_version = '1.0.10-cloud'
 }
 
 task clean(type: Delete) {

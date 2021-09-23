@@ -55,8 +55,6 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,LockedOrientationActivity"
         tools:replace="android:label,android:supportsRtl,android:allowBackup"
-
-
         tools:targetApi="n">
 
         <!--        tools:replace="android:allowBackup,android:supportsRtl"-->
