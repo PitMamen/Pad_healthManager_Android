@@ -18,6 +18,7 @@ import com.bitvalue.sdk.collab.modules.search.model.SearchResultAdapter;
 import com.bitvalue.sdk.collab.utils.TUIKitLog;
 import com.google.gson.Gson;
 import com.tencent.imsdk.v2.V2TIMFriendInfo;
+import com.tencent.imsdk.v2.V2TIMFriendInfoResult;
 import com.tencent.imsdk.v2.V2TIMFriendSearchParam;
 import com.tencent.imsdk.v2.V2TIMGroupInfo;
 import com.tencent.imsdk.v2.V2TIMGroupInfoResult;
@@ -61,9 +62,9 @@ public class SearchFuntionUtils {
         searchParam.setSearchUserID(true);
         searchParam.setSearchNickName(true);
         searchParam.setSearchRemark(true);
-        V2TIMManager.getFriendshipManager().searchFriends(searchParam, new V2TIMValueCallback<List<V2TIMFriendInfo>>() {
+        V2TIMManager.getFriendshipManager().searchFriends(searchParam, new V2TIMValueCallback<List<V2TIMFriendInfoResult>>() {
             @Override
-            public void onSuccess(List<V2TIMFriendInfo> v2TIMFriendInfos) {
+            public void onSuccess(List<V2TIMFriendInfoResult> v2TIMFriendInfos) {
                 mContactSearchData.clear();
                 if (v2TIMFriendInfos == null || v2TIMFriendInfos.isEmpty()) {
                     TUIKitLog.d(TAG, "searchFriends is null, mContactSearchData.size() = " + mContactSearchData.size());
@@ -99,8 +100,9 @@ public class SearchFuntionUtils {
                     }
 
                     //List<SearchDataBean> dataBeans = new ArrayList<>();
+                    //V2TIMFriendInfoResult
                     for (int i = 0; i < v2TIMFriendInfos.size(); i++) {
-                        V2TIMFriendInfo v2TIMFriendInfo = v2TIMFriendInfos.get(i);
+                        V2TIMFriendInfo v2TIMFriendInfo = v2TIMFriendInfos.get(i).getFriendInfo();
                         SearchDataBean dataBean = new SearchDataBean();
                         dataBean.setIconPath(v2TIMFriendInfo.getUserProfile().getFaceUrl());
                         dataBean.setTitle(v2TIMFriendInfo.getUserProfile().getUserID());
