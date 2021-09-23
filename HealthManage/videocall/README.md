@@ -35,13 +35,13 @@ implementation project(':videocall:Source')
 
 在需要启用视频的地方，调用如下方法进入视频会议Activity：
 ```
-MeetingMainActivity.enterRoom(Context context,          // 当前Activity对象，或者getApplicationContext()
+MeetingMainActivity.enterRoom(Context context,          // 当前Activity对象，或者applicationContext
                               String roomId,            // 房间号，由于小程序采用纯数字形式，所以此处只能为纯数字
                               String userId,            // 用户Id，长度不超过64字节
                               String userName,          // 用户名称，长度不超过64字节
                               String userAvatar,        // 头像URL
                               int sdkAppId,             // TRTC SDK的AppID
-                              userSig,                  // 用户鉴权信息签名，线上版本必须由Server生成
+                              String userSig,           // 用户鉴权信息签名，线上版本必须由Server生成
                               boolean openCamera,       // 是否默认打开摄像头
                               boolean openAudio,        // 是否默认打开麦克风
                               boolean enableUVCCamera); // 是否支持USB摄像头/视频采集盒
