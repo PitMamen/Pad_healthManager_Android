@@ -18,7 +18,8 @@ android {
         resConfig 'xxhdpi'
 
         // 混淆配置
-        proguardFiles 'proguard-sdk.pro', 'proguard-app.pro'
+//        proguardFiles 'proguard-sdk.pro', 'proguard-app.pro'
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         // Enabling multidex support.
         multiDexEnabled true
     }
@@ -26,10 +27,14 @@ android {
     // Apk 签名的那些事：https://www.jianshu.com/p/a1f8e5896aa2
     signingConfigs {
         config {
-            storeFile file(StoreFile)
-            storePassword StorePassword
-            keyAlias KeyAlias
-            keyPassword KeyPassword
+//            storeFile file(StoreFile)
+//            storePassword StorePassword
+//            keyAlias KeyAlias
+//            keyPassword KeyPassword
+            storeFile file("HealthSign.jks")
+            keyAlias "hugedata_alias"
+            storePassword "hugedata123.com\$%^"
+            keyPassword "hugedata123.com\$%^"
         }
     }
 
@@ -37,7 +42,8 @@ android {
 
         debug {
             // 给包名添加后缀
-            applicationIdSuffix '.debug'
+//            applicationIdSuffix '.debug'
+            applicationIdSuffix ''
             // 调试模式开关
             debuggable true
             jniDebuggable true
@@ -57,9 +63,9 @@ android {
 //            buildConfigField('String', 'HOST_URL', '"http://192.168.0.114"')//晓峰192.168.0.248
 //            buildConfigField('String', 'HOST_URL', '"http://192.168.1.112"')//江南
 //            buildConfigField('String', 'HOST_URL', '"http://192.168.1.122"')//测试环境
+            buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
 //            buildConfigField('String', 'HOST_URL', '"http://218.77.104.74:8008"')//演示环境
 //            buildConfigField('String', 'HOST_URL', '"http://happy-mao01.imwork.net:39596/"')//演示环境
-            buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//公有云环境
 
             // 设置清单占位符
             manifestPlaceholders = ['app_name': '健康管理']
@@ -93,9 +99,9 @@ android {
             // 正式包下的 BuglyId
             buildConfigField('String', 'BUGLY_ID', '"请自行替换 Bugly 上面的 AppID"')
             // 正式服务器的主机地址
-            buildConfigField('String', 'HOST_URL', '"https://www.baidu.com"')
+            buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
             // 设置清单占位符
-            manifestPlaceholders = ['app_name': '@string/app_name']
+            manifestPlaceholders = ['app_name': '健康管理']
             // 仅保留两种架构的 so 库，根据 Bugly 统计得出
             ndk {
                 // armeabi：万金油架构平台（占用率：0%）
@@ -103,6 +109,11 @@ android {
                 // arm64-v8a：目前主流架构平台（占用率：95%）
                 abiFilters 'armeabi-v7a', 'arm64-v8a'
             }
+        }
+
+        lintOptions {
+            checkReleaseBuilds false
+            abortOnError false
         }
     }
 

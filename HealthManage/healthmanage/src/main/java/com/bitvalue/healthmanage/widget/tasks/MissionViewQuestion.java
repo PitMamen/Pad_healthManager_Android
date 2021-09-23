@@ -78,7 +78,6 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
     private QuestionQuickAdapter questionQuickAdapter;
     private List<QuestionResultBean.ListDTO> questionBeans = new ArrayList<>();
     private List<PaperBean> mPapers = new ArrayList<>();
-    private List<String> questions = new ArrayList<>();
     private boolean isModify;
 
     public MissionViewQuestion(Context context) {
@@ -126,7 +125,7 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
             @Override
             public void onItemDelete(int position) {
                 questionBeans.remove(position);
-                questions.remove(position);
+//                questions.remove(position);
                 questionQuickAdapter.setNewData(questionBeans);
             }
         });
@@ -163,7 +162,7 @@ public class MissionViewQuestion extends LinearLayout implements DataInterface {
         }
 
         questionBeans.add(questionBean);
-        questions.add(questionBean.id);
+//        questions.add(questionBean.id);
         questionQuickAdapter.setNewData(questionBeans);
     }
 

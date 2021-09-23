@@ -177,7 +177,7 @@ public class ChatLogFragment extends AppFragment {
 
     }
 
-    @OnClick({R.id.layout_back, R.id.layout_all, R.id.layout_video, R.id.tv_health})
+    @OnClick({R.id.layout_back, R.id.layout_all, R.id.layout_video, R.id.tv_health, R.id.tv_no_data})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_back:
@@ -199,6 +199,9 @@ public class ChatLogFragment extends AppFragment {
                 tabPosition = 2;
                 chatLogApi.type = "1";
                 onSelectTab();
+
+            case R.id.tv_no_data:
+                getLogs();
                 break;
         }
     }
