@@ -1,8 +1,12 @@
-include ':base'
-include ':widget'
-include ':umeng'
 include ':healthmanage'
 include ':mclouds-collab-sdk'
-include ':Basic:VideoCall'
-include ':Common'
-include ':Debug'
+
+include ':videocall:Source'
+include ':videocall:Beauty'
+include ':videocall:UVCCamera'
+
+include(':videocall:UVCCamera:libuvccommon')
+project(':videocall:UVCCamera:libuvccommon').projectDir = new File(rootProject.projectDir, "videocall/UVCCamera/libs/libuvccommon")
+
+include(':videocall:UVCCamera:libuvccamera')
+project(':videocall:UVCCamera:libuvccamera').projectDir = new File(rootProject.projectDir, "videocall/UVCCamera/libs/libuvccamera")

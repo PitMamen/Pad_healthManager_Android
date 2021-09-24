@@ -3,9 +3,7 @@ package com.bitvalue.healthmanage.ui.settings.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
@@ -14,20 +12,14 @@ import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.LogoutApi;
-import com.bitvalue.healthmanage.http.request.TaskDetailApi;
-import com.bitvalue.healthmanage.http.response.TaskDetailBean;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
-import com.bitvalue.healthmanage.ui.fragment.HealthUploadDataFragment;
 import com.bitvalue.healthmanage.util.SharedPreManager;
-import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
-import com.tencent.trtc.videocall.VideoCallingEnterActivity;
 
-import butterknife.BindView;
 import butterknife.OnClick;
 import okhttp3.Call;
 

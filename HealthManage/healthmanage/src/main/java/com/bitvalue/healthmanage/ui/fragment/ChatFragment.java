@@ -49,7 +49,7 @@ import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMergerElem;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
-import com.tencent.trtc.util.OnRefreshEndObj;
+import com.tencent.liteav.meeting.model.MeetingEndEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -379,10 +379,10 @@ public class ChatFragment extends AppFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(OnRefreshEndObj onRefreshEndObj) {//不用区分类型，全部直接转换成json发送消息出去
+    public void onEvent(MeetingEndEvent meetingEndEvent) {//不用区分类型，全部直接转换成json发送消息出去
+        Log.d(TAG, "onEvent: video call ended.");
         reportStatus("3");
     }
-
 
     public static class NewMsgData implements Serializable {
         public ArrayList<String> userIds;

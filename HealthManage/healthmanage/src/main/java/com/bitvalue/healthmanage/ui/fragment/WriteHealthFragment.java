@@ -11,11 +11,11 @@ import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.GetHistoryApi;
 import com.bitvalue.healthmanage.http.request.SaveCaseApi;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
+import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.sdk.collab.helper.CustomCaseHistoryMessage;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
-import com.tencent.trtc.util.DataUtil;
 
 import org.greenrobot.eventbus.EventBus;
 

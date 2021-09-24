@@ -66,6 +66,7 @@ android {
             buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
 //            buildConfigField('String', 'HOST_URL', '"http://218.77.104.74:8008"')//演示环境
 //            buildConfigField('String', 'HOST_URL', '"http://happy-mao01.imwork.net:39596/"')//演示环境
+
             // 设置清单占位符
             manifestPlaceholders = ['app_name': '健康管理']
             // 调试模式下只保留一种架构的 so 库，提升打包速度
@@ -178,7 +179,7 @@ dependencies {
     //implementation project(':widget')
     // 友盟封装
     //implementation project(':umeng')
-    implementation project(':Basic:VideoCall')
+//    implementation project(':Basic:VideoCall')
 //    implementation project(':mclouds-base-sdk')
 //    implementation project(':mclouds-collab-sdk')
 
@@ -288,6 +289,7 @@ dependencies {
 //    compileOnly 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'org.xutils:xutils:3.5.0'
+    implementation project(':videocall:Source')
 
     api 'com.squareup.okhttp3:okhttp:3.3.0'
     api 'com.zhy:okhttputils:2.6.2'
