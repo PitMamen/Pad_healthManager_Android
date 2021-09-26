@@ -20,7 +20,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".component.photoview.PhotoViewActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="landscape" />
         <activity
             android:name=".modules.group.info.GroupInfoActivity"
             android:screenOrientation="portrait" />

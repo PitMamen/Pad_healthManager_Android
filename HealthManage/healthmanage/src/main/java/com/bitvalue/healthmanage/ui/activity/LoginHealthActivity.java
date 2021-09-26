@@ -58,8 +58,10 @@ public class LoginHealthActivity extends AppActivity {
         needToast = getIntent().getBooleanExtra(Constants.NEED_TOAST, false);
         isRememberPwd = SharedPreManager.getBoolean(Constants.KEY_REMEMBER_PSD, false, this);
         String psd = SharedPreManager.getString(Constants.KEY_PSD);
+        String account = SharedPreManager.getString(Constants.KEY_ACCOUNT);
         if (null != psd && isRememberPwd) {
             et_psd.setText(psd);
+            et_work_no.setText(account);
         }
         updateIsRememberPwdImage();
     }
@@ -135,6 +137,7 @@ public class LoginHealthActivity extends AppActivity {
                                 SharedPreManager.putString(Constants.KEY_TOKEN, loginBean.getToken());
                                 if (isRememberPwd) {
                                     SharedPreManager.putString(Constants.KEY_PSD, et_psd.getText().toString());
+                                    SharedPreManager.putString(Constants.KEY_ACCOUNT, et_work_no.getText().toString());
                                 }
                                 SharedPreManager.putObject(Constants.KYE_USER_BEAN, loginBean);
                                 showDialog();

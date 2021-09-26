@@ -86,9 +86,8 @@ public class QuestionDetailFragment extends AppFragment {
             ToastUtil.toastShortMessage("问卷数据错误");
             return;
         }
-        url = questionBean.questUrl.replace("218.77.104.74:8008", "192.168.1.122");
-//        url = "http://192.168.1.122/s/8a755f7c24ad49c9a2be6e6f79c3ee60";
-//        url = "http://218.77.104.74:8008/s/8a755f7c24ad49c9a2be6e6f79c3ee60";
+//        url = questionBean.questUrl.replace("218.77.104.74:8008", "192.168.1.122");
+        url = questionBean.questUrl;
         initWebView();
 
         if (url.contains("?userId=")) {

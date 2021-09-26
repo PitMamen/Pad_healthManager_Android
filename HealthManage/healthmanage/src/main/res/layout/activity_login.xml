@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/qb_px_73"
         android:layout_marginVertical="@dimen/qb_px_60"
-        android:background="@color/white"
+        android:background="@drawable/shape_bg_white"
         android:orientation="horizontal">
 
         <LinearLayout

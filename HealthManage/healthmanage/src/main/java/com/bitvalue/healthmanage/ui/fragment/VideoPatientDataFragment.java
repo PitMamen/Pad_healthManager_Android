@@ -126,7 +126,8 @@ public class VideoPatientDataFragment extends AppFragment implements BGANinePhot
 
     private void processPhotos() {
         for (int i = 0; i < patientDataResult.healthImagesList.size(); i++) {
-            photos.add(patientDataResult.healthImagesList.get(i).fileUrl.replace("218.77.104.74:8008", "192.168.1.122"));
+            photos.add(patientDataResult.healthImagesList.get(i).fileUrl);
+//            photos.add(patientDataResult.healthImagesList.get(i).fileUrl.replace("218.77.104.74:8008", "192.168.1.122"));
         }
     }
 

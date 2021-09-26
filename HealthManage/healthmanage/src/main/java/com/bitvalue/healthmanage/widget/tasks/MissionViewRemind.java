@@ -328,8 +328,7 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
             UploadFileApi uploadFileApi = new UploadFileApi();
             uploadFileApi.fileLinkUrl = split[i];
 
-            //TODO 外网切内网
-            split[i] = split[i].replace("218.77.104.74:8008", "192.168.1.122");
+//            split[i] = split[i].replace("218.77.104.74:8008", "192.168.1.122");
             uploadFileApi.path = split[i];
             mUploadedAudios.add(uploadFileApi);
             audiosFinal.add(split[i]);

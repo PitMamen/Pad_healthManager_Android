@@ -66,7 +66,7 @@ ext {
     buildToolsVersion = "29.0.3"
     minSdkVersion = 23
     targetSdkVersion = 26
-    liteavSdk="com.tencent.liteav:LiteAVSDK_TRTC:latest.release"
+    liteavSdk="com.tencent.liteav:LiteAVSDK_TRTC:9.1.10566"
     imSdk = "com.tencent.imsdk:imsdk-plus:5.6.1202"
     versionCode = 1
     versionName = "v1.0"

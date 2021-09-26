@@ -14,6 +14,7 @@ public class Constants {
     public static final String KEY_TOKEN = "Authorization";
     public static final String KYE_USER_BEAN = "kye_user_bean";
     public static final String KEY_PSD = "key_psd";
+    public static final String KEY_ACCOUNT = "key_account";
     public static final String FRAGMENT_CHAT = "fragment_chat";
     public static final String CHAT_INFO = "chat_info";
     public static final String KEY_IM_AUTO_LOGIN = "key_im_auto_login";

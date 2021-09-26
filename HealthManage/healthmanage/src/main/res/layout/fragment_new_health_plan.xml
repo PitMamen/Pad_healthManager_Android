@@ -279,7 +279,7 @@
                         android:background="@drawable/shape_bg_gray"
                         android:hint="请输入套餐价格"
                         android:inputType="number"
-                        android:maxLength="20"
+                        android:maxLength="8"
                         android:paddingHorizontal="@dimen/qb_px_6"
                         android:paddingVertical="@dimen/qb_px_6"
                         android:textColor="@color/text_main"

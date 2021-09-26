@@ -85,6 +85,7 @@ public class ContactsFragment extends AppFragment {
     private ArrayList<ClientsResultBean> clientsResultBeans = new ArrayList<>();
     private ArrayList<ClientsResultBean> clientsProcessBeans = new ArrayList<>();
     private int newCount = 0;
+    private long lastTime;
 
     @Override
     protected int getLayoutId() {
@@ -117,6 +118,10 @@ public class ContactsFragment extends AppFragment {
         adapter.setOnChildItemClickListener(new ClientsRecyclerAdapter.OnChildItemClickListener() {
             @Override
             public void onChildItemClick(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex, int flatPosition) {
+                if (isFastClick()) {
+                    return;
+                }
+
                 child.chatType = InputLayoutUI.CHAT_TYPE_HEALTH;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
 
@@ -143,10 +148,10 @@ public class ContactsFragment extends AppFragment {
             public void onChildCheck(boolean isCheck, int childIndex, ClientsResultBean.UserInfoDTO child) {
 //                ToastUtil.toastShortMessage("是否勾选：" + isCheck + "---勾选哪一个" + childIndex);
                 if (isCheck) {
-                    mIds.add(child.userId + "");
+                    mIds.add(child.groupID + "");
                 } else {
-                    if (mIds.contains(child.userId + "")) {
-                        mIds.remove(child.userId + "");
+                    if (mIds.contains(child.groupID + "")) {
+                        mIds.remove(child.groupID + "");
                     }
                 }
             }
@@ -188,8 +193,8 @@ public class ContactsFragment extends AppFragment {
                         for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
                             clientsProcessBeans.get(i).userInfo.get(j).isChecked = true;
                             clientsProcessBeans.get(i).userInfo.get(j).isShowCheck = true;
-                            if (!mIds.contains(clientsProcessBeans.get(i).userInfo.get(j).userId)) {
-                                mIds.add(clientsProcessBeans.get(i).userInfo.get(j).userId + "");
+                            if (!mIds.contains(clientsProcessBeans.get(i).userInfo.get(j).groupID)) {
+                                mIds.add(clientsProcessBeans.get(i).userInfo.get(j).groupID + "");
                             }
                         }
                     }
@@ -207,6 +212,18 @@ public class ContactsFragment extends AppFragment {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    public boolean isFastClick() {
+        boolean flag;
+        long curClickTime = System.currentTimeMillis();
+        if (curClickTime - lastTime > 1000) {
+            flag = false;
+        } else {
+            flag = true;
+        }
+        lastTime = curClickTime;
+        return flag;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

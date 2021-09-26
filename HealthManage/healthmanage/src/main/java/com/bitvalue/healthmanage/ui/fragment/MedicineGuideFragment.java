@@ -135,10 +135,8 @@ public class MedicineGuideFragment extends AppFragment implements BGANinePhotoLa
 
     private void processPhotos() {
         for (int i = 0; i < taskDetailBean.healthImages.size(); i++) {
-//            photos.add(taskDetailBean.healthImages.get(i).fileUrl);
-            photos.add(taskDetailBean.healthImages.get(i).fileUrl.replace("218.77.104.74:8008", "192.168.1.122"));
-//            photos.add(taskDetailBean.healthImages.get(i).fileUrl.replace("192.168.1.122", "218.77.104.74:8008"));
-//            photos.add(taskDetailBean.healthImages.get(i).previewFileUrl.replace("218.77.104.74:8008", "192.168.1.122"));
+//            photos.add(taskDetailBean.healthImages.get(i).fileUrl.replace("218.77.104.74:8008", "192.168.1.122"));
+            photos.add(taskDetailBean.healthImages.get(i).fileUrl);
         }
     }
 

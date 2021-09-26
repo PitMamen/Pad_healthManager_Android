@@ -119,6 +119,10 @@ public abstract class MessageContentHolder extends MessageEmptyHolder {
             usernameText.setText(timMessage.getSender());
         }
 
+        if (!TextUtils.isEmpty(timMessage.getNickName())) {
+            usernameText.setText(timMessage.getNickName());
+        }
+
         if (!TextUtils.isEmpty(timMessage.getFaceUrl())) {
             List<Object> urllist = new ArrayList<>();
             urllist.add(timMessage.getFaceUrl());

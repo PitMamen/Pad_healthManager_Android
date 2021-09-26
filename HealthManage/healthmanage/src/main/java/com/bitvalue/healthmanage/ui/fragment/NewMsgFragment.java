@@ -49,7 +49,9 @@ import com.bitvalue.sdk.collab.base.TUIKitListenerManager;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.modules.chat.C2CChatManagerKit;
+import com.bitvalue.sdk.collab.modules.chat.GroupChatManagerKit;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
+import com.bitvalue.sdk.collab.modules.group.info.GroupInfo;
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.BackgroundTasks;
@@ -593,14 +595,14 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
                     } else {//群发消息
                         for (int i = 0; i < mIds.size(); i++) {
                             MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
-                            C2CChatManagerKit mC2CChatManager = C2CChatManagerKit.getInstance();
-                            ChatInfo chatInfo = new ChatInfo();
-                            chatInfo.setType(V2TIMConversation.V2TIM_C2C);
-                            chatInfo.setId(mIds.get(i) + "");
-//                        chatInfo.setChatName(child.userName);
-                            mC2CChatManager.setCurrentChatInfo(chatInfo);
-                            TUIKitListenerManager.getInstance().setMessageSender(mC2CChatManager);
-                            mC2CChatManager.sendMessage(info, false, new IUIKitCallBack() {
+                            GroupChatManagerKit groupChatManagerKit = GroupChatManagerKit.getInstance();
+
+                            GroupInfo groupInfo = new GroupInfo();
+                            groupInfo.setId(mIds.get(i));
+                            groupInfo.setType(V2TIMConversation.V2TIM_GROUP);
+                            groupChatManagerKit.setCurrentChatInfo(groupInfo);
+                            TUIKitListenerManager.getInstance().setMessageSender(groupChatManagerKit);
+                            groupChatManagerKit.sendMessage(info, false, new IUIKitCallBack() {
                                 @Override
                                 public void onSuccess(Object data) {
                                     BackgroundTasks.getInstance().runOnUiThread(new Runnable() {

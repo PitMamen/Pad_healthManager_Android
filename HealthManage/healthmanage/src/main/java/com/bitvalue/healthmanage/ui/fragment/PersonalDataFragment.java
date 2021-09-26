@@ -178,10 +178,8 @@ public class PersonalDataFragment extends AppFragment {
 
     private void processPhotos() {
         for (int i = 0; i < taskDetailBean.healthImages.size(); i++) {
-//            photos.add(taskDetailBean.healthImages.get(i).fileUrl);
-            photos.add(taskDetailBean.healthImages.get(i).fileUrl.replace("218.77.104.74:8008", "192.168.1.122"));
-//            photos.add(taskDetailBean.healthImages.get(i).fileUrl.replace("192.168.1.122", "218.77.104.74:8008"));
-//            photos.add(taskDetailBean.healthImages.get(i).previewFileUrl.replace("218.77.104.74:8008", "192.168.1.122"));
+//            photos.add(taskDetailBean.healthImages.get(i).fileUrl.replace("218.77.104.74:8008", "192.168.1.122"));
+            photos.add(taskDetailBean.healthImages.get(i).fileUrl);
         }
     }
 
@@ -204,12 +202,7 @@ public class PersonalDataFragment extends AppFragment {
             case R.id.layout_back:
                 backPress();
                 break;
-            case R.id.tv_name://TODO 加的测试入口
-                ClientsResultBean.UserInfoDTO child = new ClientsResultBean.UserInfoDTO();
-//                child.userId = 31111;
-                child.chatType = InputLayoutUI.CHAT_TYPE_VIDEO;
-                child.userId = "13511131";
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
+            case R.id.tv_name:
                 break;
         }
     }

@@ -78,13 +78,14 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
             getTitleBar().setOnRightClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mGroupInfo != null) {
-                        Intent intent = new Intent(getContext(), GroupInfoActivity.class);
-                        intent.putExtra(TUIKitConstants.Group.GROUP_ID, mGroupInfo.getId());
-                        getContext().startActivity(intent);
-                    } else {
-                        ToastUtil.toastLongMessage(TUIKit.getAppContext().getString(R.string.wait_tip));
-                    }
+                    //获取群组信息点击事件先屏蔽 bug375
+//                    if (mGroupInfo != null) {
+//                        Intent intent = new Intent(getContext(), GroupInfoActivity.class);
+//                        intent.putExtra(TUIKitConstants.Group.GROUP_ID, mGroupInfo.getId());
+//                        getContext().startActivity(intent);
+//                    } else {
+//                        ToastUtil.toastLongMessage(TUIKit.getAppContext().getString(R.string.wait_tip));
+//                    }
                 }
             });
             mGroupApplyLayout.setOnNoticeClickListener(new View.OnClickListener() {

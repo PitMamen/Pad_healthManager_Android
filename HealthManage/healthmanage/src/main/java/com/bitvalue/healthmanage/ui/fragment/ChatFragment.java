@@ -109,7 +109,7 @@ public class ChatFragment extends AppFragment {
 
         //获取单聊面板的标题栏
         mTitleBar = mChatLayout.getTitleBar();
-        mTitleBar.getLeftGroup().setVisibility(VISIBLE);
+        mTitleBar.getLeftGroup().setVisibility(GONE);//bug 381，隐藏返回键
         mTitleBar.getRightIcon().setVisibility(GONE);//沒有好友详情页面，隐藏
 
         //单聊面板标记栏返回按钮点击事件，这里需要开发者自行控制
@@ -122,12 +122,12 @@ public class ChatFragment extends AppFragment {
         if (mChatInfo.getType() == V2TIMConversation.V2TIM_C2C) {
             mTitleBar.setOnRightClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v) {//右侧头像原本查看好友详情的先屏蔽
 //                    Intent intent = new Intent(AppApplication.instance(), FriendProfileActivity.class);
-                    Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra(TUIKitConstants.ProfileType.CONTENT, mChatInfo);
-                    AppApplication.instance().startActivity(intent);
+//                    Intent intent = new Intent(AppApplication.instance(), LoginHealthActivity.class);
+//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    intent.putExtra(TUIKitConstants.ProfileType.CONTENT, mChatInfo);
+//                    AppApplication.instance().startActivity(intent);
                 }
             });
         }
@@ -389,6 +389,7 @@ public class ChatFragment extends AppFragment {
         public String msgType;
         public String id;
         public String planId;
+        public String groupID;
         public String appointmentId;
 
         public SaveCaseApi saveCaseApi;
