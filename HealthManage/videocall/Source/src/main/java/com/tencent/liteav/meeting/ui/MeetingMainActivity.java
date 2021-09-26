@@ -331,6 +331,9 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
 
     private void initBeauty() {
         BeautyParams beautyParams = new BeautyParams();
+        beautyParams.mBeautyLevel = 0;
+        beautyParams.mWhiteLevel = 0;
+        beautyParams.mRuddyLevel = 0;
         mTRTCMeeting.getBeautyManager().setBeautyStyle(beautyParams.mBeautyStyle);
         mTRTCMeeting.getBeautyManager().setBeautyLevel(beautyParams.mBeautyLevel);
         mTRTCMeeting.getBeautyManager().setWhitenessLevel(beautyParams.mWhiteLevel);
