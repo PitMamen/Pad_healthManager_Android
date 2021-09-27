@@ -23,6 +23,14 @@ public class VideoClientsResultBean{
 
     public static class UserInfoDTO {
 
+        public UserInfoDTO() {
+        }
+
+        public UserInfoDTO(String userName, int userId) {
+            this.userName = userName;
+            this.userId = userId;
+        }
+
         public String userSex;
         public String identificationType;
         public String userName;

@@ -36,6 +36,7 @@ import com.bitvalue.healthmanage.ui.fragment.ArticleDetailFragment;
 import com.bitvalue.healthmanage.ui.fragment.ChatFragment;
 import com.bitvalue.healthmanage.ui.fragment.ChatLogFragment;
 import com.bitvalue.healthmanage.ui.fragment.ContactsFragment;
+import com.bitvalue.healthmanage.ui.fragment.DocContactsFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragment;
 import com.bitvalue.healthmanage.ui.fragment.HealthAnalyseFragmentDisplay;
 import com.bitvalue.healthmanage.ui.fragment.HealthHistoryPreFragment;
@@ -96,9 +97,19 @@ public class HomeActivity extends AppActivity {
     @BindView(R.id.img_group)
     ImageView img_group;
 
+    @BindView(R.id.layout_send)
+    LinearLayout layout_send;
+
+    @BindView(R.id.tv_send)
+    TextView tv_send;
+
+    @BindView(R.id.img_send)
+    ImageView img_send;
+
     private static final int chat_index = 0;
     private static final int settings = 1;
     private static final int video_index = 2;
+    private static final int doc_index = 3;
     private SettingsFragment settingsFragment;
     private ContactsFragment contactsFragment;
     private AppFragment[] fragments;
@@ -107,6 +118,7 @@ public class HomeActivity extends AppActivity {
     private ImageView img_chat, img_settings, img_person;
     private Map<String, Fragment> mapFragments = new HashMap<>();
     private VideoContactsFragment videoContactsFragment;
+    private DocContactsFragment docContactsFragment;
 
     @Override
     protected int getLayoutId() {
@@ -156,11 +168,13 @@ public class HomeActivity extends AppActivity {
 //        newsFragment = NewsFragment.getInstance(false);
         settingsFragment = SettingsFragment.getInstance(false);
         videoContactsFragment = VideoContactsFragment.getInstance(false);
-        fragments = new AppFragment[]{contactsFragment, settingsFragment, videoContactsFragment};
+        docContactsFragment = DocContactsFragment.getInstance(false);
+        fragments = new AppFragment[]{contactsFragment, settingsFragment, videoContactsFragment, docContactsFragment};
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.layout_fragment, fragments[0]);
         transaction.add(R.id.layout_fragment, fragments[1]);
         transaction.add(R.id.layout_fragment, fragments[2]);
+        transaction.add(R.id.layout_fragment, fragments[3]);
         transaction.commitAllowingStateLoss();
         afterTabSelect(index);
     }
@@ -216,13 +230,6 @@ public class HomeActivity extends AppActivity {
 
         tabPosition = index;
         setBottomUi(index);
-//        if (index == 0) {
-//            //TODO 造的数据
-//            ContactBean contactBean = new ContactBean("爷爷", "111");
-//            switchSecondFragment(Constants.FRAGMENT_CHAT, contactBean);
-//        } else {
-//            switchSecondFragment(Constants.FRAGMENT_HEALTH, "");
-//        }
     }
 
     private void setBottomUi(int index) {
@@ -246,6 +253,12 @@ public class HomeActivity extends AppActivity {
                 tv_group.setTextColor(getResources().getColor(R.color.white));
                 layout_group.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
+
+            case doc_index:
+                img_send.setImageResource(R.drawable.tab_icon_of);
+                tv_send.setTextColor(getResources().getColor(R.color.white));
+                layout_send.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
+                break;
         }
     }
 
@@ -261,9 +274,13 @@ public class HomeActivity extends AppActivity {
         img_group.setImageResource(R.drawable.tab_icon_gr);
         tv_group.setTextColor(getResources().getColor(R.color.gray));
         layout_group.setBackgroundColor(getResources().getColor(R.color.home_blue));
+
+        img_send.setImageResource(R.drawable.tab_icon_of);
+        tv_send.setTextColor(getResources().getColor(R.color.gray));
+        layout_send.setBackgroundColor(getResources().getColor(R.color.home_blue));
     }
 
-    @OnClick({R.id.layout_person, R.id.layout_settings, R.id.layout_group})
+    @OnClick({R.id.layout_person, R.id.layout_settings, R.id.layout_group, R.id.layout_send})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.layout_person:
@@ -286,6 +303,14 @@ public class HomeActivity extends AppActivity {
                     backAllThirdAct();
                 }
                 afterTabSelect(2);
+                break;
+
+            case R.id.layout_send:
+//                EventBus.getDefault().post(new VideoRefreshObj());
+                if (tabPosition != 3) {
+                    backAllThirdAct();
+                }
+                afterTabSelect(3);
                 break;
         }
     }

@@ -59,7 +59,7 @@ public class LoginHealthActivity extends AppActivity {
         isRememberPwd = SharedPreManager.getBoolean(Constants.KEY_REMEMBER_PSD, false, this);
         String psd = SharedPreManager.getString(Constants.KEY_PSD);
         String account = SharedPreManager.getString(Constants.KEY_ACCOUNT);
-        if (null != psd && isRememberPwd) {
+        if (null != psd && null != account && isRememberPwd) {
             et_psd.setText(psd);
             et_work_no.setText(account);
         }

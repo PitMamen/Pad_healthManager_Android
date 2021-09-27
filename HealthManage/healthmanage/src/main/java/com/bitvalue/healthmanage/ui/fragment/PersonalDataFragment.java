@@ -203,6 +203,11 @@ public class PersonalDataFragment extends AppFragment {
                 backPress();
                 break;
             case R.id.tv_name:
+//                ClientsResultBean.UserInfoDTO child = new ClientsResultBean.UserInfoDTO();
+////                child.userId = 31111;
+//                child.chatType = InputLayoutUI.CHAT_TYPE_VIDEO;
+//                child.userId = "109";//0198  userid 109;0196  userid  121;0199  userid  110
+//                homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
                 break;
         }
     }

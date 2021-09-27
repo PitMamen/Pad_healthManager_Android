@@ -15,12 +15,15 @@ import com.bitvalue.healthmanage.app.AppFragment;
 import com.bitvalue.healthmanage.http.model.HttpData;
 import com.bitvalue.healthmanage.http.request.VideoClientsApi;
 import com.bitvalue.healthmanage.http.response.ClientsResultBean;
+import com.bitvalue.healthmanage.http.response.LoginBean;
 import com.bitvalue.healthmanage.http.response.VideoClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
+import com.bitvalue.healthmanage.ui.adapter.VideoDocQuickAdapter;
 import com.bitvalue.healthmanage.ui.adapter.VideoPatientQuickAdapter;
 import com.bitvalue.healthmanage.ui.contacts.bean.VideoRefreshObj;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
+import com.bitvalue.healthmanage.util.SharedPreManager;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IMEventListener;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
@@ -47,7 +50,7 @@ import okhttp3.Call;
 /**
  * 视频问诊联系人列表
  */
-public class VideoContactsFragment extends AppFragment {
+public class DocContactsFragment extends AppFragment {
 
     @BindView(R.id.tv_no_data)
     TextView tv_no_data;
@@ -71,17 +74,17 @@ public class VideoContactsFragment extends AppFragment {
     private HomeActivity homeActivity;
     private ArrayList<String> mIds = new ArrayList<>();
     private List<VideoClientsResultBean> videoClientsResultBeans = new ArrayList<>();
-    private VideoPatientQuickAdapter videoPatientQuickAdapter;
+    private VideoDocQuickAdapter videoPatientQuickAdapter;
     private VideoClientsApi videoClientsApi;
     private int newCount = 0;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_video_contacts;
+        return R.layout.fragment_doc_contacts;
     }
 
-    public static VideoContactsFragment getInstance(boolean is_need_toast) {
-        VideoContactsFragment contactsFragment = new VideoContactsFragment();
+    public static DocContactsFragment getInstance(boolean is_need_toast) {
+        DocContactsFragment contactsFragment = new DocContactsFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("is_need_toast", is_need_toast);
         contactsFragment.setArguments(bundle);
@@ -92,7 +95,7 @@ public class VideoContactsFragment extends AppFragment {
         contact_list.setLayoutManager(new LinearLayoutManager(getAttachActivity()));
         contact_list.addItemDecoration(MUtils.spaceDivider(
                 DensityUtil.dip2px(getAttachActivity(), getAttachActivity().getResources().getDimension(R.dimen.qb_px_3)), false));
-        videoPatientQuickAdapter = new VideoPatientQuickAdapter(R.layout.item_video_patient, videoClientsResultBeans);
+        videoPatientQuickAdapter = new VideoDocQuickAdapter(R.layout.item_video_patient, videoClientsResultBeans);
         videoPatientQuickAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -147,7 +150,8 @@ public class VideoContactsFragment extends AppFragment {
 
         videoClientsApi = new VideoClientsApi();
         videoClientsApi.attendanceStatus = "";
-        getMyClients(false);
+//        getMyClients(false);
+        generateData();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -158,7 +162,8 @@ public class VideoContactsFragment extends AppFragment {
 
         tv_new_count.setText(newCount + "");
         layout_pot.setVisibility(View.GONE);
-        getMyClients(false);
+//        getMyClients(false);
+        generateData();
     }
 
     // 监听做成静态可以让每个子类重写时都注册相同的一份。
@@ -214,14 +219,6 @@ public class VideoContactsFragment extends AppFragment {
 
                 videoClientsApi.attendanceStatus = "";
                 getMyClients(false);
-
-                //TODO 做的入口数据调试
-//                CustomPatientDataMessage customPatientDataMessage = new CustomPatientDataMessage();
-//                if (videoClientsResultBeans.size() == 0) {
-//                    return;
-//                }
-//                customPatientDataMessage.userId = videoClientsResultBeans.get(0).userInfo.userId + "";
-//                homeActivity.switchSecondFragment(Constants.FRAGMENT_VIDEO_PATIENT_DATA, customPatientDataMessage);
                 break;
 
             case R.id.tv_end:
@@ -253,6 +250,7 @@ public class VideoContactsFragment extends AppFragment {
                     return;
                 }
                 videoClientsResultBeans = result.getData();
+
                 if (null == videoClientsResultBeans || videoClientsResultBeans.size() == 0) {
                     if (needToast) {
                         ToastUtil.toastShortMessage("暂无客户数据");
@@ -272,6 +270,46 @@ public class VideoContactsFragment extends AppFragment {
                 super.onFail(e);
             }
         });
+    }
+
+    private void generateData() {
+        List<VideoClientsResultBean.UserInfoDTO> userInfoDTOList = new ArrayList<>();
+        userInfoDTOList.add(new VideoClientsResultBean.UserInfoDTO("吴汉江", 109));
+        userInfoDTOList.add(new VideoClientsResultBean.UserInfoDTO("朱兆夫", 110));
+        userInfoDTOList.add(new VideoClientsResultBean.UserInfoDTO("周智广", 111));
+        userInfoDTOList.add(new VideoClientsResultBean.UserInfoDTO("黄添隆", 170));
+        userInfoDTOList.add(new VideoClientsResultBean.UserInfoDTO("刘傥", 171));
+        userInfoDTOList.add(new VideoClientsResultBean.UserInfoDTO("朱威宏", 172));
+        userInfoDTOList.add(new VideoClientsResultBean.UserInfoDTO("宋德业", 173));
+        userInfoDTOList.add(new VideoClientsResultBean.UserInfoDTO("毛新展", 174));
+
+        for (int i = 0; i < userInfoDTOList.size(); i++) {
+            LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
+            if (userInfoDTOList.get(i).userId != loginBean.getUser().user.userId) {
+                VideoClientsResultBean videoClientsResultBean = new VideoClientsResultBean();
+                videoClientsResultBean.id = "1440574800199196673";
+                videoClientsResultBean.yljgdm = "444885559";
+                videoClientsResultBean.patientId = 162;
+                videoClientsResultBean.departmentCode = "1030200";
+                videoClientsResultBean.doctorId = "109";
+                videoClientsResultBean.appointmentTime = 1632326400000l;
+                videoClientsResultBean.appointmentPeriodTime = "SW";
+                videoClientsResultBean.seeTime = "08:30-09:00";
+                videoClientsResultBean.appointmentType = 0;
+                videoClientsResultBean.attendanceStatus = 3;
+                videoClientsResultBean.updateTime = 1632650899000l;
+
+                videoClientsResultBean.userInfo = new VideoClientsResultBean.UserInfoDTO();
+                videoClientsResultBean.userInfo.userSex = "男";
+                videoClientsResultBean.userInfo.phone = "13574111026";
+                videoClientsResultBean.userInfo.userName = userInfoDTOList.get(i).userName;
+                videoClientsResultBean.userInfo.userId = userInfoDTOList.get(i).userId;
+                videoClientsResultBean.userInfo.userAge = 29 + i;
+                videoClientsResultBeans.add(videoClientsResultBean);
+            }
+        }
+
+        videoPatientQuickAdapter.setNewData(videoClientsResultBeans);
     }
 
 
