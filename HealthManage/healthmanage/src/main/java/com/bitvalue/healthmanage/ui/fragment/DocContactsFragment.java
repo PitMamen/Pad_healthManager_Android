@@ -61,8 +61,8 @@ public class DocContactsFragment extends AppFragment {
     @BindView(R.id.tv_end)
     TextView tv_end;
 
-    @BindView(R.id.tv_new_count)
-    TextView tv_new_count;
+//    @BindView(R.id.tv_new_count)
+//    TextView tv_new_count;
 
     @BindView(R.id.layout_pot)
     LinearLayout layout_pot;
@@ -129,7 +129,7 @@ public class DocContactsFragment extends AppFragment {
                 if (videoClientsResultBeans.get(position).hasNew) {
                     videoClientsResultBeans.get(position).hasNew = false;
                     newCount = newCount - videoClientsResultBeans.get(position).newMsgNum;
-                    tv_new_count.setText(newCount + "");
+//                    tv_new_count.setText(newCount + "");
                     if (newCount == 0) {
                         layout_pot.setVisibility(View.GONE);
                     }
@@ -160,7 +160,7 @@ public class DocContactsFragment extends AppFragment {
 
         newCount = 0;
 
-        tv_new_count.setText(newCount + "");
+//        tv_new_count.setText(newCount + "");
         layout_pot.setVisibility(View.GONE);
 //        getMyClients(false);
         generateData();
@@ -184,7 +184,7 @@ public class DocContactsFragment extends AppFragment {
                         videoClientsResultBeans.get(i).newMsgNum++;
                         newCount++;
 
-                        tv_new_count.setText(newCount + "");
+//                        tv_new_count.setText(newCount + "");
                         layout_pot.setVisibility(View.VISIBLE);
                     }
                 }
