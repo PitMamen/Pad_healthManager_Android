@@ -36,6 +36,7 @@ import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.hjq.toast.ToastUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.File;
@@ -69,6 +70,7 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
 
     private int TaskNo;
     private int MissionNo;
+
     public int getTaskNo() {
         return TaskNo;
     }
@@ -84,6 +86,7 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
     public void setMissionNo(int missionNo) {
         MissionNo = missionNo;
     }
+
     private HomeActivity homeActivity;
     private MissionViewCallBack missionViewCallBack;
     private List<UploadFileApi> mUploadedAudios = new ArrayList<>();
@@ -129,6 +132,7 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
             @Override
             public void onItemDelete(int position) {
                 mUploadedAudios.remove(position);
+                audiosFinal.remove(position);
                 adapter.setNewData(mUploadedAudios);
             }
         });
@@ -254,13 +258,15 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
         templateTaskContentDTO.contentDetail.remindContent = et_text_msg.getText().toString();
         if (audiosFinal.size() > 0) {
             templateTaskContentDTO.contentDetail.voiceList = getProcessString(audiosFinal);
+        } else {
+            templateTaskContentDTO.contentDetail.voiceList = "";
         }
         return templateTaskContentDTO;
     }
 
     @Override
     public PlanDetailResult.UserPlanDetailsDTO getAssembleData() {
-        if (et_text_msg.getText().toString().isEmpty() && mUploadedAudios.size() == 0){
+        if (et_text_msg.getText().toString().isEmpty() && mUploadedAudios.size() == 0) {
             return null;
         }
         PlanDetailResult.UserPlanDetailsDTO userPlanDetailsDTO = new PlanDetailResult.UserPlanDetailsDTO();
@@ -296,9 +302,9 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
             isReady = true;
         } else {
             if (mUploadedAudios.size() == 0 && !et_text_msg.getText().toString().isEmpty() && et_text_msg.getText().toString().length() < 6) {
-                ToastUtil.toastShortMessage("请输入提醒内容超过5个字");
+                ToastUtils.show("请输入提醒内容超过5个字");
             } else {
-                ToastUtil.toastShortMessage("请至少输入一种提醒消息");
+                ToastUtils.show("请至少输入一种提醒消息");
             }
         }
         return isReady;

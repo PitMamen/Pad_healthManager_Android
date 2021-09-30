@@ -290,6 +290,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'org.xutils:xutils:3.5.0'
     implementation project(':videocall:Source')
+    implementation 'top.zibin:Luban:1.1.8'
 
     api 'com.squareup.okhttp3:okhttp:3.3.0'
     api 'com.zhy:okhttputils:2.6.2'

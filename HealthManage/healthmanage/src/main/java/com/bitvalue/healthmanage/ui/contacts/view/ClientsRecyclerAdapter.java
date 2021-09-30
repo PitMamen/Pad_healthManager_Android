@@ -69,7 +69,6 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
 
     @Override
     public void onBindChildViewHolder(ChildContentViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
-//        final ClientsResultBean.UserInfoDTO child = ((ClientsResultBean.UserInfoDTO) group).getItems().get(childIndex);
         List<ClientsResultBean.UserInfoDTO> userInfo = ((ClientsResultBean) group).userInfo;
         ClientsResultBean.UserInfoDTO child = userInfo.get(childIndex);
         holder.onBind(child, group, childIndex);
@@ -97,6 +96,12 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
             if (clientsResultBean.newMsgNum > 0) {
                 layout_pot.setVisibility(View.VISIBLE);
                 tv_new_count.setText(clientsResultBean.newMsgNum + "");
+                if (clientsResultBean.newMsgNum > 99) {
+                    tv_new_count.setText(clientsResultBean.newMsgNum + "+");
+                } else {
+                    tv_new_count.setText(clientsResultBean.newMsgNum + "");
+                }
+
             } else {
                 layout_pot.setVisibility(View.GONE);
             }
@@ -118,13 +123,11 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
 
         @Override
         public void expand() {
-//            name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrow_right, 0);
             iv_trait_group.setImageResource(R.drawable.icon_left);
         }
 
         @Override
         public void collapse() {
-//            name.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.arrows_bottom_ic, 0);
             iv_trait_group.setImageResource(R.drawable.icon_down);
         }
 

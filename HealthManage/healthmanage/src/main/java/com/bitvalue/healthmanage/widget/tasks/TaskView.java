@@ -35,6 +35,7 @@ import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
+import com.hjq.toast.ToastUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -501,7 +502,7 @@ public class TaskView extends LinearLayout {
 
         List<SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO> missionData = getMissionData();
         if (null == missionData || missionData.size() == 0) {
-            ToastUtil.toastShortMessage("请至少添加一个任务项目");
+            ToastUtils.show("请至少添加一个任务项目");
             return null;
         } else {
             templateTaskDTO.templateTaskContent = missionData;

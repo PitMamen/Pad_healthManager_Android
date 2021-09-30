@@ -18,12 +18,15 @@ import com.bitvalue.healthmanage.http.response.ClientsResultBean;
 import com.bitvalue.healthmanage.http.response.VideoClientsResultBean;
 import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.VideoPatientQuickAdapter;
+import com.bitvalue.healthmanage.ui.contacts.bean.MsgRemindObj;
 import com.bitvalue.healthmanage.ui.contacts.bean.VideoRefreshObj;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
+import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IMEventListener;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
+import com.bitvalue.sdk.collab.utils.TUIKitLog;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
@@ -31,7 +34,11 @@ import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
 import com.tencent.imsdk.message.Message;
+import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.imsdk.v2.V2TIMConversationResult;
+import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -74,6 +81,8 @@ public class VideoContactsFragment extends AppFragment {
     private VideoPatientQuickAdapter videoPatientQuickAdapter;
     private VideoClientsApi videoClientsApi;
     private int newCount = 0;
+    public static final int GET_CONVERSATION_COUNT = 500;
+    private List<V2TIMConversation> v2TIMConversationList;
 
     @Override
     protected int getLayoutId() {
@@ -126,9 +135,10 @@ public class VideoContactsFragment extends AppFragment {
                 if (videoClientsResultBeans.get(position).hasNew) {
                     videoClientsResultBeans.get(position).hasNew = false;
                     newCount = newCount - videoClientsResultBeans.get(position).newMsgNum;
-                    tv_new_count.setText(newCount + "");
-                    if (newCount == 0) {
+                    setMsgCount();
+                    if (newCount <= 0) {
                         layout_pot.setVisibility(View.GONE);
+                        EventBus.getDefault().post(new MsgRemindObj(2, 0));
                     }
                 }
 
@@ -136,6 +146,14 @@ public class VideoContactsFragment extends AppFragment {
             }
         });
         contact_list.setAdapter(videoPatientQuickAdapter);
+    }
+
+    private void setMsgCount() {
+        if (newCount > 99) {
+            tv_new_count.setText(newCount + "+");
+        } else {
+            tv_new_count.setText(newCount + "");
+        }
     }
 
     @Override
@@ -156,8 +174,9 @@ public class VideoContactsFragment extends AppFragment {
 
         newCount = 0;
 
-        tv_new_count.setText(newCount + "");
+        setMsgCount();
         layout_pot.setVisibility(View.GONE);
+        EventBus.getDefault().post(new MsgRemindObj(2, 0));
         getMyClients(false);
     }
 
@@ -179,8 +198,9 @@ public class VideoContactsFragment extends AppFragment {
                         videoClientsResultBeans.get(i).newMsgNum++;
                         newCount++;
 
-                        tv_new_count.setText(newCount + "");
+                        setMsgCount();
                         layout_pot.setVisibility(View.VISIBLE);
+                        EventBus.getDefault().post(new MsgRemindObj(2, newCount));
                     }
                 }
 
@@ -211,6 +231,7 @@ public class VideoContactsFragment extends AppFragment {
 
                 newCount = 0;
                 layout_pot.setVisibility(View.GONE);
+                EventBus.getDefault().post(new MsgRemindObj(2, 0));
 
                 videoClientsApi.attendanceStatus = "";
                 getMyClients(false);
@@ -239,37 +260,70 @@ public class VideoContactsFragment extends AppFragment {
 
 
     private void getMyClients(boolean needToast) {
-        EasyHttp.get(this).api(videoClientsApi).request(new HttpCallback<HttpData<ArrayList<VideoClientsResultBean>>>(this) {
+        V2TIMManager.getConversationManager().getConversationList(0, GET_CONVERSATION_COUNT, new V2TIMValueCallback<V2TIMConversationResult>() {
             @Override
-            public void onStart(Call call) {
-                super.onStart(call);
+            public void onError(int code, String desc) {
+                TUIKitLog.v("getConversationList", "loadConversation getConversationList error, code = " + code + ", desc = " + desc);
             }
 
             @Override
-            public void onSucceed(HttpData<ArrayList<VideoClientsResultBean>> result) {
-                super.onSucceed(result);
-                videoClientsResultBeans.clear();
-                if (null == result.getData()) {
-                    return;
-                }
-                videoClientsResultBeans = result.getData();
-                if (null == videoClientsResultBeans || videoClientsResultBeans.size() == 0) {
-                    if (needToast) {
-                        ToastUtil.toastShortMessage("暂无客户数据");
+            public void onSuccess(V2TIMConversationResult v2TIMConversationResult) {
+                v2TIMConversationList = v2TIMConversationResult.getConversationList();
+
+                EasyHttp.get(VideoContactsFragment.this).api(videoClientsApi).request(new HttpCallback<HttpData<ArrayList<VideoClientsResultBean>>>(VideoContactsFragment.this) {
+                    @Override
+                    public void onStart(Call call) {
+                        super.onStart(call);
                     }
-                    contact_list.setVisibility(View.GONE);
-                    tv_no_data.setVisibility(View.VISIBLE);
-                    return;
-                } else {
-                    contact_list.setVisibility(View.VISIBLE);
-                    tv_no_data.setVisibility(View.GONE);
-                }
-                videoPatientQuickAdapter.setNewData(videoClientsResultBeans);
-            }
 
-            @Override
-            public void onFail(Exception e) {
-                super.onFail(e);
+                    @Override
+                    public void onSucceed(HttpData<ArrayList<VideoClientsResultBean>> result) {
+                        super.onSucceed(result);
+                        videoClientsResultBeans.clear();
+                        if (null == result.getData()) {
+                            return;
+                        }
+                        videoClientsResultBeans = result.getData();
+                        if (null == videoClientsResultBeans || videoClientsResultBeans.size() == 0) {
+                            if (needToast) {
+                                ToastUtil.toastShortMessage("暂无客户数据");
+                            }
+                            contact_list.setVisibility(View.GONE);
+                            tv_no_data.setVisibility(View.VISIBLE);
+                            return;
+                        } else {
+                            contact_list.setVisibility(View.VISIBLE);
+                            tv_no_data.setVisibility(View.GONE);
+                        }
+
+                        //初始化所有的新消息
+                        for (int i = 0; i < videoClientsResultBeans.size(); i++) {
+                            videoClientsResultBeans.get(i).newMsgNum = DataUtil.getUnreadCount(true,
+                                    videoClientsResultBeans.get(i).userInfo.userId + "", v2TIMConversationList);
+                            if (videoClientsResultBeans.get(i).newMsgNum > 0) {
+                                videoClientsResultBeans.get(i).hasNew = true;
+                            }
+                        }
+
+                        //计算消息总数
+                        for (int i = 0; i < videoClientsResultBeans.size(); i++) {
+                            newCount = newCount + videoClientsResultBeans.get(i).newMsgNum;
+                        }
+                        //展示消息总数
+                        setMsgCount();
+                        if (newCount > 0) {
+                            layout_pot.setVisibility(View.VISIBLE);
+                            EventBus.getDefault().post(new MsgRemindObj(2, newCount));
+                        }
+
+                        videoPatientQuickAdapter.setNewData(videoClientsResultBeans);
+                    }
+
+                    @Override
+                    public void onFail(Exception e) {
+                        super.onFail(e);
+                    }
+                });
             }
         });
     }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -28,6 +29,7 @@ import com.bitvalue.healthmanage.http.response.msg.AddVideoObject;
 import com.bitvalue.healthmanage.manager.ActivityManager;
 import com.bitvalue.healthmanage.other.DoubleClickHelper;
 import com.bitvalue.healthmanage.ui.contacts.bean.MainRefreshObj;
+import com.bitvalue.healthmanage.ui.contacts.bean.MsgRemindObj;
 import com.bitvalue.healthmanage.ui.contacts.bean.VideoRefreshObj;
 import com.bitvalue.healthmanage.ui.fragment.AddArticleFragment;
 import com.bitvalue.healthmanage.ui.fragment.AddQuestionFragment;
@@ -69,6 +71,8 @@ import com.hjq.http.listener.HttpCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,13 +87,13 @@ import okhttp3.Call;
 public class HomeActivity extends AppActivity {
 
     @BindView(R.id.layout_person)
-    LinearLayout layout_person;
+    RelativeLayout layout_person;
 
     @BindView(R.id.layout_settings)
     LinearLayout layout_settings;
 
     @BindView(R.id.layout_group)
-    LinearLayout layout_group;
+    RelativeLayout layout_group;
 
     @BindView(R.id.tv_group)
     TextView tv_group;
@@ -105,6 +109,18 @@ public class HomeActivity extends AppActivity {
 
     @BindView(R.id.img_send)
     ImageView img_send;
+
+    @BindView(R.id.layout_pot_health)
+    LinearLayout layout_pot_health;
+
+    @BindView(R.id.tv_new_count_health)
+    TextView tv_new_count_health;
+
+    @BindView(R.id.layout_pot_video)
+    LinearLayout layout_pot_video;
+
+    @BindView(R.id.tv_new_count_video)
+    TextView tv_new_count_video;
 
     private static final int chat_index = 0;
     private static final int settings = 1;
@@ -127,6 +143,7 @@ public class HomeActivity extends AppActivity {
 
     @Override
     protected void initView() {
+        EventBus.getDefault().register(this);
         //adb logcat -v time >D:\log.txt
         tv_settings = findViewById(R.id.tv_settings);
         tv_chat = findViewById(R.id.tv_chat);
@@ -303,6 +320,10 @@ public class HomeActivity extends AppActivity {
                     backAllThirdAct();
                 }
                 afterTabSelect(2);
+
+                //点击之后隐藏红点
+                layout_pot_video.setVisibility(View.GONE);
+                tv_new_count_video.setText("0");
                 break;
 
             case R.id.layout_send:
@@ -312,6 +333,17 @@ public class HomeActivity extends AppActivity {
                 }
                 afterTabSelect(3);
                 break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MsgRemindObj msgRemindObj) {
+        if (msgRemindObj.type == 2) {
+            tv_new_count_video.setText(msgRemindObj.num > 99 ? (msgRemindObj.num + "+") : (msgRemindObj.num + ""));
+            layout_pot_video.setVisibility(msgRemindObj.num > 0 ? View.VISIBLE : View.GONE);
+        } else {
+            tv_new_count_health.setText(msgRemindObj.num > 99 ? (msgRemindObj.num + "+") : (msgRemindObj.num + ""));
+            layout_pot_health.setVisibility(msgRemindObj.num > 0 ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -344,6 +376,12 @@ public class HomeActivity extends AppActivity {
             // 销毁进程（注意：调用此 API 可能导致当前 Activity onDestroy 方法无法正常回调）
             // System.exit(0);
         }, 300);
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     /**

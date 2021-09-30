@@ -80,14 +80,14 @@
         <!--                android:resource="@xml/file_paths_public" />-->
         <!--        </provider>-->
 
-        <!-- android:windowSoftInputMode="adjustResize|stateVisible" -->
+        <!-- android:windowSoftInputMode="adjustResize|stateVisible|adjustPan" -->
         <activity
             android:name=".ui.activity.HomeActivity"
             android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/SplashTheme"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".ui.activity.LoginHealthActivity"

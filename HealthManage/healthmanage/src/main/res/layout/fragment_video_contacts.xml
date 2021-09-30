@@ -61,9 +61,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="1"
+                android:text="100"
                 android:textColor="@color/white"
-                android:textSize="@dimen/qb_px_8" />
+                android:textSize="@dimen/qb_px_6" />
         </LinearLayout>
 
     </RelativeLayout>

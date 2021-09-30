@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
+import com.tencent.imsdk.v2.V2TIMConversation;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -86,6 +87,34 @@ public class DataUtil {
             return imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
         }
         return false;
+    }
+
+    /**
+     * 获取未读消息数
+     *
+     * @param isC2c
+     * @param conversationID        会话id，单聊为userId；群聊为goodsId+医生ID+患者ID拼接groupID
+     *                              userInfo.get(x).goodsId + loginBean.getUser().user.userId + userInfo.get(x).userId
+     * @param v2TIMConversationList
+     * @return
+     */
+    public static int getUnreadCount(boolean isC2c, String conversationID, List<V2TIMConversation> v2TIMConversationList) {
+        if (v2TIMConversationList == null || v2TIMConversationList.size() == 0) {
+            return 0;
+        } else {
+            for (int i = 0; i < v2TIMConversationList.size(); i++) {
+                if (isC2c) {
+                    if (v2TIMConversationList.get(i).getConversationID().replace("c2c_", "").equals(conversationID + "")) {
+                        return v2TIMConversationList.get(i).getUnreadCount();
+                    }
+                } else {
+                    if (v2TIMConversationList.get(i).getConversationID().replace("group_", "").equals(conversationID + "")) {
+                        return v2TIMConversationList.get(i).getUnreadCount();
+                    }
+                }
+            }
+        }
+        return 0;
     }
 
     public interface OnNormalDialogClicker {
@@ -216,7 +245,7 @@ public class DataUtil {
      * 弹出基本的对话框
      * 对MessageDialog再封装一层
      */
-    public static void showNormalDialog(Activity context, String title, String message, String positive, String nagative, OnNormalDialogClicker onNormalDialogClicker, boolean isForce,boolean isSingle) {
+    public static void showNormalDialog(Activity context, String title, String message, String positive, String nagative, OnNormalDialogClicker onNormalDialogClicker, boolean isForce, boolean isSingle) {
         MessageDialog messageDialog = new MessageDialog(context);
         messageDialog.setOnExecuteClickListener(new MessageDialog.OnExecuteClickListener() {
             @Override
@@ -296,19 +325,19 @@ public class DataUtil {
     public static SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO getNotNullData(SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO templateTaskContentDTO) {
         SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO noNullData = new SavePlanApi.TemplateTaskDTO.TemplateTaskContentDTO();
 
-        if (templateTaskContentDTO.taskType!= null && !templateTaskContentDTO.taskType.isEmpty()) {
+        if (templateTaskContentDTO.taskType != null && !templateTaskContentDTO.taskType.isEmpty()) {
             noNullData.taskType = templateTaskContentDTO.taskType;
         }
 
-        if (templateTaskContentDTO.contentId!= null && !templateTaskContentDTO.contentId.isEmpty()) {
+        if (templateTaskContentDTO.contentId != null && !templateTaskContentDTO.contentId.isEmpty()) {
             noNullData.contentId = templateTaskContentDTO.contentId;
         }
 
-        if (templateTaskContentDTO.id!= null && !templateTaskContentDTO.id.isEmpty()) {
+        if (templateTaskContentDTO.id != null && !templateTaskContentDTO.id.isEmpty()) {
             noNullData.id = templateTaskContentDTO.id;
         }
 
-        if (templateTaskContentDTO.taskType!= null && !templateTaskContentDTO.taskType.isEmpty()) {
+        if (templateTaskContentDTO.taskType != null && !templateTaskContentDTO.taskType.isEmpty()) {
             noNullData.taskType = templateTaskContentDTO.taskType;
         }
 

@@ -285,6 +285,9 @@ public class DocContactsFragment extends AppFragment {
 
         for (int i = 0; i < userInfoDTOList.size(); i++) {
             LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
+            if (loginBean == null) {
+                return;
+            }
             if (userInfoDTOList.get(i).userId != loginBean.getUser().user.userId) {
                 VideoClientsResultBean videoClientsResultBean = new VideoClientsResultBean();
                 videoClientsResultBean.id = "1440574800199196673";

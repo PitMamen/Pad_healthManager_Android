@@ -50,7 +50,7 @@
             android:gravity="center"
             android:text="1"
             android:textColor="@color/white"
-            android:textSize="@dimen/qb_px_6" />
+            android:textSize="@dimen/qb_px_5" />
     </LinearLayout>
 
     <TextView

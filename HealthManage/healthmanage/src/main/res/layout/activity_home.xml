@@ -121,12 +121,11 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/layout_person"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/home_blue_dark"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
@@ -143,9 +142,31 @@
                     android:id="@+id/img_person"
                     android:layout_width="@dimen/qb_px_15"
                     android:layout_height="@dimen/qb_px_15"
+                    android:layout_centerInParent="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/tab_icon_ct" />
-            </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_pot_health"
+                    android:layout_width="@dimen/qb_px_11"
+                    android:layout_height="@dimen/qb_px_11"
+                    android:layout_marginLeft="@dimen/qb_px_27"
+                    android:layout_marginTop="@dimen/qb_px_6"
+                    android:background="@drawable/shape_boll_red"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_new_count_health"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/qb_px_7" />
+                </LinearLayout>
+
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -157,11 +178,10 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/layout_group"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
@@ -178,9 +198,30 @@
                     android:id="@+id/img_group"
                     android:layout_width="@dimen/qb_px_15"
                     android:layout_height="@dimen/qb_px_15"
+                    android:layout_centerInParent="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/tab_icon_gr" />
-            </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_pot_video"
+                    android:layout_width="@dimen/qb_px_11"
+                    android:layout_height="@dimen/qb_px_11"
+                    android:layout_marginLeft="@dimen/qb_px_27"
+                    android:layout_marginTop="@dimen/qb_px_6"
+                    android:background="@drawable/shape_boll_red"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_new_count_video"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="100"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/qb_px_6" />
+                </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 

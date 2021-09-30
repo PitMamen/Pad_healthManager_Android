@@ -28,8 +28,10 @@ import com.bitvalue.healthmanage.ui.activity.HomeActivity;
 import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.bitvalue.healthmanage.ui.activity.NewMsgActivity;
 import com.bitvalue.healthmanage.ui.contacts.bean.MainRefreshObj;
+import com.bitvalue.healthmanage.ui.contacts.bean.MsgRemindObj;
 import com.bitvalue.healthmanage.ui.contacts.view.ClientsRecyclerAdapter;
 import com.bitvalue.healthmanage.util.SharedPreManager;
+import com.bitvalue.healthmanage.widget.DataUtil;
 import com.bitvalue.healthmanage.widget.mpopupwindow.MPopupWindow;
 import com.bitvalue.healthmanage.widget.mpopupwindow.TypeGravity;
 import com.bitvalue.healthmanage.widget.mpopupwindow.ViewCallback;
@@ -37,13 +39,18 @@ import com.bitvalue.healthmanage.widget.popupwindow.CommonPopupWindow;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IMEventListener;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
+import com.bitvalue.sdk.collab.utils.TUIKitLog;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
 import com.tencent.imsdk.message.Message;
+import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.imsdk.v2.V2TIMConversationResult;
+import com.tencent.imsdk.v2.V2TIMManager;
 import com.tencent.imsdk.v2.V2TIMMessage;
+import com.tencent.imsdk.v2.V2TIMValueCallback;
 import com.thoughtbot.expandablerecyclerview.listeners.GroupExpandCollapseListener;
 import com.thoughtbot.expandablerecyclerview.listeners.OnGroupClickListener;
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
@@ -86,6 +93,8 @@ public class ContactsFragment extends AppFragment {
     private ArrayList<ClientsResultBean> clientsProcessBeans = new ArrayList<>();
     private int newCount = 0;
     private long lastTime;
+    private List<V2TIMConversation> v2TIMConversationList;
+    private int totalNum = 0;
 
     @Override
     protected int getLayoutId() {
@@ -125,6 +134,7 @@ public class ContactsFragment extends AppFragment {
                 child.chatType = InputLayoutUI.CHAT_TYPE_HEALTH;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);
 
+                totalNum = 0;
                 for (int i = 0; i < clientsProcessBeans.size(); i++) {
                     for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
                         clientsProcessBeans.get(i).userInfo.get(j).isClicked = false;
@@ -135,10 +145,16 @@ public class ContactsFragment extends AppFragment {
                             if (clientsProcessBeans.get(i).userInfo.get(j).hasNew) {
                                 clientsProcessBeans.get(i).userInfo.get(j).hasNew = false;
                                 clientsProcessBeans.get(i).newMsgNum = clientsProcessBeans.get(i).newMsgNum - clientsProcessBeans.get(i).userInfo.get(j).newMsgNum;
+                                if (clientsProcessBeans.get(i).newMsgNum <= 0) {
+                                    clientsProcessBeans.get(i).newMsgNum = 0;
+                                }
+                                clientsProcessBeans.get(i).userInfo.get(j).newMsgNum = 0;
                             }
                         }
                     }
+                    totalNum = totalNum + clientsProcessBeans.get(i).newMsgNum;
                 }
+                EventBus.getDefault().post(new MsgRemindObj(1, totalNum));
                 adapter.notifyDataSetChanged();
             }
         });
@@ -166,11 +182,14 @@ public class ContactsFragment extends AppFragment {
             @Override
             public void onGroupExpanded(ExpandableGroup group) {
                 ClientsResultBean clientsResultBean = (ClientsResultBean) group;
+                totalNum = 0;
                 for (int i = 0; i < clientsProcessBeans.size(); i++) {
                     if (clientsProcessBeans.get(i).group.equals(clientsResultBean.group)) {
                         clientsProcessBeans.get(i).newMsgNum = 0;
                     }
+                    totalNum = totalNum + clientsProcessBeans.get(i).newMsgNum;
                 }
+                EventBus.getDefault().post(new MsgRemindObj(1, totalNum));
 
                 adapter.notifyDataSetChanged();
             }
@@ -242,6 +261,7 @@ public class ContactsFragment extends AppFragment {
             Log.d("http", s);
             if (null != v2TIMMessage) {
                 Message message = v2TIMMessage.getMessage();
+                totalNum = 0;
                 for (int i = 0; i < clientsProcessBeans.size(); i++) {
                     for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
                         if (clientsProcessBeans.get(i).userInfo.get(j).groupID.equals(message.getGroupID())) {
@@ -250,9 +270,11 @@ public class ContactsFragment extends AppFragment {
                             clientsProcessBeans.get(i).newMsgNum++;
                         }
 
-                        adapter.notifyDataSetChanged();
                     }
+                    totalNum = totalNum + clientsProcessBeans.get(i).newMsgNum;
                 }
+                adapter.notifyDataSetChanged();
+                EventBus.getDefault().post(new MsgRemindObj(1, totalNum));
             }
         }
     };
@@ -379,63 +401,104 @@ public class ContactsFragment extends AppFragment {
     };
 
     private void getMyClients(boolean needToast) {
-        EasyHttp.post(this).api(new ClientsApi()).request(new HttpCallback<HttpData<ArrayList<ClientsResultBean>>>(this) {
+
+        V2TIMManager.getConversationManager().getConversationList(0, VideoContactsFragment.GET_CONVERSATION_COUNT, new V2TIMValueCallback<V2TIMConversationResult>() {
             @Override
-            public void onStart(Call call) {
-                super.onStart(call);
+            public void onError(int code, String desc) {
+                TUIKitLog.v("getConversationList", "loadConversation getConversationList error, code = " + code + ", desc = " + desc);
             }
 
             @Override
-            public void onSucceed(HttpData<ArrayList<ClientsResultBean>> result) {
-                super.onSucceed(result);
-                clientsResultBeans = result.getData();
-                if (null == clientsResultBeans || clientsResultBeans.size() == 0) {
-                    if (needToast) {
-                        ToastUtil.toastShortMessage("暂无客户数据");
+            public void onSuccess(V2TIMConversationResult v2TIMConversationResult) {
+                v2TIMConversationList = v2TIMConversationResult.getConversationList();
+
+                EasyHttp.post(ContactsFragment.this).api(new ClientsApi()).request(new HttpCallback<HttpData<ArrayList<ClientsResultBean>>>(ContactsFragment.this) {
+                    @Override
+                    public void onStart(Call call) {
+                        super.onStart(call);
                     }
-                    contact_list.setVisibility(View.GONE);
-                    tv_no_data.setVisibility(View.VISIBLE);
-                    return;
-                } else {
-                    contact_list.setVisibility(View.VISIBLE);
-                    tv_no_data.setVisibility(View.GONE);
-                }
-                processData();
-                adapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onFail(Exception e) {
-                super.onFail(e);
+                    @Override
+                    public void onSucceed(HttpData<ArrayList<ClientsResultBean>> result) {
+                        super.onSucceed(result);
+                        clientsResultBeans = result.getData();
+                        if (null == clientsResultBeans || clientsResultBeans.size() == 0) {
+                            if (needToast) {
+                                ToastUtil.toastShortMessage("暂无客户数据");
+                            }
+                            contact_list.setVisibility(View.GONE);
+                            tv_no_data.setVisibility(View.VISIBLE);
+                            return;
+                        } else {
+                            contact_list.setVisibility(View.VISIBLE);
+                            tv_no_data.setVisibility(View.GONE);
+                        }
+
+                        processData();
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFail(Exception e) {
+                        super.onFail(e);
+                    }
+                });
             }
         });
+
+
     }
 
     private void processData() {
         for (int i = 0; i < clientsResultBeans.size(); i++) {
             ClientsResultBean clientsResultBean = clientsResultBeans.get(i);
             List<ClientsResultBean.UserInfoDTO> userInfo = clientsResultBean.userInfo;
+            //处理数据，去掉没有集合的套餐
             if (null == userInfo || userInfo.size() == 0) {
                 continue;
-//                userInfo = new ArrayList<>();
-//                ClientsResultBean.UserInfoDTO userInfoDTO = new ClientsResultBean.UserInfoDTO("暂无");
-//                userInfo.add(userInfoDTO);
             }
+
+            //用新的集合接收空套餐的数据
             ClientsResultBean newOne = new ClientsResultBean(clientsResultBean.group, userInfo);
 
             LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
             if (loginBean == null) {
                 return;
             }
+
+            //循环赋groupId，以及赋值未读消息数
             for (int x = 0; x < userInfo.size(); x++) {
                 userInfo.get(x).groupID = userInfo.get(x).goodsId + loginBean.getUser().user.userId + userInfo.get(x).userId;
+
+                userInfo.get(x).newMsgNum = DataUtil.getUnreadCount(false, userInfo.get(x).groupID, v2TIMConversationList);
+                if (userInfo.get(x).newMsgNum > 0) {
+                    userInfo.get(x).hasNew = true;
+                }
             }
 
+            //组装完数据
             newOne.userInfo = userInfo;
             newOne.num = clientsResultBean.num;
             newOne.group = clientsResultBean.group;
             clientsProcessBeans.add(newOne);
         }
+
+        //获取每个套餐总数，以及所有套餐总数
+        totalNum = 0;
+        for (int i = 0; i < clientsProcessBeans.size(); i++) {
+            for (int j = 0; j < clientsProcessBeans.get(i).userInfo.size(); j++) {
+                //获取单个套餐的未读消息数
+                clientsProcessBeans.get(i).newMsgNum = clientsProcessBeans.get(i).newMsgNum + clientsProcessBeans.get(i).userInfo.get(j).newMsgNum;
+            }
+
+            if (clientsProcessBeans.get(i).newMsgNum <= 0) {
+                clientsProcessBeans.get(i).newMsgNum = 0;
+            }
+
+            //获取所有套餐的总未读消息数
+            totalNum = totalNum + clientsProcessBeans.get(i).newMsgNum;
+        }
+        EventBus.getDefault().post(new MsgRemindObj(1, totalNum));
 
         //检测数据，无数据显示刷新按钮
         if (clientsProcessBeans.size() == 0) {
