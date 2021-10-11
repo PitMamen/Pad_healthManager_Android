@@ -75,7 +75,7 @@ public class SplashActivity extends AppActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case Utils.REQ_PERMISSION_CODE:
-                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && (grantResults[0] != PackageManager.PERMISSION_GRANTED)) {
 //                    ToastUtils.show("未全部授权，部分功能可能无法使用！");
 //                    new AlertDialog.Builder(SplashActivity.this)
 //                            .setMessage("请先进行相关授权，再重启APP！")

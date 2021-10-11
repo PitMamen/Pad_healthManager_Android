@@ -429,6 +429,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
      * 只要一项有内容就可以提交
      */
     private void checkTotalMsg() {
+        showDialog();
         if (!et_text_msg.getText().toString().isEmpty() || (mUploadedAudios.size() > 0) || (videos.size() > 0)
                 || (photos.size() > 0) || (articles.size() > 0)) {
             //可以提交
@@ -505,6 +506,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
 
             @Override
             public void onFail() {
+                hideDialog();
                 ToastUtil.toastShortMessage("请求失败");
             }
         });
@@ -524,7 +526,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
 
                 photosFinal.add(result.getData().fileLinkUrl);
 
-                //组装录音列表数据
+                //组装图片列表数据
                 mUploadImages.get(j[0]).fileLinkUrl = result.getData().fileLinkUrl;
                 mUploadImages.get(j[0]).id = result.getData().id;
                 j[0]++;
@@ -537,6 +539,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
 
             @Override
             public void onFail() {
+                hideDialog();
                 ToastUtil.toastShortMessage("请求失败");
             }
         });
@@ -572,6 +575,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
             @Override
             public void onSucceed(HttpData<List<SaveTotalMsgApi>> result) {
                 super.onSucceed(result);
+                hideDialog();
                 //增加判空
                 if (result == null || result.getData() ==null){
                     return;
@@ -630,6 +634,7 @@ public class NewMsgFragment extends AppFragment implements BGANinePhotoLayout.De
             @Override
             public void onFail(Exception e) {
                 super.onFail(e);
+                hideDialog();
             }
         });
     }
