@@ -4,12 +4,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.app.AppFragment;
-import com.bitvalue.healthmanage.http.model.HttpData;
-import com.bitvalue.healthmanage.http.request.TaskDetailApi;
-import com.bitvalue.healthmanage.http.response.TaskDetailBean;
-import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.bitvalue.healthmanage.ui.media.ImagePreviewActivity;
+import com.bitvalue.healthmanage.base.AppFragment;
+import com.bitvalue.healthmanage.http.model.ApiResult;
+import com.bitvalue.healthmanage.http.api.TaskDetailApi;
+import com.bitvalue.healthmanage.http.bean.TaskDetailBean;
+import com.bitvalue.healthmanage.ui.activity.main.HomeActivity;
+import com.bitvalue.healthmanage.ui.activity.media.ImagePreviewActivity;
 import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomMessage;
@@ -29,6 +29,9 @@ import butterknife.OnClick;
 import cn.bingoogolapple.photopicker.widget.BGANinePhotoLayout;
 import okhttp3.Call;
 
+/**
+ * 用药指导界面
+ */
 public class MedicineGuideFragment extends AppFragment implements BGANinePhotoLayout.Delegate {
 
     @BindView(R.id.tv_title)
@@ -93,14 +96,14 @@ public class MedicineGuideFragment extends AppFragment implements BGANinePhotoLa
         taskDetailApi.contentId = customHealthDataMessage.contentId;
         taskDetailApi.planType = "OutsideInformation";
         taskDetailApi.userId = customHealthDataMessage.userId;
-        EasyHttp.get(this).api(taskDetailApi).request(new HttpCallback<HttpData<TaskDetailBean>>(this) {
+        EasyHttp.get(this).api(taskDetailApi).request(new HttpCallback<ApiResult<TaskDetailBean>>(this) {
             @Override
             public void onStart(Call call) {
                 super.onStart(call);
             }
 
             @Override
-            public void onSucceed(HttpData<TaskDetailBean> result) {
+            public void onSucceed(ApiResult<TaskDetailBean> result) {
                 super.onSucceed(result);
                 //增加判空
                 if (result == null || result.getData() == null) {

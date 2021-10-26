@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.bitvalue.sdk.collab.modules.chat.ChatLayout
+    <com.bitvalue.sdk.collab.modules.chat.layout.input.ChatLayout
         android:id="@+id/chat_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

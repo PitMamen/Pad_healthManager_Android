@@ -1,26 +1,16 @@
 package com.bitvalue.healthmanage.util;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
 import android.widget.ImageView;
 
-import com.bitvalue.healthmanage.BuildConfig;
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.widget.recyclerView.DividerItemDecoration;
+import com.bitvalue.healthmanage.widget.view.DividerItemDecoration;
 import com.bumptech.glide.Glide;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 

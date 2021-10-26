@@ -1,21 +1,18 @@
 package com.bitvalue.healthmanage.ui.adapter;
 
 
-import android.annotation.SuppressLint;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.healthmanage.callback.OnItemDeleteCallback;
 import com.bitvalue.healthmanage.app.AppApplication;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
-import com.bitvalue.healthmanage.http.response.ArticleBean;
-import com.bitvalue.healthmanage.http.response.VideoClientsResultBean;
-import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
+import com.bitvalue.healthmanage.http.bean.VideoClientsResultBean;
+import com.bitvalue.healthmanage.ui.activity.main.HomeActivity;
 import com.bitvalue.healthmanage.util.TimeUtils;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -30,7 +27,7 @@ import java.util.List;
 public class VideoPatientQuickAdapter extends BaseQuickAdapter<VideoClientsResultBean, BaseViewHolder> {
 
     private HomeActivity homeActivity;
-    private OnItemDelete onItemDelete;
+    private OnItemDeleteCallback onItemDeleteCallback;
     private boolean isNoDelete;
 
     public VideoPatientQuickAdapter(@LayoutRes int layoutResId, @Nullable List<VideoClientsResultBean> data) {
@@ -107,11 +104,11 @@ public class VideoPatientQuickAdapter extends BaseQuickAdapter<VideoClientsResul
         }
     }
 
-    public OnItemDelete getOnItemDelete() {
-        return onItemDelete;
+    public OnItemDeleteCallback getOnItemDelete() {
+        return onItemDeleteCallback;
     }
 
-    public void setOnItemDelete(OnItemDelete onItemDelete) {
-        this.onItemDelete = onItemDelete;
+    public void setOnItemDelete(OnItemDeleteCallback onItemDeleteCallback) {
+        this.onItemDeleteCallback = onItemDeleteCallback;
     }
 }

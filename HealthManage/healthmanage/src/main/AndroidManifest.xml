@@ -82,7 +82,7 @@
 
         <!-- android:windowSoftInputMode="adjustResize|stateVisible|adjustPan" -->
         <activity
-            android:name=".ui.activity.HomeActivity"
+            android:name=".ui.activity.main.HomeActivity"
             android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
@@ -90,51 +90,51 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".ui.activity.LoginHealthActivity"
+            android:name=".ui.activity.main.LoginHealthActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/SplashTheme" />
 
         <activity
-            android:name=".ui.activity.NewMsgActivity"
+            android:name=".ui.activity.main.NewMsgActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/SplashTheme" />
 
         <!-- 拍照选择 -->
         <activity
-            android:name=".ui.media.CameraActivity"
+            android:name=".ui.activity.media.CameraActivity"
             android:launchMode="singleTop"
             android:screenOrientation="landscape" />
 
         <!-- 图片选择 -->
         <activity
-            android:name=".ui.media.ImageSelectActivity"
+            android:name=".ui.activity.media.ImageSelectActivity"
             android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
             android:label="@string/image_select_title"
             android:screenOrientation="landscape" />
 
         <!-- 查看大图 -->
         <activity
-            android:name=".ui.media.ImagePreviewActivity"
+            android:name=".ui.activity.media.ImagePreviewActivity"
             android:launchMode="singleTop"
             android:screenOrientation="landscape" />
 
         <!-- 播放视频 -->
         <activity
-            android:name=".ui.media.VideoPlayActivity"
+            android:name=".ui.activity.media.VideoPlayActivity"
             android:launchMode="singleTop"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreenTheme" />
 
         <!-- 选择视频 -->
         <activity
-            android:name=".ui.media.VideoSelectActivity"
+            android:name=".ui.activity.media.VideoSelectActivity"
             android:launchMode="singleTop"
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".ui.activity.SplashActivity"
+            android:name=".ui.activity.main.SplashActivity"
             android:screenOrientation="landscape"
             android:theme="@style/SplashTheme">
             <!-- 程序入口 -->
@@ -151,7 +151,7 @@
 
         <!-- 首页 -->
         <!--        <activity-->
-        <!--            android:name="com.bitvalue.healthmanage.ui.activity.HomeActivity"-->
+        <!--            android:name="com.bitvalue.healthmanage.ui.activity.main.HomeActivity"-->
         <!--            android:launchMode="singleTask"-->
         <!--            android:screenOrientation="portrait"-->
         <!--            android:windowSoftInputMode="adjustPan" />-->

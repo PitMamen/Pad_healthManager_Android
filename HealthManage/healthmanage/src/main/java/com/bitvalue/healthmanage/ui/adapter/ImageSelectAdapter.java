@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.app.AppAdapter;
+import com.bitvalue.healthmanage.base.AppAdapter;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
 
 import java.util.List;

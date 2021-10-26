@@ -7,8 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.app.AppAdapter;
-
+import com.bitvalue.healthmanage.base.AppAdapter;
 
 /**
  *    author : Android 轮子哥

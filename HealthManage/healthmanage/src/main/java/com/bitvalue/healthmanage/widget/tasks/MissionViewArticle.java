@@ -8,22 +8,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bitvalue.healthmanage.Constants;
+import com.bitvalue.healthmanage.util.Constants;
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.http.glide.GlideApp;
-import com.bitvalue.healthmanage.http.response.ArticleBean;
-import com.bitvalue.healthmanage.http.response.PaperBean;
-import com.bitvalue.healthmanage.http.response.PlanDetailResult;
-import com.bitvalue.healthmanage.ui.activity.HomeActivity;
+import com.bitvalue.healthmanage.http.bean.ArticleBean;
+import com.bitvalue.healthmanage.http.bean.PaperBean;
+import com.bitvalue.healthmanage.http.bean.PlanDetailResult;
+import com.bitvalue.healthmanage.ui.activity.main.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.PaperQuickAdapter;
-import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
+import com.bitvalue.healthmanage.callback.OnItemDeleteCallback;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
-import com.bitvalue.healthmanage.widget.DataUtil;
+import com.bitvalue.healthmanage.util.DataUtil;
 import com.bitvalue.healthmanage.widget.tasks.bean.GetMissionObj;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
@@ -129,7 +127,7 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL, articleBeans.get(position));
             }
         });
-        paperAdapter.setOnItemDelete(new OnItemDelete() {
+        paperAdapter.setOnItemDelete(new OnItemDeleteCallback() {
             @Override
             public void onItemDelete(int position) {
                 articleBeans.remove(position);

@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKit;
-import com.bitvalue.sdk.collab.modules.chat.ChatLayout;
+import com.bitvalue.sdk.collab.modules.chat.layout.input.ChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.BaseInputFragment;
 import com.bitvalue.sdk.collab.modules.chat.base.InputMoreActionUnit;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayout;

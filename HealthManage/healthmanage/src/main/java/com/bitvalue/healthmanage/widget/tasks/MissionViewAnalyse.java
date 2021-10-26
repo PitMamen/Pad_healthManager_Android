@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.ui.activity.HomeActivity;
+import com.bitvalue.healthmanage.ui.activity.main.HomeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

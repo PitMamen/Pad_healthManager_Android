@@ -2,7 +2,6 @@ package com.bitvalue.healthmanage.widget.tasks;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,23 +12,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LifecycleOwner;
 
-import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
-import com.bigkoo.pickerview.listener.OnTimeSelectListener;
-import com.bigkoo.pickerview.view.TimePickerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.app.AppApplication;
-import com.bitvalue.healthmanage.http.model.HttpData;
-import com.bitvalue.healthmanage.http.request.DeleteMissionApi;
-import com.bitvalue.healthmanage.http.response.PlanDetailResult;
-import com.bitvalue.healthmanage.ui.activity.HomeActivity;
+import com.bitvalue.healthmanage.http.model.ApiResult;
+import com.bitvalue.healthmanage.http.api.DeleteMissionApi;
+import com.bitvalue.healthmanage.http.bean.PlanDetailResult;
+import com.bitvalue.healthmanage.ui.activity.main.HomeActivity;
 import com.bitvalue.healthmanage.util.InputMethodUtils;
 import com.bitvalue.healthmanage.util.TimeUtils;
 import com.bitvalue.healthmanage.util.UiUtil;
-import com.bitvalue.healthmanage.widget.DataUtil;
-import com.bitvalue.healthmanage.widget.TimePeriodView;
+import com.bitvalue.healthmanage.util.DataUtil;
+import com.bitvalue.healthmanage.widget.view.TimePeriodView;
 import com.bitvalue.healthmanage.widget.popupwindow.CommonPopupWindow;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
@@ -37,9 +31,7 @@ import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -272,14 +264,14 @@ public class TaskView extends LinearLayout {
         deleteMissionApi.templateId = templateTaskDTO.templateId;
         deleteMissionApi.taskId = templateTaskDTO.taskId;
         deleteMissionApi.id = id;
-        EasyHttp.post(homeActivity).api(deleteMissionApi).request(new HttpCallback<HttpData<SavePlanApi>>(homeActivity) {
+        EasyHttp.post(homeActivity).api(deleteMissionApi).request(new HttpCallback<ApiResult<SavePlanApi>>(homeActivity) {
             @Override
             public void onStart(Call call) {
                 super.onStart(call);
             }
 
             @Override
-            public void onSucceed(HttpData<SavePlanApi> result) {
+            public void onSucceed(ApiResult<SavePlanApi> result) {
                 super.onSucceed(result);
                 if (result.getCode() == 0) {
                     ToastUtil.toastShortMessage("删除项目成功");

@@ -502,13 +502,19 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     }
 
     public interface OnCustomClickListener{
+        /**
+         * 健康计划模块
+         */
         void onHealthPlanClick();
         void onHealthAnalyseClick();
         void onHealthMsgClick();
+
+
+        /***
+         * 虚拟诊间模块
+         */
         void onVideoCommunicate();
-
         void onWriteConsultConclusion();
-
         void onEndVideoConsult();
     }
 
@@ -516,6 +522,11 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         this.onCustomClickListener = onCustomClickListener;
     }
 
+
+    /***
+     * 发送消息、语言录制、表情按钮点击事件
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         TUIKitLog.i(TAG, "onClick id:" + view.getId()

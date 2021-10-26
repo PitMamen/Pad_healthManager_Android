@@ -11,9 +11,8 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.http.request.UploadFileApi;
-import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
-import com.bitvalue.sdk.collab.TUIKit;
+import com.bitvalue.healthmanage.callback.OnItemDeleteCallback;
+import com.bitvalue.healthmanage.http.api.UploadFileApi;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -27,7 +26,7 @@ import java.util.List;
 
 public class AudioAdapter extends BaseQuickAdapter<UploadFileApi, BaseViewHolder> {
 
-    private OnItemDelete onItemDelete;
+    private OnItemDeleteCallback onItemDeleteCallback;
     private boolean isNoDelete;
 
     public AudioAdapter(@LayoutRes int layoutResId, @Nullable List<UploadFileApi> data) {
@@ -53,35 +52,32 @@ public class AudioAdapter extends BaseQuickAdapter<UploadFileApi, BaseViewHolder
 
         LinearLayout audio_view = holder.getView(R.id.audio_view);
 
-        audio_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AudioPlayer.getInstance().isPlaying()) {
-                    AudioPlayer.getInstance().stopPlay();
-                    return;
-                }
-                if (TextUtils.isEmpty(uploadFileApi.fileLinkUrl) && TextUtils.isEmpty(uploadFileApi.path)) {
-                    ToastUtil.toastLongMessage("语音文件存在问题");
-                    return;
-                }
-                audioPlayImage.setImageResource(com.bitvalue.sdk.collab.R.drawable.play_voice_message);
-                final AnimationDrawable animationDrawable = (AnimationDrawable) audioPlayImage.getDrawable();
-                animationDrawable.start();
-                String playUrl = TextUtils.isEmpty(uploadFileApi.fileLinkUrl) ? uploadFileApi.path : uploadFileApi.fileLinkUrl;
-                AudioPlayer.getInstance().startPlay(playUrl, new AudioPlayer.Callback() {
-                    @Override
-                    public void onCompletion(Boolean success) {
-                        audioPlayImage.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                animationDrawable.stop();
-                                audioPlayImage.setImageResource(com.bitvalue.sdk.collab.R.drawable.voice_msg_playing_3);
-                            }
-                        });
-                    }
-                });
-
+        audio_view.setOnClickListener(v -> {
+            if (AudioPlayer.getInstance().isPlaying()) {
+                AudioPlayer.getInstance().stopPlay();
+                return;
             }
+            if (TextUtils.isEmpty(uploadFileApi.fileLinkUrl) && TextUtils.isEmpty(uploadFileApi.path)) {
+                ToastUtil.toastLongMessage("语音文件存在问题");
+                return;
+            }
+            audioPlayImage.setImageResource(com.bitvalue.sdk.collab.R.drawable.play_voice_message);
+            final AnimationDrawable animationDrawable = (AnimationDrawable) audioPlayImage.getDrawable();
+            animationDrawable.start();
+            String playUrl = TextUtils.isEmpty(uploadFileApi.fileLinkUrl) ? uploadFileApi.path : uploadFileApi.fileLinkUrl;
+            AudioPlayer.getInstance().startPlay(playUrl, new AudioPlayer.Callback() {
+                @Override
+                public void onCompletion(Boolean success) {
+                    audioPlayImage.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            animationDrawable.stop();
+                            audioPlayImage.setImageResource(com.bitvalue.sdk.collab.R.drawable.voice_msg_playing_3);
+                        }
+                    });
+                }
+            });
+
         });
 
         ImageView img_delete = holder.getView(R.id.img_delete);
@@ -92,17 +88,17 @@ public class AudioAdapter extends BaseQuickAdapter<UploadFileApi, BaseViewHolder
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                if (onItemDelete != null){
-                    onItemDelete.onItemDelete(position);
+                if (onItemDeleteCallback != null){
+                    onItemDeleteCallback.onItemDelete(position);
                 }
             }
         });
     }
-    public OnItemDelete getOnItemDelete() {
-        return onItemDelete;
+    public OnItemDeleteCallback getOnItemDelete() {
+        return onItemDeleteCallback;
     }
 
-    public void setOnItemDelete(OnItemDelete onItemDelete) {
-        this.onItemDelete = onItemDelete;
+    public void setOnItemDelete(OnItemDeleteCallback onItemDeleteCallback) {
+        this.onItemDeleteCallback = onItemDeleteCallback;
     }
 }

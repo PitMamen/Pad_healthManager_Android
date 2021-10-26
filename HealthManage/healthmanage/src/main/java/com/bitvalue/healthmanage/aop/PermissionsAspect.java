@@ -2,8 +2,8 @@ package com.bitvalue.healthmanage.aop;
 
 import android.app.Activity;
 
-import com.bitvalue.healthmanage.manager.ActivityManager;
-import com.bitvalue.healthmanage.other.PermissionCallback;
+import com.bitvalue.healthmanage.widget.manager.ActivityManager;
+import com.bitvalue.healthmanage.callback.PermissionCallback;
 import com.hjq.permissions.XXPermissions;
 
 import org.aspectj.lang.ProceedingJoinPoint;

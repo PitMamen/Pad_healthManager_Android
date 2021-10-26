@@ -7,11 +7,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.app.AppAdapter;
-import com.bitvalue.healthmanage.http.response.PlanBean;
-import com.bitvalue.healthmanage.http.response.PlanListBean;
-
-import org.jetbrains.annotations.NotNull;
+import com.bitvalue.healthmanage.base.AppAdapter;
+import com.bitvalue.healthmanage.http.bean.PlanListBean;
 
 public class HealthPlanAdapter extends AppAdapter<PlanListBean> {
 

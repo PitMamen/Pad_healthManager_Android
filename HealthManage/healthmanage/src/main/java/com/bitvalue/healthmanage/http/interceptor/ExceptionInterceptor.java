@@ -2,12 +2,12 @@ package com.bitvalue.healthmanage.http.interceptor;
 
 import android.content.Intent;
 
-import com.bitvalue.healthmanage.Constants;
+import com.bitvalue.healthmanage.util.Constants;
 import com.bitvalue.healthmanage.app.AppApplication;
-import com.bitvalue.healthmanage.http.model.HttpData;
-import com.bitvalue.healthmanage.manager.ActivityManager;
-import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
-import com.bitvalue.healthmanage.util.SharedPreManager;
+import com.bitvalue.healthmanage.http.model.ApiResult;
+import com.bitvalue.healthmanage.widget.manager.ActivityManager;
+import com.bitvalue.healthmanage.ui.activity.main.LoginHealthActivity;
+import com.bitvalue.healthmanage.widget.manager.SharedPreManager;
 import com.bitvalue.sdk.collab.utils.NetWorkUtils;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.gson.Gson;
@@ -71,23 +71,12 @@ public class ExceptionInterceptor implements Interceptor {
 
             if (contentLength != 0) {
                 String responseStr = buffer.clone().readString(charset);
-                HttpData<String> responseEntity = null;
+                ApiResult<String> responseEntity = null;
                 try {
 //                    new Gson().fromJson(re)
-                    responseEntity = new Gson().fromJson(responseStr, new TypeToken<HttpData<String>>() {
+                    responseEntity = new Gson().fromJson(responseStr, new TypeToken<ApiResult<String>>() {
                     }.getType());
                 } catch (Exception e) {
-                    //兼容如下的后台错误：
-                    /*
-                    <html>
-                    <head><title>502 Bad Gateway</title></head>
-                    <body bgcolor="white">
-                    <center><h1>502 Bad Gateway</h1></center>
-                    <hr><center>nginx/1.12.2</center>
-                    </body>
-                    </html>
-                    */
-
                     //FIXME 先注释掉，Toast无法弹出，报错：java.lang.RuntimeException: Can't create handler inside thread that has not called Looper.prepare()
                     //ToastUtil.showToastLong("网络异常，请稍后再试！\n" + e.getMessage());
                 }

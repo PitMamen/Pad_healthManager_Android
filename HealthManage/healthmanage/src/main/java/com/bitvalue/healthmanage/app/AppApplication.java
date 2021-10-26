@@ -19,22 +19,18 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.multidex.MultiDex;
 
-import com.bitvalue.healthmanage.Constants;
+import com.bitvalue.healthmanage.util.Constants;
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.aop.DebugLog;
-import com.bitvalue.healthmanage.helper.HelloChatController;
-//import com.bitvalue.healthmanage.http.glide.GlideApp;
+import com.bitvalue.healthmanage.widget.helper.HelloChatController;
 import com.bitvalue.healthmanage.http.interceptor.ExceptionInterceptor;
 import com.bitvalue.healthmanage.http.model.RequestHandler;
 import com.bitvalue.healthmanage.http.model.RequestServer;
-import com.bitvalue.healthmanage.manager.ActivityManager;
-import com.bitvalue.healthmanage.other.AppConfig;
-import com.bitvalue.healthmanage.other.CrashHandler;
-import com.bitvalue.healthmanage.other.DebugLoggerTree;
-import com.bitvalue.healthmanage.other.SmartBallPulseFooter;
-import com.bitvalue.healthmanage.other.ToastInterceptor;
-import com.bitvalue.healthmanage.ui.activity.HomeActivity;
-import com.bitvalue.healthmanage.util.SharedPreManager;
+import com.bitvalue.healthmanage.widget.manager.ActivityManager;
+import com.bitvalue.healthmanage.util.CrashHandler;
+import com.bitvalue.healthmanage.util.DebugLoggerTree;
+import com.bitvalue.healthmanage.util.SmartBallPulseFooter;
+import com.bitvalue.healthmanage.ui.activity.main.HomeActivity;
+import com.bitvalue.healthmanage.widget.manager.SharedPreManager;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.TUIKitListenerManager;
 import com.bitvalue.sdk.collab.config.ConfigHelper;
@@ -54,26 +50,18 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.scwang.smart.refresh.header.MaterialHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.tencent.bugly.crashreport.CrashReport;
-import com.tencent.imsdk.v2.V2TIMManager;
-import com.tencent.imsdk.v2.V2TIMSDKConfig;
-import com.tencent.imsdk.v2.V2TIMSDKListener;
-import com.tencent.imsdk.v2.V2TIMUserFullInfo;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.log.LoggerInterceptor;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
-import okhttp3.FormBody;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import okio.BufferedSink;
 import timber.log.Timber;
 
@@ -87,7 +75,6 @@ public final class AppApplication extends Application {
     private static AppApplication instance;
     private HomeActivity homeActivity;
 
-    @DebugLog("启动耗时")
     @Override
     public void onCreate() {
         super.onCreate();
@@ -130,8 +117,6 @@ public final class AppApplication extends Application {
             }
         });
 
-        // 设置 Toast 拦截器
-        ToastUtils.setToastInterceptor(new ToastInterceptor());
 
         // 设置标题栏初始化器
         TitleBar.setDefaultInitializer(new LightBarInitializer() {

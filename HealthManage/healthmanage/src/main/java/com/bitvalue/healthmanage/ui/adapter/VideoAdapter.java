@@ -7,13 +7,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.app.AppAdapter;
-import com.bitvalue.healthmanage.app.AppApplication;
-import com.bitvalue.healthmanage.http.response.ArticleBean;
-import com.bitvalue.healthmanage.http.response.VideoResultBean;
-import com.bitvalue.healthmanage.ui.media.VideoPlayActivity;
+import com.bitvalue.healthmanage.base.AppAdapter;
+import com.bitvalue.healthmanage.http.bean.VideoResultBean;
+import com.bitvalue.healthmanage.ui.activity.media.VideoPlayActivity;
 
 public class VideoAdapter extends AppAdapter<VideoResultBean.ListDTO> {
 

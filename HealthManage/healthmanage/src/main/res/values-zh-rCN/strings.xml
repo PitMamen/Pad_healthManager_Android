@@ -259,4 +259,15 @@
     <string name="camera_launch_fail">无法启动相机</string>
     <string name="camera_image_error">目标地址错误</string>
 
+    <string name="health_analyse">健康评估</string>
+    <string name="health_analyse_mes">健康评估消息</string>
+
+    <string name="health_mesage">健康消息</string>
+    <string name="health_mass_mes">群发消息</string>
+    <string name="my_visit_record">我的看诊记录</string>
+    <string name="writer_medical_record">病历书写</string>
+    <string name="health_assessment">健康评估</string>
+    <string name="article_selection">文章选择</string>
+    <string name="video_selection">视频选择</string>
+    <string name="health_management_plan">健康管理计划</string>
 </resources>

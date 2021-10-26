@@ -15,27 +15,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.http.model.HttpData;
-import com.bitvalue.healthmanage.http.myhttp.FileUploadUtils;
-import com.bitvalue.healthmanage.http.request.UploadFileApi;
-import com.bitvalue.healthmanage.http.response.AudioUploadResultBean;
-import com.bitvalue.healthmanage.http.response.PlanDetailResult;
-import com.bitvalue.healthmanage.ui.activity.HomeActivity;
+import com.bitvalue.healthmanage.http.model.ApiResult;
+import com.bitvalue.healthmanage.http.FileUploadUtils;
+import com.bitvalue.healthmanage.http.api.UploadFileApi;
+import com.bitvalue.healthmanage.http.bean.AudioUploadResultBean;
+import com.bitvalue.healthmanage.http.bean.PlanDetailResult;
+import com.bitvalue.healthmanage.ui.activity.main.HomeActivity;
 import com.bitvalue.healthmanage.ui.adapter.AudioAdapter;
-import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
-import com.bitvalue.healthmanage.ui.fragment.NewMsgFragment;
+import com.bitvalue.healthmanage.callback.OnItemDeleteCallback;
 import com.bitvalue.healthmanage.util.DensityUtil;
 import com.bitvalue.healthmanage.util.MUtils;
-import com.bitvalue.healthmanage.widget.DataUtil;
+import com.bitvalue.healthmanage.util.DataUtil;
 import com.bitvalue.healthmanage.widget.tasks.bean.SavePlanApi;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hjq.toast.ToastUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
@@ -128,7 +125,7 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
         list_audio.setLayoutManager(new LinearLayoutManager(homeActivity));
         list_audio.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
         adapter = new AudioAdapter(R.layout.item_audio, mUploadedAudios);
-        adapter.setOnItemDelete(new OnItemDelete() {
+        adapter.setOnItemDelete(new OnItemDeleteCallback() {
             @Override
             public void onItemDelete(int position) {
                 mUploadedAudios.remove(position);
@@ -228,7 +225,7 @@ public class MissionViewRemind extends LinearLayout implements DataInterface {
     private void uploadedAudioMsg(UploadFileApi uploadFileApi) {
         FileUploadUtils.INSTANCE.uploadAudio(homeActivity, uploadFileApi, new FileUploadUtils.OnAudioUploadCallback() {
             @Override
-            public void onSuccess(HttpData<AudioUploadResultBean> result) {
+            public void onSuccess(ApiResult<AudioUploadResultBean> result) {
 
                 if (result.getCode() != 0) {
                     ToastUtil.toastLongMessage(result.getMessage());

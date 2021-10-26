@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#363636"
-    tools:context=".ui.media.ImagePreviewActivity">
+    tools:context=".ui.activity.media.ImagePreviewActivity">
 
-    <com.bitvalue.healthmanage.widget.PhotoViewPager
+    <com.bitvalue.healthmanage.widget.view.PhotoViewPager
         android:id="@+id/vp_image_preview_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

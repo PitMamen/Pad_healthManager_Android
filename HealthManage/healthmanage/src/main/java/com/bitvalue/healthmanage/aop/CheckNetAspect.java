@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import androidx.core.content.ContextCompat;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.manager.ActivityManager;
+import com.bitvalue.healthmanage.widget.manager.ActivityManager;
 import com.hjq.toast.ToastUtils;
 
 import org.aspectj.lang.ProceedingJoinPoint;

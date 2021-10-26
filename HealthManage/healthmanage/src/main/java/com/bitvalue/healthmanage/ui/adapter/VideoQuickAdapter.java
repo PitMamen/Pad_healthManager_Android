@@ -8,9 +8,8 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.http.response.ArticleBean;
-import com.bitvalue.healthmanage.http.response.VideoResultBean;
-import com.bitvalue.healthmanage.ui.adapter.interfaz.OnItemDelete;
+import com.bitvalue.healthmanage.callback.OnItemDeleteCallback;
+import com.bitvalue.healthmanage.http.bean.VideoResultBean;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -23,7 +22,7 @@ import java.util.List;
 
 public class VideoQuickAdapter extends BaseQuickAdapter<VideoResultBean.ListDTO, BaseViewHolder> {
 
-    private OnItemDelete onItemDelete;
+    private OnItemDeleteCallback onItemDeleteCallback;
     private boolean isNoDelete;
 
     public VideoQuickAdapter(@LayoutRes int layoutResId, @Nullable List<VideoResultBean.ListDTO> data) {
@@ -48,19 +47,19 @@ public class VideoQuickAdapter extends BaseQuickAdapter<VideoResultBean.ListDTO,
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                if (onItemDelete != null){
-                    onItemDelete.onItemDelete(position);
+                if (onItemDeleteCallback != null){
+                    onItemDeleteCallback.onItemDelete(position);
                 }
             }
         });
     }
 
-    public OnItemDelete getOnItemDelete() {
-        return onItemDelete;
+    public OnItemDeleteCallback getOnItemDelete() {
+        return onItemDeleteCallback;
     }
 
-    public void setOnItemDelete(OnItemDelete onItemDelete) {
-        this.onItemDelete = onItemDelete;
+    public void setOnItemDelete(OnItemDeleteCallback onItemDeleteCallback) {
+        this.onItemDeleteCallback = onItemDeleteCallback;
     }
 
 }

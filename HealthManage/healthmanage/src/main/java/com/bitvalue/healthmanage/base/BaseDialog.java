@@ -38,12 +38,12 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.base.action.ActivityAction;
-import com.bitvalue.healthmanage.base.action.AnimAction;
-import com.bitvalue.healthmanage.base.action.ClickAction;
-import com.bitvalue.healthmanage.base.action.HandlerAction;
-import com.bitvalue.healthmanage.base.action.KeyboardAction;
-import com.bitvalue.healthmanage.base.action.ResourcesAction;
+import com.bitvalue.healthmanage.widget.action.ActivityAction;
+import com.bitvalue.healthmanage.widget.action.AnimAction;
+import com.bitvalue.healthmanage.widget.action.ClickAction;
+import com.bitvalue.healthmanage.widget.action.HandlerAction;
+import com.bitvalue.healthmanage.widget.action.KeyboardAction;
+import com.bitvalue.healthmanage.widget.action.ResourcesAction;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;

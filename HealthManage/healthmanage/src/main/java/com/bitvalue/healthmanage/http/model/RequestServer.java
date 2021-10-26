@@ -1,6 +1,6 @@
 package com.bitvalue.healthmanage.http.model;
 
-import com.bitvalue.healthmanage.other.AppConfig;
+import com.bitvalue.healthmanage.app.AppConfig;
 import com.hjq.http.config.IRequestServer;
 import com.hjq.http.model.BodyType;
 

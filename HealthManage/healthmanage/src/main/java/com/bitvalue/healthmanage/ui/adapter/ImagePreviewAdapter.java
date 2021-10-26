@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.app.AppAdapter;
+import com.bitvalue.healthmanage.base.AppAdapter;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
 import com.github.chrisbanes.photoview.PhotoView;
 

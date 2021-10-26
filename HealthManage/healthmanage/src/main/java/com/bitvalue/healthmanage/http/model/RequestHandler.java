@@ -2,16 +2,12 @@ package com.bitvalue.healthmanage.http.model;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import androidx.lifecycle.LifecycleOwner;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.app.AppApplication;
-import com.bitvalue.healthmanage.manager.ActivityManager;
-import com.bitvalue.healthmanage.ui.activity.LoginHealthActivity;
 import com.google.gson.JsonSyntaxException;
 import com.hjq.gson.factory.GsonFactory;
 import com.hjq.http.EasyLog;
@@ -120,8 +116,8 @@ public final class RequestHandler implements IRequestHandler {
             throw new DataException(mApplication.getString(R.string.http_data_explain_error), e);
         }
 
-        if (result instanceof HttpData) {
-            HttpData<?> model = (HttpData<?>) result;
+        if (result instanceof ApiResult) {
+            ApiResult<?> model = (ApiResult<?>) result;
             if (model.getCode() == 0) {
                 // 代表执行成功
                 return result;

@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.app.AppAdapter;
-import com.bitvalue.healthmanage.http.response.PlanDetailResult;
+import com.bitvalue.healthmanage.base.AppAdapter;
+import com.bitvalue.healthmanage.http.bean.PlanDetailResult;
 import com.bitvalue.healthmanage.util.TimeUtils;
 
 public class HealthPlanDetailAdapter extends AppAdapter<PlanDetailResult.UserPlanDetailsDTO> {

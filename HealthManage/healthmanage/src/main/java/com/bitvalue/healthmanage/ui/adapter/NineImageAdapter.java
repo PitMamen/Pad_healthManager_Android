@@ -1,14 +1,13 @@
 package com.bitvalue.healthmanage.ui.adapter;
 
-import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
-import com.bitvalue.healthmanage.Constants;
+import com.bitvalue.healthmanage.util.Constants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
-import com.bitvalue.healthmanage.http.response.ImageModel;
+import com.bitvalue.healthmanage.http.bean.ImageModel;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;

@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bitvalue.healthmanage.base.action.ResourcesAction;
+import com.bitvalue.healthmanage.widget.action.ResourcesAction;
 
 /**
  *    author : Android 轮子哥

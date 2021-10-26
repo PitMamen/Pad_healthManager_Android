@@ -2,20 +2,17 @@ package com.bitvalue.healthmanage.ui.adapter;
 
 import android.content.Context;
 import android.util.TypedValue;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.bitvalue.healthmanage.Constants;
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.app.AppAdapter;
 import com.bitvalue.healthmanage.app.AppApplication;
+import com.bitvalue.healthmanage.base.AppAdapter;
 import com.bitvalue.healthmanage.http.glide.GlideApp;
-import com.bitvalue.healthmanage.http.response.ArticleBean;
-import com.bitvalue.healthmanage.http.response.PatientResultBean;
+import com.bitvalue.healthmanage.http.bean.PatientResultBean;
 import com.bitvalue.healthmanage.util.TimeUtils;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 

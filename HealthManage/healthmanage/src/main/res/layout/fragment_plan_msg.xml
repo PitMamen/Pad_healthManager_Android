@@ -119,6 +119,7 @@
 
                     </LinearLayout>
 
+<!--                    语音录制 list-->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/list_audio"
                         android:layout_width="match_parent"

@@ -86,6 +86,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     private boolean mHealthMsgDisable;
     private boolean mHealthUploadDisable;
     private boolean mHealthVideoDisable;
+    private boolean mHealthplantrackDisable;
     /**
      * 健康管理聊天类型
      */
@@ -130,8 +131,9 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     protected void assembleActions() {
         mInputMoreActionList.clear();
         InputMoreActionUnit actionUnit;
-
         switch (chatType) {
+
+//            健康计划
             case CHAT_TYPE_HEALTH:
                 if (!mHealthPlanDisable) {
                     actionUnit = new InputMoreActionUnit() {
@@ -145,7 +147,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
                     mInputMoreActionList.add(actionUnit);
                 }
 
-
+//           健康评估
                 if (!mHealthAnalyseDisable) {
                     actionUnit = new InputMoreActionUnit() {
                         @Override
@@ -158,6 +160,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
                     mInputMoreActionList.add(actionUnit);
                 }
 
+//                健康消息
                 if (!mHealthMsgDisable) {
                     actionUnit = new InputMoreActionUnit() {
                         @Override
@@ -169,8 +172,11 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
                     actionUnit.setTitleId(R.string.heal_msg);
                     mInputMoreActionList.add(actionUnit);
                 }
+
                 break;
 
+
+//                虚拟诊间
             case CHAT_TYPE_VIDEO:
                 //视频看诊
                 if (!mHealthVideoDisable) {

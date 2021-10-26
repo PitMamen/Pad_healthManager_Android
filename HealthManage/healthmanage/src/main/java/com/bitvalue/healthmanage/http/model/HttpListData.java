@@ -8,7 +8,7 @@ import java.util.List;
  *    time   : 2020/10/07
  *    desc   : 统一接口列表数据结构
  */
-public class HttpListData<T> extends HttpData<HttpListData.ListBean<T>> {
+public class HttpListData<T> extends ApiResult<HttpListData.ListBean<T>> {
 
     public static class ListBean<T> {
 

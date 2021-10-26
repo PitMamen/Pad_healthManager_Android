@@ -7,11 +7,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.bitvalue.healthmanage.Constants;
+import com.bitvalue.healthmanage.base.AppAdapter;
+import com.bitvalue.healthmanage.util.Constants;
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.healthmanage.app.AppAdapter;
 import com.bitvalue.healthmanage.app.AppApplication;
-import com.bitvalue.healthmanage.http.response.QuestionResultBean;
+import com.bitvalue.healthmanage.http.bean.QuestionResultBean;
 
 public class QuestionAdapter extends AppAdapter<QuestionResultBean.ListDTO> {
 

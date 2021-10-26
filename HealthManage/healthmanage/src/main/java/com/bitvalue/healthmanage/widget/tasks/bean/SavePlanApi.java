@@ -1,11 +1,7 @@
 package com.bitvalue.healthmanage.widget.tasks.bean;
 
-import androidx.annotation.NonNull;
-
-import com.bitvalue.healthmanage.Constants;
+import com.bitvalue.healthmanage.util.Constants;
 import com.hjq.http.config.IRequestApi;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 

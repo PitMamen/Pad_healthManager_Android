@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <com.bitvalue.healthmanage.widget.TimePeriodView
+    <com.bitvalue.healthmanage.widget.view.TimePeriodView
         android:id="@+id/tp_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
