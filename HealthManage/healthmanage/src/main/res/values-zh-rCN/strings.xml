@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">安卓技术中台</string>
 
     <string name="common_loading">加载中&#8230;</string>
@@ -270,4 +270,9 @@
     <string name="article_selection">文章选择</string>
     <string name="video_selection">视频选择</string>
     <string name="health_management_plan">健康管理计划</string>
+
+
+
+
+    <string name="writer_healthcase" tools:ignore="ExtraTranslation">病历书写</string>
 </resources>

@@ -96,6 +96,7 @@
     <color name="purple">#FF800080</color>
     <!-- 粉色 -->
     <color name="pink">#FFFFC0CB</color>
+    <color name="bg_gray_files">#F0F2F7</color>
     <!-- 橙色 -->
     <color name="orange">#FFFFA500</color>
     <color name="main_blue">#398CF7</color>
@@ -103,12 +104,104 @@
     <color name="home_blue_dark">#006DC3</color>
     <color name="main_blue_little">#398CCC</color>
     <color name="text_main">#333333</color>
+    <color name="green_c7">#26CBC7</color>
     <color name="text_black">#1A1A1A</color>
+    <color name="bg_gray_table">#F2F2F2</color>
     <color name="text_desc">#CCCCCC</color>
     <color name="text_desc_dark">#999999</color>
+    <color name="black_files">#AFB0B3</color>
+    <color name="blue_files">#2784FF</color>
     <color name="text_green">#2FB315</color>
     <color name="blue_light">#EEF6FF</color>
     <color name="bg_gray">#F8F9FB</color>
     <color name="bg_gray_light">#FAFAFA</color>
+
+    <color name="colorPrimary">#0E88EB</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="black_overlay">#66000000</color>
+
+    <!--    <color name="orange">#F57C00</color>-->
+
+    <color name="blue_0E88EB">#0E88EB</color>
+    <color name="blue_0D7CD6">#0D7CD6</color>
+    <color name="blue_0F86EC">#0F86EC</color>
+    <color name="blue_0489DF">#0480DF</color>
+    <color name="blue_2662da">#2662da</color>
+    <color name="color_1a4fa4e9">#1a4fa4e9</color>
+    <color name="blue_bg">#21B2DF</color>
+
+    <color name="white_FFFFFF">#FFFFFF</color>
+    <color name="white_55FFFFFF">#55FFFFFF</color>
+    <color name="white_F7F7F7">#F7F7F7</color>
+    <color name="white_EDEEF0">#EDEEF0</color>
+    <color name="white_EBEBEB">#EBEBEB</color>
+    <color name="white_EBEBF1">#EBEBF1</color>
+    <color name="white_E5E5E5">#E5E5E5</color>
+    <color name="white_CCCCCC">#CCCCCC</color>
+    <color name="white_E7F4FD">#E7F4FD</color>
+    <color name="black_000000">#000000</color>
+    <color name="black_222222">#222222</color>
+    <color name="black_20000000">#20000000</color>
+    <color name="black_3f000000">#3f000000</color>
+    <color name="black_57000000">#57000000</color>
+    <color name="black_65000000">#65000000</color>
+    <color name="black_333333">#333333</color>
+    <color name="black_565656">#565656</color>
+    <color name="black_666666">#666666</color>
+    <color name="gray_7E7E7E">#7E7E7E</color>
+    <color name="gray_F3F3F3">#F3F3F3</color>
+    <color name="gray_999999">#999999</color>
+    <color name="gray_bg">#F1F3FE</color>
+    <color name="gray_edeef0">#edeef0</color>
+    <color name="gray_666">#666</color>
+    <color name="gray_ADADAD">#ADADAD</color>
+    <color name="gray_DDDDDD">#DDDDDD</color>
+    <color name="color_CF83FF">#CF83FF</color>
+    <color name="color_FFB34f">#FFB34f</color>
+    <color name="color_aaffb34f">#aaffb34f</color>
+    <color name="red_FF0000">#FF0000</color>
+    <color name="red_FF5651">#FF5651</color>
+    <color name="green_1da386">#1da386</color>
+    <color name="green_9AC890">#9AC890</color>
+    <color name="yellow_FFAC34">#FFAC34</color>
+    <color name="yellow_FFA825">#FFA825</color>
+    <color name="green_C945A9">#49C5A9</color>
+    <color name="color_E7F4FD">#E0F1FD</color>
+    <color name="color_FAFAFB">#FAFAFB</color>
+    <color name="cycle_image_bg">#1a999999</color>
+    <color name="color_F5FAFE">#F5FAFE</color>
+    <!-- 年龄、性别、疾病、症状、手术操作、药物 -->
+    <color name="color_ea676f">#ea676f</color>
+    <color name="color_2da9eaf">#2da9ea</color>
+    <color name="color_e08404">#e08404</color>
+    <color name="color_e216b0">#e216b0</color>
+    <color name="color_ffd700">#ffd700</color>
+    <color name="color_0bb356">#0bb356</color>
+
+    <color name="color_2f83ff">#2f83ff</color>
+    <color name="color_f1f3fe">#f1f3fe</color>
+    <color name="color_a9c9f9">#a9c9f9</color>
+    <color name="color_fcb3a2">#fcb3a2</color>
+    <color name="color_f47c5f">#f47c5f</color>
+    <color name="color_96d2cf">#96d2cf</color>
+    <color name="color_e8ebfa">#e8ebfa</color>
+
+    <color name="color_DDDDDD">#DDDDDD</color>
+    <color name="black_90949e">#90949e</color>
+    <color name="black_999999">#999999</color>
+    <color name="black_66000000">#66000000</color>
+
+    <color name="blue_be">#208BBE</color>
+    <color name="white_f2">#f2f2f2</color>
+    <color name="white_fa">#fafafa</color>
+    <color name="blue_f1">#2F8DF1</color>
+    <color name="orange_5d">#F9A95D</color>
+    <color name="gray_d0">#9DB6D0</color>
+    <color name="white_ef">#EFEFEF</color>
+    <color name="gray_cf">#CFCFCF</color>
+    <color name="transparent_00">#00000000</color>
+    <color name="blue_e5">#5B89E5</color>
 
 </resources>

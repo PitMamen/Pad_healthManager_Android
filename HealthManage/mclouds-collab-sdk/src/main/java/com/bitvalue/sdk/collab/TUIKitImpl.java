@@ -113,7 +113,7 @@ public class TUIKitImpl {
 //                loginTUIKitLive(TUIKitConfigs.getConfigs().getGeneralConfig().getSDKAppId(),
 //                        userid,
 //                        usersig);
-                callback.onSuccess(null);
+                callback.onSuccess("loginsuccess");
             }
         });
     }

@@ -274,6 +274,13 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     }
 
     @Override
+    protected void startHealthFiles() {
+        if (null != onCustomClickListener){
+            onCustomClickListener.onHealthMsgClick();
+        }
+    }
+
+    @Override
     protected void startUploadData() {
         //TODO 上传资料
     }
@@ -508,6 +515,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         void onHealthPlanClick();
         void onHealthAnalyseClick();
         void onHealthMsgClick();
+        void onHealthFilesClick();
 
 
         /***

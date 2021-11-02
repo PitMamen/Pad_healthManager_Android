@@ -9,7 +9,7 @@ android {
     defaultConfig {
 
         // 无痛修改包名：https://www.jianshu.com/p/17327e191d2e
-        applicationId 'com.bitvalue.healthmanage'
+        applicationId 'com.bitvalue.health'
 
         // 仅保留中文语种的资源
         resConfigs 'zh'
@@ -68,7 +68,7 @@ android {
 //            buildConfigField('String', 'HOST_URL', '"http://happy-mao01.imwork.net:39596/"')//演示环境
 
             // 设置清单占位符
-            manifestPlaceholders = ['app_name': '健康管理']
+            manifestPlaceholders = ['app_name': 'health']
             // 调试模式下只保留一种架构的 so 库，提升打包速度
             ndk {
                 abiFilters 'armeabi-v7a','x86','armeabi'
@@ -79,7 +79,7 @@ android {
         preview {
             applicationIdSuffix ''
             // 设置清单占位符
-            manifestPlaceholders = ['app_name': '健康管理']
+            manifestPlaceholders = ['app_name': 'health']
         }
 
         release {
@@ -101,7 +101,7 @@ android {
             // 正式服务器的主机地址
             buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
             // 设置清单占位符
-            manifestPlaceholders = ['app_name': '健康管理']
+            manifestPlaceholders = ['app_name': 'health']
             // 仅保留两种架构的 so 库，根据 Bugly 统计得出
             ndk {
                 // armeabi：万金油架构平台（占用率：0%）
@@ -173,15 +173,6 @@ repositories {
 // api 与 implementation 的区别：https://www.jianshu.com/p/8962d6ba936e
 dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
-    // 基类封装
-    //implementation project(':base')
-    // 控件封装
-    //implementation project(':widget')
-    // 友盟封装
-    //implementation project(':umeng')
-//    implementation project(':Basic:VideoCall')
-//    implementation project(':mclouds-base-sdk')
-//    implementation project(':mclouds-collab-sdk')
 
     // 权限请求框架：https://github.com/getActivity/XXPermissions
     implementation 'com.hjq:xxpermissions:9.8'
@@ -235,47 +226,17 @@ dependencies {
     // 指示器框架：https://github.com/ongakuer/CircleIndicator
     implementation 'me.relex:circleindicator:2.1.4'
 
-    // 内存泄漏监测框架：https://github.com/square/leakcanary
-    // noinspection GradleDependency
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
-//    // noinspection GradleDependency
-//    previewImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
-
     implementation 'androidx.multidex:multidex:2.0.1'
-
-    // 国际化：https://github.com/getActivity/MultiLanguages
-    // 悬浮窗：https://github.com/getActivity/XToast
-    // 日志输出：https://github.com/getActivity/Logcat
-    // 工具类：https://github.com/Blankj/AndroidUtilCode
-    // 轮播图：https://github.com/bingoogolapple/BGABanner-Android
-    // 二维码：https://github.com/bingoogolapple/BGAQRCode-Android
-    // 跑马灯：https://github.com/sunfusheng/MarqueeView
-    // 对象注解：https://www.jianshu.com/p/f1f888e4a35f
-    // 平板适配：https://github.com/JessYanCoding/AndroidAutoSize
-    // 图片压缩：https://github.com/Curzibn/Luban
-    // 对象存储：https://github.com/leavesC/DoKV
-    // 第三方支付：https://github.com/Cuieney/RxPay
-    // 多渠道打包：https://github.com/Meituan-Dianping/walle
-    // 设备唯一标识：http://msa-alliance.cn/col.jsp?id=120
-
-//    api(name: 'imsdk-plus-5.5.892', ext: 'aar')
-//    implementation(name: 'imsdk-plus-5.5.892', ext: 'aar')
-//    implementation(name: 'AliyunPlayer-4.5.0-full', ext: 'aar')
-//    api 'com.tencent.imsdk:imsdk-plus:5.5.892'
-//    api 'com.tencent.imsdk:imsdk-plus:5.5.892'
     implementation project(':mclouds-collab-sdk')
-//    implementation project(':imagepicker')
-//    implementation 'com.hgDendi:expandable-recyclerview-adapter:1.0.1'
     implementation 'com.thoughtbot:expandablerecyclerview:1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.contrarywind:Android-PickerView:4.1.9'//时间选择控件
     implementation 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
-    implementation 'io.reactivex:rxjava:1.1.0'
-    implementation 'io.reactivex:rxandroid:1.1.0'
     implementation 'com.zhihu.android:matisse:0.5.0-alpha4'
-//    implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
-//    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-//    implementation 'com.trello.rxlifecycle2:rxlifecycle-android-lifecycle:2.2.2'
+    implementation 'io.reactivex:rxjava:1.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.19'
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
     implementation "com.jakewharton:butterknife:10.0.0"
@@ -285,7 +246,7 @@ dependencies {
     implementation 'com.github.bingoogolapple:BGAPhotoPicker-Android:2.0.3'
     implementation 'com.github.bingoogolapple:BGABaseAdapter-Android:2.0.1'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    implementation 'org.greenrobot:eventbus:3.2.0'
+//    implementation 'org.greenrobot:eventbus:3.2.0'
 //    compileOnly 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'org.xutils:xutils:3.5.0'

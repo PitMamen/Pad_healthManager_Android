@@ -20,3 +20,8 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keep class com.tencent.imsdk.** { *; }
+-keepattributes *Annotation*
+-keepclassmembers class * {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode {*;}

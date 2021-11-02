@@ -95,6 +95,11 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
      * 云看诊聊天类型
      */
     public static final int CHAT_TYPE_VIDEO = 101;
+
+    /**
+     * 医生好友
+     */
+    public static final int CHAT_TYPE_DocFriends = 102;
     private int chatType;
 
     public InputLayoutUI(Context context) {
@@ -132,8 +137,9 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
         mInputMoreActionList.clear();
         InputMoreActionUnit actionUnit;
         switch (chatType) {
-
-//            健康计划
+            /***
+             * 健康管理
+             */
             case CHAT_TYPE_HEALTH:
                 if (!mHealthPlanDisable) {
                     actionUnit = new InputMoreActionUnit() {
@@ -176,7 +182,9 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
                 break;
 
 
-//                虚拟诊间
+            /**
+             * 虚拟诊间
+             */
             case CHAT_TYPE_VIDEO:
                 //视频看诊
                 if (!mHealthVideoDisable) {
@@ -217,6 +225,20 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
                     actionUnit.setTitleId(R.string.video_end_consult);
                     mInputMoreActionList.add(actionUnit);
                 }
+
+                break;
+
+
+            /**
+             * 这里后续可能会加医生好友模块  逻辑先不做
+             */
+            case CHAT_TYPE_DocFriends:
+                break;
+
+
+            default:
+                break;
+
         }
 
 
@@ -340,6 +362,8 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     protected abstract void startHealthAnalyse();
 
     protected abstract void startHealthMsg();
+
+    protected abstract void startHealthFiles();
 
     protected abstract void startVideoCommunicate();
 

@@ -42,7 +42,7 @@
     <!-- Application 节点详解：https://developer.android.google.cn/guide/topics/manifest/application-element -->
     <!-- Activity 节点详解：https://developer.android.google.cn/guide/topics/manifest/activity-element -->
     <application
-        android:name="com.bitvalue.healthmanage.app.AppApplication"
+        android:name="com.bitvalue.health.Application"
         android:allowBackup="false"
         android:icon="@mipmap/app_icon"
         android:label="${app_name}"
@@ -81,60 +81,91 @@
         <!--        </provider>-->
 
         <!-- android:windowSoftInputMode="adjustResize|stateVisible|adjustPan" -->
+<!--        <activity-->
+<!--            android:name=".HomeActivity"-->
+<!--            android:configChanges="screenSize|keyboard|orientation|keyboardHidden"-->
+<!--            android:launchMode="singleTask"-->
+<!--            android:screenOrientation="landscape"-->
+<!--            android:theme="@style/SplashTheme"-->
+<!--            android:windowSoftInputMode="adjustPan" />-->
+
+
         <activity
-            android:name=".ui.activity.main.HomeActivity"
+            android:name="com.bitvalue.health.ui.activity.HomeActivity"
             android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:theme="@style/SplashTheme"
-            android:windowSoftInputMode="adjustPan" />
+                   android:launchMode="singleTask"
+                  android:screenOrientation="landscape"
+                   android:theme="@style/SplashTheme"
+                  android:windowSoftInputMode="adjustPan">
+
+                </activity>
+
+
+
+
+
+                <activity
+                    android:name="com.bitvalue.health.ui.activity.LoginHealthActivity"
+                    android:launchMode="singleTask"
+                    android:screenOrientation="landscape"
+                    android:theme="@style/SplashTheme" />
+
+                <!--        <activity-->
+        <!--            android:name=".ui.activity.main.NewMsgActivity"-->
+        <!--            android:launchMode="singleTask"-->
+        <!--            android:screenOrientation="landscape"-->
+        <!--            android:theme="@style/SplashTheme" />-->
+
+                <!-- 拍照选择 -->
+                <activity
+                    android:name="com.bitvalue.health.ui.activity.CameraActivity"
+                    android:launchMode="singleTop"
+                    android:screenOrientation="landscape" />
+
+                <!-- 图片选择 -->
+                <activity
+                    android:name="com.bitvalue.health.ui.activity.ImageSelectActivity"
+                    android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
+                    android:label="@string/image_select_title"
+                    android:screenOrientation="landscape" />
+
+                <!-- 查看大图 -->
+                <activity
+                    android:name="com.bitvalue.health.ui.activity.ImagePreviewActivity"
+                    android:launchMode="singleTop"
+                    android:screenOrientation="landscape" />
+
+        <!--        &lt;!&ndash; 播放视频 &ndash;&gt;-->
+        <!--        <activity-->
+        <!--            android:name=".ui.activity.media.VideoPlayActivity"-->
+        <!--            android:launchMode="singleTop"-->
+        <!--            android:screenOrientation="landscape"-->
+        <!--            android:theme="@style/FullScreenTheme" />-->
+
+        <!--        &lt;!&ndash; 选择视频 &ndash;&gt;-->
+        <!--        <activity-->
+        <!--            android:name=".ui.activity.media.VideoSelectActivity"-->
+        <!--            android:launchMode="singleTop"-->
+        <!--            android:screenOrientation="landscape" />-->
+
+        <!--        <activity-->
+        <!--            android:name=".ui.activity.SplashActivity"-->
+        <!--            android:screenOrientation="landscape"-->
+        <!--            android:theme="@style/SplashTheme">-->
+        <!--            &lt;!&ndash; 程序入口 &ndash;&gt;-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.MAIN" />-->
+        <!--                <action android:name="android.intent.action.VIEW" />-->
+
+        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--            </intent-filter>-->
+
+
+        <!--        </activity>-->
+
 
         <activity
-            android:name=".ui.activity.main.LoginHealthActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:theme="@style/SplashTheme" />
-
-        <activity
-            android:name=".ui.activity.main.NewMsgActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            android:theme="@style/SplashTheme" />
-
-        <!-- 拍照选择 -->
-        <activity
-            android:name=".ui.activity.media.CameraActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="landscape" />
-
-        <!-- 图片选择 -->
-        <activity
-            android:name=".ui.activity.media.ImageSelectActivity"
-            android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
-            android:label="@string/image_select_title"
-            android:screenOrientation="landscape" />
-
-        <!-- 查看大图 -->
-        <activity
-            android:name=".ui.activity.media.ImagePreviewActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="landscape" />
-
-        <!-- 播放视频 -->
-        <activity
-            android:name=".ui.activity.media.VideoPlayActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="landscape"
-            android:theme="@style/FullScreenTheme" />
-
-        <!-- 选择视频 -->
-        <activity
-            android:name=".ui.activity.media.VideoSelectActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="landscape" />
-
-        <activity
-            android:name=".ui.activity.main.SplashActivity"
+            android:name="com.bitvalue.health.ui.activity.SplashActivity"
             android:screenOrientation="landscape"
             android:theme="@style/SplashTheme">
             <!-- 程序入口 -->
@@ -144,7 +175,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
 
         </activity>
 
