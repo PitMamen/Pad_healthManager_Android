@@ -20,22 +20,30 @@ import com.bitvalue.health.api.eventbusbean.MainRefreshObj;
 import com.bitvalue.health.api.eventbusbean.MsgRemindObj;
 import com.bitvalue.health.api.eventbusbean.VideoRefreshObj;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
+import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.PlanDetailResult;
+import com.bitvalue.health.api.responsebean.message.AddVideoObject;
+import com.bitvalue.health.api.responsebean.message.GetMissionObj;
 import com.bitvalue.health.base.BaseActivity;
 import com.bitvalue.health.contract.homecontract.HomeContract;
 import com.bitvalue.health.presenter.homepersenter.HomePersenter;
 import com.bitvalue.health.ui.fragment.function.chat.ChatFragment;
+import com.bitvalue.health.ui.fragment.function.healthmanage.AddArticleFragment;
+import com.bitvalue.health.ui.fragment.function.healthmanage.AddVideoFragment;
+import com.bitvalue.health.ui.fragment.function.healthmanage.ArticleDetailFragment;
 import com.bitvalue.health.ui.fragment.function.healthmanage.ContactsFragment;
 import com.bitvalue.health.ui.fragment.function.cloudclinic.HealthHistoryPreFragment;
 import com.bitvalue.health.ui.fragment.function.cloudclinic.WriteHealthFragment;
 import com.bitvalue.health.ui.fragment.function.docfriend.DocFriendsFragment;
 import com.bitvalue.health.ui.fragment.function.healthmanage.HealthAnalyseDisplayFragment;
 import com.bitvalue.health.ui.fragment.function.healthmanage.HealthAnalyseFragment;
+import com.bitvalue.health.ui.fragment.function.healthmanage.HealthMessageFragment;
 import com.bitvalue.health.ui.fragment.function.healthmanage.HealthPlanDetailFragment;
 import com.bitvalue.health.ui.fragment.function.healthmanage.HealthPlanPreviewFragment;
 import com.bitvalue.health.ui.fragment.function.healthmanage.HealthUploadDataFragment;
+import com.bitvalue.health.ui.fragment.function.healthmanage.NewMsgFragmentDisplay;
 import com.bitvalue.health.ui.fragment.function.healthmanage.QuestionDetailFragment;
 import com.bitvalue.health.ui.fragment.function.setting.PersonalDataFragment;
 import com.bitvalue.health.ui.fragment.function.setting.SettingsFragment;
@@ -348,19 +356,19 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 //                newHealthPlanFragmentModify.setArguments(bundleModify);
 //                mapFragments.put(Constants.FRAGMENT_HEALTH_MODIFY, newHealthPlanFragmentModify);
 //                break;
-//
-//            case Constants.FRAGMENT_ADD_PAPER:
-//                GetMissionObj getMissionPaper = (GetMissionObj) object;
-//                AddArticleFragment addArticleFragment;
-//                if (isContain) {
-//                    mapFragments.remove(keyFragment);
-//                }
-//                addArticleFragment = new AddArticleFragment();
-//                Bundle bundlePaper = new Bundle();
-//                bundlePaper.putSerializable(Constants.GET_MISSION_OBJ, getMissionPaper);
-//                addArticleFragment.setArguments(bundlePaper);
-//                mapFragments.put(Constants.FRAGMENT_ADD_PAPER, addArticleFragment);
-//                break;
+//         添加文章界面
+            case Constants.FRAGMENT_ADD_PAPER:
+                GetMissionObj getMissionPaper = (GetMissionObj) object;
+                AddArticleFragment addArticleFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                addArticleFragment = new AddArticleFragment();
+                Bundle bundlePaper = new Bundle();
+                bundlePaper.putSerializable(Constants.GET_MISSION_OBJ, getMissionPaper);
+                addArticleFragment.setArguments(bundlePaper);
+                mapFragments.put(Constants.FRAGMENT_ADD_PAPER, addArticleFragment);
+                break;
 //            case Constants.FRAGMENT_ADD_QUESTION:
 //                GetMissionObj getMissionObj = (GetMissionObj) object;
 //                AddQuestionFragment addQuestionFragment;
@@ -373,44 +381,41 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 //                addQuestionFragment.setArguments(bundleQue);
 //                mapFragments.put(Constants.FRAGMENT_ADD_QUESTION, addQuestionFragment);
 //                break;
-//            case Constants.FRAGMENT_SEND_MSG:
-//                ChatFragment.NewMsgData msgData = (ChatFragment.NewMsgData) object;
-//                NewMsgFragment newMsgFragment;
-//                if (isContain) {
-//                    mapFragments.remove(keyFragment);
-//                }
-//                newMsgFragment = new NewMsgFragment();
-//
-//                Bundle msgBundle = new Bundle();
-//                msgBundle.putString(Constants.MSG_TYPE, msgData.msgType);
-//                msgBundle.putStringArrayList(Constants.MSG_IDS, msgData.userIds);
-//                newMsgFragment.setArguments(msgBundle);
-//                mapFragments.put(Constants.FRAGMENT_SEND_MSG, newMsgFragment);
-//                break;
-//            case Constants.FRAGMENT_SEND_MSG_DISPLAY:
-//                ChatFragment.NewMsgData msgDataDis = (ChatFragment.NewMsgData) object;
-//                NewMsgFragmentDisplay newMsgFragmentDisplay;
-//                if (isContain) {
-//                    mapFragments.remove(keyFragment);
-//                }
-//                newMsgFragmentDisplay = new NewMsgFragmentDisplay();
-//
-//                Bundle msgBundleDis = new Bundle();
-//                msgBundleDis.putString(Constants.MSG_TYPE, msgDataDis.msgType);
-//                msgBundleDis.putString(Constants.MSG_CUSTOM_ID, msgDataDis.id);//显示详情的时候才要
-//                msgBundleDis.putStringArrayList(Constants.MSG_IDS, msgDataDis.userIds);
-//                newMsgFragmentDisplay.setArguments(msgBundleDis);
-//                mapFragments.put(Constants.FRAGMENT_SEND_MSG_DISPLAY, newMsgFragmentDisplay);
-//                break;
-//
+
+            //健康消息
+            case Constants.FRAGMENT_SEND_MSG:
+                ChatFragment.NewMsgData msgData = (ChatFragment.NewMsgData) object;
+                HealthMessageFragment newMsgFragment;
+                newMsgFragment = new HealthMessageFragment();
+
+                Bundle msgBundle = new Bundle();
+                msgBundle.putString(Constants.MSG_TYPE, msgData.msgType);
+                msgBundle.putStringArrayList(Constants.MSG_IDS, msgData.userIds);
+                newMsgFragment.setArguments(msgBundle);
+                mapFragments.put(Constants.FRAGMENT_SEND_MSG, newMsgFragment);
+                break;
+
+                //聊天界面  点击发出去的信息 展示界面
+            case Constants.FRAGMENT_SEND_MSG_DISPLAY:
+                ChatFragment.NewMsgData msgDataDis = (ChatFragment.NewMsgData) object;
+                NewMsgFragmentDisplay newMsgFragmentDisplay;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                newMsgFragmentDisplay = new NewMsgFragmentDisplay();
+
+                Bundle msgBundleDis = new Bundle();
+                msgBundleDis.putString(Constants.MSG_TYPE, msgDataDis.msgType);
+                msgBundleDis.putString(Constants.MSG_CUSTOM_ID, msgDataDis.id);//显示详情的时候才要
+                msgBundleDis.putStringArrayList(Constants.MSG_IDS, msgDataDis.userIds);
+                newMsgFragmentDisplay.setArguments(msgBundleDis);
+                mapFragments.put(Constants.FRAGMENT_SEND_MSG_DISPLAY, newMsgFragmentDisplay);
+                break;
             /***
              * 健康评估
              */
             case Constants.FRAGMENT_HEALTH_ANALYSE:
                 HealthAnalyseFragment healthAnalyseFragment;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 healthAnalyseFragment = new HealthAnalyseFragment();
 
                 Bundle msgBundleAnalyse = new Bundle();
@@ -424,9 +429,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 //     上传个人信息
             case Constants.FRAGMENT_USER_DATA:
                 HealthUploadDataFragment healthUploadDataFragment;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 healthUploadDataFragment = new HealthUploadDataFragment();
 
                 Bundle bundleData = new Bundle();
@@ -438,9 +440,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
              //  健康评估详情展示
             case Constants.FRAGMENT_HEALTH_ANALYSE_DISPLAY:
                 HealthAnalyseDisplayFragment healthAnalyseFragmentDisplay;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 healthAnalyseFragmentDisplay = new HealthAnalyseDisplayFragment();
 
                 Bundle msgBundleAnalyseDis = new Bundle();
@@ -451,13 +450,10 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 healthAnalyseFragmentDisplay.setArguments(msgBundleAnalyseDis);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_ANALYSE_DISPLAY, healthAnalyseFragmentDisplay);
                 break;
-//
+//   健康计划详细界面
             case Constants.FRAGMENT_HEALTH_PLAN_DETAIL:
                 ChatFragment.NewMsgData msgDataDetail = (ChatFragment.NewMsgData) object;
                 HealthPlanDetailFragment healthPlanDetailFragment;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 healthPlanDetailFragment = new HealthPlanDetailFragment();
                 Bundle bundleDetail = new Bundle();
                 bundleDetail.putStringArrayList(Constants.MSG_IDS, msgDataDetail.userIds);
@@ -465,18 +461,17 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 healthPlanDetailFragment.setArguments(bundleDetail);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_DETAIL, healthPlanDetailFragment);
                 break;
-//            case Constants.FRAGMENT_ADD_VIDEO:
-//                AddVideoObject addVideoObject = (AddVideoObject) object;
-//                Bundle bundleMsg = new Bundle();
-//                bundleMsg.putSerializable(Constants.ADD_VIDEO_DATA, addVideoObject);
-//                AddVideoFragment addVideoFragment;
-//                if (isContain) {
-//                    mapFragments.remove(keyFragment);
-//                }
-//                addVideoFragment = new AddVideoFragment();
-//                addVideoFragment.setArguments(bundleMsg);
-//                mapFragments.put(Constants.FRAGMENT_ADD_VIDEO, addVideoFragment);
-//                break;
+
+                //添加视频界面
+            case Constants.FRAGMENT_ADD_VIDEO:
+                AddVideoObject addVideoObject = (AddVideoObject) object;
+                Bundle bundleMsg = new Bundle();
+                bundleMsg.putSerializable(Constants.ADD_VIDEO_DATA, addVideoObject);
+                AddVideoFragment addVideoFragment;
+                addVideoFragment = new AddVideoFragment();
+                addVideoFragment.setArguments(bundleMsg);
+                mapFragments.put(Constants.FRAGMENT_ADD_VIDEO, addVideoFragment);
+                break;
 //
 
             /**
@@ -487,26 +482,19 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 Bundle bundleQuest = new Bundle();
                 bundleQuest.putSerializable(Constants.QUESTION_DETAIL, questionBean);
                 QuestionDetailFragment questionDetailFragment;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 questionDetailFragment = new QuestionDetailFragment();
                 questionDetailFragment.setArguments(bundleQuest);
                 mapFragments.put(Constants.FRAGMENT_QUESTION_DETAIL, questionDetailFragment);
                 break;
-//
-//            case Constants.FRAGMENT_ARTICLE_DETAIL:
-//                ArticleBean articleBean = (ArticleBean) object;
-//                Bundle bundleArticle = new Bundle();
-//                bundleArticle.putSerializable(Constants.ARTICLE_DETAIL, articleBean);
-//                ArticleDetailFragment articleDetailFragment;
-//                if (isContain) {
-//                    mapFragments.remove(keyFragment);
-//                }
-//                articleDetailFragment = new ArticleDetailFragment();
-//                articleDetailFragment.setArguments(bundleArticle);
-//                mapFragments.put(Constants.FRAGMENT_ARTICLE_DETAIL, articleDetailFragment);
-//                break;
+             //   文章预览界面
+            case Constants.FRAGMENT_ARTICLE_DETAIL:
+                ArticleBean articleBean = (ArticleBean) object;
+                Bundle bundleArticle = new Bundle();
+                bundleArticle.putSerializable(Constants.ARTICLE_DETAIL, articleBean);
+                ArticleDetailFragment articleDetailFragment = new ArticleDetailFragment();
+                articleDetailFragment.setArguments(bundleArticle);
+                mapFragments.put(Constants.FRAGMENT_ARTICLE_DETAIL, articleDetailFragment);
+                break;
 //            case Constants.FRAGMENT_PLAN_MSG:
 //                TaskPlanDetailBean taskPlanDetailBean = (TaskPlanDetailBean) object;
 //                Bundle bundleTP = new Bundle();
@@ -525,9 +513,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 Bundle bundlePre = new Bundle();
                 bundlePre.putSerializable(Constants.PLAN_PREVIEW, planDetailResult);
                 HealthPlanPreviewFragment healthPlanPreviewFragment;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 healthPlanPreviewFragment = new HealthPlanPreviewFragment();
                 healthPlanPreviewFragment.setArguments(bundlePre);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW, healthPlanPreviewFragment);
@@ -539,9 +524,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             case Constants.FRAGMENT_WRITE_HEALTH:
                 ChatFragment.NewMsgData msgDataWrite = (ChatFragment.NewMsgData) object;
                 WriteHealthFragment writeHealthFragment;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 writeHealthFragment = new WriteHealthFragment();
                 Bundle bundleWrite = new Bundle();
                 bundleWrite.putStringArrayList(Constants.MSG_IDS, msgDataWrite.userIds);
@@ -556,9 +538,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             case Constants.FRAGMENT_HEALTH_HISTORY_PREVIEW:
                 ChatFragment.NewMsgData msgPreview = (ChatFragment.NewMsgData) object;
                 HealthHistoryPreFragment healthHistoryPreFragment;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 healthHistoryPreFragment = new HealthHistoryPreFragment();
                 Bundle bundlePreview = new Bundle();
                 bundlePreview.putSerializable(Constants.DATA_MSG, msgPreview);
@@ -580,9 +559,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 //                break;
             case Constants.FRAGMENT_PERSONAL_DATA:
                 PersonalDataFragment personalDataFragment;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 personalDataFragment = new PersonalDataFragment();
                 mapFragments.put(Constants.FRAGMENT_PERSONAL_DATA, personalDataFragment);
                 break;
@@ -613,6 +589,9 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             if (!stringList.get(i).equals(keyFragment)) {
                 fragmentTransaction.hide(mapFragments.get(stringList.get(i)));
             }
+        }
+        for (String key : mapFragments.keySet()) {
+            Log.e(TAG, "switchSecondFragment: "+key );
         }
         if (!mapFragments.get(keyFragment).isAdded()) {
             fragmentTransaction.add(R.id.layout_fragment_end, mapFragments.get(keyFragment));

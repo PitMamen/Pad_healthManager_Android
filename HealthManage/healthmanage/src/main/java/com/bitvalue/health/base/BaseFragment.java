@@ -1,5 +1,7 @@
 package com.bitvalue.health.base;
 
+import static com.hjq.http.EasyUtils.postDelayed;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -13,20 +15,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
+import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.base.view.IView;
+import com.bitvalue.health.util.BaseDialog;
+import com.bitvalue.health.util.KeyboardAction;
+import com.bitvalue.health.util.WaitDialog;
+import com.hjq.http.listener.OnHttpListener;
 
 import butterknife.ButterKnife;
+import okhttp3.Call;
 
 /**
  * user：lqm
  * desc：BaseFragment
  */
 
-public abstract class BaseFragment<T extends BasePresenter> extends Fragment implements IView {
+public abstract class BaseFragment<T extends BasePresenter> extends Fragment implements IView, OnHttpListener<Object>, KeyboardAction {
     protected String TAG = this.getClass().getSimpleName();
     protected T mPresenter;
     protected Activity activity;
+    private BaseDialog mDialog;
+    private int mDialogTotal;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,9 +97,43 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
 
     }
 
+    /**
+     * 当前加载对话框是否在显示中
+     */
+    public boolean isShowDialog() {
+        return mDialog != null && mDialog.isShowing();
+    }
+
     @Override
     public void showLoading() {
+        mDialogTotal++;
+        postDelayed(() -> {
+            if (mDialogTotal <= 0 || isDetached() || isHidden()) {
+                return;
+            }
 
+            if (mDialog == null) {
+                mDialog = new WaitDialog.Builder(activity)
+                        .setCancelable(false)
+                        .create();
+            }
+            if (!mDialog.isShowing()) {
+                mDialog.show();
+            }
+        }, 300);
+    }
+
+    /**
+     * 隐藏加载对话框
+     */
+    public void hideDialog() {
+        if (mDialogTotal > 0) {
+            mDialogTotal--;
+        }
+
+        if (mDialogTotal == 0 && mDialog != null && mDialog.isShowing() && !isHidden()) {
+            mDialog.dismiss();
+        }
     }
 
 
@@ -109,6 +153,27 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     @Override
     public void onNetError() {
         dismissLoading();
+    }
+
+
+    @Override
+    public void onStart(Call call) {
+        showLoading();
+    }
+
+    @Override
+    public void onSucceed(Object result) {
+        if (result instanceof ApiResult) {
+        }
+    }
+
+    @Override
+    public void onFail(Exception e) {
+    }
+
+    @Override
+    public void onEnd(Call call) {
+        hideDialog();
     }
 
 

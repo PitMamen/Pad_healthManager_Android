@@ -1,8 +1,7 @@
 package com.bitvalue.health.ui.activity;
 
-import static com.hjq.http.EasyUtils.postDelayed;
-
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,14 +12,10 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bitvalue.health.base.BaseActivity;
 import com.bitvalue.health.base.BaseAdapter;
-import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.ui.adapter.ImageSelectAdapter;
-import com.bitvalue.health.util.ClickAction;
 import com.bitvalue.health.util.GridSpaceDecoration;
 import com.bitvalue.health.util.IntentKey;
 import com.bitvalue.health.util.ThreadPoolManager;
@@ -28,15 +23,12 @@ import com.bitvalue.health.util.action.StatusAction;
 import com.bitvalue.health.util.action.StatusLayout;
 import com.bitvalue.health.util.aop.Permissions;
 import com.bitvalue.health.util.aop.SingleClick;
-import com.bitvalue.health.util.aop.TitleBarAction;
 import com.bitvalue.health.util.customview.AlbumDialog;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.hjq.bar.TitleBar;
 import com.hjq.permissions.Permission;
 import com.hjq.permissions.XXPermissions;
-import com.hjq.toast.ToastUtils;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.File;
@@ -49,26 +41,25 @@ import java.util.Set;
 import rx.functions.Action1;
 
 /**
- * author : Android 轮子哥
- * github : https://github.com/getActivity/AndroidProject
- * time   : 2019/07/24
- * desc   : 选择图片
+ * author : Android pxk
+ * time   : 2021/11/01
+ * desc   : 选择图片界面
  */
-public final class ImageSelectActivity extends BaseActivity
+public final class ImageSelectActivity extends AppActivity
         implements StatusAction, Runnable,
         BaseAdapter.OnItemClickListener,
         BaseAdapter.OnItemLongClickListener,
-        BaseAdapter.OnChildClickListener, ClickAction, TitleBarAction {
+        BaseAdapter.OnChildClickListener {
 
-    public static void start(BaseActivity activity, OnPhotoSelectListener listener) {
+    public static void start(com.bitvalue.health.base.BaseActivity activity, OnPhotoSelectListener listener) {
         start(activity, 1, listener);
     }
 
     @Permissions({Permission.MANAGE_EXTERNAL_STORAGE})
-    public static void start(BaseActivity activity, int maxSelect, OnPhotoSelectListener listener) {
+    public static void start(com.bitvalue.health.base.BaseActivity activity, int maxSelect, OnPhotoSelectListener listener) {
         if (maxSelect < 1) {
             // 最少要选择一个图片
-            throw new IllegalArgumentException("are you ok?");
+            throw new IllegalArgumentException("At least one picture must be selected");
         }
         Intent intent = new Intent(activity, ImageSelectActivity.class);
         intent.putExtra(IntentKey.AMOUNT, maxSelect);
@@ -128,16 +119,8 @@ public final class ImageSelectActivity extends BaseActivity
      */
     private AlbumDialog.Builder mAlbumDialog;
 
-
-
-
     @Override
-    protected BasePresenter createPresenter() {
-        return null;
-    }
-
-    @Override
-    protected int getLayoutID() {
+    protected int getLayoutId() {
         return R.layout.image_select_activity;
     }
 
@@ -195,12 +178,6 @@ public final class ImageSelectActivity extends BaseActivity
         return mStatusLayout;
     }
 
-    @Nullable
-    @Override
-    public TitleBar getTitleBar() {
-        return null;
-    }
-
     @SingleClick
     @Override
     public void onRightClick(View view) {
@@ -235,7 +212,7 @@ public final class ImageSelectActivity extends BaseActivity
                         }
                         // 执行列表动画
                         mRecyclerView.setLayoutAnimation(AnimationUtils.
-                                loadLayoutAnimation(getApplicationContext(), R.anim.from_right_layout));
+                                loadLayoutAnimation(getActivity(), R.anim.from_right_layout));
                         mRecyclerView.scheduleLayoutAnimation();
                     });
         }
@@ -312,7 +289,7 @@ public final class ImageSelectActivity extends BaseActivity
      */
     @Override
     public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
-        ImagePreviewActivity.start(getApplicationContext(), mAdapter.getData(), position);
+        ImagePreviewActivity.start(getActivity(), mAdapter.getData(), position);
     }
 
     /**
@@ -346,7 +323,7 @@ public final class ImageSelectActivity extends BaseActivity
             File file = new File(path);
             if (!file.isFile()) {
                 mAdapter.removeItem(position);
-                ToastUtil.toastShortMessage("无法选中，该图片已经被删除");
+                toast(R.string.image_select_error);
                 return;
             }
 
@@ -388,7 +365,7 @@ public final class ImageSelectActivity extends BaseActivity
                     }, 200);
                 }
             } else {
-                ToastUtils.show(String.format("本次最多只能选择 %d 张图片",mMaxSelect));
+                toast(String.format(getString(R.string.image_select_max_hint), mMaxSelect));
             }
             mAdapter.notifyItemChanged(position);
         }
@@ -468,7 +445,7 @@ public final class ImageSelectActivity extends BaseActivity
             }
 
             // 执行列表动画
-            mRecyclerView.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(getApplicationContext(), R.anim.fall_down_layout));
+            mRecyclerView.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(getActivity(), R.anim.fall_down_layout));
             mRecyclerView.scheduleLayoutAnimation();
 
             if (mAllImage.isEmpty()) {

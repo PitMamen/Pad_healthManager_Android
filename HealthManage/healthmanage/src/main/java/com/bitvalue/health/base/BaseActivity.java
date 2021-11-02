@@ -6,8 +6,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.SparseArray;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,10 +28,13 @@ import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.KeyboardAction;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.WaitDialog;
+import com.bitvalue.health.util.aop.TitleBarAction;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IMEventListener;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
+import com.gyf.immersionbar.ImmersionBar;
+import com.hjq.bar.TitleBar;
 import com.hjq.toast.ToastUtils;
 
 import java.util.Random;
@@ -38,12 +46,20 @@ import butterknife.Unbinder;
  *
  * @param <P>
  */
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IView, KeyboardAction, BundleAction {
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IView, KeyboardAction, BundleAction, TitleBarAction {
 
     protected String TAG = this.getClass().getSimpleName();
-
+    /**
+     * 标题栏对象
+     */
+    private TitleBar mTitleBar;
     protected P mPresenter;
     private Unbinder unbinder;
+    /**
+     * 状态栏沉浸
+     */
+    private ImmersionBar mImmersionBar;
+
     /**
      * Activity 回调集合
      */
@@ -145,6 +161,40 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     public void onFail(Throwable ex, String code, String msg) {
 
         dismissLoading();
+    }
+
+
+    /**
+     * 获取状态栏沉浸的配置对象
+     */
+    @NonNull
+    public ImmersionBar getStatusBarConfig() {
+        if (mImmersionBar == null) {
+            mImmersionBar = createStatusBarConfig();
+        }
+        return mImmersionBar;
+    }
+
+    /**
+     * 初始化沉浸式状态栏
+     */
+    @NonNull
+    protected ImmersionBar createStatusBarConfig() {
+        return ImmersionBar.with(this)
+                // 默认状态栏字体颜色为黑色
+                .statusBarDarkFont(isStatusBarDarkFont())
+                // 指定导航栏背景颜色
+                .navigationBarColor(android.R.color.black)
+                // 状态栏字体和导航栏内容自动变色，必须指定状态栏颜色和导航栏颜色才可以自动变色
+                .autoDarkModeEnable(true, 0.2f);
+    }
+
+
+    /**
+     * 状态栏字体深色模式
+     */
+    protected boolean isStatusBarDarkFont() {
+        return true;
     }
 
 
@@ -266,6 +316,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
 
+
+
+
+
     /**
      * 隐藏加载对话框
      */
@@ -277,6 +331,27 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         if (mDialogTotal == 0 && mDialog != null && mDialog.isShowing() && !isFinishing()) {
             mDialog.dismiss();
         }
+    }
+    /**
+     * 和 setContentView 对应的方法
+     */
+    public ViewGroup getContentView() {
+        return findViewById(Window.ID_ANDROID_CONTENT);
+    }
+
+    @Override
+    @Nullable
+    public TitleBar getTitleBar() {
+        if (mTitleBar == null) {
+            mTitleBar = obtainTitleBar(getContentView());
+        }
+        return mTitleBar;
+    }
+
+    @Override
+    public void onLeftClick(View view) {
+        Log.e(TAG, "---------------" );
+        onBackPressed();
     }
 
 

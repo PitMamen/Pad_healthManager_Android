@@ -34,14 +34,14 @@ import rx.functions.Action1;
  * time   : 2019/12/18
  * desc   : 拍摄图片、视频
  */
-public final class CameraActivity extends BaseActivity {
+public final class CameraActivity extends AppActivity {
 
-    public static void start(BaseActivity activity, OnCameraListener listener) {
+    public static void start(AppActivity activity, OnCameraListener listener) {
         start(activity, false, listener);
     }
 
     @Permissions({Permission.MANAGE_EXTERNAL_STORAGE, Permission.CAMERA})
-    public static void start(BaseActivity activity, boolean video, OnCameraListener listener) {
+    public static void start(AppActivity activity, boolean video, OnCameraListener listener) {
         File file = createCameraFile(video);
         Intent intent = new Intent(activity, CameraActivity.class);
         intent.putExtra(IntentKey.FILE, file);
@@ -61,13 +61,9 @@ public final class CameraActivity extends BaseActivity {
     }
 
 
-    @Override
-    protected BasePresenter createPresenter() {
-        return null;
-    }
 
     @Override
-    protected int getLayoutID() {
+    protected int getLayoutId() {
         return 0;
     }
 

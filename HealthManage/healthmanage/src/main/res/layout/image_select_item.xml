@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.bitvalue.healthmanage.widget.layout.RatioFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.bitvalue.health.util.layout.RatioFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:sizeRatio="1:1"
-    tools:context=".ui.adapter.ImageSelectAdapter">
+    tools:context="com.bitvalue.health.ui.adapter.ImageSelectAdapter">
 
-    <com.bitvalue.healthmanage.widget.view.ScaleImageView
+    <com.bitvalue.health.util.customview.ScaleImageView
         android:id="@+id/iv_image_select_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,4 +37,4 @@
 
     </FrameLayout>
 
-</com.bitvalue.healthmanage.widget.layout.RatioFrameLayout>
+</com.bitvalue.health.util.layout.RatioFrameLayout>

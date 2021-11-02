@@ -56,4 +56,15 @@ public class ApiResult<T> {
     public T getData() {
         return data;
     }
+
+
+    @Override
+    public String toString() {
+        return "ApiResult{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                ", success=" + success +
+                '}';
+    }
 }

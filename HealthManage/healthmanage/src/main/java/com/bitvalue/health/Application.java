@@ -19,9 +19,13 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.multidex.MultiDex;
 
+import com.bitvalue.health.net.NetEngine;
+import com.bitvalue.health.net.RequestHandler;
+import com.bitvalue.health.net.RequestServer;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.util.ActivityManager;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.SmartBallPulseFooter;
 import com.bitvalue.health.util.chatUtil.HelloChatController;
 import com.bitvalue.healthmanage.R;
@@ -30,6 +34,10 @@ import com.bitvalue.sdk.collab.base.TUIKitListenerManager;
 import com.bitvalue.sdk.collab.config.ConfigHelper;
 import com.hjq.bar.TitleBar;
 import com.hjq.bar.initializer.LightBarInitializer;
+import com.hjq.http.EasyConfig;
+import com.hjq.http.config.IRequestInterceptor;
+import com.hjq.http.model.HttpHeaders;
+import com.hjq.http.model.HttpParams;
 import com.hjq.permissions.XXPermissions;
 import com.hjq.toast.ToastInterceptor;
 import com.hjq.toast.ToastUtils;
@@ -181,10 +189,40 @@ public final class Application extends android.app.Application {
         }
 
         ToastUtils.init(instance);
+
+        iniEasyHttp(); // 暂时顶用一下，后面改成Retrofit
         initTencentIM(instance());
 
 
         initWidthAndHeight();
+    }
+
+
+
+
+    private void iniEasyHttp(){
+        EasyConfig.with(NetEngine.getInstance().getOkHttpClient())
+                // 是否打印日志
+                .setLogEnabled(AppConfig.isLogEnable())
+                .addHeader("Authorization", SharedPreManager.getString(Constants.KEY_TOKEN))
+                // 设置服务器配置
+                .setServer(new RequestServer())
+                .setInterceptor(new IRequestInterceptor() {
+                    @Override
+                    public void intercept(String url, String tag, HttpParams params, HttpHeaders headers) {
+
+                    }
+                })
+                // 设置请求处理策略
+                .setHandler(new RequestHandler(instance()))
+                // 设置请求重试次数
+                .setRetryCount(1)
+                // 添加全局请求参数
+                //.addParam("token", "6666666")
+                // 添加全局请求头
+                //.addHeader("time", "20191030")
+                // 启用配置
+                .into();
     }
 
 
