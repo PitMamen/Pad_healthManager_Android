@@ -73,6 +73,13 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="IndicatorView">
+        <attr name="textxxx" format="string" />
+    </declare-styleable>
+    <declare-styleable name="IndicatorView2">
+        <attr name="textyyy" format="string" />
+    </declare-styleable>
+
     <!-- 倾斜的 TextView -->
     <declare-styleable name="SlantedTextView">
         <attr name="android:text" />

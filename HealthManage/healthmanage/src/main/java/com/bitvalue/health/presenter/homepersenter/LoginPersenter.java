@@ -5,7 +5,7 @@ import android.util.Log;
 import com.bitvalue.health.api.requestbean.LoginReqBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
-import com.bitvalue.health.contract.LoginContract;
+import com.bitvalue.health.contract.homecontract.LoginContract;
 import com.bitvalue.health.model.homemodel.LoginModel;
 
 public class LoginPersenter extends BasePresenter<LoginContract.loginView, LoginContract.loginModel> implements LoginContract.loginPersenter {

@@ -276,7 +276,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     @Override
     protected void startHealthFiles() {
         if (null != onCustomClickListener){
-            onCustomClickListener.onHealthMsgClick();
+            onCustomClickListener.onHealthFilesClick();
         }
     }
 

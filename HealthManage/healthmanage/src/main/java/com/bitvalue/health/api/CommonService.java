@@ -4,11 +4,14 @@ package com.bitvalue.health.api;
 import com.bitvalue.health.api.requestbean.GetHistoryApi;
 import com.bitvalue.health.api.requestbean.LoginReqBean;
 import com.bitvalue.health.api.requestbean.PersonalDataBean;
+import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.requestbean.ReportStatusBean;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
 import com.bitvalue.health.api.responsebean.LoginResBean;
+import com.bitvalue.health.api.responsebean.PatientResultBean;
 import com.bitvalue.health.api.responsebean.PlanDetailResult;
+import com.bitvalue.health.api.responsebean.PlanListBean;
 import com.bitvalue.health.api.responsebean.SaveAnalyseApi;
 import com.bitvalue.health.api.responsebean.SaveCaseApi;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
@@ -101,9 +104,6 @@ public interface CommonService {
     Observable<ApiResult<TaskPlanDetailBean>> queryHealthPlanContent(@Query("contentId") String contentid, @Query("planType") String planType, @Query("userId") String userid);
 
 
-
-
-
     /**
      * 健康计划详情查看（任务列表查看）
      *
@@ -123,8 +123,6 @@ public interface CommonService {
     Observable<ApiResult<SaveAnalyseApi>> commitHealthAnaly(@Body SaveAnalyseApi bodyRequest);
 
 
-
-
     /****
      * 查看任务详情
      */
@@ -135,9 +133,29 @@ public interface CommonService {
     /**
      * 获取健康评估详情
      */
-     @GET("health-api/health/doctor/getUserEevaluate")
+    @GET("health-api/health/doctor/getUserEevaluate")
     Observable<ApiResult<SaveAnalyseApi>> getUserEevaluate(@Query("id") int id);
 
+
+    /***
+     * 获取我的健康管理计划接口(套餐)
+     */
+    @POST("health-api/health/doctor/qryMyPlanTemplates")
+    Observable<ApiResult<ArrayList<PlanListBean>>> getMyPlanTemplate();
+
+
+    /***
+     * 根据关键字查询调查问卷
+     */
+    @GET("health-api/health/doctor/qryQuestByKeyWord")
+    Observable<ApiResult<QuestionResultBean>> qryQuestByKeyWord(@Query("pageSize") int pageSize, @Query("start") int start, @Query("keyWord") String keyWord);
+
+
+    /***
+     * 根据关键字查询就诊记录
+     */
+    @GET("health-api/medical/doctor/qryMyMedicalRecords")
+    Observable<ApiResult<ArrayList<PatientResultBean>>> qryMyMedicalRecords(@Query("type") String type, @Query("keyWord") String keyword);
 
 
     /**

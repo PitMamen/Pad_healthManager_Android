@@ -26,6 +26,9 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * 二级折叠列表，借鉴于
  * https://cloud.tencent.com/developer/article/1154841
@@ -85,7 +88,21 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
     }
 
     public static class GroupContentViewHolder extends GroupViewHolder {
+        @BindView(R.id.tv_trait_group)
+        TextView name;
+        @BindView(R.id.tv_group_no)
+        TextView tv_group_no;
+        @BindView(R.id.tv_new_count)
+        TextView tv_new_count;
+        @BindView(R.id.iv_trait_group)
+        ImageView iv_trait_group;
+        @BindView(R.id.layout_pot)
+        LinearLayout layout_pot;
 
+        public GroupContentViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
         public void onBind(int flatPosition, ExpandableGroup group) {
             ClientsResultBean clientsResultBean = (ClientsResultBean) group;
             tv_group_no.setText(clientsResultBean.num + "");
@@ -97,25 +114,12 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
                 } else {
                     tv_new_count.setText(clientsResultBean.newMsgNum + "");
                 }
-
             } else {
                 layout_pot.setVisibility(View.GONE);
             }
         }
 
-        private TextView name, tv_group_no, tv_new_count;
-        private ImageView iv_trait_group;
-        private LinearLayout layout_pot;
 
-        public GroupContentViewHolder(View itemView) {
-            super(itemView);
-            name = itemView.findViewById(R.id.tv_trait_group);
-            tv_group_no = itemView.findViewById(R.id.tv_group_no);
-            iv_trait_group = itemView.findViewById(R.id.iv_trait_group);
-
-            layout_pot = itemView.findViewById(R.id.layout_pot);
-            tv_new_count = itemView.findViewById(R.id.tv_new_count);
-        }
 
         @Override
         public void expand() {
@@ -133,23 +137,29 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
     }
 
     public static class ChildContentViewHolder extends ChildViewHolder {
-        private TextView name, tv_sex, tv_age, tv_date, tv_project_name;
-        private ImageView img_head, img_boll;
-        private CheckBox cb_choose;
-        private ConstraintLayout layout_item;
+
+        @BindView(R.id.tv_name)
+        TextView name;
+        @BindView(R.id.tv_sex)
+        TextView tv_sex;
+        @BindView(R.id.tv_age)
+        TextView tv_age;
+        @BindView(R.id.tv_date)
+        TextView tv_date;
+        @BindView(R.id.tv_project_name)
+        TextView tv_project_name;
+        @BindView(R.id.img_head)
+        ImageView img_head;
+        @BindView(R.id.img_boll)
+        ImageView img_boll;
+        @BindView(R.id.cb_choose)
+        CheckBox cb_choose;
+        @BindView(R.id.layout_item)
+        ConstraintLayout layout_item;
 
         public ChildContentViewHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.tv_name);
-            img_head = itemView.findViewById(R.id.img_head);
-            tv_sex = itemView.findViewById(R.id.tv_sex);
-            tv_age = itemView.findViewById(R.id.tv_age);
-            tv_date = itemView.findViewById(R.id.tv_date);
-            cb_choose = itemView.findViewById(R.id.cb_choose);
-            tv_project_name = itemView.findViewById(R.id.tv_project_name);
-            layout_item = itemView.findViewById(R.id.layout_item);
-
-            img_boll = itemView.findViewById(R.id.img_boll);
+            ButterKnife.bind(this,itemView);
         }
 
         public void onBind(ClientsResultBean.UserInfoDTO child, ExpandableGroup group, int childIndex) {
@@ -159,17 +169,9 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
             tv_date.setText(TimeUtils.getTime(child.beginTime, TimeUtils.YY_MM_DD_FORMAT_3));
             tv_project_name.setText(child.goodsName);
 
-            if (child.isShowCheck) {
-                cb_choose.setVisibility(View.VISIBLE);
-            } else {
-                cb_choose.setVisibility(View.GONE);
-            }
+            cb_choose.setVisibility(child.isShowCheck ? View.VISIBLE : View.GONE);
 
-            if (child.hasNew) {
-                img_boll.setVisibility(View.VISIBLE);
-            } else {
-                img_boll.setVisibility(View.GONE);
-            }
+            img_boll.setVisibility(child.hasNew ? View.VISIBLE : View.GONE);
 
             cb_choose.setChecked(child.isChecked);
 
@@ -182,11 +184,7 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
                 }
             });
 
-            if (child.isClicked) {
-                layout_item.setBackgroundColor(Application.instance().getResources().getColor(R.color.bg_gray_light));
-            } else {
-                layout_item.setBackgroundColor(Application.instance().getResources().getColor(R.color.white));
-            }
+            layout_item.setBackgroundColor(child.isClicked ? Application.instance().getResources().getColor(R.color.bg_gray_light) : Application.instance().getResources().getColor(R.color.white));
 
             if (null != child.headUrl && !child.headUrl.isEmpty()) {
                 Glide.with(img_head)
@@ -196,11 +194,7 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
                                 20, Application.instance().getResources().getDisplayMetrics())))
                         .into(img_head);
             } else {
-                if (child.userSex.equals("男")) {
-                    img_head.setImageDrawable(Application.instance().getResources().getDrawable(R.drawable.head_male));
-                } else {
-                    img_head.setImageDrawable(Application.instance().getResources().getDrawable(R.drawable.head_female));
-                }
+                img_head.setImageDrawable(child.userSex.equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
             }
 
         }

@@ -37,6 +37,12 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 
+import com.bitvalue.health.callback.ActivityAction;
+import com.bitvalue.health.callback.AnimAction;
+import com.bitvalue.health.callback.ClickAction;
+import com.bitvalue.health.callback.HandlerAction;
+import com.bitvalue.health.callback.KeyboardAction;
+import com.bitvalue.health.callback.ResourcesAction;
 import com.bitvalue.healthmanage.R;
 
 import java.lang.ref.SoftReference;

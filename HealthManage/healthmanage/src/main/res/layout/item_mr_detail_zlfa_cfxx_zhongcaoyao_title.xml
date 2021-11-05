@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_mr_detail_zlfa_cfxx_zhongcaoyao_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginLeft="@dimen/qb_px_9"
+    android:layout_marginRight="0dp"
+    android:background="@color/color_1a4fa4e9">
+
+    <!-- 中草药 处方 -->
+    <LinearLayout
+        android:id="@+id/ll_cfxx_zhongyao_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="药物名称"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/qb_px_14" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="药品用法"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/qb_px_14" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="发药数量"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/qb_px_14" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="处方贴数"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/qb_px_14" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="每次剂量"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/qb_px_14" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="每次数量"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/qb_px_14" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="用药频次"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/qb_px_14" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="饮片剂数"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/qb_px_14" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="治则治法"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/qb_px_14" />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -252,7 +252,8 @@ dependencies {
     implementation 'org.xutils:xutils:3.5.0'
     implementation project(':videocall:Source')
     implementation 'top.zibin:Luban:1.1.8'
-
+//图表控件
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     api 'com.squareup.okhttp3:okhttp:3.3.0'
     api 'com.zhy:okhttputils:2.6.2'
     api 'com.google.code.gson:gson:2.8.1'

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_mr_detail_zdxx"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:background="@drawable/shape_stroke_gray_one"
+android:orientation="horizontal"
+android:visibility="visible">
+
+<TextView
+    android:id="@+id/zdlbmc_tv"
+    style="@style/textview_break_shape_weight"
+    android:text=""
+    android:textSize="@dimen/qb_px_8" />
+
+    <TextView
+        android:id="@+id/zdbm_tv"
+        style="@style/textview_break_shape_weight"
+        android:text=""
+        android:textSize="@dimen/qb_px_8" />
+
+    <TextView
+        android:id="@+id/zdbmmc_tv"
+        style="@style/textview_break_shape_weight"
+        android:text=""
+        android:textSize="@dimen/qb_px_8" />
+
+    <TextView
+        android:id="@+id/bmlx_tv"
+        style="@style/textview_break_shape_weight"
+        android:text=""
+        android:textSize="@dimen/qb_px_8" />
+
+    <TextView
+        android:id="@+id/zdsj_tv"
+        style="@style/textview_break_shape_weight"
+        android:text=""
+        android:textSize="@dimen/qb_px_8" />
+
+    <TextView
+        android:id="@+id/zdsm_tv"
+        style="@style/textview_break_shape_weight"
+        android:text=""
+        android:textSize="@dimen/qb_px_8" />
+
+    <TextView
+        android:id="@+id/zyzdbz_tv"
+        style="@style/textview_break_shape_weight"
+        android:text=""
+        android:textSize="@dimen/qb_px_8" />
+
+    <TextView
+        android:id="@+id/yzdbz_tv"
+        style="@style/textview_break_shape_weight"
+        android:text=""
+        android:textSize="@dimen/qb_px_8" />
+
+    <TextView
+        android:id="@+id/rybq_tv"
+        style="@style/textview_break_shape_weight"
+        android:text=""
+        android:textSize="@dimen/qb_px_8" />
+
+    <TextView
+        android:id="@+id/cyqkbm_tv"
+        style="@style/textview_break_shape_weight"
+        android:text=""
+        android:textSize="@dimen/qb_px_8" />
+</LinearLayout>

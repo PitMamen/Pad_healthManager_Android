@@ -79,7 +79,7 @@
                 app:srlEnablePreviewInEditMode="false"
                 tools:context=".ui.fragment.StatusFragment">
 
-                <com.bitvalue.healthmanage.widget.layout.WrapRecyclerView
+                <com.bitvalue.health.util.customview.WrapRecyclerView
                     android:id="@+id/list_daily"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -96,7 +96,7 @@
             app:srlEnablePreviewInEditMode="false"
             tools:context=".ui.fragment.StatusFragment">
 
-            <com.bitvalue.healthmanage.widget.layout.WrapRecyclerView
+            <com.bitvalue.health.util.customview.WrapRecyclerView
                 android:id="@+id/list_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

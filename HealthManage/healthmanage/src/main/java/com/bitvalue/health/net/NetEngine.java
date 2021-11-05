@@ -62,8 +62,8 @@ public class NetEngine {
     public OkHttpClient getOkHttpClient() {
         // 网络请求框架初始化
         return new OkHttpClient.Builder()
-                .connectTimeout(20000L, TimeUnit.MILLISECONDS)
-                .readTimeout(20000L, TimeUnit.MILLISECONDS)
+                .connectTimeout(30*1000L, TimeUnit.MILLISECONDS)
+                .readTimeout(30*1000L, TimeUnit.MILLISECONDS)
                 .addInterceptor(new LoggerInterceptor("OkHttp", true))
                 .addInterceptor(new ExceptionInterceptor())
                 //其他配置

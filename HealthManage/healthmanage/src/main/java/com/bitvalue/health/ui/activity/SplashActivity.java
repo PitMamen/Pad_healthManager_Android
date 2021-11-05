@@ -25,6 +25,10 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
+
+/**
+ * 欢迎界面
+ */
 public class SplashActivity extends BaseActivity {
 
     @BindView(R.id.tv_jump)
@@ -33,6 +37,7 @@ public class SplashActivity extends BaseActivity {
     private int recLen = 3;
     private Disposable subscription;
 
+    //初始化权限
     @Override
     protected void initView() {
         boolean ifPermit = PermissionUtil.checkPermission(this);
@@ -41,6 +46,7 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
+    //“跳过”按钮的点击事件
     @OnClick({R.id.tv_jump})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -75,6 +81,8 @@ public class SplashActivity extends BaseActivity {
         startSubscribe();
     }
 
+
+    //右下角倒计时显示
     private void startSubscribe() {
         subscription =  Observable.interval(0, 1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
                 .take(4)
@@ -90,6 +98,8 @@ public class SplashActivity extends BaseActivity {
                         });
     }
 
+
+    //根据用户是否处于登录状态 的界面跳转方法  跳转至主界面
     private void jumpActivity() {
         if (!SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty()) {
             startActivity(new Intent(SplashActivity.this, HomeActivity.class));

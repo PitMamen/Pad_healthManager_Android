@@ -202,23 +202,6 @@ public class HelloChatController implements TUIChatControllerListener {
                 TUIKitLog.w(TAG, "invalid json: " + new String(elem.getData()) + " " + e.getMessage());
             }
 
-
-//            // 自定义的json数据，需要解析成bean实例
-//            CustomHelloMessage data = null;
-//            try {
-//                data = new Gson().fromJson(new String(elem.getData()), CustomHelloMessage.class);
-//            } catch (Exception e) {
-//                TUIKitLog.w(TAG, "invalid json: " + new String(elem.getData()) + " " + e.getMessage());
-//            }
-//            if (data == null) {
-//                TUIKitLog.e(TAG, "No Custom Data: " + new String(elem.getData()));
-//            } else if (data.version == TUIKitConstants.JSON_VERSION_1 || (data.version == TUIKitConstants.JSON_VERSION_4 && data.businessID.equals(TUIKitConstants.BUSINESS_ID_CUSTOM_HELLO))) {
-//                if (parent instanceof MessageBaseHolder) {
-//                    CustomHelloTIMUIController.onDraw(parent, data, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
-//                }
-//            } else {
-//                TUIKitLog.w(TAG, "unsupported version: " + data);
-//            }
         }
     }
 

@@ -46,6 +46,63 @@
         <item name="android:windowExitAnimation">@anim/push_scale_out</item>
     </style>
 
+    <style name="textview_break_shape_weight">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/shape_stroke_gray_one</item>
+        <item name="android:textColor">@color/black_333333</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">@dimen/qb_px_3</item>
+        <item name="android:paddingBottom">@dimen/qb_px_3</item>
+        <item name="android:paddingLeft">@dimen/qb_px_3</item>
+        <item name="android:paddingRight">@dimen/qb_px_3</item>
+        <item name="android:textSize">@dimen/qb_px_8</item>
+    </style>
+
+    <!-- textview 一般样式-->
+    <style name="textview_break">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:textSize">@dimen/qb_px_8</item>
+    </style>
+
+    <!-- textview 下划线样式-->
+    <style name="textview_select">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/qb_px_3</item>
+        <item name="android:paddingRight">@dimen/qb_px_3</item>
+        <item name="android:background">@drawable/underline_gray</item>
+        <item name="android:textColor">@color/gray_999999</item>
+        <item name="android:textSize">@dimen/qb_px_8</item>
+    </style>
+
+    <!-- LinearLayout 一般样式-->
+    <style name="linearLayout_h_match">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingTop">@dimen/qb_px_5</item>
+        <item name="android:paddingBottom">@dimen/qb_px_5</item>
+        <item name="android:paddingLeft">@dimen/qb_px_10</item>
+        <item name="android:paddingRight">@dimen/qb_px_10</item>
+    </style>
+
+    <style name="textview_break_shape_solid_gray">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/shape_stroke_gray_two</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">@dimen/qb_px_5</item>
+        <item name="android:paddingBottom">@dimen/qb_px_5</item>
+        <item name="android:paddingLeft">@dimen/qb_px_5</item>
+        <item name="android:paddingRight">@dimen/qb_px_5</item>
+        <item name="android:textSize">@dimen/qb_px_14</item>
+    </style>
+
 <!--    <style name="AppTheme"-->
 <!--        parent="Theme.AppCompat.Light.DarkActionBar">-->
 <!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->

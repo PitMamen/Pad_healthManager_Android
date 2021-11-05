@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bitvalue.health.Application;
-import com.bitvalue.health.ui.fragment.function.chat.ChatFragment;
+import com.bitvalue.health.ui.fragment.chat.ChatFragment;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKitImpl;

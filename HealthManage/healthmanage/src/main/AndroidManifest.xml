@@ -70,70 +70,60 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <!--        <provider-->
-        <!--            android:name="androidx.core.content.FileProvider"-->
-        <!--            android:authorities="com.healthmanage.fileprovider"-->
-        <!--            android:exported="false"-->
-        <!--            android:grantUriPermissions="true">-->
-        <!--            <meta-data-->
-        <!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
-        <!--                android:resource="@xml/file_paths_public" />-->
-        <!--        </provider>-->
-
-        <!-- android:windowSoftInputMode="adjustResize|stateVisible|adjustPan" -->
-<!--        <activity-->
-<!--            android:name=".HomeActivity"-->
-<!--            android:configChanges="screenSize|keyboard|orientation|keyboardHidden"-->
-<!--            android:launchMode="singleTask"-->
-<!--            android:screenOrientation="landscape"-->
-<!--            android:theme="@style/SplashTheme"-->
-<!--            android:windowSoftInputMode="adjustPan" />-->
-
 
         <activity
             android:name="com.bitvalue.health.ui.activity.HomeActivity"
             android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
-                   android:launchMode="singleTask"
-                  android:screenOrientation="landscape"
-                   android:theme="@style/SplashTheme"
-                  android:windowSoftInputMode="adjustPan">
-
-                </activity>
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="adjustPan"></activity>
 
 
+        <activity
+            android:name="com.bitvalue.health.ui.activity.MRDetailActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
 
 
+        <activity
+            android:name="com.bitvalue.health.ui.activity.LoginHealthActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:theme="@style/SplashTheme" />
 
-                <activity
-                    android:name="com.bitvalue.health.ui.activity.LoginHealthActivity"
-                    android:launchMode="singleTask"
-                    android:screenOrientation="landscape"
-                    android:theme="@style/SplashTheme" />
-
-                <!--        <activity-->
+        <!--        <activity-->
         <!--            android:name=".ui.activity.main.NewMsgActivity"-->
         <!--            android:launchMode="singleTask"-->
         <!--            android:screenOrientation="landscape"-->
         <!--            android:theme="@style/SplashTheme" />-->
 
-                <!-- 拍照选择 -->
-                <activity
-                    android:name="com.bitvalue.health.ui.activity.CameraActivity"
-                    android:launchMode="singleTop"
-                    android:screenOrientation="landscape" />
+        <!-- 拍照选择 -->
+        <activity
+            android:name="com.bitvalue.health.ui.activity.media.CameraActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
 
-                <!-- 图片选择 -->
-                <activity
-                    android:name="com.bitvalue.health.ui.activity.ImageSelectActivity"
-                    android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
-                    android:label="@string/image_select_title"
-                    android:screenOrientation="landscape" />
+        <!-- 图片选择 -->
+        <activity
+            android:name="com.bitvalue.health.ui.activity.media.ImageSelectActivity"
+            android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
+            android:label="@string/image_select_title"
+            android:screenOrientation="landscape" />
 
-                <!-- 查看大图 -->
-                <activity
-                    android:name="com.bitvalue.health.ui.activity.ImagePreviewActivity"
-                    android:launchMode="singleTop"
-                    android:screenOrientation="landscape" />
+        <!-- 查看大图 -->
+        <activity
+            android:name="com.bitvalue.health.ui.activity.media.ImagePreviewActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name="com.bitvalue.health.ui.activity.HealthFilesActivity"
+            android:configChanges="screenSize|keyboard|orientation|keyboardHidden"
+            android:screenOrientation="landscape"
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="adjustPan" />
 
         <!--        &lt;!&ndash; 播放视频 &ndash;&gt;-->
         <!--        <activity-->

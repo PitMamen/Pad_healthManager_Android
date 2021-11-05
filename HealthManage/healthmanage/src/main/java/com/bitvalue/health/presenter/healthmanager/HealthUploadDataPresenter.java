@@ -1,11 +1,10 @@
 package com.bitvalue.health.presenter.healthmanager;
 
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
-import com.bitvalue.health.api.responsebean.TaskPlanDetailBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
 import com.bitvalue.health.contract.healthmanagercontract.HealthUploadDataContract;
-import com.bitvalue.health.model.healthmanager.HealthUploadDataModel;
+import com.bitvalue.health.model.healthmanagermodel.HealthUploadDataModel;
 
 /**
  * @author created by bitvalue

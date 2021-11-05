@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/qb_px_10">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="费用占比分析"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/qb_px_9" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_blue" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="住院费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_1" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="诊疗费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_2" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="治疗费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_3" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="护理费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_4" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="手术费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_5" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="检查费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/qb_px_7"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_6" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="化验费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_7" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="摄片费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_8" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="透视费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_9" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="输血费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_10" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="输氧费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_11" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="西药费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_7"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_12" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="中成药费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_13" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="中草药费"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"
+                android:background="@drawable/shape_dot_fee_14" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text="其它费用"
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text=""
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text=""
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <View
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_margin="@dimen/qb_px_2"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:text=""
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+        </LinearLayout>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/piechart"
+            android:layout_width="@dimen/qb_px_110"
+            android:layout_height="@dimen/qb_px_110"
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="住院费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje1_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="诊疗费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje2_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="治疗费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje3_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="护理费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje4_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手术费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje5_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="检查费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje6_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="化验费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje7_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="摄片费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje8_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="透视费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje9_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="输血费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje10_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="输氧费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje11_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="西药费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje12_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="中成药费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje13_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="中草药费："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje14_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="其它费用："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje15_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3.7"
+                android:text=""
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_marginTop="@dimen/qb_px_6"
+            android:background="@color/divider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_6"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="总费用："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje_all_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_12"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_30"
+                android:text="缴费日期："
+                android:textColor="@color/gray_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/sfxxje_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2020-01-01 00:00:00"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</ScrollView>

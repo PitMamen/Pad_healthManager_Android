@@ -5,13 +5,24 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bitvalue.health.Application;
+import com.bitvalue.health.api.ApiResult;
+import com.bitvalue.health.api.requestbean.GetPlanIdApi;
 import com.bitvalue.health.ui.activity.HomeActivity;
+import com.bitvalue.health.ui.fragment.chat.ChatFragment;
+import com.bitvalue.health.util.Constants;
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKitImpl;
 import com.bitvalue.sdk.collab.helper.CustomHealthPlanMessage;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.MessageLayout;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.HttpCallback;
+
+import java.util.ArrayList;
+
+import okhttp3.Call;
 
 public class CustomHealthPlanMessageController {
 
@@ -51,7 +62,7 @@ public class CustomHealthPlanMessageController {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                getDetail(data);
+                getDetail(data);
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -69,35 +80,36 @@ public class CustomHealthPlanMessageController {
      * 这里健康计划请求方式 不再使用该方式
      * @param data
      */
-//    private static void getDetail(CustomHealthPlanMessage data) {
-//        GetPlanIdApi getPlanIdApi = new GetPlanIdApi();
-//        getPlanIdApi.goodsId = data.goodsId;
-//        getPlanIdApi.userId = data.userId;
-//        EasyHttp.get(homeActivity).api(getPlanIdApi).request(new HttpCallback<ApiResult<String>>(homeActivity) {
-//            @Override
-//            public void onStart(Call call) {
-//                super.onStart(call);
-//            }
-//
-//            @Override
-//            public void onSucceed(ApiResult<String> result) {
-//                super.onSucceed(result);
-//                if (result.getCode() == 0) {
-//                    String planId = result.getData();
-//                    ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
-//                    msgData.userIds = new ArrayList<>();
-//                    msgData.userIds.add(data.userId);
-//                    msgData.id = planId + "";//这里id设置为 planId
-//                    homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_DETAIL, msgData);
-//                } else {
-//                    ToastUtil.toastShortMessage(result.getMessage());
-//                }
-//            }
-//
-//            @Override
-//            public void onFail(Exception e) {
-//                super.onFail(e);
-//            }
-//        });
-//    }
+    private static void getDetail(CustomHealthPlanMessage data) {
+        GetPlanIdApi getPlanIdApi = new GetPlanIdApi();
+        getPlanIdApi.goodsId = data.goodsId;
+        getPlanIdApi.userId = data.userId;
+        EasyHttp.get(homeActivity).api(getPlanIdApi).request(new HttpCallback<ApiResult<String>>(homeActivity) {
+
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(ApiResult<String> result) {
+                super.onSucceed(result);
+                if (result.getCode() == 0) {
+                    String planId = result.getData();
+                    ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
+                    msgData.userIds = new ArrayList<>();
+                    msgData.userIds.add(data.userId);
+                    msgData.id = planId + "";//这里id设置为 planId
+                    homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_DETAIL, msgData);
+                } else {
+                    ToastUtil.toastShortMessage(result.getMessage());
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
+    }
 }

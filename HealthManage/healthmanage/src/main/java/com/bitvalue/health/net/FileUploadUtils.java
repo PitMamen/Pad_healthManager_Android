@@ -23,6 +23,13 @@ import top.zibin.luban.OnCompressListener;
 public enum FileUploadUtils implements OnHttpListener<Object> {
     INSTANCE;
 
+
+    /**
+     * 上传语音
+     * @param lifecycleOwner
+     * @param uploadFileApi
+     * @param onAudioUploadCallback
+     */
     public void uploadAudio(LifecycleOwner lifecycleOwner, UploadFileApi uploadFileApi, OnAudioUploadCallback onAudioUploadCallback) {
         EasyHttp.post(lifecycleOwner).api(uploadFileApi).request(new HttpCallback<ApiResult<AudioUploadResultBean>>(this) {
             @Override
@@ -45,14 +52,12 @@ public enum FileUploadUtils implements OnHttpListener<Object> {
 
     }
 
-    public interface OnAudioUploadCallback {
-
-        void onSuccess(ApiResult<AudioUploadResultBean> result);
-
-        void onFail();
-
-    }
-
+    /**
+     * 上传图片
+     * @param lifecycleOwner
+     * @param updateImageApi
+     * @param onAudioUploadCallback
+     */
     public void uploadPic(LifecycleOwner lifecycleOwner, UpdateImageApi updateImageApi, OnAudioUploadCallback onAudioUploadCallback) {
         compressPicture(updateImageApi.file.getAbsolutePath(), new CompressCallBack() {
             @Override
@@ -85,6 +90,12 @@ public enum FileUploadUtils implements OnHttpListener<Object> {
         });
     }
 
+
+    /**
+     *图片压缩
+     * @param filePath
+     * @param compressCallBack
+     */
     public static void compressPicture(String filePath, CompressCallBack compressCallBack) {
         try {
             String compressPath = Environment.getExternalStorageDirectory() + "/lunbanCompress/";
@@ -126,17 +137,27 @@ public enum FileUploadUtils implements OnHttpListener<Object> {
         }
     }
 
+
+    /**
+     * 语音上传回调
+     */
+    public interface OnAudioUploadCallback {
+
+        void onSuccess(ApiResult<AudioUploadResultBean> result);
+
+        void onFail();
+
+    }
+
+    /**
+     * 图片压缩上产、语音上产回调
+     */
     public interface CompressCallBack {
         void onSuccess(String compressPath) throws IOException;
 
         void onFail(String oldPath);
     }
 
-    public interface OnPicUploadCallback {
-        void onSuccess(ApiResult<AudioUploadResultBean> result);
-
-        void onFail();
-    }
 
     @Override
     public void onStart(Call call) {

@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.bitvalue.health.api.responsebean.VideoResultBean;
 import com.bitvalue.health.base.AppAdapter;
-import com.bitvalue.health.ui.activity.VideoPlayActivity;
+import com.bitvalue.health.ui.activity.media.VideoPlayActivity;
 import com.bitvalue.healthmanage.R;
 
 public class VideoAdapter extends AppAdapter<VideoResultBean.ListDTO> {

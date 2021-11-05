@@ -32,7 +32,7 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.bitvalue.health.util.ActivityAction;
+import com.bitvalue.health.callback.ActivityAction;
 import com.bitvalue.healthmanage.R;
 
 import java.io.File;

@@ -19,7 +19,7 @@ import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.base.view.IView;
 import com.bitvalue.health.util.BaseDialog;
-import com.bitvalue.health.util.KeyboardAction;
+import com.bitvalue.health.callback.KeyboardAction;
 import com.bitvalue.health.util.WaitDialog;
 import com.hjq.http.listener.OnHttpListener;
 

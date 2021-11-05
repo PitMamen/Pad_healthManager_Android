@@ -11,16 +11,21 @@ import com.bitvalue.health.Application;
 import com.bitvalue.health.api.requestbean.LoginReqBean;
 import com.bitvalue.health.api.responsebean.LoginResBean;
 import com.bitvalue.health.base.BaseActivity;
-import com.bitvalue.health.contract.LoginContract;
+import com.bitvalue.health.contract.homecontract.LoginContract;
 import com.bitvalue.health.presenter.homepersenter.LoginPersenter;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
+import com.hjq.http.EasyConfig;
 import com.hjq.toast.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
+
+/***
+ * 用户登录界面
+ */
 public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements LoginContract.loginView {
 
     @BindView(R.id.img_remember)
@@ -68,6 +73,8 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
         }
     }
 
+
+    //各个子控件的点击事件
     @OnClick({R.id.layout_remember, R.id.btn_login})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -98,90 +105,6 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
         }
     }
 
-//    private void goLogin() {
-//        //登陆的时候 Authorization 先置空
-//        EasyConfig.getInstance().getHeaders().put("Authorization", "");
-//        EasyHttp.post(this)
-//                .api(new LoginApi()
-//                        .setUserName(et_work_no.getText().toString())
-//                        .setPassword(et_psd.getText().toString()))
-//                .request(new HttpCallback<HttpData<LoginBean>>(this) {
-//
-//                    @Override
-//                    public void onStart(Call call) {
-//                        super.onStart(call);
-//                    }
-//
-//                    @Override
-//                    public void onEnd(Call call) {
-//                        super.onEnd(call);
-//                    }
-//
-//                    @Override
-//                    public void onSucceed(HttpData<LoginBean> data) {
-//                        super.onSucceed(data);
-//                        if (data == null) {
-//                            return;
-//                        }
-//                        //10004 密码错误
-//                        if (data.getCode() == 10004) {
-//                            ToastUtil.toastShortMessage("密码错误");
-//                            hideDialog();
-//                            return;
-//                        }
-//                        if (data.getCode() == 0) {
-//                            LoginBean loginBean = data.getData();
-//                            if (loginBean != null) {
-//                                EasyConfig.getInstance().addHeader("Authorization", loginBean.getToken());
-//                                SharedPreManager.putString(Constants.KEY_TOKEN, loginBean.getToken());
-//                                if (isRememberPwd) {
-//                                    SharedPreManager.putString(Constants.KEY_PSD, et_psd.getText().toString());
-//                                    SharedPreManager.putString(Constants.KEY_ACCOUNT, et_work_no.getText().toString());
-//                                }
-//                                SharedPreManager.putObject(Constants.KYE_USER_BEAN, loginBean);
-//                                showDialog();
-//                                       必須在這裡登錄？
-//                                TUIKit.login(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig, new IUIKitCallBack() {
-//                                    @Override
-//                                    public void onError(String module, final int code, final String desc) {
-//                                        hideDialog();
-//                                        runOnUiThread(new Runnable() {
-//                                            public void run() {
-//                                                DemoLog.e("TUIKit.login", "登录聊天失败" + ", errCode = " + code + ", errInfo = " + desc);
-//                                            }
-//                                        });
-//                                    }
-//
-//                                    @Override
-//                                    public void onSuccess(Object data) {
-//                                        hideDialog();
-//                                        // 跳转到首页
-//                                        // HomeActivity.start(getContext(), MeFragment.class);
-//                                        SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, AppApplication.instance());
-//                                        startActivity(new Intent(LoginHealthActivity.this, HomeActivity.class));
-//                                        finish();
-//                                    }
-//                                });
-//
-//                            } else {
-//                                ToastUtil.toastShortMessage("工号或密码错误");
-//                                hideDialog();
-//                            }
-//                        } else {
-//                            ToastUtil.toastShortMessage("工号或密码错误");
-//                            hideDialog();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFail(Exception e) {
-//                        super.onFail(e);
-//                        hideDialog();
-//                    }
-//
-//                });
-//    }
-
     /**
      * 切换是否记住密码图标,
      *
@@ -191,12 +114,15 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
         img_remember.setImageResource(isRememberPwd ? R.drawable.remember_pwd_choice : R.drawable.unremember_pwd_choice);
     }
 
+
+    //用户登录成功之后的回调
     @Override
     public void loginSuccess(Object object) {
 
         showToast("login success");
         hideDialog();
         LoginResBean resBean = (LoginResBean) object;
+        EasyConfig.getInstance().addHeader("Authorization", resBean.getToken()); //这里也要给EasyHttp添加Token，其他地方有用到EasyHttp请求
         SharedPreManager.putObject(Constants.KYE_USER_BEAN, resBean);
         SharedPreManager.putString(Constants.KEY_TOKEN, resBean.getToken());
         SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, Application.instance());
@@ -206,6 +132,7 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
 
     }
 
+    //用户登录失败之后的回调
     @Override
     public void loginFail(String failMessage) {
         showToast(failMessage);

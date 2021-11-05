@@ -135,6 +135,13 @@ public class MPopupWindow {
         }
     }
 
+
+    public boolean isShowing(){
+        return mPopupWindow.isShowing();
+    }
+
+
+
     public void dismiss() {
         if (mPopupWindow != null) {
             mPopupWindow.dismiss();

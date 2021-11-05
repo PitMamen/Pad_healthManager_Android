@@ -84,6 +84,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     private boolean mHealthPlanDisable;
     private boolean mHealthAnalyseDisable;
     private boolean mHealthMsgDisable;
+    private boolean mHealthFilesDisable;
     private boolean mHealthUploadDisable;
     private boolean mHealthVideoDisable;
     private boolean mHealthplantrackDisable;
@@ -140,6 +141,8 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
             /***
              * 健康管理
              */
+
+            //健康计划
             case CHAT_TYPE_HEALTH:
                 if (!mHealthPlanDisable) {
                     actionUnit = new InputMoreActionUnit() {
@@ -178,6 +181,20 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
                     actionUnit.setTitleId(R.string.heal_msg);
                     mInputMoreActionList.add(actionUnit);
                 }
+
+                //健康档案
+                if (!mHealthFilesDisable){
+                    actionUnit = new InputMoreActionUnit() {
+                        @Override
+                        public void onAction(String chatInfoId, int chatType) {
+                            startHealthFiles();
+                        }
+                    };
+                    actionUnit.setIconResId(R.drawable.icon_files);
+                    actionUnit.setTitleId(R.string.health_files);
+                    mInputMoreActionList.add(actionUnit);
+                }
+
 
                 break;
 

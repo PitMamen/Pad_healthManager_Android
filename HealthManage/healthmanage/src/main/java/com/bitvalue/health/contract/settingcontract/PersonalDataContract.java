@@ -17,7 +17,7 @@ public class PersonalDataContract {
         void getPersonalDocDataFail(String messagefail);
 
         void logoutAcountSuccess();
-        void logoutAcountFail();
+        void logoutAcountFail(String failMessage);
     }
 
 

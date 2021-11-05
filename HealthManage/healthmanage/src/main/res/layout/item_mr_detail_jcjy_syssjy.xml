@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 检查检验item的子item，实验室检验 -->
+<!-- 下面的ScrollView 和 LinearLayout 必须在一起使用，都是为了内容超出屏幕后能滚动-->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/qb_px_10"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <!-- 检验结果列表区域 -->
+        <LinearLayout
+            android:id="@+id/ll_jyjgzb_zone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <!-- item 顶部信息：项目名称 标本名称 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_10"
+                android:layout_marginRight="@dimen/qb_px_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_3"
+                    android:text="项目名称："
+                    android:textColor="@color/black_999999"
+                    android:textSize="@dimen/qb_px_8" />
+
+                <TextView
+                    android:id="@+id/tv_bgdlbmc_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_3"
+                    android:textColor="@color/black_333333"
+                    android:textSize="@dimen/qb_px_8"
+                    tools:text="血分析五分类" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_10"
+                    android:layout_marginTop="@dimen/qb_px_3"
+                    android:text="标本名称："
+                    android:textColor="@color/black_999999"
+                    android:textSize="@dimen/qb_px_8" />
+
+                <TextView
+                    android:id="@+id/tv_yybbmc_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_3"
+                    android:textColor="@color/black_333333"
+                    android:textSize="@dimen/qb_px_8"
+                    tools:text="全血" />
+
+            </LinearLayout>
+
+            <!-- 检验结果指标表头 -->
+            <include
+                layout="@layout/item_mr_detail_jcjy_jyjgzb_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_9"
+                android:layout_marginTop="@dimen/qb_px_10" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_jcjy_jyjgzb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_9"
+                android:focusable="false" />
+            <!-- item 尾部信息：检验报告备注 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_10"
+                android:layout_marginRight="@dimen/qb_px_10">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="检验报告备注："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_8" />
+
+                    <TextView
+                        android:id="@+id/tv_bgbz_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_8"
+                        tools:text="xxxxxx" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- item 尾部信息：报告日期 采集日期 检验日期 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_10"
+                android:layout_marginRight="@dimen/qb_px_10">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="报告日期："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_8" />
+
+                    <TextView
+                        android:id="@+id/tv_bgrq_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_8"
+                        tools:text="2018.01.09" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="采集日期："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_8" />
+
+                    <TextView
+                        android:id="@+id/tv_cjrq_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_8"
+                        tools:text="2018.01.07" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="检验日期："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_8" />
+
+                    <TextView
+                        android:id="@+id/tv_jyrq_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_8"
+                        tools:text="2018.01.08" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 细菌结果列表区域 -->
+        <LinearLayout
+            android:id="@+id/ll_xjjg_zone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <!-- item 顶部信息：项目名称 标本名称 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_10"
+                android:layout_marginRight="@dimen/qb_px_10">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="项目名称："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_15" />
+
+                    <TextView
+                        android:id="@+id/tv_bgdlbmc_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15"
+                        tools:text="血分析五分类" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="标本名称："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_15" />
+
+                    <TextView
+                        android:id="@+id/tv_yybbmc_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15"
+                        tools:text="全血" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- 细菌结果 -->
+            <include layout="@layout/item_mr_detail_jcjy_xjjg_title" />
+            <!-- RecyclerView外包一层RelativeLayout用来解决显示不全的问题 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_jcjy_xjjg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_9"
+                    android:focusable="false" />
+            </RelativeLayout>
+
+            <!-- item 尾部信息：检验报告备注 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_10"
+                android:layout_marginRight="@dimen/qb_px_10">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="检验报告备注："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_15" />
+
+                    <TextView
+                        android:id="@+id/tv_bgbz_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15"
+                        tools:text="xxxxxx" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- item 尾部信息：报告日期 采集日期 检验日期 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_10"
+                android:layout_marginRight="@dimen/qb_px_10">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="报告日期："
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15" />
+
+                    <TextView
+                        android:id="@+id/tv_bgrq_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15"
+                        tools:text="2018.01.09" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="采集日期："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_15" />
+
+                    <TextView
+                        android:id="@+id/tv_cjrq_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15"
+                        tools:text="2018.01.07" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="检验日期："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_15" />
+
+                    <TextView
+                        android:id="@+id/tv_jyrq_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15"
+                        tools:text="2018.01.08" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 药敏结果列表区域 -->
+        <LinearLayout
+            android:id="@+id/ll_ymjg_zone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <!-- item 顶部信息：项目名称 标本名称 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_10"
+                android:layout_marginRight="@dimen/qb_px_10">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="项目名称："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_15" />
+
+                    <TextView
+                        android:id="@+id/tv_bgdlbmc_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15"
+                        tools:text="血分析五分类" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="标本名称："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_15" />
+
+                    <TextView
+                        android:id="@+id/tv_yybbmc_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15"
+                        tools:text="全血" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 药敏结果 -->
+            <include layout="@layout/item_mr_detail_jcjy_ymjg_title" />
+            <!-- RecyclerView外包一层RelativeLayout用来解决显示不全的问题 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview_jcjy_ymjg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_9"
+                    android:focusable="false" />
+            </RelativeLayout>
+
+            <!-- item 尾部信息：检验报告备注 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_10"
+                android:layout_marginRight="@dimen/qb_px_10">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="检验报告备注："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_15" />
+
+                    <TextView
+                        android:id="@+id/tv_bgbz_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15"
+                        tools:text="xxxxxx" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- item 尾部信息：报告日期 采集日期 检验日期 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_10"
+                android:layout_marginRight="@dimen/qb_px_10">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="报告日期："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_15" />
+
+                    <TextView
+                        android:id="@+id/tv_bgrq_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15"
+                        tools:text="2018.01.09" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="采集日期："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_15" />
+
+                    <TextView
+                        android:id="@+id/tv_cjrq_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15"
+                        tools:text="2018.01.07" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:text="检验日期："
+                        android:textColor="@color/black_999999"
+                        android:textSize="@dimen/qb_px_15" />
+
+                    <TextView
+                        android:id="@+id/tv_jyrq_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/qb_px_3"
+                        android:textColor="@color/black_333333"
+                        android:textSize="@dimen/qb_px_15"
+                        tools:text="2018.01.08" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -24,7 +24,29 @@ public final class PersonalDataBean {
     public String expertInDisease;
     public String expertInDiseaseWord;
 
-
-    
-
+    @Override
+    public String toString() {
+        return "PersonalDataBean{" +
+                "accountId=" + accountId +
+                ", userId=" + userId +
+                ", phone='" + phone + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userSex='" + userSex + '\'' +
+                ", userType='" + userType + '\'' +
+                ", identificationType='" + identificationType + '\'' +
+                ", identificationNo='" + identificationNo + '\'' +
+                ", professionalTitle='" + professionalTitle + '\'' +
+                ", departmentId=" + departmentId +
+                ", departmentCode='" + departmentCode + '\'' +
+                ", departmentName='" + departmentName + '\'' +
+                ", hospitalCode='" + hospitalCode + '\'' +
+                ", hospitalName='" + hospitalName + '\'' +
+                ", doctorBrief='" + doctorBrief + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", userAge=" + userAge +
+                ", userSig='" + userSig + '\'' +
+                ", expertInDisease='" + expertInDisease + '\'' +
+                ", expertInDiseaseWord='" + expertInDiseaseWord + '\'' +
+                '}';
+    }
 }

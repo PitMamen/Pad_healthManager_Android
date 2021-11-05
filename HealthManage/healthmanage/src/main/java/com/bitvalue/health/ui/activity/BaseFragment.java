@@ -1,7 +1,6 @@
 package com.bitvalue.health.ui.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -15,12 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 
 
-import com.bitvalue.health.util.ActivityAction;
-import com.bitvalue.health.util.BundleAction;
-import com.bitvalue.health.util.ClickAction;
-import com.bitvalue.health.util.HandlerAction;
-import com.bitvalue.health.util.KeyboardAction;
-import com.bitvalue.health.util.ResourcesAction;
+import com.bitvalue.health.callback.ActivityAction;
+import com.bitvalue.health.callback.BundleAction;
+import com.bitvalue.health.callback.ClickAction;
+import com.bitvalue.health.callback.HandlerAction;
+import com.bitvalue.health.callback.KeyboardAction;
+import com.bitvalue.health.callback.ResourcesAction;
 
 import java.util.List;
 

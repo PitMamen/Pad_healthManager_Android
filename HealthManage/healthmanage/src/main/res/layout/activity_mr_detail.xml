@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_FFFFFF"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/close_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:paddingLeft="@dimen/qb_px_30"
+                android:paddingTop="@dimen/qb_px_15"
+                android:paddingRight="@dimen/qb_px_15"
+                android:paddingBottom="@dimen/qb_px_15"
+                android:src="@mipmap/ic_back_big" />
+
+            <TextView
+                android:layout_width="@dimen/qb_px_100"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:text="病历详情"
+                android:textColor="@color/text_black"
+                android:textSize="@dimen/qb_px_18" />
+
+            <ImageView
+                android:id="@+id/share_iv"
+                android:layout_width="@dimen/qb_px_20"
+                android:layout_height="@dimen/qb_px_20"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/qb_px_10"
+                android:layout_weight="0"
+                android:src="@mipmap/ic_share_bg"
+                android:text="分享"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/white_f2" />
+
+
+        <!-- 分割线-->
+        <!--        <include layout="@layout/divider_horizontal_1dp" />-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="@dimen/qb_px_110"
+                android:layout_height="match_parent"
+                android:background="@color/white_FFFFFF"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_menu_7_basy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_20"
+                    android:drawableLeft="@mipmap/ic_medical_7_yes"
+                    android:drawablePadding="@dimen/qb_px_10"
+                    android:paddingLeft="@dimen/qb_px_30"
+                    android:paddingTop="@dimen/qb_px_10"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="基本信息"
+                    android:textColor="@color/blue_files"
+                    android:textSize="@dimen/qb_px_8" />
+
+                <TextView
+                    android:id="@+id/tv_menu_1_hbls"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/ic_medical_1_no"
+                    android:drawablePadding="@dimen/qb_px_10"
+                    android:paddingLeft="@dimen/qb_px_30"
+                    android:paddingTop="@dimen/qb_px_10"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="电子病历"
+                    android:textColor="@color/black_files"
+                    android:textSize="@dimen/qb_px_8"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_menu_3_jcjy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/ic_medical_3_no"
+                    android:drawablePadding="@dimen/qb_px_10"
+                    android:paddingLeft="@dimen/qb_px_30"
+                    android:paddingTop="@dimen/qb_px_10"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="检查"
+                    android:textColor="@color/black_files"
+                    android:textSize="@dimen/qb_px_8" />
+
+                <TextView
+                    android:id="@+id/tv_menu_9_jy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/ic_medical_9_no"
+                    android:drawablePadding="@dimen/qb_px_10"
+                    android:paddingLeft="@dimen/qb_px_30"
+                    android:paddingTop="@dimen/qb_px_10"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="检验"
+                    android:textColor="@color/black_files"
+                    android:textSize="@dimen/qb_px_8" />
+
+                <TextView
+                    android:id="@+id/tv_menu_5_zlfa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/ic_medical_5_no"
+                    android:drawablePadding="@dimen/qb_px_10"
+                    android:paddingLeft="@dimen/qb_px_30"
+                    android:paddingTop="@dimen/qb_px_10"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="治疗"
+                    android:textColor="@color/black_files"
+                    android:textSize="@dimen/qb_px_8" />
+
+                <TextView
+                    android:id="@+id/tv_menu_2_lcbx"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/ic_medical_7_no"
+                    android:drawablePadding="@dimen/qb_px_10"
+                    android:paddingLeft="@dimen/qb_px_30"
+                    android:paddingTop="@dimen/qb_px_10"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="临床"
+                    android:textColor="@color/black_files"
+                    android:textSize="@dimen/qb_px_8" />
+
+
+                <TextView
+                    android:id="@+id/tv_menu_4_zdjg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/ic_medical_1_no"
+                    android:drawablePadding="@dimen/qb_px_10"
+                    android:paddingLeft="@dimen/qb_px_30"
+                    android:paddingTop="@dimen/qb_px_10"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="诊断"
+                    android:textColor="@color/black_files"
+                    android:textSize="@dimen/qb_px_8" />
+
+                <TextView
+                    android:id="@+id/tv_menu_8_fy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/ic_medical_8_no"
+                    android:drawablePadding="@dimen/qb_px_10"
+                    android:paddingLeft="@dimen/qb_px_30"
+                    android:paddingTop="@dimen/qb_px_10"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="费用"
+                    android:textColor="@color/black_files"
+                    android:textSize="@dimen/qb_px_8"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/tv_menu_6_cyjl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@mipmap/ic_medical_6_no"
+                    android:drawablePadding="@dimen/qb_px_10"
+                    android:paddingLeft="@dimen/qb_px_30"
+                    android:paddingTop="@dimen/qb_px_10"
+                    android:paddingBottom="@dimen/qb_px_10"
+                    android:text="出院小结"
+                    android:textColor="@color/black_files"
+                    android:textSize="@dimen/qb_px_8" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/qb_px_7"
+                android:layout_marginTop="@dimen/qb_px_7"
+                android:background="@color/white_FFFFFF"
+                android:orientation="horizontal">
+
+                <!-- 分割线-->
+                <!--            <include layout="@layout/divider_vertical_1dp" />-->
+
+                <!-- 本来打算每个详情子页使用fragment的，后来发现暂时没必要这么重的实现，直接使用layout叠加就可以了-->
+                <!--<FrameLayout
+                    android:id="@+id/content_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:layout_above="@+id/bottom_tab_zone"/>-->
+
+
+                <!-- 患病历史 -->
+                <include
+                    android:id="@+id/mr_detail_item_1_huanbinglishi"
+                    layout="@layout/mr_detail_item_huanbinglishi"
+                    android:visibility="gone" />
+
+                <!-- 临床表现-门诊 -->
+                <include
+                    android:id="@+id/mr_detail_item_2_linchuangbiaoxian_menzhen"
+                    layout="@layout/mr_detail_item_linchuangbiaoxian_menzhen"
+                    android:visibility="gone" />
+
+                <!-- 临床表现-住院 -->
+                <include
+                    android:id="@+id/mr_detail_item_2_linchuangbiaoxian_zhuyuan"
+                    layout="@layout/mr_detail_item_linchuangbiaoxian_zhuyuan"
+                    android:visibility="gone" />
+
+                <!-- 检查检验 -->
+                <include
+                    android:id="@+id/mr_detail_item_3_jianyanjiance"
+                    layout="@layout/mr_detail_item_jianchajianyan"
+                    android:visibility="gone" />
+
+                <!-- 检查检验 -->
+                <include
+                    android:id="@+id/mr_detail_item_3_jianyanjiance2"
+                    layout="@layout/mr_detail_item_jianchajianyan"
+                    android:visibility="gone" />
+
+                <!-- 诊断结果-门诊 -->
+                <include
+                    android:id="@+id/mr_detail_item_4_zhenduanjieguo_menzhen"
+                    layout="@layout/mr_detail_item_zhenduanjieguo_menzhen"
+                    android:visibility="gone" />
+
+                <!-- 诊断结果-住院 -->
+                <include
+                    android:id="@+id/mr_detail_item_4_zhenduanjieguo_zhuyuan"
+                    layout="@layout/mr_detail_item_zhenduanjieguo_zhuyuan"
+                    android:visibility="gone" />
+
+                <!-- 治疗方案-门诊-->
+                <include
+                    android:id="@+id/mr_detail_item_5_zhiliaofangan_menzhen"
+                    layout="@layout/mr_detail_item_zhiliaofangan_menzhen"
+                    android:visibility="gone" />
+
+                <!-- 治疗方案-住院-->
+                <include
+                    android:id="@+id/mr_detail_item_5_zhiliaofangan_zhuyuan"
+                    layout="@layout/mr_detail_item_zhiliaofangan_zhuyuan"
+                    android:visibility="gone" />
+
+                <!-- 出院记录 -->
+                <include
+                    android:id="@+id/mr_detail_item_6_chuyuanjilu"
+                    layout="@layout/mr_detail_item_chuyuanjilu"
+                    android:visibility="gone" />
+
+                <!-- 病案首页 -->
+                <include
+                    android:id="@+id/mr_detail_item_7_binganshouye"
+                    layout="@layout/mr_detail_item_binganshouye"
+                    android:visibility="visible" />
+
+                <!-- 费用 -->
+                <include
+                    android:id="@+id/mr_detail_item_8_yf"
+                    layout="@layout/mr_detail_item_fy"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

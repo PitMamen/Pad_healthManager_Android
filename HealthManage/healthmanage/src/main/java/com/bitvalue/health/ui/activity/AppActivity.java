@@ -21,7 +21,7 @@ import com.bitvalue.health.util.ActivityManager;
 import com.bitvalue.health.util.BaseDialog;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.SharedPreManager;
-import com.bitvalue.health.util.ToastAction;
+import com.bitvalue.health.callback.ToastAction;
 import com.bitvalue.health.util.WaitDialog;
 import com.bitvalue.health.util.aop.TitleBarAction;
 import com.bitvalue.healthmanage.R;

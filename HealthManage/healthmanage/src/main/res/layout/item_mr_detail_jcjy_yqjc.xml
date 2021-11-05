@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 检查检验item的子item，仪器检查 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_mr_detail_jcjy_yqjc"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/qb_px_10"
+        android:layout_marginRight="@dimen/qb_px_10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:text="检查名称："
+                android:textColor="@color/black_666666"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/tv_jcmc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8"
+                tools:text="颅脑CT" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:text="检查类型："
+                android:textColor="@color/black_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/tv_jclxmc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8"
+                tools:text="超声检查" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:text="检查部位与方法："
+                android:textColor="@color/black_666666"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/tv_jcbwff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8"
+                tools:text="颅脑" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/qb_px_10"
+        android:layout_marginTop="@dimen/qb_px_5"
+        android:layout_marginRight="@dimen/qb_px_10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:text="影响表现或检查所见："
+                android:textColor="@color/black_666666"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/tv_yxbxjcsj"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8"
+                tools:text="脑实质内未见异常密度影，脑沟脑池未见异常狭窄或增宽，脑室大小形态位置正常，中线结构居中，增强：脑实质未见异常强化，脑沟脑室脑池未见异常。" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/qb_px_10"
+        android:layout_marginTop="@dimen/qb_px_5"
+        android:layout_marginRight="@dimen/qb_px_10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:text="检查诊断或提示："
+                android:textColor="@color/black_666666"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/tv_jczdts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8"
+                tools:text="颅脑平扫未见异常。" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/qb_px_10"
+        android:layout_marginTop="@dimen/qb_px_5"
+        android:layout_marginRight="@dimen/qb_px_10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:text="备注或建议："
+                android:textColor="@color/black_666666"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/tv_bzhjy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8"
+                tools:text="--" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/qb_px_10"
+        android:layout_marginTop="@dimen/qb_px_5"
+        android:layout_marginRight="@dimen/qb_px_10">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:text="检查日期："
+                android:textColor="@color/black_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/tv_jcrq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8"
+                tools:text="2019.10.12" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:text="报告日期："
+                android:textColor="@color/black_999999"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                android:id="@+id/tv_bgrq"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:textColor="@color/black_333333"
+                android:textSize="@dimen/qb_px_8"
+                tools:text="2019.10.12" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="@dimen/qb_px_10"
+        android:background="@color/white_f2" />
+
+</LinearLayout>

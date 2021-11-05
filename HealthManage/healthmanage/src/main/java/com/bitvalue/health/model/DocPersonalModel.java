@@ -1,5 +1,7 @@
 package com.bitvalue.health.model;
 
+import android.util.Log;
+
 import com.bitvalue.health.api.requestbean.PersonalDataBean;
 import com.bitvalue.health.base.model.BaseModel;
 import com.bitvalue.health.callback.Callback;
@@ -16,6 +18,7 @@ public class DocPersonalModel extends BaseModel implements PersonalDataContract.
     @Override
     public void getPersonalData(Callback callback) {
         mApi.getDocPersonalDetail().subscribeOn(Schedulers.io()).subscribe(r -> {
+            Log.e(TAG, "getPersonalData: "+r.toString() );
             if (!EmptyUtil.isEmpty(r)) {
                 if (r.getCode() == 0) {
                     if (!EmptyUtil.isEmpty(r.getData())) {
@@ -26,6 +29,9 @@ public class DocPersonalModel extends BaseModel implements PersonalDataContract.
                     callback.onFailedLog(r.getMessage(), 1001);
                 }
             }
+        },error->{
+            Log.e(TAG, "getPersonalData: "+error.getMessage() );
+            callback.onFailedLog(error.getMessage(),1001);
         });
     }
 

@@ -57,7 +57,7 @@ public class PersonalDataPersenter extends BasePresenter<PersonalDataContract.Pe
             public void onFailedLog(String str, int what) {
                 super.onFailedLog(str, what);
                 if (isViewAttach()) {
-                    getView().logoutAcountFail();
+                    getView().logoutAcountFail(str);
                 }
 
 

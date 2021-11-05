@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 患病历史-详情 -->
+<!-- 下面的ScrollView 和 LinearLayout 必须在一起使用，都是为了内容超出屏幕后能滚动-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/qb_px_20"
+    android:layout_marginRight="@dimen/qb_px_20"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:background="@drawable/shape_stroke_gray_two"
+            android:layout_marginTop="@dimen/qb_px_10">
+
+            <TextView
+                style="@style/textview_break_shape_solid_gray"
+                android:text="医院诊断类别名称"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                style="@style/textview_break_shape_solid_gray"
+                android:text="诊断编码"
+                android:textSize="@dimen/qb_px_8" />
+
+
+            <TextView
+                style="@style/textview_break_shape_solid_gray"
+                android:text="医院诊断名称"
+                android:textSize="@dimen/qb_px_8"/>
+
+            <TextView
+                style="@style/textview_break_shape_solid_gray"
+                android:text="诊断编码类型"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                style="@style/textview_break_shape_solid_gray"
+                android:text="诊断时间"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                style="@style/textview_break_shape_solid_gray"
+                android:text="诊断说明"
+                android:textSize="@dimen/qb_px_8" />
+
+            <TextView
+                style="@style/textview_break_shape_solid_gray"
+                android:text="主要诊断标志"
+                android:textSize="@dimen/qb_px_8"/>
+
+
+            <TextView
+                style="@style/textview_break_shape_solid_gray"
+                android:text="疑似诊断标志"
+                android:textSize="@dimen/qb_px_8"  />
+
+            <TextView
+                style="@style/textview_break_shape_solid_gray"
+                android:text="入院病情"
+                android:textSize="@dimen/qb_px_8"  />
+
+            <TextView
+                style="@style/textview_break_shape_solid_gray"
+                android:text="出院情况"
+                android:textSize="@dimen/qb_px_8" />
+
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/zhenduanjieguo_zhuyuan_reclview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/qb_px_10"/>
+    </LinearLayout>
+</LinearLayout>

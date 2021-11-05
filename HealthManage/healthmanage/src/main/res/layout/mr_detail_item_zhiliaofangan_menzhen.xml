@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 临床表现-详情 -->
+<!-- 下面的ScrollView 和 LinearLayout 必须在一起使用，都是为了内容超出屏幕后能滚动-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/qb_px_20"
+    android:layout_marginRight="@dimen/qb_px_20"
+    android:orientation="vertical">
+
+    <!-- #############徐刚：门诊只有一次，是不需要时间轴的！############## -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical">
+
+        <com.bitvalue.health.util.layout.IndicatorView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/qb_px_15"
+            app:textxxx="用药"/>
+        <!-- 用药表头-西药 -->
+        <include
+            android:id="@+id/item_zlfa_cfxx_xiyao_title"
+            layout="@layout/item_mr_detail_zlfa_cfxx_xiyao_title" />
+        <!-- RecyclerView外包一层RelativeLayout用来解决显示不全的问题 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_zlfa_cfxx_xiyao"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/qb_px_9"
+                android:focusable="false"
+                android:background="@android:color/transparent"/>
+        </RelativeLayout>
+
+<!--        <com.bitvalue.client.common.view.IndicatorView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            app:textxxx="中成药"/>-->
+<!--        &lt;!&ndash; 用药表头-中成药 &ndash;&gt;-->
+<!--        <include layout="@layout/item_mr_detail_zlfa_cfxx_zhongchengyao_title" />-->
+<!--        &lt;!&ndash; RecyclerView外包一层RelativeLayout用来解决显示不全的问题 &ndash;&gt;-->
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:descendantFocusability="blocksDescendants">-->
+<!--            <android.support.v7.widget.RecyclerView-->
+<!--                android:id="@+id/recyclerview_zlfa_cfxx_zhongchengyao"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginLeft="9dp"-->
+<!--                android:focusable="false"-->
+<!--                android:background="@android:color/transparent"/>-->
+<!--        </RelativeLayout>-->
+<!--        <com.bitvalue.client.common.view.IndicatorView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            app:textxxx="中草药"/>-->
+<!--        &lt;!&ndash; 用药表头-中成药 &ndash;&gt;-->
+<!--        <include layout="@layout/item_mr_detail_zlfa_cfxx_zhongcaoyao_title" />-->
+<!--        &lt;!&ndash; RecyclerView外包一层RelativeLayout用来解决显示不全的问题 &ndash;&gt;-->
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:descendantFocusability="blocksDescendants">-->
+<!--            <android.support.v7.widget.RecyclerView-->
+<!--                android:id="@+id/recyclerview_zlfa_cfxx_zhongcaoyao"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginLeft="9dp"-->
+<!--                android:focusable="false"-->
+<!--                android:background="@android:color/transparent"/>-->
+<!--        </RelativeLayout>-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.bitvalue.health.util.layout.IndicatorView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/qb_px_15"
+            app:textxxx="手术"/>
+        <!-- RecyclerView外包一层RelativeLayout用来解决显示不全的问题 -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_zlfa_ssxx_menzhen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/qb_px_9"
+                android:focusable="false"
+                android:background="@android:color/transparent"/>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
+</ScrollView>

@@ -13,7 +13,7 @@
     <string name="common_hour">时</string>
     <string name="common_minute">分</string>
     <string name="common_second">秒</string>
-
+    <string name="tip_no_data">暂无数据</string>
     <string name="success">成功</string>
     <string name="have_be_friend">对方已是您的好友</string>
     <string name="friend_limit">您的好友数已达系统上限</string>
@@ -40,7 +40,7 @@
     <string name="common_code_send">发送验证码</string>
     <string name="common_code_send_hint">验证码已发送，请注意查收</string>
     <string name="common_code_error_hint">验证码错误，请检查输入</string>
-
+    <string name="heal_files">健康档案</string>
     <string name="common_step_next">下一步</string>
     <string name="common_step_complete">完成</string>
     <string name="common_step_commit">提交</string>
@@ -270,9 +270,9 @@
     <string name="article_selection">文章选择</string>
     <string name="video_selection">视频选择</string>
     <string name="health_management_plan">健康管理计划</string>
-
-
-
+    <string name="vidio_select">视频选择</string>
+    <string name="article_select">文章选择</string>
+    <string name="medical_records">就诊病历</string>
 
     <string name="writer_healthcase" tools:ignore="ExtraTranslation">病历书写</string>
 </resources>

@@ -105,12 +105,15 @@ public class Constants {
     public static final String VIDEO = "video";
 
 
+    public static final String HOSPITAL_CODE = "444885559";//线上环境
+
     /**
      * Eventbus 消息类型  TYPE = 2  云门诊   TYPE=1  健康管理
      */
     public static final int EVENT_MES_TYPE_CLOUDCLINC = 2;
     public static final int EVENTBUS_MES_HEALTHMANAGER = 1;
-
+    public static final String DOC_ID = "docId";
+    public static final String INDEX_NAME = "indexName";
 
 
 //    //自己的

@@ -623,7 +623,7 @@
 
 
                 <!--                app:switch_bg_color="@color/main_blue"-->
-                <com.bitvalue.healthmanage.widget.view.SwitchButton
+                <com.bitvalue.health.util.customview.SwitchButton
                     android:id="@+id/switch_button"
                     android:layout_width="@dimen/qb_px_50"
                     android:layout_height="@dimen/qb_px_20"

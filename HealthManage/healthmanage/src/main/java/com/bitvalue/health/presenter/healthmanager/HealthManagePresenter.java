@@ -6,7 +6,7 @@ import com.bitvalue.health.api.responsebean.ClientsResultBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
 import com.bitvalue.health.contract.healthmanagercontract.HealthManageContract;
-import com.bitvalue.health.model.healthmanager.HealthManageModel;
+import com.bitvalue.health.model.healthmanagermodel.HealthManageModel;
 import com.bitvalue.health.util.EmptyUtil;
 import com.tencent.imsdk.v2.V2TIMConversationResult;
 import com.tencent.imsdk.v2.V2TIMMessage;

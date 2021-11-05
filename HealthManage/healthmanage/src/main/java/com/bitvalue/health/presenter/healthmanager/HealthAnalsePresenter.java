@@ -4,7 +4,7 @@ import com.bitvalue.health.api.responsebean.SaveAnalyseApi;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
 import com.bitvalue.health.contract.healthmanagercontract.HealthAnalseContract;
-import com.bitvalue.health.model.healthmanager.HealthAnalseModel;
+import com.bitvalue.health.model.healthmanagermodel.HealthAnalseModel;
 
 /**
  * @author created by bitvalue

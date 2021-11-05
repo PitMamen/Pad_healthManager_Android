@@ -187,4 +187,15 @@ public class EmptyUtil {
         return array == null || array.length == 0;
     }
 
+    public static String isEmptyString(String s){
+
+        String result;
+        if (s==null||s.equals("null")||s.length()==0){
+            result = "-";
+        }else {
+            result = s;
+        }
+        return result;
+    }
+
 }

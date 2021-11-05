@@ -15,11 +15,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 
 
-import com.bitvalue.health.util.ActivityAction;
-import com.bitvalue.health.util.BundleAction;
-import com.bitvalue.health.util.ClickAction;
-import com.bitvalue.health.util.HandlerAction;
-import com.bitvalue.health.util.KeyboardAction;
+import com.bitvalue.health.callback.ActivityAction;
+import com.bitvalue.health.callback.BundleAction;
+import com.bitvalue.health.callback.ClickAction;
+import com.bitvalue.health.callback.HandlerAction;
+import com.bitvalue.health.callback.KeyboardAction;
 
 import java.util.List;
 import java.util.Random;

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#363636"
-    tools:context="com.bitvalue.health.ui.activity.ImagePreviewActivity">
+    tools:context="com.bitvalue.health.ui.activity.media.ImagePreviewActivity">
 
     <com.bitvalue.health.util.layout.PhotoViewPager
         android:id="@+id/vp_image_preview_pager"

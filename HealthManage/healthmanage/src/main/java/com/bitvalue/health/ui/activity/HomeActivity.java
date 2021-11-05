@@ -1,11 +1,14 @@
 package com.bitvalue.health.ui.activity;
 
 
+import static android.view.MotionEvent.ACTION_DOWN;
 import static com.bitvalue.health.util.Constants.EVENT_MES_TYPE_CLOUDCLINC;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,30 +27,39 @@ import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.PlanDetailResult;
+import com.bitvalue.health.api.responsebean.PlanListBean;
+import com.bitvalue.health.api.responsebean.TaskPlanDetailBean;
 import com.bitvalue.health.api.responsebean.message.AddVideoObject;
 import com.bitvalue.health.api.responsebean.message.GetMissionObj;
 import com.bitvalue.health.base.BaseActivity;
+import com.bitvalue.health.callback.OnTouchListener;
 import com.bitvalue.health.contract.homecontract.HomeContract;
 import com.bitvalue.health.presenter.homepersenter.HomePersenter;
-import com.bitvalue.health.ui.fragment.function.chat.ChatFragment;
-import com.bitvalue.health.ui.fragment.function.healthmanage.AddArticleFragment;
-import com.bitvalue.health.ui.fragment.function.healthmanage.AddVideoFragment;
-import com.bitvalue.health.ui.fragment.function.healthmanage.ArticleDetailFragment;
-import com.bitvalue.health.ui.fragment.function.healthmanage.ContactsFragment;
-import com.bitvalue.health.ui.fragment.function.cloudclinic.HealthHistoryPreFragment;
-import com.bitvalue.health.ui.fragment.function.cloudclinic.WriteHealthFragment;
-import com.bitvalue.health.ui.fragment.function.docfriend.DocFriendsFragment;
-import com.bitvalue.health.ui.fragment.function.healthmanage.HealthAnalyseDisplayFragment;
-import com.bitvalue.health.ui.fragment.function.healthmanage.HealthAnalyseFragment;
-import com.bitvalue.health.ui.fragment.function.healthmanage.HealthMessageFragment;
-import com.bitvalue.health.ui.fragment.function.healthmanage.HealthPlanDetailFragment;
-import com.bitvalue.health.ui.fragment.function.healthmanage.HealthPlanPreviewFragment;
-import com.bitvalue.health.ui.fragment.function.healthmanage.HealthUploadDataFragment;
-import com.bitvalue.health.ui.fragment.function.healthmanage.NewMsgFragmentDisplay;
-import com.bitvalue.health.ui.fragment.function.healthmanage.QuestionDetailFragment;
-import com.bitvalue.health.ui.fragment.function.setting.PersonalDataFragment;
-import com.bitvalue.health.ui.fragment.function.setting.SettingsFragment;
-import com.bitvalue.health.ui.fragment.function.cloudclinic.CloudClinicFragment;
+import com.bitvalue.health.ui.fragment.chat.ChatFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.AddArticleFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.AddVideoFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.ArticleDetailFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.ContactsFragment;
+import com.bitvalue.health.ui.fragment.cloudclinic.HealthHistoryPreFragment;
+import com.bitvalue.health.ui.fragment.cloudclinic.WriteHealthFragment;
+import com.bitvalue.health.ui.fragment.docfriend.DocFriendsFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.HealthAnalyseDisplayFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.HealthAnalyseFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.HealthMessageFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.HealthPlanDetailFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.HealthPlanPreviewFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.HealthUploadDataFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.NewMsgFragmentDisplay;
+import com.bitvalue.health.ui.fragment.healthmanage.PlanMsgFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.QuestionDetailFragment;
+import com.bitvalue.health.ui.fragment.setting.AddQuestionFragment;
+import com.bitvalue.health.ui.fragment.setting.CreateNewHealthPlanFragment;
+import com.bitvalue.health.ui.fragment.setting.HealthPlanFragment;
+import com.bitvalue.health.ui.fragment.setting.MedicalRecordsFragment;
+import com.bitvalue.health.ui.fragment.setting.NewHealthPlanFragmentModify;
+import com.bitvalue.health.ui.fragment.setting.PersonalDataFragment;
+import com.bitvalue.health.ui.fragment.setting.SettingsFragment;
+import com.bitvalue.health.ui.fragment.cloudclinic.CloudClinicFragment;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
@@ -123,6 +135,9 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     ImageView img_settings;
     @BindView(R.id.img_person)
     ImageView img_person;
+
+    @BindView(R.id.layout_fragment_end)
+    FrameLayout frameLayout;
     private static final int chat_index = 0;
     private static final int settings = 1;
     private static final int video_index = 2;
@@ -134,6 +149,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     private ContactsFragment contactsFragment;
     private CloudClinicFragment cloudClinicFragment;
     private DocFriendsFragment docFriendsFragment;
+
+
 
 
     @Override
@@ -153,7 +170,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
     @Override
     protected void initView() {
-
         LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, this);
         if (loginBean == null) {
             Log.e(TAG, "initView  loginBean is null ");
@@ -164,16 +180,16 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     }
 
 
-        @Subscribe(threadMode = ThreadMode.MAIN)
-        public void onEvent(MsgRemindObj msgRemindObj) {
-            if (msgRemindObj.type == EVENT_MES_TYPE_CLOUDCLINC) {
-                tv_new_count_video.setText(msgRemindObj.num > 99 ? (msgRemindObj.num + "+") : (msgRemindObj.num + ""));
-                layout_pot_video.setVisibility(msgRemindObj.num > 0 ? View.VISIBLE : View.GONE);
-            } else {
-                tv_new_count_health.setText(msgRemindObj.num > 99 ? (msgRemindObj.num + "+") : (msgRemindObj.num + ""));
-                layout_pot_health.setVisibility(msgRemindObj.num > 0 ? View.VISIBLE : View.GONE);
-            }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MsgRemindObj msgRemindObj) {
+        if (msgRemindObj.type == EVENT_MES_TYPE_CLOUDCLINC) {
+            tv_new_count_video.setText(msgRemindObj.num > 99 ? (msgRemindObj.num + "+") : (msgRemindObj.num + ""));
+            layout_pot_video.setVisibility(msgRemindObj.num > 0 ? View.VISIBLE : View.GONE);
+        } else {
+            tv_new_count_health.setText(msgRemindObj.num > 99 ? (msgRemindObj.num + "+") : (msgRemindObj.num + ""));
+            layout_pot_health.setVisibility(msgRemindObj.num > 0 ? View.VISIBLE : View.GONE);
         }
+    }
 
     @Override
     protected void onResume() {
@@ -263,6 +279,10 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         }
     }
 
+
+    /**
+     * 背景选择 点击不同按钮 显示不同颜色
+     */
     private void initNaviUI() {
         img_person.setImageResource(R.drawable.tab_icon_ct);
         tv_person.setTextColor(getResources().getColor(R.color.gray));
@@ -295,7 +315,10 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         if (isContain) {
             mapFragments.remove(keyFragment);
         }
+        Log.e(TAG, "switchSecondFragment: " + keyFragment);
         switch (keyFragment) {
+
+            //聊天界面
             case Constants.FRAGMENT_CHAT:
                 ClientsResultBean.UserInfoDTO child = (ClientsResultBean.UserInfoDTO) object;
                 ChatFragment chatFragment;
@@ -327,35 +350,36 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 chatFragment.setArguments(bundle);
                 mapFragments.put(Constants.FRAGMENT_CHAT, chatFragment);
                 break;
-//            case Constants.FRAGMENT_HEALTH_PLAN:
-//                HealthPlanFragment healthPlanFragment;
-//                if (isContain) {
-//                    mapFragments.remove(keyFragment);
-//                }
-//                healthPlanFragment = new HealthPlanFragment();
-//                mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN, healthPlanFragment);
-//                break;
-//
-//            case Constants.FRAGMENT_HEALTH_NEW:
-//                NewHealthPlanFragment newHealthPlanFragment;
-//                if (isContain) {
-//                    mapFragments.remove(keyFragment);
-//                }
-//                newHealthPlanFragment = new NewHealthPlanFragment();
-//                mapFragments.put(Constants.FRAGMENT_HEALTH_NEW, newHealthPlanFragment);
-//                break;
-//            case Constants.FRAGMENT_HEALTH_MODIFY:
-//                PlanListBean planListBean = (PlanListBean) object;
-//                NewHealthPlanFragmentModify newHealthPlanFragmentModify;
-//                if (isContain) {
-//                    mapFragments.remove(keyFragment);
-//                }
-//                newHealthPlanFragmentModify = new NewHealthPlanFragmentModify();
-//                Bundle bundleModify = new Bundle();
-//                bundleModify.putSerializable(Constants.PLAN_LIST_BEAN, planListBean);
-//                newHealthPlanFragmentModify.setArguments(bundleModify);
-//                mapFragments.put(Constants.FRAGMENT_HEALTH_MODIFY, newHealthPlanFragmentModify);
-//                break;
+
+            //套餐配置
+            case Constants.FRAGMENT_HEALTH_PLAN:
+                HealthPlanFragment healthPlanFragment;
+                healthPlanFragment = new HealthPlanFragment();
+                mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN, healthPlanFragment);
+                break;
+//      创建健康管理计划
+            case Constants.FRAGMENT_HEALTH_NEW:
+                CreateNewHealthPlanFragment newHealthPlanFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                newHealthPlanFragment = new CreateNewHealthPlanFragment();
+                mapFragments.put(Constants.FRAGMENT_HEALTH_NEW, newHealthPlanFragment);
+                break;
+
+            //修改健康管理计划
+            case Constants.FRAGMENT_HEALTH_MODIFY:
+                PlanListBean planListBean = (PlanListBean) object;
+                NewHealthPlanFragmentModify newHealthPlanFragmentModify;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                newHealthPlanFragmentModify = new NewHealthPlanFragmentModify();
+                Bundle bundleModify = new Bundle();
+                bundleModify.putSerializable(Constants.PLAN_LIST_BEAN, planListBean);
+                newHealthPlanFragmentModify.setArguments(bundleModify);
+                mapFragments.put(Constants.FRAGMENT_HEALTH_MODIFY, newHealthPlanFragmentModify);
+                break;
 //         添加文章界面
             case Constants.FRAGMENT_ADD_PAPER:
                 GetMissionObj getMissionPaper = (GetMissionObj) object;
@@ -369,18 +393,20 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 addArticleFragment.setArguments(bundlePaper);
                 mapFragments.put(Constants.FRAGMENT_ADD_PAPER, addArticleFragment);
                 break;
-//            case Constants.FRAGMENT_ADD_QUESTION:
-//                GetMissionObj getMissionObj = (GetMissionObj) object;
-//                AddQuestionFragment addQuestionFragment;
-//                if (isContain) {
-//                    mapFragments.remove(keyFragment);
-//                }
-//                addQuestionFragment = new AddQuestionFragment();
-//                Bundle bundleQue = new Bundle();
-//                bundleQue.putSerializable(Constants.GET_MISSION_OBJ, getMissionObj);
-//                addQuestionFragment.setArguments(bundleQue);
-//                mapFragments.put(Constants.FRAGMENT_ADD_QUESTION, addQuestionFragment);
-//                break;
+
+            //添加问卷界面
+            case Constants.FRAGMENT_ADD_QUESTION:
+                GetMissionObj getMissionObj = (GetMissionObj) object;
+                AddQuestionFragment addQuestionFragment;
+                if (isContain) {
+                    mapFragments.remove(keyFragment);
+                }
+                addQuestionFragment = new AddQuestionFragment();
+                Bundle bundleQue = new Bundle();
+                bundleQue.putSerializable(Constants.GET_MISSION_OBJ, getMissionObj);
+                addQuestionFragment.setArguments(bundleQue);
+                mapFragments.put(Constants.FRAGMENT_ADD_QUESTION, addQuestionFragment);
+                break;
 
             //健康消息
             case Constants.FRAGMENT_SEND_MSG:
@@ -395,7 +421,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 mapFragments.put(Constants.FRAGMENT_SEND_MSG, newMsgFragment);
                 break;
 
-                //聊天界面  点击发出去的信息 展示界面
+            //聊天界面  点击发出去的信息 展示界面
             case Constants.FRAGMENT_SEND_MSG_DISPLAY:
                 ChatFragment.NewMsgData msgDataDis = (ChatFragment.NewMsgData) object;
                 NewMsgFragmentDisplay newMsgFragmentDisplay;
@@ -437,7 +463,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 healthUploadDataFragment.setArguments(bundleData);
                 mapFragments.put(Constants.FRAGMENT_USER_DATA, healthUploadDataFragment);
                 break;
-             //  健康评估详情展示
+            //  健康评估详情展示
             case Constants.FRAGMENT_HEALTH_ANALYSE_DISPLAY:
                 HealthAnalyseDisplayFragment healthAnalyseFragmentDisplay;
                 healthAnalyseFragmentDisplay = new HealthAnalyseDisplayFragment();
@@ -462,7 +488,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_DETAIL, healthPlanDetailFragment);
                 break;
 
-                //添加视频界面
+            //添加视频界面
             case Constants.FRAGMENT_ADD_VIDEO:
                 AddVideoObject addVideoObject = (AddVideoObject) object;
                 Bundle bundleMsg = new Bundle();
@@ -486,7 +512,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 questionDetailFragment.setArguments(bundleQuest);
                 mapFragments.put(Constants.FRAGMENT_QUESTION_DETAIL, questionDetailFragment);
                 break;
-             //   文章预览界面
+            //   文章预览界面
             case Constants.FRAGMENT_ARTICLE_DETAIL:
                 ArticleBean articleBean = (ArticleBean) object;
                 Bundle bundleArticle = new Bundle();
@@ -495,19 +521,20 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 articleDetailFragment.setArguments(bundleArticle);
                 mapFragments.put(Constants.FRAGMENT_ARTICLE_DETAIL, articleDetailFragment);
                 break;
-//            case Constants.FRAGMENT_PLAN_MSG:
-//                TaskPlanDetailBean taskPlanDetailBean = (TaskPlanDetailBean) object;
-//                Bundle bundleTP = new Bundle();
-//                bundleTP.putSerializable(Constants.PLAN_MSG, taskPlanDetailBean);
-//                PlanMsgFragment planMsgFragment;
-//                if (isContain) {
-//                    mapFragments.remove(keyFragment);
-//                }
-//                planMsgFragment = new PlanMsgFragment();
-//                planMsgFragment.setArguments(bundleTP);
-//                mapFragments.put(Constants.FRAGMENT_PLAN_MSG, planMsgFragment);
-//                break;
+
+
+            // 健康提醒界面
+            case Constants.FRAGMENT_PLAN_MSG:
+                TaskPlanDetailBean taskPlanDetailBean = (TaskPlanDetailBean) object;
+                Bundle bundleTP = new Bundle();
+                bundleTP.putSerializable(Constants.PLAN_MSG, taskPlanDetailBean);
+                PlanMsgFragment planMsgFragment = new PlanMsgFragment();
+                planMsgFragment.setArguments(bundleTP);
+                mapFragments.put(Constants.FRAGMENT_PLAN_MSG, planMsgFragment);
+                break;
 //
+
+            //健康套餐计划 预览
             case Constants.FRAGMENT_HEALTH_PLAN_PREVIEW:
                 PlanDetailResult planDetailResult = (PlanDetailResult) object;
                 Bundle bundlePre = new Bundle();
@@ -544,7 +571,20 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 healthHistoryPreFragment.setArguments(bundlePreview);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_HISTORY_PREVIEW, healthHistoryPreFragment);
                 break;
-//
+
+            //医生个人信息界面
+            case Constants.FRAGMENT_PERSONAL_DATA:
+                PersonalDataFragment personalDataFragment = new PersonalDataFragment();
+                mapFragments.put(Constants.FRAGMENT_PERSONAL_DATA, personalDataFragment);
+                break;
+            //个人设置中的看诊记录界面
+            case Constants.FRAGMENT_CHAT_LOG:
+                MedicalRecordsFragment chatLogFragment = new MedicalRecordsFragment();
+                mapFragments.put(Constants.FRAGMENT_CHAT_LOG, chatLogFragment);
+                break;
+
+
+            //患者资料详情  （暂时不用）
 //            case Constants.FRAGMENT_VIDEO_PATIENT_DATA:
 //                VideoPatientDataFragment videoPatientDataFragment;
 //                if (isContain) {
@@ -557,19 +597,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 //                videoPatientDataFragment.setArguments(bundlePatient);
 //                mapFragments.put(Constants.FRAGMENT_VIDEO_PATIENT_DATA, videoPatientDataFragment);
 //                break;
-            case Constants.FRAGMENT_PERSONAL_DATA:
-                PersonalDataFragment personalDataFragment;
-                personalDataFragment = new PersonalDataFragment();
-                mapFragments.put(Constants.FRAGMENT_PERSONAL_DATA, personalDataFragment);
-                break;
-//            case Constants.FRAGMENT_CHAT_LOG:
-//                ChatLogFragment chatLogFragment;
-//                if (isContain) {
-//                    mapFragments.remove(keyFragment);
-//                }
-//                chatLogFragment = new ChatLogFragment();
-//                mapFragments.put(Constants.FRAGMENT_CHAT_LOG, chatLogFragment);
-//                break;
+
+            //用药指导  （暂时不用）
 //            case Constants.FRAGMENT_MEDICINE_GUIDE:
 //                MedicineGuideFragment medicineGuideFragment;
 //                if (isContain) {
@@ -590,9 +619,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 fragmentTransaction.hide(mapFragments.get(stringList.get(i)));
             }
         }
-        for (String key : mapFragments.keySet()) {
-            Log.e(TAG, "switchSecondFragment: "+key );
-        }
         if (!mapFragments.get(keyFragment).isAdded()) {
             fragmentTransaction.add(R.id.layout_fragment_end, mapFragments.get(keyFragment));
         }
@@ -602,9 +628,14 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     }
 
 
-    @OnClick({R.id.layout_person, R.id.layout_settings, R.id.layout_group, R.id.layout_send})
+    /***
+     * 各个子控件的点击事件
+     * @param view
+     */
+    @OnClick({R.id.layout_person, R.id.layout_settings, R.id.layout_group, R.id.layout_send,R.id.layout_fragment_end})
     public void clickleftbutton(View view) {
         switch (view.getId()) {
+            //健康管理按钮点击事件
             case R.id.layout_person:
                 if (tabPosition != 0) {
                     backAllThirdAct();
@@ -612,6 +643,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 EventBus.getDefault().post(new MainRefreshObj()); // 通知健康管理界面获取数据 请求接口
                 afterTabSelect(0);
                 break;
+
+                //个人设置按钮 点击事件
             case R.id.layout_settings:
                 if (tabPosition != 1) {
                     backAllThirdAct();
@@ -619,6 +652,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 afterTabSelect(1);
                 break;
 
+                //云门诊按钮点击事件
             case R.id.layout_group:
                 EventBus.getDefault().post(new VideoRefreshObj());
                 if (tabPosition != 2) {
@@ -631,6 +665,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 tv_new_count_video.setText("0");
                 break;
 
+                //医生好友按钮点击事件
             case R.id.layout_send:
 //                EventBus.getDefault().post(new VideoRefreshObj());
                 if (tabPosition != 3) {
@@ -638,6 +673,16 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 }
                 afterTabSelect(3);
                 break;
+
+
+                //第三个Fragment界面事件点击
+            case R.id.layout_fragment_end:
+                if (null != onTouchListener) {
+                    onTouchListener.onthirdFragmentListenner();
+                }
+
+                break;
+
         }
     }
 
@@ -649,11 +694,15 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         }
     }
 
+
+    //腾讯IM登录成功回调
     @Override
     public void LoginSuccess(Object o) {
         Log.e(TAG, "LoginSuccess ");
     }
 
+
+    //腾讯IM登录失败
     @Override
     public void LoginFail(String module, int code, String desc) {
 
@@ -675,4 +724,16 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     public void onFail(Exception e) {
 
     }
+
+
+
+
+    private OnTouchListener onTouchListener;
+
+    public void setOnTouchListener(OnTouchListener listener) {
+        onTouchListener = listener;
+    }
+
+
+
 }

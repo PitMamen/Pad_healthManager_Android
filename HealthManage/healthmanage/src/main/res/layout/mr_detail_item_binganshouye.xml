@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/details_one_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/qb_px_15">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                style="@style/textview_break"
+                android:paddingLeft="@dimen/qb_px_15"
+                android:text="医疗机构:" />
+
+            <TextView
+                android:id="@+id/A02"
+                style="@style/textview_select"
+                android:text="中南大学湘雅二医院" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                style="@style/textview_break"
+                android:text="医疗机构(组织)代码:" />
+
+            <TextView
+                android:id="@+id/A01"
+                style="@style/textview_select"
+                android:text="123456789" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:text="住院病案首页"
+            android:textStyle="bold"
+            android:textColor="@color/black_333333"
+            android:textSize="@dimen/qb_px_15"
+            android:visibility="visible" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/qb_px_15"
+            android:background="@color/white_CCCCCC"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_15"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                style="@style/textview_break"
+                android:paddingLeft="@dimen/qb_px_15"
+                android:text="医疗付费方式：" />
+
+            <TextView
+                android:id="@+id/A46C"
+                style="@style/textview_select"
+                android:text="本市城镇职工基本医疗保险" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                style="@style/textview_break"
+                android:paddingLeft="@dimen/qb_px_15"
+                android:text="健康卡号：" />
+
+            <TextView
+                android:id="@+id/A47"
+                style="@style/textview_select"
+                android:text="123456789" />
+
+            <TextView
+                style="@style/textview_break"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="第" />
+
+            <TextView
+                android:id="@+id/A49"
+                style="@style/textview_select"
+                android:text="1" />
+
+            <TextView
+                style="@style/textview_break"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="次 住院" />
+
+            <TextView
+                style="@style/textview_break"
+                android:text="病案号：" />
+
+            <TextView
+                android:id="@+id/A48"
+                style="@style/textview_select"
+                android:layout_marginRight="@dimen/qb_px_30"
+                android:text="123456789" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:background="@drawable/shape_stroke_gray_one"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="姓名：" />
+
+                <TextView
+                    android:id="@+id/A11"
+                    style="@style/textview_select"
+                    android:layout_width="@dimen/qb_px_60"
+                    android:text="郑某某" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="性别：" />
+
+                <TextView
+                    android:id="@+id/A12C"
+                    style="@style/textview_select"
+                    android:text=" 1 " />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text=" 1.男 2.女 " />
+
+
+                <TextView
+                    style="@style/textview_break"
+                    android:layout_marginLeft="@dimen/qb_px_15"
+                    android:text="出生日期：" />
+
+                <TextView
+                    android:id="@+id/A13"
+                    style="@style/textview_select"
+                    android:text="1989年08月08日" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="年龄：" />
+
+                <TextView
+                    android:id="@+id/A14"
+                    style="@style/textview_select"
+                    android:text="88岁" />
+
+                <TextView
+                    android:id="@+id/A16"
+                    style="@style/textview_break"
+                    android:layout_marginLeft="@dimen/qb_px_15"
+                    android:layout_marginRight="@dimen/qb_px_15"
+                    android:text="21天"
+                    android:textColor="@color/blue_f1" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="国籍：" />
+
+                <TextView
+                    android:id="@+id/A15C"
+                    style="@style/textview_select"
+                    android:layout_width="@dimen/qb_px_80"
+                    android:text="中国" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="民族：" />
+
+                <TextView
+                    android:id="@+id/A19C"
+                    style="@style/textview_select"
+                    android:paddingRight="@dimen/qb_px_30"
+                    android:text="汉" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="新生儿出生体重：" />
+
+                <TextView
+                    android:id="@+id/A18x01A18x05"
+                    style="@style/textview_select"
+                    android:text="4500" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="克" />
+
+
+                <TextView
+                    style="@style/textview_break"
+                    android:layout_marginLeft="@dimen/qb_px_30"
+                    android:text="新生儿入院体重：" />
+
+                <TextView
+                    android:id="@+id/A17"
+                    style="@style/textview_select"
+                    android:text="4600" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="克" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="出生地址：" />
+
+                <TextView
+                    android:id="@+id/A22"
+                    style="@style/textview_select"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="某地" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="籍贯：" />
+
+                <TextView
+                    android:id="@+id/A23C"
+                    style="@style/textview_select"
+                    android:layout_width="@dimen/qb_px_120"
+                    android:text="湖南省" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="身份证号：" />
+
+                <TextView
+                    android:id="@+id/A20"
+                    style="@style/textview_select"
+                    android:text="430000000000000000" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:layout_marginLeft="@dimen/qb_px_30"
+                    android:text="职业：" />
+
+                <TextView
+                    android:id="@+id/A38C"
+                    style="@style/textview_select"
+                    android:text="自由职业者" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:layout_marginLeft="@dimen/qb_px_30"
+                    android:text="婚姻：" />
+
+                <TextView
+                    android:id="@+id/A21C"
+                    style="@style/textview_select"
+                    android:text="1" />
+
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text=" 1.未婚 2.已婚 3.丧偶 4.离异 9.其他" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="户籍地址：" />
+
+                <TextView
+                    android:id="@+id/A24"
+                    style="@style/textview_select"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="湖南省长沙市" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="邮编：" />
+
+                <TextView
+                    android:id="@+id/A25C"
+                    style="@style/textview_select"
+                    android:text="430000" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="现居地址：" />
+
+                <TextView
+                    android:id="@+id/A26"
+                    style="@style/textview_select"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="湖南省长沙市" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="电话：" />
+
+                <TextView
+                    android:id="@+id/A27"
+                    style="@style/textview_select"
+                    android:text="13600000000" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="邮编：" />
+
+                <TextView
+                    android:id="@+id/A28C"
+                    style="@style/textview_select"
+                    android:text="430000" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="工作单位及地址：" />
+
+                <TextView
+                    android:id="@+id/A29"
+                    style="@style/textview_select"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="湖南长沙" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="单位电话：" />
+
+                <TextView
+                    android:id="@+id/A30"
+                    style="@style/textview_select"
+                    android:text="13600000000" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="邮编：" />
+
+                <TextView
+                    android:id="@+id/A31C"
+                    style="@style/textview_select"
+                    android:text="430000" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="联系人姓名：" />
+
+                <TextView
+                    android:id="@+id/A32"
+                    style="@style/textview_select"
+                    android:text="郑某" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="关系：" />
+
+                <TextView
+                    android:id="@+id/A33C"
+                    style="@style/textview_select"
+                    android:text="兄弟姐妹" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="地址：" />
+
+                <TextView
+                    android:id="@+id/A34"
+                    style="@style/textview_select"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="湖南长沙" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="电话：" />
+
+                <TextView
+                    android:id="@+id/A35"
+                    style="@style/textview_select"
+                    android:text="13600000000" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="入院途径：" />
+
+                <TextView
+                    android:id="@+id/B11C"
+                    style="@style/textview_select"
+                    android:text="2" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="1.急诊 2.门诊 3.其他医疗机构转入 9.其他" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="入院时间：" />
+
+                <TextView
+                    android:id="@+id/B12"
+                    style="@style/textview_select"
+                    android:text="2020年01月01日 01时01分" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:layout_marginLeft="@dimen/qb_px_30"
+                    android:text="入院科别：" />
+
+                <TextView
+                    android:id="@+id/B13C"
+                    style="@style/textview_select"
+                    android:text="呼吸内科" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:layout_marginLeft="@dimen/qb_px_30"
+                    android:text="病房：" />
+
+                <TextView
+                    android:id="@+id/B14"
+                    style="@style/textview_select"
+                    android:text="01" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="转科： 1." />
+
+                <TextView
+                    android:id="@+id/B21C"
+                    style="@style/textview_select"
+                    android:text="呼吸内科" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="转" />
+
+                <TextView
+                    android:id="@+id/B21C2"
+                    style="@style/textview_select"
+                    android:text="呼吸内科" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:layout_marginLeft="@dimen/qb_px_30"
+                    android:text="2." />
+
+                <TextView
+                    android:id="@+id/B21C3"
+                    style="@style/textview_select"
+                    android:text="呼吸内科" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="转" />
+
+                <TextView
+                    android:id="@+id/B21C4"
+                    style="@style/textview_select"
+                    android:text="呼吸内科" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="出院时间：" />
+
+                <TextView
+                    android:id="@+id/B15"
+                    style="@style/textview_select"
+                    android:text="2020年01月01日 01时01分" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:layout_marginLeft="@dimen/qb_px_15"
+                    android:text="出院科别：" />
+
+                <TextView
+                    android:id="@+id/B16C"
+                    style="@style/textview_select"
+                    android:text="呼吸内科" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:layout_marginLeft="@dimen/qb_px_15"
+                    android:text="病房：" />
+
+                <TextView
+                    android:id="@+id/B17"
+                    style="@style/textview_select"
+                    android:text="01" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:layout_marginLeft="@dimen/qb_px_15"
+                    android:text="实际住院：" />
+
+                <TextView
+                    android:id="@+id/B20"
+                    style="@style/textview_select"
+                    android:text="1" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="天" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/linearLayout_h_match"
+                android:visibility="visible">
+
+                <TextView
+                    style="@style/textview_break"
+                    android:text="门(急)诊诊断：" />
+
+                <TextView
+                    android:id="@+id/C02N"
+                    style="@style/textview_select"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="肾型高血压" />
+
+                <TextView
+                    style="@style/textview_break"
+                    android:layout_marginLeft="@dimen/qb_px_30"
+                    android:text="疾病编码：" />
+
+                <TextView
+                    android:id="@+id/C01C"
+                    style="@style/textview_select"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="01" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
