@@ -241,32 +241,31 @@ public class CloudClinicFragment extends BaseFragment<CloudClinicPersenter> impl
         getActivity().runOnUiThread(() -> {
             tempListVideoClientsResultBeans.clear();
             tempListVideoClientsResultBeans = result;
-            if (tempListVideoClientsResultBeans.size() <= 0) {
-                return;
-            }
-            contact_list.setVisibility(tempListVideoClientsResultBeans.size() > 0 ? View.VISIBLE : View.GONE);
             tv_no_data.setVisibility(tempListVideoClientsResultBeans.size() > 0 ? View.GONE : View.VISIBLE);
-            cloudClinicAdapter.updateList(tempListVideoClientsResultBeans);
-            //初始化所有的新消息
-            for (int i = 0; i < tempListVideoClientsResultBeans.size(); i++) {
-                tempListVideoClientsResultBeans.get(i).newMsgNum = DataUtil.getUnreadCount(true,
-                        tempListVideoClientsResultBeans.get(i).userInfo.userId + "", TIMConversationList);
-                if (tempListVideoClientsResultBeans.get(i).newMsgNum > 0) {
-                    tempListVideoClientsResultBeans.get(i).hasNew = true;
+            if (null != result && result.size() > 0) {
+                cloudClinicAdapter.updateList(tempListVideoClientsResultBeans);
+                //初始化所有的新消息
+                for (int i = 0; i < tempListVideoClientsResultBeans.size(); i++) {
+                    tempListVideoClientsResultBeans.get(i).newMsgNum = DataUtil.getUnreadCount(true,
+                            tempListVideoClientsResultBeans.get(i).userInfo.userId + "", TIMConversationList);
+                    if (tempListVideoClientsResultBeans.get(i).newMsgNum > 0) {
+                        tempListVideoClientsResultBeans.get(i).hasNew = true;
+                    }
                 }
-            }
 
-            //计算消息总数
-            for (int i = 0; i < tempListVideoClientsResultBeans.size(); i++) {
-                newCount = newCount + tempListVideoClientsResultBeans.get(i).newMsgNum;
+                //计算消息总数
+                for (int i = 0; i < tempListVideoClientsResultBeans.size(); i++) {
+                    newCount = newCount + tempListVideoClientsResultBeans.get(i).newMsgNum;
+                }
+                //展示消息总数
+                setMsgCount();
+                if (newCount > 0) {
+                    layout_pot.setVisibility(View.VISIBLE);
+                    EventBus.getDefault().post(new MsgRemindObj(EVENT_MES_TYPE_CLOUDCLINC, newCount));
+                }
+            }else {
+                Log.e(TAG, "暂无数据-----" );
             }
-            //展示消息总数
-            setMsgCount();
-            if (newCount > 0) {
-                layout_pot.setVisibility(View.VISIBLE);
-                EventBus.getDefault().post(new MsgRemindObj(EVENT_MES_TYPE_CLOUDCLINC, newCount));
-            }
-
             cloudClinicAdapter.setNewData(tempListVideoClientsResultBeans);
         });
     }
@@ -295,6 +294,7 @@ public class CloudClinicFragment extends BaseFragment<CloudClinicPersenter> impl
 
     /**
      * listview 列表item的点击事件
+     *
      * @param position
      * @param newMessage
      */

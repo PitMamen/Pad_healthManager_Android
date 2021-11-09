@@ -97,20 +97,37 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
     protected static final int SEND_PHOTO = 4;
     protected static final int SEND_FILE = 5;
     private String msgType;
-    private TextView tv_title, tv_send_msg, tv_add_audio;
-    private EditText et_text_msg;
-    private LinearLayout layout_add_audio, layout_add_video, layout_add_paper;
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+    @BindView(R.id.tv_send_msg)
+    TextView tv_send_msg;
+    @BindView(R.id.tv_add_audio)
+    TextView tv_add_audio;
+    @BindView(R.id.et_text_msg)
+    EditText et_text_msg;
+    @BindView(R.id.layout_add_audio)
+    LinearLayout layout_add_audio;
+    @BindView(R.id.layout_add_video)
+    LinearLayout layout_add_video;
+    @BindView(R.id.layout_add_paper)
+    LinearLayout layout_add_paper;
+    @BindView(R.id.recording_icon)
+    ImageView mRecordingIcon;
+    @BindView(R.id.recording_tips)
+    TextView mRecordingTips;
+    @BindView(R.id.list_audio)
+    RecyclerView list_audio;
+    @BindView(R.id.voice_recording_view)
+    View mRecordingGroup;
 
-    protected View mRecordingGroup;
-    protected ImageView mRecordingIcon;
-    protected TextView mRecordingTips;
+
     private boolean isRecording;
     private List<UploadFileApi> mUploadedAudios = new ArrayList<>();
     private List<PaperBean> mPapers = new ArrayList<>();
     private List<UpdateImageApi> mUploadImages = new ArrayList<>();
     private ArrayList<String> videos = new ArrayList<>();
     private List<ArticleBean> articleBeans = new ArrayList<>();
-    private RecyclerView list_audio;
+
     private AudioAdapter adapter;
     private PaperQuickAdapter paperAdapter;
     private VideoQuickAdapter videoAdapter;
@@ -136,22 +153,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
         msgType = getArguments().getString(Constants.MSG_TYPE);
         msgCustomId = getArguments().getString(Constants.MSG_CUSTOM_ID);
         mIds = getArguments().getStringArrayList(Constants.MSG_IDS);
-        tv_title = getView().findViewById(R.id.tv_title);
-        tv_add_audio = getView().findViewById(R.id.tv_add_audio);
-        tv_send_msg = getView().findViewById(R.id.tv_send_msg);
-        et_text_msg = getView().findViewById(R.id.et_text_msg);
-        layout_add_audio = getView().findViewById(R.id.layout_add_audio);
-        layout_add_video = getView().findViewById(R.id.layout_add_video);
-        layout_add_paper = getView().findViewById(R.id.layout_add_paper);
-        mRecordingGroup = getView().findViewById(R.id.voice_recording_view);
-        mRecordingIcon = getView().findViewById(R.id.recording_icon);
-        mRecordingTips = getView().findViewById(R.id.recording_tips);
-        list_audio = getView().findViewById(R.id.list_audio);
-        if (msgType.equals(Constants.MSG_SINGLE)) {
-            tv_title.setText("健康消息");
-        } else {
-            tv_title.setText("群发消息");
-        }
+        tv_title.setText(msgType.equals(Constants.MSG_SINGLE)?getString(R.string.health_mesage):getString(R.string.health_mass_mes));
 
         ninePhotoLayout.setDelegate(NewMsgFragmentDisplay.this);
         ninePhotoLayout.setData(photos);
@@ -202,7 +204,7 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
                 super.onSucceed(result);
                 //TODO 展示获取到的信息
                 //增加判空
-                if (result == null || result.getData() ==null){
+                if (result == null || result.getData() == null) {
                     return;
                 }
                 if (result.getCode() == 0) {
@@ -462,10 +464,10 @@ public class NewMsgFragmentDisplay extends AppFragment implements BGANinePhotoLa
 //            return;
 //        }
 
-        if (photos.size() == 0) {
-            ToastUtil.toastShortMessage("请添加图片消息");
-            return;
-        }
+//        if (photos.size() == 0) {
+//            ToastUtil.toastShortMessage("请添加图片消息");
+//            return;
+//        }
 
 //        if (articles.size() == 0){
 //            ToastUtil.toastShortMessage("请添加文章");

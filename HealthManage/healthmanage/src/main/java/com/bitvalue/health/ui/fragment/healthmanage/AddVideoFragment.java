@@ -1,5 +1,6 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -45,9 +46,11 @@ public class AddVideoFragment extends BaseFragment {
 
     @BindView(R.id.rl_status_refresh)
     SmartRefreshLayout mRefreshLayout;
+    @BindView(R.id.list_daily)
+    WrapRecyclerView list_normal;
+
     private HomeActivity homeActivity;
     private VideoAdapter mAdapter;
-    private WrapRecyclerView list_normal;
     private List<VideoResultBean.ListDTO> videoBeans = new ArrayList<>();
     private GetVideosApi getVideosApi;
     private int total;
@@ -55,13 +58,15 @@ public class AddVideoFragment extends BaseFragment {
 
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        homeActivity = (HomeActivity) context;
+    }
+
+    @Override
     public void initView(View rootView) {
         tv_title.setText(getString(R.string.vidio_select));
-        list_normal = rootView.findViewById(R.id.list_daily);
-        homeActivity = (HomeActivity) getActivity();
-
         addVideoObject = (AddVideoObject) getArguments().getSerializable(Constants.ADD_VIDEO_DATA);
-
         initList();
     }
 

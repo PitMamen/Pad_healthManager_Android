@@ -71,7 +71,7 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
     public void initView(View view) {
         getMissionObj = (GetMissionObj) getArguments().getSerializable(Constants.GET_MISSION_OBJ);
 
-        tv_title.setText("问卷选择");
+        tv_title.setText(getString(R.string.questionnaire_selection));
         homeActivity = (HomeActivity) getActivity();
 
 

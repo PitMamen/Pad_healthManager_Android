@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class ClickUtils {
 
     // 两次点击按钮之间的点击间隔不能少于2000毫秒
-    private static final int MIN_CLICK_DELAY_TIME = 2000;
+    private static final int MIN_CLICK_DELAY_TIME = 300;
     private static HashMap<Integer, Long> sLastClickTimeMap = new HashMap<>();
     private static long lastTime = 0;
 
@@ -35,9 +35,25 @@ public class ClickUtils {
 
 
     public static boolean isFastClick() {
+        boolean flag = true;
         long curClickTime = System.currentTimeMillis();
+        if ((curClickTime-lastTime)>=MIN_CLICK_DELAY_TIME){
+            flag = false;
+        }
         lastTime = curClickTime;
-        return curClickTime - lastTime > 1000;
+        return flag;
+    }
+
+
+
+    public static boolean isFastClickThree() {
+        boolean flag = true;
+        long curClickTime = System.currentTimeMillis();
+        if ((curClickTime-lastTime)>=MIN_CLICK_DELAY_TIME){
+            flag = false;
+        }
+        lastTime = curClickTime;
+        return flag;
     }
 
 }

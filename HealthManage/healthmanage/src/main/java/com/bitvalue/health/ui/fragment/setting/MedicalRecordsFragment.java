@@ -89,7 +89,7 @@ public class MedicalRecordsFragment extends BaseFragment<MedicalRecordsPresenter
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
-        tv_title.setText("我的看诊记录");
+        tv_title.setText(getString(R.string.my_visitlog));
         initSearchButton();
         initListView();
         onSelectTab();

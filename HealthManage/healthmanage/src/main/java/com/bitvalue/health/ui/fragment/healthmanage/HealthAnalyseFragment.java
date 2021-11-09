@@ -49,7 +49,7 @@ public class HealthAnalyseFragment extends BaseFragment<HealthAnalsePresenter> i
 
     @Override
     public void initView(View rootview) {
-        tv_title.setText("健康评估");
+        tv_title.setText(getString(R.string.health_assessment));
 
     }
 

@@ -119,7 +119,6 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
     @Override
     public void loginSuccess(Object object) {
 
-        showToast("login success");
         hideDialog();
         LoginResBean resBean = (LoginResBean) object;
         EasyConfig.getInstance().addHeader("Authorization", resBean.getToken()); //这里也要给EasyHttp添加Token，其他地方有用到EasyHttp请求

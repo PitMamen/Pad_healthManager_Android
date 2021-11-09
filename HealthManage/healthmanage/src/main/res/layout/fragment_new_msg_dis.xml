@@ -56,7 +56,7 @@
                         android:layout_marginTop="@dimen/qb_px_10"
                         android:background="@drawable/shape_bg_gray"
                         android:gravity="left|top"
-                        android:hint="请输入文字..."
+                        android:focusable="false"
                         android:minHeight="@dimen/qb_px_50"
                         android:paddingHorizontal="@dimen/qb_px_6"
                         android:paddingVertical="@dimen/qb_px_6"
@@ -213,6 +213,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
+                        android:visibility="gone"
                         android:id="@+id/img_add_pic"
                         android:layout_width="@dimen/qb_px_35"
                         android:layout_height="@dimen/qb_px_35"

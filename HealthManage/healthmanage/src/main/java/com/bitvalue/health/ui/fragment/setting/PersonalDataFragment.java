@@ -77,7 +77,7 @@ public class PersonalDataFragment extends BaseFragment<PersonalDataPersenter> im
 
     @Override
     public void initView(View view) {
-        tv_title.setText("个人信息");
+        tv_title.setText(getString(R.string.person_imformation));
         EventBus.getDefault().register(this);
         homeActivity = (HomeActivity) getActivity();
     }

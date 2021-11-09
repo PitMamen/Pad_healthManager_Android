@@ -124,7 +124,7 @@ public class NewHealthPlanFragmentModify extends BaseFragment {
 
     @Override
     public void initView(View rootview) {
-        tv_title.setText("修改健康管理计划");
+        tv_title.setText(getString(R.string.modify_health_management_plan));
         planListBean = (PlanListBean) getArguments().getSerializable(Constants.PLAN_LIST_BEAN);
         getPlanDetail();
 
@@ -352,38 +352,35 @@ public class NewHealthPlanFragmentModify extends BaseFragment {
                 break;
 
             case R.id.img_add_cover:
-                PermissionUtil.checkPermission(getActivity(), new PermissionUtil.PermissionCallBack() {
-                    @Override
-                    public void onPermissionResult(boolean permit) {
-                        int canSelectNun = MAX_COVER - coverPhotos.size();
-                        if (canSelectNun < 1) {
-                            ToastUtil.toastShortMessage("最多选择1张照片");
-                            return;
-                        }
-                        ImageSelectActivity.start(homeActivity, canSelectNun, new ImageSelectActivity.OnPhotoSelectListener() {
+                PermissionUtil.checkPermission(getActivity(), permit -> {
+                    int canSelectNun = MAX_COVER - coverPhotos.size();
+                    if (canSelectNun < 1) {
+                        ToastUtil.toastShortMessage("最多选择1张照片");
+                        return;
+                    }
+                    ImageSelectActivity.start(homeActivity, canSelectNun, new ImageSelectActivity.OnPhotoSelectListener() {
 
-                            @Override
-                            public void onSelected(List<String> data) {
-                                if (null == data || data.size() == 0) {
-                                    return;
-                                }
+                        @Override
+                        public void onSelected(List<String> data) {
+                            if (null == data || data.size() == 0) {
+                                return;
+                            }
 
-                                //去重
+                            //去重
 //                                ArrayList<String> newList = new ArrayList<String>();
 //                                for (String cd : coverPhotos) {
 //                                    if (!newList.contains(cd)) {
 //                                        newList.add(cd);
 //                                    }
 //                                }
-                                coverPhotos.addAll(data);
-                                npl_cover.setData(coverPhotos);
-                            }
+                            coverPhotos.addAll(data);
+                            npl_cover.setData(coverPhotos);
+                        }
 
-                            @Override
-                            public void onCancel() {
-                            }
-                        });
-                    }
+                        @Override
+                        public void onCancel() {
+                        }
+                    });
                 });
                 break;
 

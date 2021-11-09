@@ -1,6 +1,7 @@
 package com.bitvalue.health.util.chatUtil;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,6 +135,7 @@ public class HelloChatController implements TUIChatControllerListener {
             try {
                 JSONObject jsonObject = new JSONObject(dataJson);
                 String type = jsonObject.optString("type");
+                Log.e(TAG, "helle_onDraw: "+type );
                 switch (type) {
                     case "CustomHealthMessage":
                         CustomHealthMessage healthMessage = new Gson().fromJson(dataJson, CustomHealthMessage.class);

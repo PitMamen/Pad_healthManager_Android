@@ -8,7 +8,7 @@ public class Constants {
     public static final String ROOM_ID = "room_id";
     public static final String USER_ID = "user_id";
     public static final String NEED_TOAST = "need_toast";
-    public static final String BASE_URL = "http://hmg.mclouds.org.cn";
+    public static final String HOST_URL = "http://hmg.mclouds.org.cn";
     public static int screenWidth, screenHeight;
     public static final String KEY_REMEMBER_PSD = "key_remember_psd";
     public static final String KEY_TOKEN = "Authorization";

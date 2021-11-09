@@ -40,6 +40,7 @@ import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.MUtils;
 import com.bitvalue.health.util.PermissionUtil;
+import com.bitvalue.health.util.aop.SingleClick;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
@@ -154,7 +155,7 @@ public class PlanMsgFragment extends AppFragment implements BGANinePhotoLayout.D
 //            tv_title.setText("群发消息");
 //        }
 
-        tv_title.setText("健康提醒");
+        tv_title.setText(getString(R.string.health_remind));
         ninePhotoLayout.setDelegate(PlanMsgFragment.this);
         ninePhotoLayout.setData(photos);
 
@@ -310,61 +311,58 @@ public class PlanMsgFragment extends AppFragment implements BGANinePhotoLayout.D
                         , Manifest.permission.READ_PHONE_STATE
                         , Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
                         , Manifest.permission.RECORD_AUDIO)
-                .subscribe(new Action1<Boolean>() {
-                    @Override
-                    public void call(Boolean flag) {
-                        if (flag) {
-                            if (!isRecording) {
-                                //开始录音
-                                isRecording = true;
-                                tv_add_audio.setText("录音中，点击结束");
-                                tv_add_audio.setTextColor(getActivity().getResources().getColor(R.color.orange));
-                                AudioPlayer.getInstance().startRecord(new AudioPlayer.Callback() {
-                                    @Override
-                                    public void onCompletion(Boolean success) {
-                                        tv_add_audio.setText("点击录音");
-                                        tv_add_audio.setTextColor(getActivity().getResources().getColor(R.color.main_blue));
-                                        isRecording = false;
+                .subscribe(flag -> {
+                    if (flag) {
+                        if (!isRecording) {
+                            //开始录音
+                            isRecording = true;
+                            tv_add_audio.setText("录音中，点击结束");
+                            tv_add_audio.setTextColor(getActivity().getResources().getColor(R.color.orange));
+                            AudioPlayer.getInstance().startRecord(new AudioPlayer.Callback() {
+                                @Override
+                                public void onCompletion(Boolean success) {
+                                    tv_add_audio.setText("点击录音");
+                                    tv_add_audio.setTextColor(getActivity().getResources().getColor(R.color.main_blue));
+                                    isRecording = false;
 
-                                        int duration = AudioPlayer.getInstance().getDuration();
-                                        String path = AudioPlayer.getInstance().getPath();
-                                        //组装录音列表数据
-                                        UploadFileApi uploadFileApi = new UploadFileApi();
-                                        uploadFileApi.path = path;
-                                        File file = new File(path);
-                                        if (!file.isDirectory() && file.exists()) {
-                                            uploadFileApi.file = file;
-                                        }
-                                        uploadFileApi.duration = duration;
-                                        mUploadedAudios.add(uploadFileApi);
-                                        adapter.setNewData(mUploadedAudios);
+                                    int duration = AudioPlayer.getInstance().getDuration();
+                                    String path = AudioPlayer.getInstance().getPath();
+                                    //组装录音列表数据
+                                    UploadFileApi uploadFileApi = new UploadFileApi();
+                                    uploadFileApi.path = path;
+                                    File file = new File(path);
+                                    if (!file.isDirectory() && file.exists()) {
+                                        uploadFileApi.file = file;
                                     }
-                                });
-                            } else {
-                                AudioPlayer.getInstance().stopRecord();
-                            }
+                                    uploadFileApi.duration = duration;
+                                    mUploadedAudios.add(uploadFileApi);
+                                    adapter.setNewData(mUploadedAudios);
+                                }
+                            });
                         } else {
-                            new AlertDialog.Builder(getActivity())
-                                    .setMessage("请先进行相关授权，再重启APP！")
-                                    .setPositiveButton("进入设置", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            Intent intent = new Intent();
-                                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                            Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-                                            intent.setData(uri);
-                                            startActivity(intent);
-                                        }
-                                    })
-                                    .setNegativeButton("退出", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-//                                            SplashScreenActivity.this.finish();
-                                        }
-                                    })
-                                    .setCancelable(false)
-                                    .show();
+                            AudioPlayer.getInstance().stopRecord();
                         }
+                    } else {
+                        new AlertDialog.Builder(getActivity())
+                                .setMessage("请先进行相关授权，再重启APP！")
+                                .setPositiveButton("进入设置", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent = new Intent();
+                                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                                        intent.setData(uri);
+                                        startActivity(intent);
+                                    }
+                                })
+                                .setNegativeButton("退出", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+//                                            SplashScreenActivity.this.finish();
+                                    }
+                                })
+                                .setCancelable(false)
+                                .show();
                     }
                 });
 
@@ -398,7 +396,7 @@ public class PlanMsgFragment extends AppFragment implements BGANinePhotoLayout.D
         super.onDestroy();
     }
 
-    //    @SingleClick
+        @SingleClick
     @OnClick({R.id.layout_back, R.id.layout_add_audio, R.id.layout_add_video, R.id.layout_add_paper, R.id.tv_send_msg, R.id.img_add_pic})
     public void onClick(View view) {
         switch (view.getId()) {

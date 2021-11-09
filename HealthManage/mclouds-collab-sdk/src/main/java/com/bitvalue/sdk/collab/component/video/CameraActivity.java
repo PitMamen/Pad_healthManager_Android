@@ -23,6 +23,10 @@ import com.bitvalue.sdk.collab.utils.TUIKitConstants;
 import com.bitvalue.sdk.collab.utils.TUIKitLog;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 
+
+/**
+ * 相机预览界面
+ */
 public class CameraActivity extends Activity {
 
     private static final String TAG = CameraActivity.class.getSimpleName();

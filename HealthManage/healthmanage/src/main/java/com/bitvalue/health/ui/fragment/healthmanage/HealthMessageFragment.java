@@ -45,6 +45,7 @@ import com.bitvalue.health.ui.adapter.VideoQuickAdapter;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.MUtils;
+import com.bitvalue.health.util.PermissionUtil;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
@@ -123,8 +124,6 @@ public class HealthMessageFragment extends BaseFragment implements BGANinePhotoL
     RecyclerView list_audio;
 
 
-
-
     private String msgType;
     private boolean isRecording;
     private List<UploadFileApi> mUploadedAudios = new ArrayList<>();
@@ -147,6 +146,7 @@ public class HealthMessageFragment extends BaseFragment implements BGANinePhotoL
     private ArrayList<String> mIds;
     int[] i = {0};
     int[] j = {0};
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -156,6 +156,7 @@ public class HealthMessageFragment extends BaseFragment implements BGANinePhotoL
 
     /**
      * 初始化控件 并 获取上个界面传过来的数据
+     *
      * @param rootView
      */
     @Override
@@ -407,26 +408,23 @@ public class HealthMessageFragment extends BaseFragment implements BGANinePhotoL
 
 //                点击添加图片  事件触发
             case R.id.img_add_pic:
-                PermissionUtils.checkPermission(getActivity(), new PermissionUtils.PermissionCallBack() {
-                    @Override
-                    public void onPermissionResult(boolean permit) {
-                        int canSelectNun = MAX_IMG - photos.size();
-                        if (canSelectNun < 1) {
-                            ToastUtil.toastShortMessage("最多选择9张照片");
-                            return;
-                        }
-                        ImageSelectActivity.start(homeActivity, canSelectNun, new ImageSelectActivity.OnPhotoSelectListener() {
-
-                            @Override
-                            public void onSelected(List<String> data) {
-                                getImages(data);
-                            }
-
-                            @Override
-                            public void onCancel() {
-                            }
-                        });
+                PermissionUtil.checkPermission(getActivity(), permit -> {
+                    int canSelectNun = MAX_IMG - photos.size();
+                    if (canSelectNun < 1) {
+                        ToastUtil.toastShortMessage("最多选择9张照片");
+                        return;
                     }
+                    ImageSelectActivity.start(homeActivity, canSelectNun, new ImageSelectActivity.OnPhotoSelectListener() {
+
+                        @Override
+                        public void onSelected(List<String> data) {
+                            getImages(data);
+                        }
+
+                        @Override
+                        public void onCancel() {
+                        }
+                    });
                 });
 
                 break;
@@ -445,9 +443,9 @@ public class HealthMessageFragment extends BaseFragment implements BGANinePhotoL
      * 只要一项有内容就可以提交
      */
     private void checkTotalMsg() {
-        showLoading();
         if (!et_text_msg.getText().toString().isEmpty() || (mUploadedAudios.size() > 0) || (videos.size() > 0)
                 || (photos.size() > 0) || (articles.size() > 0)) {
+            showLoading();
             //可以提交
             if (mUploadedAudios.size() > 0) {//上传语音消息后，判断图片消息再上传图片，再上传总消息
                 uploadedAudioMsgs();
@@ -484,7 +482,7 @@ public class HealthMessageFragment extends BaseFragment implements BGANinePhotoL
         FileUploadUtils.INSTANCE.uploadAudio(HealthMessageFragment.this, mUploadedAudios.get(i[0]), new FileUploadUtils.OnAudioUploadCallback() {
             @Override
             public void onSuccess(ApiResult<AudioUploadResultBean> result) {
-
+                hideDialog();
                 if (result.getCode() != 0) {
                     ToastUtil.toastLongMessage(result.getMessage());
                     return;
@@ -531,7 +529,6 @@ public class HealthMessageFragment extends BaseFragment implements BGANinePhotoL
     }
 
 
-
     /**
      * 上传图片
      */
@@ -539,7 +536,7 @@ public class HealthMessageFragment extends BaseFragment implements BGANinePhotoL
         FileUploadUtils.INSTANCE.uploadPic(HealthMessageFragment.this, mUploadImages.get(j[0]), new FileUploadUtils.OnAudioUploadCallback() {
             @Override
             public void onSuccess(ApiResult<AudioUploadResultBean> result) {
-
+                hideDialog();
                 if (result.getCode() != 0) {
                     ToastUtil.toastLongMessage(result.getMessage());
                     return;

@@ -57,7 +57,7 @@ public class HealthUploadDataFragment extends BaseFragment<HealthUploadDataPrese
 
     @Override
     public void initView(View rootView) {
-        tv_title.setText("患者资料上传");
+        tv_title.setText(getString(R.string.patient_data_upload));
         EventBus.getDefault().register(this);
         homeActivity = (HomeActivity) getActivity();
     }

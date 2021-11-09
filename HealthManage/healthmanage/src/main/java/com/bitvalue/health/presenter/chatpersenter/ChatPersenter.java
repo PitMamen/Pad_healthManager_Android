@@ -1,5 +1,7 @@
 package com.bitvalue.health.presenter.chatpersenter;
 
+import android.util.Log;
+
 import com.bitvalue.health.api.requestbean.ReportStatusBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
@@ -23,6 +25,7 @@ public class ChatPersenter extends BasePresenter<Chatcontract.ChatIvew, Chatcont
             @Override
             public void onSuccess(Object o, int what) {
                 super.onSuccess(o, what);
+                Log.e(TAG, "2222222222222: " );
                 if (isViewAttach()) {
                     getView().updateAttendanceStausSuccess();
                 }

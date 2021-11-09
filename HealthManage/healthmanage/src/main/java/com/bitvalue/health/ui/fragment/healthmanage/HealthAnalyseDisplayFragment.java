@@ -55,7 +55,7 @@ public class HealthAnalyseDisplayFragment extends BaseFragment<HealthAnalyseDisp
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
-        tv_title.setText("健康评估");
+        tv_title.setText(getString(R.string.health_assessment));
     }
 
 

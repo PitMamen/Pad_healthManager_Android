@@ -7,6 +7,7 @@ import com.bitvalue.health.api.requestbean.PersonalDataBean;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.requestbean.ReportStatusBean;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
+import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
 import com.bitvalue.health.api.responsebean.LoginResBean;
 import com.bitvalue.health.api.responsebean.PatientResultBean;
@@ -14,6 +15,7 @@ import com.bitvalue.health.api.responsebean.PlanDetailResult;
 import com.bitvalue.health.api.responsebean.PlanListBean;
 import com.bitvalue.health.api.responsebean.SaveAnalyseApi;
 import com.bitvalue.health.api.responsebean.SaveCaseApi;
+import com.bitvalue.health.api.responsebean.SearchArticleResult;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.api.responsebean.TaskPlanDetailBean;
 import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
@@ -67,7 +69,7 @@ public interface CommonService {
     /**
      * 上传就诊状态  就诊状态（1：待就诊 2：就诊中 3：已完成）
      */
-    @POST("/health-api/medical/doctor/updateAttendanceStatus")
+    @POST("health-api/medical/doctor/updateAttendanceStatus")
     Observable<ApiResult<ArrayList<VideoClientsResultBean>>> updateStatus(@Body ReportStatusBean reportStatusBean);
 
 
@@ -156,6 +158,19 @@ public interface CommonService {
      */
     @GET("health-api/medical/doctor/qryMyMedicalRecords")
     Observable<ApiResult<ArrayList<PatientResultBean>>> qryMyMedicalRecords(@Query("type") String type, @Query("keyWord") String keyword);
+
+
+    /***
+     * 添加文章中获取文章数据
+     */
+    @GET("health-api/health/patient/mostUsefulArticleWithNum")
+    Observable<ApiResult<ArrayList<ArticleBean>>> getUsefullArticle(@Query("articleNum") int num);
+
+    /**
+     * 根据关键字搜索文章
+     */
+    @GET("health-api/health/patient/articleByTitle")
+    Observable<ApiResult<SearchArticleResult>> qryarticleByTitle(@Query("pageSize") int pageSize, @Query("start") int start, @Query("title") String title);
 
 
     /**

@@ -77,7 +77,7 @@ public class HealthPlanFragment extends BaseFragment<HealthPlanPresenter> implem
     public void initView(View rootView) {
         super.initView(rootView);
         EventBus.getDefault().register(this);
-        tv_title.setText("套餐配置");
+        tv_title.setText(getString(R.string.package_configuration));
         mPresenter.getHealthPlanTempalte();  //获取我的套餐计划
         initList();
     }

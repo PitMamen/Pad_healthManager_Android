@@ -11,9 +11,12 @@ import android.view.View;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bitvalue.health.Application;
+import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.VideoRefreshObj;
+import com.bitvalue.health.api.requestbean.ReportStatusApi;
 import com.bitvalue.health.api.requestbean.ReportStatusBean;
 import com.bitvalue.health.api.responsebean.SaveCaseApi;
+import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.contract.chattract.Chatcontract;
 import com.bitvalue.health.presenter.chatpersenter.ChatPersenter;
@@ -43,6 +46,8 @@ import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.TUIKitConstants;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.gson.Gson;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.HttpCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 import com.tencent.imsdk.v2.V2TIMManager;
@@ -60,6 +65,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import okhttp3.Call;
 
 /***
  * 聊天界面
@@ -78,7 +84,7 @@ public class ChatFragment extends BaseFragment<ChatPersenter> implements Chatcon
     private HomeActivity homeActivity;
     private String planId;
 
-    private ReportStatusBean reportStatusBean = new ReportStatusBean();
+    private String statsus = "";
 
 
     /**
@@ -324,10 +330,8 @@ public class ChatFragment extends BaseFragment<ChatPersenter> implements Chatcon
                 DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定结束看诊吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                     @Override
                     public void onPositive() {
-                        reportStatusBean.id = planId + "";
-                        reportStatusBean.attendanceStatus = "4";
-
-                        mPresenter.updateAttendanceStatus(reportStatusBean);//上报已完成
+                        statsus = "4";
+                        updateStatus("4");
                     }
 
                     @Override
@@ -339,6 +343,50 @@ public class ChatFragment extends BaseFragment<ChatPersenter> implements Chatcon
             }
         });
     }
+
+
+
+    //结束看诊接口请求
+    private void  updateStatus(String statsus){
+        ReportStatusApi reportStatusApi = new ReportStatusApi();
+        reportStatusApi.id = planId + "";
+        reportStatusApi.attendanceStatus = statsus;
+        EasyHttp.post(Application.instance().getHomeActivity()).api(reportStatusApi).request(new HttpCallback<ApiResult<ArrayList<VideoClientsResultBean>>>(Application.instance().getHomeActivity()) {
+            @Override
+            public void onStart(Call call) {
+                super.onStart(call);
+            }
+
+            @Override
+            public void onSucceed(ApiResult<ArrayList<VideoClientsResultBean>> result) {
+                super.onSucceed(result);
+                if (result == null) {
+                    return;
+                }
+
+                if (result.getCode() == 0) {
+                    EventBus.getDefault().post(new VideoRefreshObj()); //通知云门诊界面 请求最新数据 更新视图
+                    if (statsus.equals("4")) {
+                        ToastUtil.toastShortMessage("已结束看诊");
+                        backPress();
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
+
+    }
+
+
+
+
+
+
+
 
     //回退界面
     private void backPress() {
@@ -366,9 +414,8 @@ public class ChatFragment extends BaseFragment<ChatPersenter> implements Chatcon
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MeetingEndEvent meetingEndEvent) {//不用区分类型，全部直接转换成json发送消息出去
         Log.d(TAG, "onEvent: video call ended.");
-        reportStatusBean.attendanceStatus = "3";
-        reportStatusBean.id = planId + "";
-        mPresenter.updateAttendanceStatus(reportStatusBean);
+        statsus = "3";
+       updateStatus("3");
 
     }
 
@@ -540,9 +587,10 @@ public class ChatFragment extends BaseFragment<ChatPersenter> implements Chatcon
      */
     @Override
     public void updateAttendanceStausSuccess() {
+        Log.e(TAG, "updateAttendanceStausSuccess-------------" );
         getActivity().runOnUiThread(() -> {
             EventBus.getDefault().post(new VideoRefreshObj());
-            if (reportStatusBean.attendanceStatus.equals("4")) {
+            if (statsus.equals("4")) {
                 ToastUtil.toastShortMessage("已结束看诊");
                 backPress();
             }

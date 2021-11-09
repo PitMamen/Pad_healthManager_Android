@@ -24,6 +24,7 @@ import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;

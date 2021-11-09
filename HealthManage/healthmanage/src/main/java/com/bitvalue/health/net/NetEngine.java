@@ -50,7 +50,7 @@ public class NetEngine {
     private NetEngine() {
         httpsInit();
         mRetrofit = new Retrofit.Builder().
-                baseUrl(Constants.BASE_URL).
+                baseUrl(Constants.HOST_URL).
                 client(getCommonServiceClient()).
                 addCallAdapterFactory(RxJava2CallAdapterFactory.create()).
                 addConverterFactory(GsonConverterFactory.create()).

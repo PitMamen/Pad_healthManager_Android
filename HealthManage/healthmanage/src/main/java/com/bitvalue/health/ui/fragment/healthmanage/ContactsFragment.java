@@ -36,6 +36,7 @@ import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.activity.LoginHealthActivity;
 import com.bitvalue.health.ui.adapter.ClientsRecyclerAdapter;
 import com.bitvalue.health.ui.fragment.chat.ChatFragment;
+import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.SharedPreManager;
@@ -99,11 +100,12 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
     private ArrayList<String> mIds = new ArrayList<>();
     private ArrayList<ClientsResultBean> clientsResultBeans = new ArrayList<>();
     private ArrayList<ClientsResultBean> clientsProcessBeans = new ArrayList<>();
+    private ArrayList<ClientsResultBean> clientsTempProcessBeans = new ArrayList<>();
     private List<V2TIMConversation> v2TIMConversationList;
     private int totalNum = 0;
     private MPopupWindow mPopupWindow;
-
-
+    private String lastChildUserID = "";  //上一次点击的患者userID
+    private int lastPosition = 0;   //上一次点击的position
 
     @Override
     protected HealthManagePresenter createPresenter() {
@@ -130,9 +132,15 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MainRefreshObj mainRefreshObj) {
-        Log.e(TAG, "健康计划管理界面已接收消息");
+        if (clientsProcessBeans.size() > 0 && clientsTempProcessBeans.size() == clientsProcessBeans.size()) {
+            Log.e(TAG, "clientsProcessBeans size == clientsTempProcessBeans size  ");
+            adapter.notifyDataSetChanged();
+            mPresenter.getMyPatients();
+            return;
+        }
         clientsResultBeans.clear();
         clientsProcessBeans.clear();
+        clientsTempProcessBeans.clear();
         mPresenter.getMyPatients();
     }
 
@@ -146,6 +154,7 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
 
     /**
      * 初始化 各个控件 及IM
+     *
      * @param rootView
      */
     @Override
@@ -159,10 +168,17 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
 
         adapter = new ClientsRecyclerAdapter(getActivity(), clientsProcessBeans);
         adapter.setOnChildItemClickListener((child, group, childIndex, flatPosition) -> {
+            //这里防止用户连续点击同一个患者
+            if (child.userId.equals(lastChildUserID) && lastPosition == flatPosition) {
+                Log.e(TAG, "同一个ID---");
+                return;
+            }
             if (isFastClick()) {
                 return;
             }
 
+            lastChildUserID = child.userId;
+            lastPosition = flatPosition;
             child.chatType = InputLayoutUI.CHAT_TYPE_HEALTH;
             homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, child);  //跳转至聊天界面
 
@@ -191,19 +207,19 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
         });
         adapter.setOnChildCheckListener((isCheck, childIndex, child) -> {
             if (isCheck) {
-                mIds.add(child.groupID + "");
+                mIds.add(String.valueOf(child.groupID));
             } else {
-                if (mIds.contains(child.groupID + "")) {
-                    mIds.remove(child.groupID + "");
+                if (mIds.contains(String.valueOf(child.groupID))) {
+                    mIds.remove(String.valueOf(child.groupID));
+                    if (layout_choose.getVisibility() == View.VISIBLE && cb_choose.isChecked()) {
+                        cb_choose.setOnCheckedChangeListener(null);  //这里CheckBox 一点要设置监听为null，不然会影响整个全选状态
+                        cb_choose.setChecked(false);
+                        cb_choose.setOnCheckedChangeListener(onCheckedChangeListener);  //重新设置监听
+                    }
                 }
             }
         });
-        adapter.setOnGroupClickListener(new OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(int flatPos) {
-                return false;
-            }
-        });
+        adapter.setOnGroupClickListener(flatPos -> false);
         adapter.setOnGroupExpandCollapseListener(new GroupExpandCollapseListener() {
             @Override
             public void onGroupExpanded(ExpandableGroup group) {
@@ -226,7 +242,14 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
             }
         });
         contact_list.setAdapter(adapter);
-        cb_choose.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        cb_choose.setOnCheckedChangeListener(onCheckedChangeListener);
+
+    }
+
+
+    private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (isChecked) {//全选
                 mIds.clear();
                 for (int i = 0; i < clientsProcessBeans.size(); i++) {
@@ -249,12 +272,13 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
                 }
             }
             adapter.notifyDataSetChanged();
-        });
-    }
+        }
+    };
 
 
     /**
      * 各个按钮的回调点击事件
+     *
      * @param view
      */
     @OnClick({R.id.layout_nav, R.id.tv_send_msg, R.id.tv_no_data, R.id.layout_cons})
@@ -266,6 +290,9 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
 
             //获取数据
             case R.id.tv_no_data:
+                if (ClickUtils.isFastClickThree()) {
+                    return;
+                }
                 mPresenter.getMyPatients();
                 break;
 
@@ -327,11 +354,8 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
         mPopupWindow = MPopupWindow.create(getActivity())
                 .setLayoutId(layoutId)
                 .setAnimationStyle(R.style.AnimDown)
-                .setOnDismissListener(new PopupWindow.OnDismissListener() {
-                    @Override
-                    public void onDismiss() {
-                        if (mPopupWindow != null) {
-                        }
+                .setOnDismissListener(() -> {
+                    if (mPopupWindow != null) {
                     }
                 })
                 .setViewCallBack(viewCallback)
@@ -399,6 +423,7 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
 
     /**
      * 这里如果不再当前fragment了   再跳转回去至当前界面 需要隐藏掉之前显示的popwind，需要用户重新点击触发显示
+     *
      * @param hidden
      */
     @Override
@@ -419,7 +444,8 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
 
 
     /**
-     *  选择群发消息时 点击最右边的Fragment界面回调
+     * 选择群发消息时 点击最右边的Fragment界面 的回调
+     *
      * @param
      */
     @Override
@@ -439,6 +465,7 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
         v2TIMConversationList = v2TIMConversationResult.getConversationList();
         clientsResultBeans.clear();
         clientsProcessBeans.clear();
+        clientsTempProcessBeans.clear();
         mPresenter.getMyPatients();
     }
 
@@ -491,13 +518,14 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
      */
     @Override
     public void getPatientSuccess(ArrayList<ClientsResultBean> beanArrayList) {
-        clientsResultBeans = beanArrayList;
         getActivity().runOnUiThread(() -> {
-            if (null == clientsResultBeans || clientsResultBeans.size() == 0) {
-                return;
-            }
-            contact_list.setVisibility(clientsResultBeans.size() == 0 ? View.GONE : View.VISIBLE);
-            tv_no_data.setVisibility(clientsResultBeans.size() != 0 ? View.GONE : View.VISIBLE);
+            contact_list.setVisibility(beanArrayList.size() == 0 ? View.GONE : View.VISIBLE);
+            tv_no_data.setVisibility(beanArrayList.size() != 0 ? View.GONE : View.VISIBLE);
+            clientsResultBeans.clear();
+            clientsProcessBeans.clear();
+            clientsTempProcessBeans.clear();
+            clientsResultBeans = beanArrayList;
+            clientsTempProcessBeans = beanArrayList;
             processData();
             adapter.notifyDataSetChanged();
         });
@@ -566,9 +594,6 @@ public class ContactsFragment extends BaseFragment<HealthManagePresenter> implem
         }
         EventBus.getDefault().post(new MsgRemindObj(EVENTBUS_MES_HEALTHMANAGER, totalNum));
 
-        //检测数据，无数据显示刷新按钮
-        contact_list.setVisibility(clientsResultBeans.size() == 0 ? View.GONE : View.VISIBLE);
-        tv_no_data.setVisibility(clientsResultBeans.size() != 0 ? View.GONE : View.VISIBLE);
     }
 
     @Override

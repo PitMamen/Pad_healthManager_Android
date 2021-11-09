@@ -1,9 +1,11 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
+import static com.hjq.http.EasyUtils.postDelayed;
+
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -13,24 +15,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bitvalue.health.api.ApiResult;
-import com.bitvalue.health.api.requestbean.GetArticleApi;
-import com.bitvalue.health.api.requestbean.SearchArticleApi;
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.SearchArticleResult;
 import com.bitvalue.health.api.responsebean.message.GetMissionObj;
 import com.bitvalue.health.base.BaseAdapter;
 import com.bitvalue.health.base.BaseFragment;
-import com.bitvalue.health.base.presenter.BasePresenter;
+import com.bitvalue.health.contract.healthmanagercontract.AddArticleContract;
+import com.bitvalue.health.presenter.healthmanager.AddArticlePresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.ArticleAdapter;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
-import com.hjq.http.EasyHttp;
-import com.hjq.http.listener.HttpCallback;
-import com.hjq.http.listener.OnHttpListener;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
@@ -43,13 +40,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.Call;
 
 
 /****
  * 添加文章界面
  */
-public class AddArticleFragment extends BaseFragment {
+public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implements AddArticleContract.View {
     @BindView(R.id.tv_title)
     TextView tv_title;
 
@@ -80,7 +76,7 @@ public class AddArticleFragment extends BaseFragment {
     private List<ArticleBean> dailyArticles = new ArrayList<>();
     private List<ArticleBean> searchArticles = new ArrayList<>();
     private GetMissionObj getMissionObj;
-
+    private int UsefulArticleCount = 10;
 
     @OnClick({R.id.layout_back})
     public void onClick(View view) {
@@ -170,18 +166,14 @@ public class AddArticleFragment extends BaseFragment {
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
-
-//                postDelayed(() -> {
-//                    mDailyAdapter.addData(analogData());
-//                    mRefreshLayout.finishLoadMore();
-//
-//                    mDailyAdapter.setLastPage(mDailyAdapter.getItemCount() >= 5);
-//                    mRefreshLayout.setNoMoreData(mDailyAdapter.isLastPage());
-//                }, 1000);
+                Log.e(TAG, "11111111111111111 " );
             }
 
             @Override
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
+                mPresenter.getUsefulArticle(UsefulArticleCount++);
+                UsefulArticleCount = 10;
+                refreshLayout.finishRefresh(500);
             }
         });
 
@@ -209,56 +201,24 @@ public class AddArticleFragment extends BaseFragment {
         layout_search_result.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
-//                postDelayed(() -> {
-//                    mSearchAdapter.addData(analogData());//TODO
-//                    layout_search_result.finishLoadMore();
-//
-//                    mSearchAdapter.setLastPage(mSearchAdapter.getItemCount() >= 11);
-//                    layout_search_result.setNoMoreData(mSearchAdapter.isLastPage());
-//                }, 1000);
+                Log.e(TAG, "11111111111111111 " );
             }
 
             @Override
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
-//                postDelayed(() -> {
-//                    mSearchAdapter.clearData();
-//                    mSearchAdapter.setData(analogData());//TODO
-//                    layout_search_result.finishRefresh();
-//                }, 1000);
+                Log.e(TAG, "onRefresh---------");
+                mPresenter.getUsefulArticle(UsefulArticleCount++);
+                UsefulArticleCount = 10;
+                refreshLayout.finishRefresh();
             }
         });
 
     }
 
+
     //接口请求 加载文章列表
     private void getDailyArticles() {
-        GetArticleApi getArticleApi = new GetArticleApi();
-        getArticleApi.articleNum = 5;
-        EasyHttp.get(this).api(getArticleApi).request(new HttpCallback<ApiResult<ArrayList<ArticleBean>>>(this) {
-            @Override
-            public void onStart(Call call) {
-                super.onStart(call);
-            }
-
-            @Override
-            public void onSucceed(ApiResult<ArrayList<ArticleBean>> result) {
-                super.onSucceed(result);
-                dailyArticles = result.getData();
-                mDailyAdapter.setData(dailyArticles);
-                if (null == dailyArticles || dailyArticles.size() == 0) {
-                    layout_daily.setVisibility(View.GONE);
-                } else {
-                    layout_daily.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            public void onFail(Exception e) {
-                super.onFail(e);
-            }
-        });
-
-
+        mPresenter.getUsefulArticle(UsefulArticleCount);
     }
 
 
@@ -266,50 +226,57 @@ public class AddArticleFragment extends BaseFragment {
     private void getSearchArticles() {
         String title = et_search.getText().toString();
         if (title.isEmpty()) {
+            ToastUtil.toastShortMessage("请输入关键字以查询");
             return;
         }
-        SearchArticleApi searchArticleApi = new SearchArticleApi();
-        searchArticleApi.title = title;
-        EasyHttp.get(this).api(searchArticleApi).request(new HttpCallback<ApiResult<SearchArticleResult>>(this) {
-            @Override
-            public void onStart(Call call) {
-                super.onStart(call);
-            }
-
-            @Override
-            public void onSucceed(ApiResult<SearchArticleResult> result) {
-                super.onSucceed(result);
-                //添加判空
-                if (result != null &&  result.getData() !=null){
-                    searchArticles = result.getData().list;
-                    if (null == searchArticles || searchArticles.size() == 0) {
-                        ToastUtil.toastShortMessage("未查询到结果");
-                        layout_daily.setVisibility(View.VISIBLE);
-                        layout_search_result.setVisibility(View.GONE);
-                    } else {
-                        mSearchAdapter.setData(searchArticles);
-                        layout_daily.setVisibility(View.GONE);
-                        layout_search_result.setVisibility(View.VISIBLE);
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFail(Exception e) {
-                super.onFail(e);
-            }
-        });
+        mPresenter.qryArticleByTitle(10, 1, title);
     }
 
 
     @Override
-    protected BasePresenter createPresenter() {
-        return null;
+    protected AddArticlePresenter createPresenter() {
+        return new AddArticlePresenter();
     }
 
     @Override
     protected int provideContentViewId() {
         return R.layout.fragment_add_article;
+    }
+
+    @Override
+    public void getArticleSuccess(ArrayList<ArticleBean> articleBeanArrayList) {
+        getActivity().runOnUiThread(() -> {
+            if (dailyArticles.size()==articleBeanArrayList.size()){
+                ToastUtil.toastShortMessage("无更多数据");
+            }
+            dailyArticles.clear();
+            dailyArticles = articleBeanArrayList;
+            mDailyAdapter.setData(dailyArticles);
+            layout_daily.setVisibility(null == dailyArticles || dailyArticles.size() == 0 ? View.GONE : View.VISIBLE);
+
+        });
+
+    }
+
+    @Override
+    public void qryArticleByTitleSuccess(SearchArticleResult searchArticleResult) {
+        getActivity().runOnUiThread(() -> {
+            searchArticles = searchArticleResult.list;
+            if (null == searchArticles || searchArticles.size() == 0) {
+                ToastUtil.toastShortMessage("未查询到结果");
+                layout_daily.setVisibility(View.VISIBLE);
+                layout_search_result.setVisibility(View.GONE);
+            } else {
+                mSearchAdapter.setData(searchArticles);
+                layout_daily.setVisibility(View.GONE);
+                layout_search_result.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+
+    @Override
+    public void getArticleFaile(String messageFail) {
+        getActivity().runOnUiThread(() -> ToastUtil.toastShortMessage(messageFail));
     }
 }

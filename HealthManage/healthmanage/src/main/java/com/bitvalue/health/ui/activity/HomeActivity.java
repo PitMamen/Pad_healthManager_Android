@@ -60,6 +60,7 @@ import com.bitvalue.health.ui.fragment.setting.NewHealthPlanFragmentModify;
 import com.bitvalue.health.ui.fragment.setting.PersonalDataFragment;
 import com.bitvalue.health.ui.fragment.setting.SettingsFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.CloudClinicFragment;
+import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
@@ -321,9 +322,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             //聊天界面
             case Constants.FRAGMENT_CHAT:
                 ClientsResultBean.UserInfoDTO child = (ClientsResultBean.UserInfoDTO) object;
-                ChatFragment chatFragment;
 
-                chatFragment = new ChatFragment();
+                ChatFragment chatFragment = new ChatFragment();
 
                 Bundle bundle = new Bundle();
                 ChatInfo chatInfo = new ChatInfo();
@@ -360,9 +360,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 //      创建健康管理计划
             case Constants.FRAGMENT_HEALTH_NEW:
                 CreateNewHealthPlanFragment newHealthPlanFragment;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 newHealthPlanFragment = new CreateNewHealthPlanFragment();
                 mapFragments.put(Constants.FRAGMENT_HEALTH_NEW, newHealthPlanFragment);
                 break;
@@ -371,9 +368,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             case Constants.FRAGMENT_HEALTH_MODIFY:
                 PlanListBean planListBean = (PlanListBean) object;
                 NewHealthPlanFragmentModify newHealthPlanFragmentModify;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 newHealthPlanFragmentModify = new NewHealthPlanFragmentModify();
                 Bundle bundleModify = new Bundle();
                 bundleModify.putSerializable(Constants.PLAN_LIST_BEAN, planListBean);
@@ -384,9 +378,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             case Constants.FRAGMENT_ADD_PAPER:
                 GetMissionObj getMissionPaper = (GetMissionObj) object;
                 AddArticleFragment addArticleFragment;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 addArticleFragment = new AddArticleFragment();
                 Bundle bundlePaper = new Bundle();
                 bundlePaper.putSerializable(Constants.GET_MISSION_OBJ, getMissionPaper);
@@ -398,9 +389,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             case Constants.FRAGMENT_ADD_QUESTION:
                 GetMissionObj getMissionObj = (GetMissionObj) object;
                 AddQuestionFragment addQuestionFragment;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 addQuestionFragment = new AddQuestionFragment();
                 Bundle bundleQue = new Bundle();
                 bundleQue.putSerializable(Constants.GET_MISSION_OBJ, getMissionObj);
@@ -411,8 +399,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             //健康消息
             case Constants.FRAGMENT_SEND_MSG:
                 ChatFragment.NewMsgData msgData = (ChatFragment.NewMsgData) object;
-                HealthMessageFragment newMsgFragment;
-                newMsgFragment = new HealthMessageFragment();
+                HealthMessageFragment newMsgFragment = new HealthMessageFragment();
 
                 Bundle msgBundle = new Bundle();
                 msgBundle.putString(Constants.MSG_TYPE, msgData.msgType);
@@ -425,9 +412,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             case Constants.FRAGMENT_SEND_MSG_DISPLAY:
                 ChatFragment.NewMsgData msgDataDis = (ChatFragment.NewMsgData) object;
                 NewMsgFragmentDisplay newMsgFragmentDisplay;
-                if (isContain) {
-                    mapFragments.remove(keyFragment);
-                }
                 newMsgFragmentDisplay = new NewMsgFragmentDisplay();
 
                 Bundle msgBundleDis = new Bundle();
@@ -637,8 +621,11 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         switch (view.getId()) {
             //健康管理按钮点击事件
             case R.id.layout_person:
+                //这里不能让一直连续点 做个限制
                 if (tabPosition != 0) {
                     backAllThirdAct();
+                }else {
+                    return;
                 }
                 EventBus.getDefault().post(new MainRefreshObj()); // 通知健康管理界面获取数据 请求接口
                 afterTabSelect(0);
@@ -648,16 +635,20 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             case R.id.layout_settings:
                 if (tabPosition != 1) {
                     backAllThirdAct();
+                }else {
+                    return;
                 }
                 afterTabSelect(1);
                 break;
 
                 //云门诊按钮点击事件
             case R.id.layout_group:
-                EventBus.getDefault().post(new VideoRefreshObj());
                 if (tabPosition != 2) {
                     backAllThirdAct();
+                }else {   //add
+                    return;
                 }
+                EventBus.getDefault().post(new VideoRefreshObj());
                 afterTabSelect(2);
 
                 //点击之后隐藏红点
@@ -670,6 +661,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 //                EventBus.getDefault().post(new VideoRefreshObj());
                 if (tabPosition != 3) {
                     backAllThirdAct();
+                }else {
+                    return;
                 }
                 afterTabSelect(3);
                 break;

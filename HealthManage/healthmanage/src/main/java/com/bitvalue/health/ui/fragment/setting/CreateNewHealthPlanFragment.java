@@ -124,7 +124,7 @@ public class CreateNewHealthPlanFragment extends BaseFragment {
 
     @Override
     public void initView(View rootView) {
-        tv_title.setText("新增健康管理计划");
+        tv_title.setText(getString(R.string.new_health_management_plan));
 
         initSwitchButton();
         initChoosePhotos();

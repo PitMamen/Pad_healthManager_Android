@@ -65,6 +65,6 @@ public class PermissionUtil {
     }
 
     public interface PermissionCallBack {
-        public void onPermissionResult(boolean permit);
+         void onPermissionResult(boolean permit);
     }
 }

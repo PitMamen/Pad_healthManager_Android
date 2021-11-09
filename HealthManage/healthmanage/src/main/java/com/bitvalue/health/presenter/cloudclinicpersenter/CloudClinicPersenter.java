@@ -68,10 +68,7 @@ public class CloudClinicPersenter extends BasePresenter<CloudClinicContract.Clou
               super.onSuccess(o, what);
               if (isViewAttach()){
                   ArrayList<VideoClientsResultBean> videoClientsResultBeans = (ArrayList<VideoClientsResultBean>) o;
-                  if (!EmptyUtil.isEmpty(videoClientsResultBeans))
                   getView().qryMedicalPatientsSuccess(videoClientsResultBeans);
-                  else
-                      getView().qryMedicalPatientsNotData();
               }
           }
 
