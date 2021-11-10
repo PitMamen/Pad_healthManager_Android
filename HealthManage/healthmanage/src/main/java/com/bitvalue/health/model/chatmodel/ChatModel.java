@@ -22,7 +22,7 @@ public class ChatModel extends BaseModel implements Chatcontract.ChatModel {
     public void updateAttendanceStaus(ReportStatusBean bean, Callback callback) {
         if (!EmptyUtil.isEmpty(bean)) {
             mApi.updateStatus(bean).subscribeOn(Schedulers.io()).subscribe(result -> {
-                Log.e(TAG, "updateAttendanceStaus1111" );
+                Log.e(TAG, "updateAttendanceStaus1111"+result.toString() );
                 if (!EmptyUtil.isEmpty(result)) {
                     Log.e(TAG, "updateAttendanceStaus222" );
                     if (result.getCode() == 0) {

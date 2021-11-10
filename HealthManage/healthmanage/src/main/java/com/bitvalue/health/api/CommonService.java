@@ -70,7 +70,7 @@ public interface CommonService {
      * 上传就诊状态  就诊状态（1：待就诊 2：就诊中 3：已完成）
      */
     @POST("health-api/medical/doctor/updateAttendanceStatus")
-    Observable<ApiResult<ArrayList<VideoClientsResultBean>>> updateStatus(@Body ReportStatusBean reportStatusBean);
+    Observable<ApiResult<String>> updateStatus(@Body ReportStatusBean reportStatusBean);
 
 
     /**

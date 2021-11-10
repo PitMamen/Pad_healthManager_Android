@@ -79,8 +79,9 @@ public class NetEngine {
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request request = chain.request()
                         .newBuilder()
-                        .addHeader("Authorization", SharedPreManager.getString(Constants.KEY_TOKEN)).
-                                build();
+                        .addHeader("Authorization", SharedPreManager.getString(Constants.KEY_TOKEN))
+                        .build();
+
                 return chain.proceed(request);
             }
         });

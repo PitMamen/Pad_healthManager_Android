@@ -142,7 +142,6 @@ public class HelloChatController implements TUIChatControllerListener {
                         if (healthMessage != null) {
                             if (parent instanceof MessageBaseHolder) {
                                 //TODO  CustomHelloTIMUIController 改成 CustomHealthMessageController
-//                                CustomHelloTIMUIController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                                 CustomHealthMessageController.onDraw(parent, healthMessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
                             }
                         }
