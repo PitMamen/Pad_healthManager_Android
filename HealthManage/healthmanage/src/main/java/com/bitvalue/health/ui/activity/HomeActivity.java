@@ -60,6 +60,7 @@ import com.bitvalue.health.ui.fragment.setting.NewHealthPlanFragmentModify;
 import com.bitvalue.health.ui.fragment.setting.PersonalDataFragment;
 import com.bitvalue.health.ui.fragment.setting.SettingsFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.CloudClinicFragment;
+import com.bitvalue.health.ui.fragment.workbench.WorkBenchFragment;
 import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.SharedPreManager;
@@ -96,6 +97,12 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     @BindView(R.id.layout_group)
     RelativeLayout layout_group;
 
+    @BindView(R.id.layout_workbench)
+    RelativeLayout layout_workbench;
+
+    @BindView(R.id.layout_calendar)
+    RelativeLayout layout_calender;
+
     @BindView(R.id.tv_group)
     TextView tv_group;
 
@@ -103,7 +110,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     ImageView img_group;
 
     @BindView(R.id.layout_send)
-    LinearLayout layout_send;
+    RelativeLayout layout_send;
 
     @BindView(R.id.tv_send)
     TextView tv_send;
@@ -136,13 +143,38 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     ImageView img_settings;
     @BindView(R.id.img_person)
     ImageView img_person;
+    @BindView(R.id.img_wkbench)
+    ImageView iv_wkbench;
+    @BindView(R.id.img_calendar)
+    ImageView iv_calendar;
+
+
+    @BindView(R.id.tv_calendar)
+    TextView tv_calender;
+    @BindView(R.id.tv_wkbench)
+    TextView tv_wkbench;
+
+
+
+
 
     @BindView(R.id.layout_fragment_end)
     FrameLayout frameLayout;
+
+    @BindView(R.id.framelaout_workbench)
+    FrameLayout frameLayout_full;
+
+
+    @BindView(R.id.layout_fragment)
+    FrameLayout frameLayout_second;
+
+
     private static final int chat_index = 0;
     private static final int settings = 1;
     private static final int video_index = 2;
     private static final int doc_index = 3;
+    private static final int work_bench = 4;
+    private static final int calendar = 5;
     private int tabPosition = -1;
     private Fragment[] fragmentArrays;
     private Map<String, Fragment> mapFragments = new HashMap<>();
@@ -150,8 +182,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     private ContactsFragment contactsFragment;
     private CloudClinicFragment cloudClinicFragment;
     private DocFriendsFragment docFriendsFragment;
-
-
+    private WorkBenchFragment workbenchFragment;
 
 
     @Override
@@ -176,7 +207,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             Log.e(TAG, "initView  loginBean is null ");
             return;
         }
-        initFragments(chat_index);
+        initFragments(work_bench);  //默认首页工作台界面
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig);
     }
 
@@ -208,12 +239,15 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         settingsFragment = SettingsFragment.getInstance(false);
         cloudClinicFragment = CloudClinicFragment.getInstance(false);
         docFriendsFragment = DocFriendsFragment.getInstance(false);
-        fragmentArrays = new Fragment[]{contactsFragment, settingsFragment, cloudClinicFragment, docFriendsFragment};
+        workbenchFragment = WorkBenchFragment.getInstance(false);
+
+        fragmentArrays = new Fragment[]{contactsFragment, settingsFragment, cloudClinicFragment, docFriendsFragment,workbenchFragment};
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.layout_fragment, fragmentArrays[0]);
         transaction.add(R.id.layout_fragment, fragmentArrays[1]);
         transaction.add(R.id.layout_fragment, fragmentArrays[2]);
         transaction.add(R.id.layout_fragment, fragmentArrays[3]);
+        transaction.add(R.id.framelaout_workbench, fragmentArrays[4]);
         transaction.commitAllowingStateLoss();
         afterTabSelect(index);
     }
@@ -234,7 +268,11 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
         //如果点击的当前Fragment还没加入集合中 则添加
         if (!fragmentArrays[index].isAdded()) {
-            supportFragmentManager.beginTransaction().add(R.id.layout_fragment, fragmentArrays[index]);
+            if (index!=work_bench){
+                supportFragmentManager.beginTransaction().add(R.id.layout_fragment, fragmentArrays[index]);
+            }else {
+                supportFragmentManager.beginTransaction().add(R.id.framelaout_workbench, fragmentArrays[index]);
+            }
         }
         supportFragmentManager.beginTransaction().show(fragmentArrays[index]).commit();
 
@@ -250,23 +288,39 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         initNaviUI();
 
         switch (index) {
+
+            //工作台
+            case work_bench:
+                iv_wkbench.setImageResource(R.drawable.tab_icon_gzt);
+                tv_wkbench.setTextColor(getResources().getColor(R.color.white));
+                layout_workbench.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
+                break;
+
+                //日程
+            case calendar:
+                iv_calendar.setImageResource(R.drawable.tab_icon_cy);
+                tv_calender.setTextColor(getResources().getColor(R.color.white));
+                layout_calender.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
+
+
+
 //            健康计划
             case chat_index:
-                img_person.setImageResource(R.drawable.tab_icon_ct);
+                img_person.setImageResource(R.drawable.tab_icon_jkgl);
                 tv_person.setTextColor(getResources().getColor(R.color.white));
                 layout_person.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
 
 //                云门诊
             case video_index:
-                img_group.setImageResource(R.drawable.tab_icon_gr);
+                img_group.setImageResource(R.drawable.tab_icon_ct);
                 tv_group.setTextColor(getResources().getColor(R.color.white));
                 layout_group.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
 
 //                医生好友
             case doc_index:
-                img_send.setImageResource(R.drawable.tab_icon_of);
+                img_send.setImageResource(R.drawable.tab_icon_gr);
                 tv_send.setTextColor(getResources().getColor(R.color.white));
                 layout_send.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
@@ -285,21 +339,33 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
      * 背景选择 点击不同按钮 显示不同颜色
      */
     private void initNaviUI() {
-        img_person.setImageResource(R.drawable.tab_icon_ct);
-        tv_person.setTextColor(getResources().getColor(R.color.gray));
+
+        iv_wkbench.setImageResource(R.drawable.tab_icon_gzt);
+//        tv_wkbench.setTextColor(getResources().getColor(R.color.gray));
+        layout_workbench.setBackgroundColor(getResources().getColor(R.color.home_blue));
+
+
+        iv_calendar.setImageResource(R.drawable.tab_icon_cy);
+//        tv_calender.setTextColor(getResources().getColor(R.color.gray));
+        layout_calender.setBackgroundColor(getResources().getColor(R.color.home_blue));
+
+
+        img_person.setImageResource(R.drawable.tab_icon_jkgl);
+//        tv_person.setTextColor(getResources().getColor(R.color.gray));
         layout_person.setBackgroundColor(getResources().getColor(R.color.home_blue));
 
-        img_settings.setImageResource(R.drawable.tab_icon_set);
-        tv_settings.setTextColor(getResources().getColor(R.color.gray));
-        layout_settings.setBackgroundColor(getResources().getColor(R.color.home_blue));
 
-        img_group.setImageResource(R.drawable.tab_icon_gr);
-        tv_group.setTextColor(getResources().getColor(R.color.gray));
+        img_group.setImageResource(R.drawable.tab_icon_ct);
+//        tv_group.setTextColor(getResources().getColor(R.color.gray));
         layout_group.setBackgroundColor(getResources().getColor(R.color.home_blue));
 
-        img_send.setImageResource(R.drawable.tab_icon_of);
-        tv_send.setTextColor(getResources().getColor(R.color.gray));
+        img_send.setImageResource(R.drawable.tab_icon_gr);
+//        tv_send.setTextColor(getResources().getColor(R.color.gray));
         layout_send.setBackgroundColor(getResources().getColor(R.color.home_blue));
+
+        img_settings.setImageResource(R.drawable.tab_icon_set);
+//        tv_settings.setTextColor(getResources().getColor(R.color.gray));
+        layout_settings.setBackgroundColor(getResources().getColor(R.color.home_blue));
     }
 
     /**
@@ -616,38 +682,60 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
      * 各个子控件的点击事件
      * @param view
      */
-    @OnClick({R.id.layout_person, R.id.layout_settings, R.id.layout_group, R.id.layout_send,R.id.layout_fragment_end})
+    @OnClick({R.id.layout_person, R.id.layout_settings, R.id.layout_group, R.id.layout_send, R.id.layout_fragment_end,R.id.layout_workbench,R.id.layout_calendar})
     public void clickleftbutton(View view) {
         switch (view.getId()) {
+//            工作台点击
+            case R.id.layout_workbench:
+                //这里不能让一直连续点 做个限制
+                if (tabPosition != 4) {
+                    backAllThirdAct();
+                } else {
+                    return;
+                }
+                frameLayout_full.setVisibility(View.VISIBLE);
+                afterTabSelect(4);
+                break;
+
+
+//                日程点击事件
+            case R.id.layout_calendar:
+                frameLayout_full.setVisibility(View.VISIBLE);
+                break;
+
+
             //健康管理按钮点击事件
             case R.id.layout_person:
                 //这里不能让一直连续点 做个限制
                 if (tabPosition != 0) {
                     backAllThirdAct();
-                }else {
+                } else {
                     return;
                 }
+                frameLayout_full.setVisibility(View.GONE);
                 EventBus.getDefault().post(new MainRefreshObj()); // 通知健康管理界面获取数据 请求接口
                 afterTabSelect(0);
                 break;
 
-                //个人设置按钮 点击事件
+            //个人设置按钮 点击事件
             case R.id.layout_settings:
                 if (tabPosition != 1) {
                     backAllThirdAct();
-                }else {
+                } else {
                     return;
                 }
+                frameLayout_full.setVisibility(View.GONE);
                 afterTabSelect(1);
                 break;
 
-                //云门诊按钮点击事件
+            //云门诊按钮点击事件
             case R.id.layout_group:
                 if (tabPosition != 2) {
                     backAllThirdAct();
-                }else {   //add
+                } else {   //add
                     return;
                 }
+                frameLayout_full.setVisibility(View.GONE);
                 EventBus.getDefault().post(new VideoRefreshObj());
                 afterTabSelect(2);
 
@@ -656,24 +744,25 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 tv_new_count_video.setText("0");
                 break;
 
-                //医生好友按钮点击事件
+            //医生好友按钮点击事件
             case R.id.layout_send:
 //                EventBus.getDefault().post(new VideoRefreshObj());
                 if (tabPosition != 3) {
                     backAllThirdAct();
-                }else {
+                } else {
                     return;
                 }
+                frameLayout_full.setVisibility(View.GONE);
                 afterTabSelect(3);
                 break;
 
 
-                //第三个Fragment界面事件点击
+            //第三个Fragment界面事件点击
             case R.id.layout_fragment_end:
                 if (null != onTouchListener) {
                     onTouchListener.onthirdFragmentListenner();
                 }
-
+                frameLayout_full.setVisibility(View.GONE);
                 break;
 
         }
@@ -719,14 +808,11 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     }
 
 
-
-
     private OnTouchListener onTouchListener;
 
     public void setOnTouchListener(OnTouchListener listener) {
         onTouchListener = listener;
     }
-
 
 
 }

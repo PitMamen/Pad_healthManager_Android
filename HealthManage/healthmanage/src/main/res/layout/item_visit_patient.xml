@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_plans"
+    android:background="@drawable/shape_bg_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/qb_px_10"
+        android:paddingVertical="@dimen/qb_px_8">
+
+        <!--    http://img.duoziwang.com/2021/03/1623076080632524.jpg -->
+        <ImageView
+            android:id="@+id/img_head_icon"
+            android:layout_width="@dimen/qb_px_33"
+            android:layout_height="@dimen/qb_px_33"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_head_img"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_visit_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_7"
+            android:layout_marginTop="@dimen/qb_px_3"
+            android:text="院内就诊"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/qb_px_10"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/img_head_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_7"
+            android:layout_marginTop="@dimen/qb_px_7"
+            android:text="2021/11/11"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="@dimen/qb_px_8"
+            app:layout_constraintLeft_toRightOf="@id/img_head_icon"
+            app:layout_constraintTop_toBottomOf="@id/tv_visit_status" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/tv_hospitolby"
+            android:layout_marginTop="@dimen/qb_px_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="140dp"
+            android:text="株洲市人民医院"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="@dimen/qb_px_8"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="26dp">
+        </TextView>
+
+
+
+        <TextView
+            android:id="@+id/tv_time_by_end"
+            android:layout_marginTop="@dimen/qb_px_5_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="150dp"
+            android:text="14:00 ~ 15:00"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="@dimen/qb_px_8"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="26dp">
+        </TextView>
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

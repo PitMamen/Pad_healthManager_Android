@@ -114,10 +114,108 @@
 
         </LinearLayout>
 
+
+<!--        add-->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/qb_px_33"
-            android:layout_marginTop="@dimen/qb_px_32"
+            android:layout_marginTop="@dimen/qb_px_22"
+            android:gravity="center"
+            android:background="@color/home_blue_dark"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:id="@+id/layout_workbench"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_wkbench"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="工作台"
+                    android:layout_below="@+id/img_wkbench"
+                    android:textColor="@color/white"
+                    android:textSize="8sp"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/img_wkbench"
+                    android:layout_width="@dimen/qb_px_15"
+                    android:layout_height="@dimen/qb_px_15"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/tab_icon_gzt" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+<!--        add-->
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/qb_px_33"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:id="@+id/layout_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_calendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="日程"
+                    android:layout_below="@+id/img_calendar"
+                    android:textColor="@color/white"
+                    android:textSize="8sp"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/img_calendar"
+                    android:layout_width="@dimen/qb_px_15"
+                    android:layout_height="@dimen/qb_px_15"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/tab_icon_cy" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+
+
+
+<!--        add-->
+
+
+
+
+
+
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/qb_px_33"
+            android:layout_marginTop="@dimen/qb_px_10"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -125,7 +223,6 @@
                 android:id="@+id/layout_person"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/home_blue_dark"
                 android:orientation="vertical">
 
                 <TextView
@@ -133,10 +230,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="联系人"
+                    android:text="健康管理"
+                    android:layout_below="@+id/img_person"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:textSize="8sp"
+                    android:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/img_person"
@@ -144,7 +242,7 @@
                     android:layout_height="@dimen/qb_px_15"
                     android:layout_centerInParent="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/tab_icon_ct" />
+                    android:src="@drawable/tab_icon_jkgl" />
 
                 <LinearLayout
                     android:id="@+id/layout_pot_health"
@@ -189,10 +287,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="联系人"
+                    android:text="虚拟诊间"
+                    android:layout_below="@+id/img_group"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:textSize="8sp"
+                    android:visibility="visible" />
 
                 <ImageView
                     android:id="@+id/img_group"
@@ -200,7 +299,7 @@
                     android:layout_height="@dimen/qb_px_15"
                     android:layout_centerInParent="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/tab_icon_gr" />
+                    android:src="@drawable/tab_icon_ct" />
 
                 <LinearLayout
                     android:id="@+id/layout_pot_video"
@@ -233,7 +332,7 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/layout_send"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -245,18 +344,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="医生联系人"
+                    android:text="通讯录"
+                    android:layout_below="@+id/img_send"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:textSize="8sp"
+                    android:visibility="visible" />
 
                 <ImageView
+                    android:layout_centerInParent="true"
                     android:id="@+id/img_send"
                     android:layout_width="@dimen/qb_px_12"
                     android:layout_height="@dimen/qb_px_12"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/tab_icon_of" />
-            </LinearLayout>
+                    android:src="@drawable/tab_icon_gr" />
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -396,6 +497,19 @@
 
     </LinearLayout>
 
+    <!--add-->
+    <FrameLayout
+        android:id="@+id/framelaout_workbench"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:background="@color/white"
+        android:orientation="vertical">
+    </FrameLayout>
+
+
+
+
     <FrameLayout
         android:id="@+id/layout_fragment"
         android:layout_width="0dp"
@@ -403,9 +517,10 @@
         android:layout_weight="3"
         android:background="@color/white"
         android:orientation="vertical">
-
-
     </FrameLayout>
+
+
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -433,5 +548,10 @@
         android:orientation="vertical">
 
     </FrameLayout>
+
+
+
+
+
 
 </LinearLayout>

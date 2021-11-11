@@ -8,4 +8,11 @@
     <color name="beauty_color_gray">#666666</color>
     <color name="beauty_color_gray_text">#999999</color>
     <color name="beauty_color_black">#000000</color>
+    <color name="beauty_color_unblack">#1A1A1A</color>
+    <color name="beauty_color_pale">#E6E6E6</color>
+    <color name="beauty_color_bluedark">#489FE2</color>
+    <color name="beauty_color_nomoal">#B3B3B3 </color>
+    <color name="beauty_color_orange">#E88326</color>
+    <color name="beauty_color_cyan">#89C86F</color>
+    <color name="beauty_color_bacg">#F2F2F2</color>
 </resources>
