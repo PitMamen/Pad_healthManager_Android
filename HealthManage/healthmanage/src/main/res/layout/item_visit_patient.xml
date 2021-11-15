@@ -19,8 +19,8 @@
         <!--    http://img.duoziwang.com/2021/03/1623076080632524.jpg -->
         <ImageView
             android:id="@+id/img_head_icon"
-            android:layout_width="@dimen/qb_px_33"
-            android:layout_height="@dimen/qb_px_33"
+            android:layout_width="@dimen/qb_px_20"
+            android:layout_height="@dimen/qb_px_20"
             android:scaleType="centerCrop"
             android:src="@drawable/default_head_img"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -68,7 +68,7 @@
             android:layout_marginTop="@dimen/qb_px_15"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="140dp"
+            android:layout_marginLeft="115dp"
             android:text="株洲市人民医院"
             android:textColor="@color/text_desc_dark"
             android:textSize="@dimen/qb_px_8"
@@ -83,7 +83,7 @@
             android:layout_marginTop="@dimen/qb_px_5_"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="150dp"
+            android:layout_marginLeft="115dp"
             android:text="14:00 ~ 15:00"
             android:textColor="@color/text_desc_dark"
             android:textSize="@dimen/qb_px_8"

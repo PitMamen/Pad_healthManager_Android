@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scher_title"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/beauty_color_bacg">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_80"
+        tools:ignore="MissingConstraints">
+
+
+        <TextView
+            android:id="@+id/tv_year_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/qb_px_18"
+            android:text="2021年11月"
+            android:textColor="@color/beauty_color_black"
+            android:textSize="@dimen/qb_px_12"
+            android:textStyle="bold">
+
+        </TextView>
+
+
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:layout_width="@dimen/qb_px_230"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginTop="@dimen/qb_px_13"
+                android:gravity="center"
+                android:background="@drawable/shape_text_bg"
+                android:text="月"
+                android:id="@+id/tv_month"
+                android:layout_width="@dimen/qb_px_60"
+                android:layout_height="@dimen/qb_px_40">
+
+            </TextView>
+
+
+            <TextView
+                android:layout_marginTop="@dimen/qb_px_13"
+                android:gravity="center"
+                android:text="周"
+                android:background="@drawable/shape_text_bg"
+                android:id="@+id/tv_week"
+                android:layout_width="@dimen/qb_px_60"
+                android:layout_height="@dimen/qb_px_40">
+
+            </TextView>
+
+            <TextView
+                android:layout_marginTop="@dimen/qb_px_13"
+                android:gravity="center"
+                android:background="@drawable/shape_text_bg"
+                android:text="日"
+                android:id="@+id/tv_day"
+                android:layout_width="@dimen/qb_px_60"
+                android:layout_height="@dimen/qb_px_40">
+
+            </TextView>
+
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+            android:layout_marginEnd="@dimen/qb_px_20"
+            android:layout_marginTop="@dimen/qb_px_38"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/qb_px_35">
+
+
+            <View
+                android:layout_marginTop="@dimen/qb_px_7"
+                android:background="@color/beauty_color_blue"
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_15">
+            </View>
+
+            <TextView
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:layout_marginLeft="@dimen/qb_px_5"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/beauty_color_black"
+                android:text="远程门诊"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+
+            <View
+                android:layout_marginLeft="@dimen/qb_px_8"
+                android:layout_marginTop="@dimen/qb_px_7"
+                android:background="@color/beauty_color_orange"
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_15">
+            </View>
+
+
+
+            <TextView
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:layout_marginLeft="@dimen/qb_px_5"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/beauty_color_black"
+                android:text="云门诊"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+
+
+
+            <View
+                android:layout_marginLeft="@dimen/qb_px_8"
+                android:layout_marginTop="@dimen/qb_px_7"
+                android:background="@color/beauty_color_green"
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_15">
+            </View>
+
+
+
+            <TextView
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:layout_marginLeft="@dimen/qb_px_5"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/beauty_color_black"
+                android:text="联合门诊"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

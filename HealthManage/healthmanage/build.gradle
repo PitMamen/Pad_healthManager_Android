@@ -257,4 +257,5 @@ dependencies {
     api 'com.squareup.okhttp3:okhttp:3.3.0'
     api 'com.zhy:okhttputils:2.6.2'
     api 'com.google.code.gson:gson:2.8.1'
+    implementation files('libs/hellocharts-library-1.5.8.jar')
 }

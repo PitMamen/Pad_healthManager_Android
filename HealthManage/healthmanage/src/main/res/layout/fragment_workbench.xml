@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:id="@+id/re_docimformation"
-        android:layout_width="@dimen/qb_px_355"
+        android:layout_width="@dimen/qb_px_300"
         android:layout_height="@dimen/qb_px_80"
         android:layout_marginLeft="@dimen/qb_px_11"
         android:layout_marginTop="@dimen/qb_px_11"
@@ -100,7 +100,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/qb_px_32"
+                android:layout_marginLeft="@dimen/qb_px_10"
                 android:layout_toRightOf="@+id/view_division"
                 android:orientation="horizontal">
 
@@ -198,7 +198,7 @@
 
 
     <RelativeLayout
-        android:layout_width="@dimen/qb_px_355"
+        android:layout_width="@dimen/qb_px_300"
         android:layout_height="wrap_content"
         android:layout_below="@+id/re_docimformation"
         android:layout_marginLeft="@dimen/qb_px_11"
@@ -240,7 +240,7 @@
                 android:id="@+id/tv_zzjzz"
                 android:layout_width="@dimen/qb_px_38"
                 android:layout_height="@dimen/qb_px_10"
-                android:layout_marginLeft="@dimen/qb_px_70"
+                android:layout_marginLeft="@dimen/qb_px_20"
                 android:layout_marginTop="@dimen/qb_px_13"
                 android:text="正在就诊中"
                 android:textColor="@color/beauty_color_black"
@@ -252,7 +252,7 @@
                 android:id="@+id/tv_ckgd_more"
                 android:layout_width="@dimen/qb_px_38"
                 android:layout_height="@dimen/qb_px_10"
-                android:layout_marginLeft="@dimen/qb_px_70"
+                android:layout_marginLeft="@dimen/qb_px_40"
                 android:layout_marginTop="@dimen/qb_px_13"
                 android:layout_marginEnd="@dimen/qb_px_13"
                 android:text="查看更多"
@@ -293,7 +293,7 @@
                 android:id="@+id/list_zzjz"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/qb_px_10"
+                android:paddingLeft="@dimen/qb_px_25"
                 android:paddingTop="@dimen/qb_px_20"
                 android:visibility="visible">
 
@@ -334,58 +334,23 @@
                 android:textColor="@color/beauty_color_gray"
                 android:textSize="7sp"></TextView>
 
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/rl_wait_list"-->
-<!--                android:visibility="gone"-->
-<!--                android:layout_marginTop="@dimen/qb_px_15"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="match_parent">-->
-<!--            </androidx.recyclerview.widget.RecyclerView>-->
         </RelativeLayout>
-
 
 
         <RelativeLayout
-            android:layout_below="@+id/rl_dai"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_dai">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rl_wait_list"
-                android:layout_marginEnd="@dimen/qb_px_25"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="@dimen/qb_px_15"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-            </androidx.recyclerview.widget.RecyclerView>
-
-
-
-
+                android:layout_marginEnd="@dimen/qb_px_25"></androidx.recyclerview.widget.RecyclerView>
         </RelativeLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -393,6 +358,53 @@
     </RelativeLayout>
 
 
+
+
+
+
+<!--    图表UI-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:layout_toRightOf="@+id/re_docimformation"
+        android:orientation="vertical">
+
+
+        <!--        折现图-->
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/lvc_main"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:transitionName="line" />
+
+
+        <!--        饼图-->
+
+        <lecho.lib.hellocharts.view.PieChartView
+            android:id="@+id/pcv_main"
+            android:layout_width="@dimen/qb_px_120"
+            android:layout_height="@dimen/qb_px_100"
+            android:layout_gravity="center"
+            android:transitionName="pie" />
+
+
+<!--        柱形图-->
+
+        <lecho.lib.hellocharts.view.ComboLineColumnChartView
+            android:id="@+id/clccv_main"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:transitionName="combo_line_column" />
+
+
+
+
+    </LinearLayout>
 
 
 

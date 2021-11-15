@@ -52,6 +52,7 @@ import com.bitvalue.health.ui.fragment.healthmanage.HealthUploadDataFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.NewMsgFragmentDisplay;
 import com.bitvalue.health.ui.fragment.healthmanage.PlanMsgFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.QuestionDetailFragment;
+import com.bitvalue.health.ui.fragment.schedule.ScheduleFragment;
 import com.bitvalue.health.ui.fragment.setting.AddQuestionFragment;
 import com.bitvalue.health.ui.fragment.setting.CreateNewHealthPlanFragment;
 import com.bitvalue.health.ui.fragment.setting.HealthPlanFragment;
@@ -155,9 +156,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     TextView tv_wkbench;
 
 
-
-
-
     @BindView(R.id.layout_fragment_end)
     FrameLayout frameLayout;
 
@@ -183,6 +181,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     private CloudClinicFragment cloudClinicFragment;
     private DocFriendsFragment docFriendsFragment;
     private WorkBenchFragment workbenchFragment;
+    private ScheduleFragment scheduleFragment;
 
 
     @Override
@@ -240,14 +239,16 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         cloudClinicFragment = CloudClinicFragment.getInstance(false);
         docFriendsFragment = DocFriendsFragment.getInstance(false);
         workbenchFragment = WorkBenchFragment.getInstance(false);
+        scheduleFragment = ScheduleFragment.getInstance(false);
 
-        fragmentArrays = new Fragment[]{contactsFragment, settingsFragment, cloudClinicFragment, docFriendsFragment,workbenchFragment};
+        fragmentArrays = new Fragment[]{contactsFragment, settingsFragment, cloudClinicFragment, docFriendsFragment, workbenchFragment, scheduleFragment};
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.layout_fragment, fragmentArrays[0]);
         transaction.add(R.id.layout_fragment, fragmentArrays[1]);
         transaction.add(R.id.layout_fragment, fragmentArrays[2]);
         transaction.add(R.id.layout_fragment, fragmentArrays[3]);
         transaction.add(R.id.framelaout_workbench, fragmentArrays[4]);
+        transaction.add(R.id.framelaout_workbench, fragmentArrays[5]);
         transaction.commitAllowingStateLoss();
         afterTabSelect(index);
     }
@@ -268,9 +269,9 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
         //如果点击的当前Fragment还没加入集合中 则添加
         if (!fragmentArrays[index].isAdded()) {
-            if (index!=work_bench){
+            if (index != work_bench && index != calendar) {
                 supportFragmentManager.beginTransaction().add(R.id.layout_fragment, fragmentArrays[index]);
-            }else {
+            } else {
                 supportFragmentManager.beginTransaction().add(R.id.framelaout_workbench, fragmentArrays[index]);
             }
         }
@@ -296,11 +297,12 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 layout_workbench.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
 
-                //日程
+            //日程
             case calendar:
                 iv_calendar.setImageResource(R.drawable.tab_icon_cy);
                 tv_calender.setTextColor(getResources().getColor(R.color.white));
                 layout_calender.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
+                break;
 
 
 
@@ -682,7 +684,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
      * 各个子控件的点击事件
      * @param view
      */
-    @OnClick({R.id.layout_person, R.id.layout_settings, R.id.layout_group, R.id.layout_send, R.id.layout_fragment_end,R.id.layout_workbench,R.id.layout_calendar})
+    @OnClick({R.id.layout_person, R.id.layout_settings, R.id.layout_group, R.id.layout_send, R.id.layout_fragment_end, R.id.layout_workbench, R.id.layout_calendar})
     public void clickleftbutton(View view) {
         switch (view.getId()) {
 //            工作台点击
@@ -700,7 +702,13 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
 //                日程点击事件
             case R.id.layout_calendar:
+                if (tabPosition != 5) {
+                    backAllThirdAct();
+                } else {
+                    return;
+                }
                 frameLayout_full.setVisibility(View.VISIBLE);
+                afterTabSelect(5);
                 break;
 
 
