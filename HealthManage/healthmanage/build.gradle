@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-aspectjx'
 apply from: '../config.gradle'
+apply plugin: 'realm-android'
 
 // Android 代码规范文档：https://github.com/getActivity/AndroidCodeStandard
 android {
@@ -258,4 +259,6 @@ dependencies {
     api 'com.zhy:okhttputils:2.6.2'
     api 'com.google.code.gson:gson:2.8.1'
     implementation files('libs/hellocharts-library-1.5.8.jar')
+    implementation 'com.jzxiang.pickerview:TimePickerDialog:1.0.1'
+    implementation 'joda-time:joda-time:2.9.7'
 }

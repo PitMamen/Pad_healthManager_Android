@@ -1,27 +1,423 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <com.alamkanak.weekview.WeekView
+        android:id="@+id/weekView"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        tools:ignore="MissingConstraints">
+        app:columnGap="8dp"
+        app:dayBackgroundColor="#05000000"
+        app:eventTextColor="@android:color/white"
+        app:headerColumnBackground="#ffffffff"
+        app:headerColumnPadding="8dp"
+        app:headerColumnTextColor="@color/toolbar_text"
+        app:headerRowBackgroundColor="@color/toolbar"
+        app:headerRowPadding="12dp"
+        app:hourHeight="60dp"
+        app:noOfVisibleDays="3"
+        app:textSize="12sp"
+        app:todayBackgroundColor="#1848adff"
+        app:todayHeaderTextColor="@color/accent" />
 
+
+    <FrameLayout
+        android:layout_width="@dimen/qb_px_315"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@color/beauty_color_white">
 
 
         <TextView
-            android:text="the day fragment"
-            android:gravity="center"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="@dimen/qb_px_100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/qb_px_13"
+            android:text="远程门诊预约单"
+            android:textSize="20sp"></TextView>
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints" />
+            android:layout_marginTop="@dimen/qb_px_38">
 
-    </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/basic_imformatiom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="患者姓名:"></TextView>
+
+                <TextView
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="李水"></TextView>
+
+
+                <TextView
+                    android:layout_marginLeft="@dimen/qb_px_18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="性别:">
+
+                </TextView>
+
+                <TextView
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="男"></TextView>
+
+                <TextView
+                    android:layout_marginLeft="@dimen/qb_px_18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="年龄:"></TextView>
+
+                <TextView
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="35岁"></TextView>
+
+                <TextView
+                    android:layout_marginLeft="@dimen/qb_px_38"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="婚姻:"></TextView>
+
+                <TextView
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="未婚"></TextView>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/disease_history_imformation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/basic_imformatiom"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="职业:"></TextView>
+
+                <TextView
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="工程师"></TextView>
+
+
+                <TextView
+                    android:layout_marginLeft="@dimen/qb_px_18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="过敏史:"></TextView>
+
+                <TextView
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="无"></TextView>
+
+                <TextView
+                    android:layout_marginLeft="@dimen/qb_px_18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="诊断:"></TextView>
+
+                <TextView
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="风湿性关节炎"></TextView>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/disease_history_imformation"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@color/beauty_color_gray"></View>
+
+
+            <LinearLayout
+                android:id="@+id/department_imformation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/disease_history_imformation"
+                android:layout_marginTop="@dimen/qb_px_12"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="邀请科室:"></TextView>
+
+                <TextView
+                    android:id="@+id/yqks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:text="肾内科">
+
+                </TextView>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_13"
+                    android:text="受邀科室:"></TextView>
+
+                <TextView
+                    android:id="@+id/syks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:text="心血管内科">
+
+                </TextView>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_13"
+                    android:text="受邀医生:"></TextView>
+
+                <TextView
+                    android:id="@+id/syys"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:text="李铁">
+
+                </TextView>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_see_doc_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/department_imformation"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="会诊时间:">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_cure_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:text="2021年8月17日15时30分">
+
+                </TextView>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/ll_see_doc_time"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@color/beauty_color_gray"></View>
+
+
+            <LinearLayout
+                android:id="@+id/ll_jybs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_see_doc_time"
+                android:layout_marginTop="@dimen/qb_px_12"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="简要病史:"
+                    android:textSize="@dimen/qb_px_10"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_jybs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:maxLines="5"
+                    android:text="ccvbvdvdvdvdddfvdsvdsbxcvvbxcvvcxbdfb患者述床上排尿时气促明显,现进食早餐感气足,查体,平卧起,血压增高">
+
+                </TextView>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/ll_jybs"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@color/beauty_color_gray"></View>
+
+
+            <LinearLayout
+                android:id="@+id/ll_zljg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_jybs"
+                android:layout_marginTop="@dimen/qb_px_12"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="诊疗经过:"
+                    android:textSize="@dimen/qb_px_10"
+                    android:textStyle="bold">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_zljg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:maxLines="5"
+                    android:text="每2-4小时查血糖一次,每日抽血钠、钾、氯、CO2CP及BUN一次">
+
+                </TextView>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/ll_jybs"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@color/beauty_color_gray"></View>
+
+
+            <LinearLayout
+                android:id="@+id/ll_doc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_zljg"
+                android:layout_marginTop="@dimen/qb_px_12"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="申请医生:"></TextView>
+
+                <TextView
+                    android:id="@+id/tv_sqys"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:maxLines="5"
+                    android:text="周雄">
+
+                </TextView>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_18"
+                    android:text="上级医生:"></TextView>
+
+                <TextView
+                    android:id="@+id/tv_sjys"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:maxLines="5"
+                    android:text="李国宝">
+
+                </TextView>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_48"
+                    android:text="科室主任:">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_kszr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:maxLines="5"
+                    android:text="何力"></TextView>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_sqsj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_doc"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="申请时间:">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tv_sqsj"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/qb_px_8"
+                    android:text="2021年8月17日15时30分"></TextView>
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/ll_sqsj"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@color/beauty_color_gray"></View>
+
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
 
 
 
@@ -33,4 +429,10 @@
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+</RelativeLayout>

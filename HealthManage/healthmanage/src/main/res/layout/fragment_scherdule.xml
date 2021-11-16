@@ -10,7 +10,7 @@
 
     <FrameLayout
         android:id="@+id/framelaout_bottom"
-        android:layout_marginTop="@dimen/qb_px_100"
+        android:layout_marginTop="@dimen/qb_px_73"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>
