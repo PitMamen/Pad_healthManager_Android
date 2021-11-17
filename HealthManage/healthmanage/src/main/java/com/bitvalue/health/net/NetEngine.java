@@ -59,6 +59,10 @@ public class NetEngine {
     }
 
 
+    /***
+     * 这里是为了配合使用EasyHttp网络请求框架
+     * * @return
+     */
     public OkHttpClient getOkHttpClient() {
         // 网络请求框架初始化
         return new OkHttpClient.Builder()

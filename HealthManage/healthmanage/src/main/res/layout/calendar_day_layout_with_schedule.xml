@@ -7,7 +7,6 @@
     android:gravity="center"
     android:orientation="vertical">
 
-<!--    android:background="@drawable/bg_btn_calendar"-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -44,6 +43,8 @@
             android:textColor="@color/text_calendar"
             android:textSize="12sp" />
 
+
+<!--        农历控件-->
         <com.smile.calendar.view.DayView
             android:id="@+id/tvChina"
             android:layout_width="wrap_content"
@@ -54,30 +55,30 @@
             android:textSize="8sp"
             android:visibility="gone" />
 
-        <com.smile.calendar.view.DayView
-            android:id="@+id/schedule1"
-            style="@style/day_schedule_style"
-            android:layout_below="@+id/tvChina"
-            android:text="" />
+<!--        <com.smile.calendar.view.DayView-->
+<!--            android:id="@+id/schedule1"-->
+<!--            style="@style/day_schedule_style"-->
+<!--            android:layout_below="@+id/tvChina"-->
+<!--            android:text="" />-->
 
-        <com.smile.calendar.view.DayView
-            android:id="@+id/schedule2"
-            style="@style/day_schedule_style"
-            android:layout_below="@+id/schedule1"
-            android:text=""
-            android:ellipsize="none"/>
+<!--        <com.smile.calendar.view.DayView-->
+<!--            android:id="@+id/schedule2"-->
+<!--            style="@style/day_schedule_style"-->
+<!--            android:layout_below="@+id/schedule1"-->
+<!--            android:text=""-->
+<!--            android:ellipsize="none"/>-->
 
-        <com.smile.calendar.view.DayView
-            android:id="@+id/schedule3"
-            style="@style/day_schedule_style"
-            android:layout_below="@+id/schedule2"
-            android:text="" />
+<!--        <com.smile.calendar.view.DayView-->
+<!--            android:id="@+id/schedule3"-->
+<!--            style="@style/day_schedule_style"-->
+<!--            android:layout_below="@+id/schedule2"-->
+<!--            android:text="" />-->
 
-        <com.smile.calendar.view.DayView
-            android:id="@+id/schedule4"
-            style="@style/day_schedule_style"
-            android:layout_below="@+id/schedule3"
-            android:text="" />
+<!--        <com.smile.calendar.view.DayView-->
+<!--            android:id="@+id/schedule4"-->
+<!--            style="@style/day_schedule_style"-->
+<!--            android:layout_below="@+id/schedule3"-->
+<!--            android:text="" />-->
 
     </RelativeLayout>
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -373,49 +374,31 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
     private void populateWeekLayout(Week week, ViewGroup weekView) {
 
         List<Day> days = week.getDays();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 7; i++) {    //一周
             final Day day = days.get(i);
             LinearLayout layout = (LinearLayout) weekView.getChildAt(i);
             DayView dayView = (DayView) layout.findViewById(R.id.tvDayView);
-            DayView chinaDay = (DayView) layout.findViewById(R.id.tvChina);
-            if (showChinaDay) {
-                chinaDay.setVisibility(View.VISIBLE);
-            } else {
-                chinaDay.setVisibility(View.GONE);
-            }
+            DayView chinaDay = (DayView) layout.findViewById(R.id.tvChina);  //农历
+            chinaDay.setVisibility(showChinaDay ? View.VISIBLE : View.GONE); //是否显示农历
             View viewPoint = layout.findViewById(R.id.view_point);
             TextView tvDayType = (TextView) layout.findViewById(R.id.tv_day_type);
             // 显示小蓝点标记
-            if (marksMap != null && marksMap != "") {
-                if (marksMap.contains(day.getDate().toString())) {
-                    viewPoint.setVisibility(View.VISIBLE);
-                } else {
-                    viewPoint.setVisibility(View.INVISIBLE);
-                }
-
+            if (marksMap != null && !TextUtils.isEmpty(marksMap)) {
+                viewPoint.setVisibility(marksMap.contains(day.getDate().toString()) ? View.VISIBLE : View.INVISIBLE);
             }
             tvDayType.setVisibility(View.INVISIBLE);
-            dayView.setText(day.getText());
+            Log.e(TAG, "populateWeekLayout: "+day.getText() );
+            dayView.setText(day.getText());  //设置每个月的天数日历
             if (day.getDate().getYear() == mManager.getCurrentMonthDate().getYear()
                     && day.getDate().getMonthOfYear() == mManager.getCurrentMonthDate().getMonthOfYear()
                     || mManager.getState() == CalendarManager.State.WEEK) {
                 //如果日期是当前月份
-                if (i > 4) {
-                    //周末
-                    dayView.setTextColor(getResources().getColor(R.color.text));
-                } else {
-                    //非周末
-                    dayView.setTextColor(getResources().getColor(R.color.cal_text_normal));
-                }
+//                这里如果做日程添加 则从这里写逻辑  每个月的每天对应日程事件
+
+                dayView.setTextColor(i > 4 ? getResources().getColor(R.color.text) : getResources().getColor(R.color.cal_text_normal));
             } else {
                 //日期不是当前月份
-                if (i > 4) {
-                    //周末
-                    dayView.setTextColor(getResources().getColor(R.color.cal_line_grey));
-                } else {
-                    //非周末
-                    dayView.setTextColor(getResources().getColor(R.color.cal_text_light));
-                }
+                dayView.setTextColor(i > 4 ? getResources().getColor(R.color.cal_line_grey):getResources().getColor(R.color.cal_text_light));
             }
             layout.setSelected(day.isSelected());
 
@@ -618,7 +601,6 @@ public class CollapseCalendarView extends LinearLayout implements View.OnClickLi
 
     /**
      * 在日历上做一组标记
-     *
      */
     public void clearMarks() {
         marksMap = "";
