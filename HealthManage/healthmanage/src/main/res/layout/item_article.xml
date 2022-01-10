@@ -26,12 +26,12 @@
         android:id="@+id/tv_use_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/qb_px_8"
-        android:textColor="@color/main_blue"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/qb_px_7"
         android:layout_toLeftOf="@id/img_goto"
-        android:text="预览" />
+        android:text="预览"
+        android:textColor="@color/main_blue"
+        android:textSize="@dimen/qb_px_8" />
 
     <View
         android:layout_width="match_parent"

@@ -653,12 +653,13 @@
                     android:text="保存"
                     android:textColor="@color/white"
                     android:textSize="@dimen/qb_px_10" />
+
                 <TextView
                     android:id="@+id/tv_preview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@id/tv_save"
                     android:layout_marginRight="@dimen/qb_px_10"
+                    android:layout_toLeftOf="@id/tv_save"
                     android:background="@drawable/shape_bg_blue_em"
                     android:paddingHorizontal="@dimen/qb_px_30"
                     android:paddingVertical="@dimen/qb_px_5"
