@@ -42,7 +42,7 @@ public class ConversationCustomHolder extends ConversationBaseHolder {
         conversationIconView.setConversation(conversation);
 
         titleText.setText(conversation.getTitle());
-        messageText.setText("");
+        messageText.setText("文件信息");
         timelineText.setText("");
 
         if (conversation.getUnRead() > 0) {

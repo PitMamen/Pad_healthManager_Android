@@ -6,7 +6,6 @@ import android.widget.TextView;
 
 import com.bitvalue.health.Application;
 import com.bitvalue.health.ui.fragment.chat.ChatFragment;
-import com.bitvalue.health.util.Constants;
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKitImpl;
 import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
@@ -45,7 +44,7 @@ public class CustomAnalyseMessageController {
                 ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
                 msgData.userIds = data.userId;
                 msgData.id = data.msgDetailId;
-                appApplication.getHomeActivity().switchSecondFragment(Constants.FRAGMENT_HEALTH_ANALYSE_DISPLAY, msgData);
+//                appApplication.getHomeActivity().switchSecondFragment(Constants.FRAGMENT_HEALTH_ANALYSE_DISPLAY, msgData);
             }
         });
         view.setOnLongClickListener(v -> {

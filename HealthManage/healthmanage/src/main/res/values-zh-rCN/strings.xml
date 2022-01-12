@@ -9,7 +9,8 @@
     <string name="common_year">年</string>
     <string name="common_month">月</string>
     <string name="common_day">日</string>
-
+    <string name="bedreservation">bedreservation</string>
+    <string name="newly_discharged_patients">newlydischarged patients</string>
     <string name="common_hour">时</string>
     <string name="common_minute">分</string>
     <string name="common_second">秒</string>
@@ -321,4 +322,8 @@
     <string name="write_calendar">请在设置里允许访问您设备上的日历，以便将日程同步到手机日历</string>
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
+    <string name="more">更多</string>
+    <string name="putaway">收起</string>
+    <string name="create_ed_plan">New/edit follow up plan</string>
+    <string name="plan_followup_detail">Follow up plan details</string>
 </resources>

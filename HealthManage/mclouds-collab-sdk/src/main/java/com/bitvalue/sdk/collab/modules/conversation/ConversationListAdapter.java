@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.bitvalue.sdk.collab.modules.conversation.holder.ConversationCustomHol
 import com.bitvalue.sdk.collab.modules.conversation.interfaces.IConversationAdapter;
 import com.bitvalue.sdk.collab.modules.conversation.interfaces.IConversationProvider;
 import com.bitvalue.sdk.collab.utils.ScreenUtil;
+import com.tencent.imsdk.conversation.Conversation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +28,11 @@ public class ConversationListAdapter extends IConversationAdapter {
 
     public static final int ITEM_TYPE_HEADER_SEARCH = 101;
     public static final int ITEM_TYPE_FOOTER_LOADING = -99;
-    public static final int HEADER_COUNT = 1;
+    public static final int HEADER_COUNT = 0;
     public static final int FOOTER_COUNT = 1;
 
     private boolean mHasShowUnreadDot = true;
-    private int mItemAvatarRadius = ScreenUtil.getPxByDp(5);
+    private int mItemAvatarRadius = ScreenUtil.getPxByDp(40);
     private int mTopTextSize;
     private int mBottomTextSize;
     private int mDateTextSize;
@@ -69,8 +71,8 @@ public class ConversationListAdapter extends IConversationAdapter {
         View view;
         // 根据ViewType来创建条目
         if (viewType == ITEM_TYPE_HEADER_SEARCH) {
-            return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.conversation_search_adapter, parent, false));
-        }else if (viewType == ConversationInfo.TYPE_CUSTOM) {
+//            return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.conversation_search_adapter, parent, false));
+        } else if (viewType == ConversationInfo.TYPE_CUSTOM) {
             view = inflater.inflate(R.layout.conversation_custom_adapter, parent, false);
             holder = new ConversationCustomHolder(view);
         } else if (viewType == ITEM_TYPE_FOOTER_LOADING) {
@@ -137,7 +139,7 @@ public class ConversationListAdapter extends IConversationAdapter {
     }
 
     public ConversationInfo getItem(int position) {
-        if (mDataSource.size() == 0 || position == 0 || position == getItemCount() - 1) {
+        if (mDataSource.size() == 0 || position == getItemCount() - 1) {
             return null;
         }
         return mDataSource.get(position - HEADER_COUNT);
@@ -151,7 +153,9 @@ public class ConversationListAdapter extends IConversationAdapter {
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
-            return ITEM_TYPE_HEADER_SEARCH;
+//            return ITEM_TYPE_HEADER_SEARCH;
+            ConversationInfo conversation = mDataSource.get(position - HEADER_COUNT);
+            return conversation.getType();
         } else if (position == getItemCount() - 1) {
             return ITEM_TYPE_FOOTER_LOADING;
         } else if (mDataSource != null) {

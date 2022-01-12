@@ -77,7 +77,7 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
             getConversationLastMessage("group_" + chatInfo.getId());
             loadApplyList();
             getTitleBar().getRightIcon().setImageResource(R.drawable.chat_group);
-            getTitleBar().setOnRightClickListener(new View.OnClickListener() {
+            getTitleBar().setOnRightClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //获取群组信息点击事件先屏蔽 bug375
@@ -90,7 +90,7 @@ public class ChatLayout extends AbsChatLayout implements GroupChatManagerKit.Gro
 //                    }
                 }
             });
-            mGroupApplyLayout.setOnNoticeClickListener(new View.OnClickListener() {
+            mGroupApplyLayout.setOnNoticeClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(getContext(), GroupApplyManagerActivity.class);

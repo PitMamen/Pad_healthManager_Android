@@ -28,7 +28,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/qb_px_20"
-                android:text="待/就诊中"
+                android:text="患者咨询"
                 android:textColor="@color/white"
                 android:textSize="@dimen/qb_px_10" />
 
@@ -41,7 +41,7 @@
                 android:background="@drawable/shape_bg_white_solid_2"
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/qb_px_20"
-                android:text="已结束"
+                android:text="全部患者"
                 android:textColor="@color/main_blue"
                 android:textSize="@dimen/qb_px_10" />
         </LinearLayout>
@@ -78,22 +78,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contact_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/view_line" />
 
-    <TextView
-        android:id="@+id/tv_no_data"
+    <com.bitvalue.sdk.collab.modules.conversation.ConversationLayout
+        android:id="@+id/versationlist_layout"
+        android:layout_below="@+id/contact_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/view_line"
-        android:gravity="center"
-        android:text="暂无数据，点击刷新"
-        android:textColor="@color/text_desc_dark"
-        android:textSize="@dimen/qb_px_8"
-        android:visibility="gone" />
+        android:layout_height="match_parent">
+
+    </com.bitvalue.sdk.collab.modules.conversation.ConversationLayout>
 
 
 </RelativeLayout>

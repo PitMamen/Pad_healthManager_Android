@@ -126,6 +126,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
                 case MSG_TYPE_HEADER_VIEW:
                     ((MessageHeaderHolder) baseHolder).setLoadingStatus(mLoading);
                     break;
+                case MessageInfo.MSG_TYPE_CUSTOM:
                 case MessageInfo.MSG_TYPE_TEXT:
                 case MessageInfo.MSG_TYPE_IMAGE:
                 case MessageInfo.MSG_TYPE_VIDEO:

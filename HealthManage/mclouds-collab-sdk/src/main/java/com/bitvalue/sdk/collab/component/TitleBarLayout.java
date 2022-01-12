@@ -2,6 +2,7 @@ package com.bitvalue.sdk.collab.component;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -52,7 +53,7 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
         mLeftIcon = findViewById(R.id.page_title_left_icon);
         mRightIcon = findViewById(R.id.page_title_right_icon);
         LayoutParams params = (LayoutParams) mTitleLayout.getLayoutParams();
-        params.height = ScreenUtil.getPxByDp(50);
+        params.height = ScreenUtil.getPxByDp(40);
         mTitleLayout.setLayoutParams(params);
         setBackgroundColor(getResources().getColor(R.color.status_bar_color));
     }

@@ -1,9 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/navigation_bar_color"
+    android:id="@+id/ll_input_content"
     android:orientation="vertical">
+
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_shortcut"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_30">
+
+
+        <TextView
+            android:id="@+id/tv_sendremind"
+            android:layout_marginStart="@dimen/qb_px_15"
+            android:layout_gravity="center_vertical"
+            android:text="发送提醒"
+            android:gravity="center"
+            android:background="@drawable/shape_chat_remind"
+            android:textSize="10sp"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="@dimen/qb_px_20"
+            tools:ignore="RtlCompat">
+
+        </TextView>
+
+
+
+
+        <TextView
+            android:id="@+id/tv_sendquestion"
+            android:layout_marginStart="@dimen/qb_px_15"
+            android:layout_gravity="center_vertical"
+            android:text="发送问卷"
+            android:gravity="center"
+            android:background="@drawable/shape_chat_remind"
+            android:textSize="10sp"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="@dimen/qb_px_20"
+            tools:ignore="RtlCompat">
+
+        </TextView>
+
+
+
+
+        <TextView
+            android:id="@+id/tv_sendarti"
+            android:layout_marginStart="@dimen/qb_px_15"
+            android:layout_gravity="center_vertical"
+            android:text="发送文章"
+            android:gravity="center"
+            android:background="@drawable/shape_chat_remind"
+            android:textSize="10sp"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="@dimen/qb_px_20"
+            tools:ignore="RtlCompat">
+
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/tv_shortcut"
+            android:layout_marginStart="@dimen/qb_px_15"
+            android:layout_gravity="center_vertical"
+            android:text="快捷回复"
+            android:gravity="center"
+            android:background="@drawable/shape_chat_remind"
+            android:textSize="10sp"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="@dimen/qb_px_20"
+            tools:ignore="RtlCompat">
+
+        </TextView>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
 
     <View
         android:layout_width="match_parent"

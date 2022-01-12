@@ -137,7 +137,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="工作台"
+                    android:text="我的待办"
                     android:layout_below="@+id/img_wkbench"
                     android:textColor="@color/white"
                     android:textSize="8sp"
@@ -164,7 +164,7 @@
             android:layout_marginTop="@dimen/qb_px_10"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <RelativeLayout
                 android:id="@+id/layout_calendar"
@@ -229,9 +229,9 @@
                     android:id="@+id/tv_person"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="健康管理"
                     android:layout_below="@+id/img_person"
+                    android:gravity="center_horizontal"
+                    android:text="患者报道"
                     android:textColor="@color/white"
                     android:textSize="8sp"
                     android:visibility="visible" />
@@ -287,7 +287,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="虚拟诊间"
+                    android:text="咨询"
                     android:layout_below="@+id/img_group"
                     android:textColor="@color/white"
                     android:textSize="8sp"
@@ -343,18 +343,18 @@
                     android:id="@+id/tv_send"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="通讯录"
                     android:layout_below="@+id/img_send"
+                    android:gravity="center_horizontal"
+                    android:text="预约"
                     android:textColor="@color/white"
                     android:textSize="8sp"
                     android:visibility="visible" />
 
                 <ImageView
-                    android:layout_centerInParent="true"
                     android:id="@+id/img_send"
                     android:layout_width="@dimen/qb_px_12"
                     android:layout_height="@dimen/qb_px_12"
+                    android:layout_centerInParent="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/tab_icon_gr" />
             </RelativeLayout>
@@ -444,15 +444,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_settings"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="消息"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+
 
                 <ImageView
                     android:id="@+id/img_settings"
@@ -460,6 +452,16 @@
                     android:layout_height="@dimen/qb_px_15"
                     android:scaleType="centerCrop"
                     android:src="@drawable/tab_icon_set" />
+
+                <TextView
+                    android:id="@+id/tv_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="个人中心"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="visible" />
             </LinearLayout>
 
         </LinearLayout>
@@ -514,7 +516,7 @@
         android:id="@+id/layout_fragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="3"
+        android:layout_weight="4"
         android:background="@color/white"
         android:orientation="vertical">
     </FrameLayout>

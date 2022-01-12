@@ -8,19 +8,16 @@ import android.view.ViewGroup;
 
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKit;
-import com.bitvalue.sdk.collab.TUIKitImpl;
 import com.bitvalue.sdk.collab.base.IBaseAction;
 import com.bitvalue.sdk.collab.base.IBaseInfo;
 import com.bitvalue.sdk.collab.base.IBaseViewHolder;
 import com.bitvalue.sdk.collab.base.TUIChatControllerListener;
 import com.bitvalue.sdk.collab.base.TUIConversationControllerListener;
 import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
-import com.bitvalue.sdk.collab.helper.CustomCaseHistoryMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthPlanMessage;
 import com.bitvalue.sdk.collab.helper.CustomVideoCallMessage;
-import com.bitvalue.sdk.collab.helper.CustomWenJuanMessage;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.IOnCustomMessageDrawListener;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.MessageBaseHolder;
@@ -109,7 +106,8 @@ public class HelloChatController implements TUIChatControllerListener {
         @Override
         public CharSequence getConversationDisplayString(IBaseInfo baseInfo) {
             if (baseInfo instanceof HelloMessageInfo) {
-                return TUIKitImpl.getAppContext().getString(R.string.welcome_tip);
+//                return TUIKitImpl.getAppContext().getString(R.string.welcome_tip);
+                return "[文件]";
             }
             return null;
         }
@@ -180,7 +178,7 @@ public class HelloChatController implements TUIChatControllerListener {
                             }
                         }
                         break;
-                    case "CustomCaseHistoryMessage":
+                    case "CustomArticleMessage":
                         CustomCaseHistoryMessage customCaseHistoryMessage = new Gson().fromJson(dataJson, CustomCaseHistoryMessage.class);
                         if (customCaseHistoryMessage != null) {
                             if (parent instanceof MessageBaseHolder) {

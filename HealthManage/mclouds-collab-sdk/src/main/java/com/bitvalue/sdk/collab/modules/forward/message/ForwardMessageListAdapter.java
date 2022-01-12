@@ -88,6 +88,7 @@ public class ForwardMessageListAdapter extends MessageListAdapter {
 
             switch (getItemViewType(position)) {
                 case MessageInfo.MSG_TYPE_TEXT:
+                case MessageInfo.MSG_TYPE_CUSTOM:
                 case MessageInfo.MSG_TYPE_IMAGE:
                 case MessageInfo.MSG_TYPE_VIDEO:
                 case MessageInfo.MSG_TYPE_CUSTOM_FACE:

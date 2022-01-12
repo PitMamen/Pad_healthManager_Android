@@ -8,7 +8,7 @@
         android:topLeftRadius="@dimen/qb_px_15"
         android:topRightRadius="@dimen/qb_px_15" />
 
-
+<!--#F5F5F5#F5F5F5-->
     <stroke
         android:width="@dimen/qb_px_1"
         android:color="@color/main_blue" />

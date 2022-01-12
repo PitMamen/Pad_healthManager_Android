@@ -187,7 +187,7 @@ public class DocFriendsFragment extends BaseFragment<DocFrienPersenter> implemen
                 userInfoDTO.noInput = true;
             }
             userInfoDTO.planId = videoClientsResultBean.id;//预约id
-            homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, userInfoDTO); //切换至聊天界面
+//            homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, userInfoDTO); //切换至聊天界面
 
             //将点击的那个置成已点击的状态
             for (int i = 0; i < videoClientsResultBeans.size(); i++) {

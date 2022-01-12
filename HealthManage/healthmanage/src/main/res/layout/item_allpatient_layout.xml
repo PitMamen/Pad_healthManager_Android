@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_plans"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/qb_px_80"
+    android:background="@drawable/shape_bg_white"
+    android:elevation="3dp"
+    android:translationZ="3dp"
+   >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/qb_px_8">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_check"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            tools:ignore="MissingConstraints">
+
+            <CheckBox
+                android:id="@+id/ck_selct"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:layout_centerVertical="true"
+                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints"></CheckBox>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_marginStart="@dimen/qb_px_30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/rl_check"
+            tools:ignore="MissingConstraints">
+
+
+            <ImageView
+                android:id="@+id/img_head"
+                android:layout_width="@dimen/qb_px_43"
+                android:layout_height="@dimen/qb_px_43"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_head_img"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <ImageView
+                android:id="@+id/img_boll"
+                android:layout_width="@dimen/qb_px_9"
+                android:layout_height="@dimen/qb_px_9"
+                android:layout_marginLeft="@dimen/qb_px_25"
+                android:src="@drawable/shape_boll_red"
+                android:visibility="visible"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_patient_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/qb_px_57"
+                android:layout_marginTop="@dimen/qb_px_3"
+                android:text="王秋"
+                android:textColor="@color/text_black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/img_head"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_patient_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_patient_name"
+                android:layout_marginLeft="@dimen/qb_px_57"
+                android:layout_marginTop="@dimen/qb_px_5"
+                android:text="女"
+                android:textColor="@color/text_desc_dark"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toRightOf="@id/img_head"
+                app:layout_constraintTop_toBottomOf="@id/tv_patient_name" />
+
+
+            <View
+                android:id="@+id/view_line"
+                android:layout_width="@dimen/qb_px_1"
+                android:layout_height="@dimen/qb_px_10"
+                android:layout_below="@+id/tv_patient_name"
+                android:layout_marginLeft="@dimen/qb_px_75"
+                android:layout_marginTop="@dimen/qb_px_9_5"
+                android:background="@color/text_desc_dark"
+                app:layout_constraintLeft_toRightOf="@id/tv_patient_sex"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tv_patient_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_patient_name"
+                android:layout_marginLeft="@dimen/qb_px_6"
+                android:layout_marginTop="@dimen/qb_px_5"
+                android:layout_toRightOf="@+id/view_line"
+                android:text="23岁"
+                android:textColor="@color/text_desc_dark"
+                android:textSize="12sp"
+                app:layout_constraintLeft_toRightOf="@id/view_line"
+                app:layout_constraintTop_toBottomOf="@id/tv_patient_name" />
+
+
+            <TextView
+                android:id="@+id/tv_uregister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/qb_px_35"
+                android:text="已注册"
+                android:visibility="visible">
+
+            </TextView>
+
+
+
+        </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rr_status"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/qb_px_20"
+        android:layout_marginTop="@dimen/qb_px_60">
+
+
+        <TextView
+            android:id="@+id/tv_type_one_pa"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/qb_px_22"
+            android:background="@drawable/shape_bg_item"
+            android:gravity="center"
+            android:text="PICC术后"
+            android:textColor="@color/black_666666"
+            android:textSize="12sp"></TextView>
+
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_type_two_pa"
+            android:layout_width="@dimen/qb_px_63"
+            android:layout_height="@dimen/qb_px_22"
+            android:layout_marginStart="@dimen/qb_px_11"
+            android:layout_toRightOf="@+id/tv_type_one_pa"
+            android:background="@drawable/shape_bg_item"
+            android:gravity="center"
+            android:text="起搏器"
+            android:textColor="@color/black_666666"
+            android:textSize="12sp"></TextView>
+
+
+        <TextView
+            android:id="@+id/tv_type_three_pa"
+            android:layout_width="@dimen/qb_px_63"
+            android:layout_height="@dimen/qb_px_22"
+            android:layout_marginStart="@dimen/qb_px_11"
+            android:layout_toRightOf="@+id/tv_type_two_pa"
+            android:background="@drawable/shape_bg_item"
+            android:gravity="center"
+            android:text="心衰"
+            android:textColor="@color/black_666666"
+            android:textSize="12sp"
+            android:visibility="gone"></TextView>
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/cal_days_title">
+
+    </View>
+
+
+</RelativeLayout>

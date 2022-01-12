@@ -479,7 +479,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         getTitleBar().getRightGroup().setVisibility(GONE);
 
         getTitleBar().getLeftGroup().setVisibility(View.VISIBLE);
-        getTitleBar().getLeftIcon().setVisibility(GONE);
+        getTitleBar().getLeftIcon().setVisibility(VISIBLE);
         final CharSequence leftTitle = getTitleBar().getLeftTitle().getText();
         getTitleBar().setTitle(getContext().getString(R.string.cancel), TitleBarLayout.POSITION.LEFT);
         //点击取消
@@ -642,6 +642,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         getChatManager().sendMessage(msg, retry, new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
+                Log.e(TAG, "发送成功" );
                 BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

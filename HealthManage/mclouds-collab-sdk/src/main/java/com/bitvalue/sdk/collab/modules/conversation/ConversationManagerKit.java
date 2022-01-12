@@ -3,6 +3,7 @@ package com.bitvalue.sdk.collab.modules.conversation;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKit;
@@ -212,13 +213,16 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
 
         }
 
+
+
+
         info.setTitle(conversation.getShowName());
         if (isGroup) {
             fillConversationUrlForGroup(conversation, info);
         } else {
             List<Object> faceList = new ArrayList<>();
             if (TextUtils.isEmpty(conversation.getFaceUrl())) {
-                faceList.add(R.drawable.default_head);
+                faceList.add(R.drawable.head_male);   //会话列表修改默认自带的头像
             } else {
                 faceList.add(conversation.getFaceUrl());
             }

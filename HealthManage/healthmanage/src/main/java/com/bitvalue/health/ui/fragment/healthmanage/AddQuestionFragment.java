@@ -1,4 +1,4 @@
-package com.bitvalue.health.ui.fragment.setting;
+package com.bitvalue.health.ui.fragment.healthmanage;
 
 import android.text.Editable;
 import android.text.TextWatcher;

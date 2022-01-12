@@ -13,6 +13,7 @@ import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.TUIConversationControllerListener;
 import com.bitvalue.sdk.collab.base.TUIKitListenerManager;
+import com.bitvalue.sdk.collab.component.UnreadCountTextView;
 import com.bitvalue.sdk.collab.component.face.FaceManager;
 import com.bitvalue.sdk.collab.modules.conversation.base.ConversationIconView;
 import com.bitvalue.sdk.collab.modules.conversation.base.ConversationInfo;
@@ -33,7 +34,7 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
     protected TextView titleText;
     protected TextView messageText;
     protected TextView timelineText;
-    protected TextView unreadText;
+    protected UnreadCountTextView unreadText;
     protected TextView atInfoText;
     protected ImageView disturbView;
 
@@ -127,6 +128,7 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
         }
 
         conversationIconView.setRadius(mAdapter.getItemAvatarRadius());
+        conversationIconView.setDefaultImageResId(R.drawable.head_male);
         if (mAdapter.getItemDateTextSize() != 0) {
             timelineText.setTextSize(mAdapter.getItemDateTextSize());
         }

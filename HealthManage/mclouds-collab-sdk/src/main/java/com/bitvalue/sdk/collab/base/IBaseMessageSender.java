@@ -11,5 +11,5 @@ public interface IBaseMessageSender {
      * @param isGroup 是否是群消息
      * @param callBack 发送消息之后触发的回调
      */
-    void sendMessage(IBaseInfo baseInfo, V2TIMOfflinePushInfo pushInfo, String receiver, boolean isGroup,boolean onlineUserOnly,  final IUIKitCallBack callBack);
+    void sendMessage(IBaseInfo baseInfo, V2TIMOfflinePushInfo pushInfo, String receiver, boolean isGroup, boolean onlineUserOnly, final IUIKitCallBack callBack);
 }

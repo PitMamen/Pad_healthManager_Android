@@ -2,7 +2,6 @@ package com.bitvalue.health.ui.fragment.schedule;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,9 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
-import com.bitvalue.health.contract.healthmanagercontract.AddArticleContract;
 import com.bitvalue.health.ui.activity.HomeActivity;
-import com.bitvalue.health.ui.fragment.workbench.WorkBenchFragment;
 import com.bitvalue.healthmanage.R;
 
 import java.util.ArrayList;

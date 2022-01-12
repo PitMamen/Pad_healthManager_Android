@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKit;
@@ -448,6 +449,7 @@ public abstract class ChatManagerKit extends V2TIMAdvancedMsgListener implements
         boolean isGroup = false;
         if (getCurrentChatInfo().getType() == V2TIMConversation.V2TIM_GROUP) {
             ChatInfo chatInfo = getCurrentChatInfo();
+            Log.e(TAG, "sendMessage: "+chatInfo );
             groupID = chatInfo.getId();
             groupType = chatInfo.getGroupType();
             isGroup = true;

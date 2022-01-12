@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_46"
+        android:background="@color/white"
+        tools:ignore="MissingConstraints">
+
+
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/rl_back"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="@dimen/qb_px_19"
+                android:layout_height="@dimen/qb_px_19"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:src="@mipmap/icon_fanhui"></ImageView>
+
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="新出院患者"
+            android:textColor="@color/text_black"
+            android:textSize="18sp"></TextView>
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_32"
+        android:layout_below="@+id/rl_title"
+        android:layout_marginStart="@dimen/qb_px_13"
+        android:layout_marginEnd="@dimen/qb_px_13"
+        android:background="@drawable/shape_bg_white"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:id="@+id/im_search_patient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/qb_px_10"
+            android:src="@mipmap/icon_sousu"></ImageView>
+
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:background="@color/white"
+            android:hint="搜索患者姓名"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:paddingHorizontal="@dimen/qb_px_6"
+            android:paddingVertical="@dimen/qb_px_6"
+            android:textColor="@color/text_main"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+
+    <!--    所有患者-->
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/rl_status_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_search"
+        app:srlEnablePreviewInEditMode="false">
+
+        <com.bitvalue.health.util.customview.WrapRecyclerView
+            android:id="@+id/list_newly_discharged_patient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
+    <!--    搜索出的患者-->
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/layout_search_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_search"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:visibility="gone"
+        app:srlEnablePreviewInEditMode="false">
+
+        <com.bitvalue.health.util.customview.WrapRecyclerView
+            android:id="@+id/search_allpatient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
+</LinearLayout>

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.bitvalue.sdk.collab.R;
@@ -17,6 +18,8 @@ import com.bitvalue.sdk.collab.modules.conversation.interfaces.ILoadConversation
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 
 public class ConversationListLayout extends RecyclerView implements IConversationListLayout {
+
+    public static final String TAG = ConversationListLayout.class.getSimpleName();
 
     private ConversationListAdapter mAdapter;
     private long mNextSeq = 0;

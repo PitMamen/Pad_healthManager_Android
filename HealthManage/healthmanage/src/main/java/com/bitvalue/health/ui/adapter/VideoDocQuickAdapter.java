@@ -55,8 +55,8 @@ public class VideoDocQuickAdapter extends BaseQuickAdapter<VideoClientsResultBea
         }
 
         holder.setText(R.id.tv_name, videoClientsResultBean.userInfo.userName);
-        holder.setText(R.id.tv_sex, videoClientsResultBean.userInfo.userSex);
-        holder.setText(R.id.tv_age, videoClientsResultBean.userInfo.userAge + "岁");
+        holder.setText(R.id.tv_patient_sex, videoClientsResultBean.userInfo.userSex);
+        holder.setText(R.id.tv_patient_age, videoClientsResultBean.userInfo.userAge + "岁");
         holder.setText(R.id.tv_time, TimeUtils.getTime(videoClientsResultBean.appointmentTime,
                 TimeUtils.YY_MM_DD_FORMAT_3).substring(0, 10));
 

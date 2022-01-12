@@ -6,10 +6,12 @@ import com.bitvalue.health.api.requestbean.LoginReqBean;
 import com.bitvalue.health.api.requestbean.PersonalDataBean;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.requestbean.ReportStatusBean;
+import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
 import com.bitvalue.health.api.responsebean.LoginResBean;
+import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.PatientResultBean;
 import com.bitvalue.health.api.responsebean.PlanDetailResult;
 import com.bitvalue.health.api.responsebean.PlanListBean;
@@ -178,5 +180,41 @@ public interface CommonService {
      */
     @GET("/account-api/logout")
     Observable<ApiResult<String>> logout();
+
+
+
+
+
+
+    /***
+     * 骨肿瘤接口
+     */
+
+    /**
+     * 所有所有患者
+     *
+     * @param leaveBean
+     * @return
+     */
+
+    @POST("bone-api/inner/qryPatientList")
+    Observable<ApiResult<NewLeaveBean>> qryPatientList(@Body RequestNewLeaveBean leaveBean);
+
+
+    /**
+     * 所有新出院患者
+     *
+     * @param leaveBean
+     * @return
+     */
+
+    @POST("bone-api/inner/qryPatientNewOutList")
+    Observable<ApiResult<NewLeaveBean>> getAllNewLeaveHospitolPatients(@Body RequestNewLeaveBean leaveBean);
+
+
+
+
+
+
 
 }

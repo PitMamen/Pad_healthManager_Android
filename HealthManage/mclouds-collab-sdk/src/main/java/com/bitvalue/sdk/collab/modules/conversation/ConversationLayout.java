@@ -14,7 +14,6 @@ import com.bitvalue.sdk.collab.modules.conversation.interfaces.IConversationLayo
 
 public class ConversationLayout extends RelativeLayout implements IConversationLayout {
 
-    private TitleBarLayout mTitleBarLayout;
     private ConversationListLayout mConversationList;
 
     public ConversationLayout(Context context) {
@@ -37,22 +36,20 @@ public class ConversationLayout extends RelativeLayout implements IConversationL
      */
     private void init() {
         inflate(getContext(), R.layout.conversation_layout, this);
-        mTitleBarLayout = findViewById(R.id.conversation_title);
         mConversationList = findViewById(R.id.conversation_list);
     }
 
     public void initDefault() {
-        mTitleBarLayout.setTitle(getResources().getString(R.string.conversation_title), TitleBarLayout.POSITION.MIDDLE);
-        mTitleBarLayout.getLeftGroup().setVisibility(View.GONE);
-        mTitleBarLayout.setRightIcon(R.drawable.conversation_more);
 
         final IConversationAdapter adapter = new ConversationListAdapter();
         mConversationList.setAdapter(adapter);
         mConversationList.loadConversation(0);
     }
 
+
+    @Override
     public TitleBarLayout getTitleBar() {
-        return mTitleBarLayout;
+        return null;
     }
 
     @Override

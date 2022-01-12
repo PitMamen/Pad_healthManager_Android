@@ -18,10 +18,26 @@
         android:layout_marginRight="6.23dp"
         android:visibility="gone" />
 
+
+
+
         <com.bitvalue.sdk.collab.modules.conversation.base.ConversationIconView
             android:id="@+id/conversation_icon"
-            android:layout_width="@dimen/conversation_avatar_width"
-            android:layout_height="@dimen/conversation_avatar_height" />
+            android:layout_width="@dimen/qb_px_30"
+            android:layout_height="@dimen/qb_px_30" />
+
+
+
+            <com.bitvalue.sdk.collab.component.UnreadCountTextView
+                android:gravity="center"
+                android:id="@+id/conversation_unread"
+                android:layout_marginTop="-3dp"
+                android:layout_marginLeft="-13dp"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:textSize="12sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -94,18 +110,18 @@
                 android:visibility="gone"
                 android:src="@drawable/ic_disturb" />
 
-            <com.tencent.qcloud.tim.uikit.component.UnreadCountTextView
-                android:id="@+id/conversation_unread"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_above="@+id/view_line"
-                android:layout_marginBottom="15.54dp"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:textColor="#fff"
-                android:textSize="10sp" />
+<!--            <com.bitvalue.sdk.collab.component.UnreadCountTextView-->
+<!--                android:id="@+id/conversation_unread"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:layout_above="@+id/view_line"-->
+<!--                android:layout_marginBottom="15.54dp"-->
+<!--                android:gravity="center"-->
+<!--                android:includeFontPadding="false"-->
+<!--                android:textColor="#fff"-->
+<!--                android:textSize="10sp" />-->
 
             <View
                 android:id="@+id/view_line"

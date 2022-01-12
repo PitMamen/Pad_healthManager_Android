@@ -32,32 +32,8 @@ public class VisitAdapter extends BaseQuickAdapter<VisitBean, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder holder, VisitBean item) {
-        if (null == item) {
-            return;
-        }
-        ImageView imageView = holder.getView(R.id.img_head_icon);
-        switch (item.getVisitStatus()) {
-            case "云门诊":
-                imageView.setImageDrawable(Application.instance().getDrawable(R.drawable.home_icon_ymz));
-                break;
-            case "院内就诊":
-                imageView.setImageDrawable(Application.instance().getDrawable(R.drawable.home_icon_yljz));
-                break;
 
-            case "联合门诊":
-                imageView.setImageDrawable(Application.instance().getDrawable(R.drawable.home_icon_lhmz));
-                break;
 
-            case "远程门诊":
-                imageView.setImageDrawable(Application.instance().getDrawable(R.drawable.home_icon_ychz));
-                break;
         }
 
-        holder.setText(R.id.tv_visit_status, item.getVisitStatus());
-        holder.setText(R.id.tv_hospitolby,item.getHospitolName());
-        holder.setText(R.id.tv_time,item.getStartTime());
-        holder.setText(R.id.tv_time_by_end,item.getEndTime());
-
-
-    }
 }

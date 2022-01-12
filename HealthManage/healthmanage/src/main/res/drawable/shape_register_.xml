@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <corners
+        android:bottomLeftRadius="@dimen/qb_px_9"
+        android:bottomRightRadius="@dimen/qb_px_9"
+        android:topLeftRadius="@dimen/qb_px_9"
+        android:topRightRadius="@dimen/qb_px_9" />
+
+    <!--    边框背景 及宽度-->
+    <stroke
+        android:width="@dimen/qb_px_1"
+        android:color="@color/cal_text_normal_" />
+    <!-- 内部填充背景色 -->
+    <solid android:color="@color/cal_text_normal_" />
+
+
+</shape>
+

@@ -13,6 +13,7 @@
     <!--    <string name="base_dpi"> defalut 360dp</string>-->
     <dimen name="qb_px_0">0.00dp</dimen>
     <dimen name="qb_px_1">0.96dp</dimen>
+    <dimen name="qb_px_2_1">2.00dp</dimen>
     <dimen name="qb_px_2">1.92dp</dimen>
     <dimen name="qb_px_3">2.88dp</dimen>
     <dimen name="qb_px_4">3.84dp</dimen>
@@ -22,6 +23,7 @@
     <dimen name="qb_px_7">6.72dp</dimen>
     <dimen name="qb_px_8">7.68dp</dimen>
     <dimen name="qb_px_9">8.64dp</dimen>
+    <dimen name="qb_px_9_5">9.0dp</dimen>
     <dimen name="qb_px_10">9.60dp</dimen>
     <dimen name="qb_px_11">10.56dp</dimen>
     <dimen name="qb_px_12">11.52dp</dimen>

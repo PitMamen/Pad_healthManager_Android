@@ -39,11 +39,12 @@ public class Constants {
     public static final String FRAGMENT_PERSONAL_DATA = "fragment_personal_data";
     public static final String FRAGMENT_CHAT_LOG = "fragment_chat_log";
     public static final String FRAGMENT_MEDICINE_GUIDE = "fragment_medicine_guide";
+    public static final String FRAGMENT_NEW_LYDISCHARGED_PATIENT = "fragment_newly_changepatient";
 
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";
     public static final String API_CONTENT = "/content-api";
-
+    public static final String API_ORDER = "/order-api";
     public static final String DATA_MSG = "data_msg";
     public static final String MSG_SINGLE = "msg_single";
     public static final String MSG_MULTI = "msg_multi";
@@ -53,6 +54,7 @@ public class Constants {
     public static final int MAX_IMG = 9;
     public static final String MSG_CUSTOM_ID = "msg_custom_id";
     public static final String PLAN_LIST_BEAN = "plan_list_bean";
+    public static final String PLAN_LIST = "planList";
     public static final String GET_MISSION_OBJ = "get_mission_obj";
     public static String VIDEO_FOR_MSG = "video_for_msg";
     public static final String PLAN_MSG = "plan_msg";
@@ -74,6 +76,27 @@ public class Constants {
     public static final String LOGOUT = "logout";
     public static final String ICON_URL = "icon_url";
 
+    public static final String ACTION_ARTICLE = "goto_articledisplay";
+    public static final String ACTION_ARTICLE_DETAIL = "goto_articleDetail";
+    public static final String ARTICLE_LIST = "article_list";
+    public static final String ARTICLEDETAIL = "articleDetail";
+    public static final String ARTICLEBEAN = "articleBean";
+    public static final String ARTICLETITLE = "articleTitle";
+    public static final String SHOWBOTTOM_LAYOUT = "isShowBottomLayout";
+
+    public static final String ACTION_QUESTION = "goto_questiondisplay";
+    public static final String ACTION_QUESTION_DETAIL = "goto_questionDetail";
+    public static final String QUESTIONDETAIL = "questionDetail";
+    public static final String QUESTIONLIST = "question_list";
+    public static final String QUESTIONBEAN = "bean";
+    public static final String BED_RESERVATION = "bedreservation";
+    public static final String BED_RESERVATION_VALUE = "isbedreservation_activity";
+
+    public static final String CHAT_TYPE = "chat_type";
+    public static final String SINGLECHAT = "singlechat";
+    public static final String MASSCHAT = "msg_multi";
+    public static final String USER_IDS = "userIDs";
+    public static final String GOOD_IDS = "goodIDS";
     public static final String CHAT_INFO = "chatInfo";
     public static final String CALL_MODEL = "callModel";
     public static final String IS_OFFLINE_PUSH_JUMP = "is_offline_push";

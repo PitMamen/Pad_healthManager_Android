@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/page_title_layout"
+    android:layout_alignParentTop="true"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/qb_px_21">
 
     <LinearLayout
         android:id="@+id/page_title_left_group"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:gravity="center_vertical"
         android:minWidth="80dp"
         android:orientation="horizontal"
         android:paddingLeft="16dp"
-        android:paddingTop="@dimen/qb_px_15">
+        >
 
         <ImageView
+            android:layout_marginRight="@dimen/qb_px_3"
+            android:layout_gravity="center_vertical|center"
             android:id="@+id/page_title_left_icon"
-            android:layout_width="@dimen/qb_px_6"
-            android:layout_marginLeft="@dimen/qb_px_7"
+            android:layout_width="@dimen/qb_px_12"
             android:layout_height="@dimen/qb_px_12"
-            android:clickable="false"
-            android:src="@drawable/nav_icon_back" />
+            android:src="@mipmap/icon_fanhui" />
 
         <TextView
             android:id="@+id/page_title_left_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_gravity="center_vertical"
             android:textColor="@color/black_font_color"
             android:textSize="14sp" />
 
@@ -41,7 +41,6 @@
         android:layout_centerInParent="true"
         android:layout_weight="1"
         android:gravity="center"
-        android:paddingTop="@dimen/qb_px_15"
         android:textColor="@color/black_font_color"
         android:textSize="16.3sp"
         android:textStyle="bold" />
@@ -54,7 +53,6 @@
         android:gravity="center_vertical|right"
         android:minWidth="80dp"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/qb_px_15"
         android:paddingRight="16dp">
 
         <TextView

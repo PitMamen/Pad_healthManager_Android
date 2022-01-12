@@ -6,13 +6,14 @@ import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 import com.tencent.imsdk.v2.V2TIMMessage;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 聊天信息基本类
  */
 public class ChatInfo implements Serializable {
-
+    private String planId;
     private String chatName;
     private int type = V2TIMConversation.V2TIM_C2C;
     private String id;
@@ -21,7 +22,9 @@ public class ChatInfo implements Serializable {
     private V2TIMMessage mLocateTimMessage;
     //区别云门诊和健康管理的标记 100健康管理  101云门诊
     public int chatType;
+    public boolean isShowShortCut = true;
     public String userId;//要发送给消息的userID
+    public ArrayList<String> userIdList;//要发送给消息的usreid 集合
     public boolean noInput = false;
     private static List<V2TIMGroupAtInfo> atInfoList;
     /**
@@ -110,6 +113,15 @@ public class ChatInfo implements Serializable {
         return isTopChat;
     }
 
+
+    public String getPlanId() {
+        return planId;
+    }
+
+    public void setPlanId(String planId) {
+        this.planId = planId;
+    }
+
     /**
      * 设置会话是否置顶
      *
@@ -147,10 +159,11 @@ public class ChatInfo implements Serializable {
     @Override
     public String toString() {
         return "ChatInfo{" +
-                "chatName='" + chatName + '\'' +
+                "planId='" + planId + '\'' +
+                ", chatName='" + chatName + '\'' +
                 ", type=" + type +
+                ", id='" + id + '\'' +
                 ", groupType='" + groupType + '\'' +
-                ", chatType=" + chatType +
                 ", userId='" + userId + '\'' +
                 '}';
     }

@@ -8,6 +8,7 @@
     <color name="common_text_color">#333333</color>
     <color name="common_text_hint_color">@color/panda</color>
     <color name="panda">#FF757575</color>
+    <color name="panda_">#1E1E1E</color>
 
     <!-- 按钮按压时的颜色 -->
     <color name="common_button_pressed_color">#AA5A8DDF</color>
@@ -23,6 +24,7 @@
     <!-- 对话框取消按钮的文本颜色 -->
     <color name="common_cancel_text_color">#F44336</color>
 
+
     <!-- 18 图半透明黑色蒙层 -->
     <color name="bga_pp_eighteen_maskColor">#CC000000</color>
     <!-- 18 图半透明蒙层字体颜色 -->
@@ -35,6 +37,10 @@
     <color name="transparent">#00000000</color>
     <!-- 熊猫色（黑白背景通吃） -->
 
+
+    <color name="black_one">#4D4D4D</color>
+    <color name="black_one_">#23232B</color>
+    <color name="black_one_two">#9AA8BB</color>
 
     <!-- 白色 -->
     <color name="white">#FFFFFFFF</color>
@@ -83,7 +89,9 @@
     <!-- 灰色 -->
     <color name="gray">#FF808080</color>
     <!-- 红色 -->
-    <color name="red">#FFFF0000</color>
+    <color name="red">#F50F0F</color>
+
+
     <!-- 金色 -->
     <color name="gold">#FFFFD700</color>
     <!-- 黄色 -->
@@ -92,17 +100,24 @@
     <color name="green">#FF008000</color>
     <!-- 蓝色 -->
     <color name="blue">#FF0000FF</color>
+    <color name="blue_one">#4880FF</color>
     <!-- 紫色 -->
     <color name="purple">#FF800080</color>
     <!-- 粉色 -->
     <color name="pink">#FFFFC0CB</color>
     <color name="bg_gray_files">#F0F2F7</color>
+    <color name="bg_gray_black">#5F5F6B</color>
     <!-- 橙色 -->
     <color name="orange">#FFFFA500</color>
+    <color name="orange_text">#FF8F31</color>
+    <color name="orange_deep_text">#FF5C26</color>
+    <color name="orange_small">#FFF1E5</color>
     <color name="main_blue">#398CF7</color>
+    <color name="main_blue_">#1772E9</color>
     <color name="home_blue">#0088F4</color>
     <color name="home_blue_dark">#006DC3</color>
     <color name="main_blue_little">#398CCC</color>
+    <color name="main_blue_li">#EBF3FF</color>
     <color name="text_main">#333333</color>
     <color name="green_c7">#26CBC7</color>
     <color name="text_black">#1A1A1A</color>
@@ -112,9 +127,11 @@
     <color name="black_files">#AFB0B3</color>
     <color name="blue_files">#2784FF</color>
     <color name="text_green">#2FB315</color>
+    <color name="text_green_">#0FAA6E</color>
     <color name="blue_light">#EEF6FF</color>
     <color name="bg_gray">#F8F9FB</color>
     <color name="bg_gray_light">#FAFAFA</color>
+    <color name="bg_gray_light_two">#E6E6E6</color>
 
     <color name="colorPrimary">#0E88EB</color>
     <color name="colorPrimaryDark">#303F9F</color>
@@ -240,6 +257,7 @@
 
     <!-- calendar color -->
     <color name="cal_text_normal">#4A4A4A</color>
+    <color name="cal_text_normal_">#EFEFF7</color>
     <color name="cal_text_light">#ababab</color>
     <color name="trans_cal_text_light">#66ababab</color>
     <color name="cal_text_super_light">#c0c0c0</color>

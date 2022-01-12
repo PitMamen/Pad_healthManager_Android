@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginHorizontal="@dimen/qb_px_10"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_bg_white"
+    android:elevation="3dp"
+    android:translationZ="3dp"
+    tools:ignore="MissingDefaultResource,Orientation">
+
+
+    <RelativeLayout
+        android:id="@+id/layout_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/qb_px_10"
+        android:paddingVertical="@dimen/qb_px_8"
+        tools:ignore="MissingConstraints">
+
+        <!--    http://img.duoziwang.com/2021/03/1623076080632524.jpg -->
+        <ImageView
+            android:id="@+id/img_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_head_img"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_patient_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_50"
+            android:layout_marginTop="@dimen/qb_px_3"
+            android:text="王云"
+            android:textColor="@color/text_black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/img_head"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_patient_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_patient_name"
+            android:layout_marginLeft="@dimen/qb_px_50"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:text="女"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@id/img_head"
+            app:layout_constraintTop_toBottomOf="@id/tv_patient_name" />
+
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="@dimen/qb_px_1"
+            android:layout_height="@dimen/qb_px_5"
+            android:layout_below="@+id/tv_patient_name"
+            android:layout_marginLeft="@dimen/qb_px_8"
+            android:layout_marginTop="@dimen/qb_px_8"
+            android:layout_toRightOf="@+id/tv_patient_sex"
+            android:background="@color/text_desc_dark" />
+
+
+        <TextView
+            android:id="@+id/tv_patient_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_patient_name"
+            android:layout_marginLeft="@dimen/qb_px_15"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_toRightOf="@+id/tv_patient_sex"
+            android:text="23岁"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="12sp" />
+
+
+        <TextView
+            android:id="@+id/tv_dis_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/qb_px_15"
+            android:text="2021-11-25"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/tv_isregister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_6"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_toRightOf="@+id/tv_patient_name"
+            android:text="未注册"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="10sp" />
+
+
+        <TextView
+            android:id="@+id/tv_isdistribution"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="待分配"
+            android:textColor="@color/red"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

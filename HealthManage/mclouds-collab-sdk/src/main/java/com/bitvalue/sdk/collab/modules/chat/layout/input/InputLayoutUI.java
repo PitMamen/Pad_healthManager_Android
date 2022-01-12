@@ -6,13 +6,16 @@ import android.content.Context;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.base.IBaseAction;
@@ -67,11 +70,24 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     /**
      * 文本输入框
      */
-    protected TIMMentionEditText mTextInput;
+    public TIMMentionEditText mTextInput;
+
+
+    /***
+     * 发送快捷消息      发送提醒       发送问卷        发送文章       快捷回复
+     */
+     public TextView tv_sendremind,tv_sendquestion,tv_sendarticle,tv_sendshortcut;
+
+
+
+
+
 
     protected AppCompatActivity mActivity;
     protected View mInputMoreLayout;
     //    protected ShortcutArea mShortcutArea;
+    private LinearLayout linearLayout;
+    public LinearLayout ll_shortCutlayout; //患者咨询中的快捷语句 聊天布局(只针对患者咨询中 显示)
     protected View mInputMoreView;
     protected ChatInfo mChatInfo;
     protected List<InputMoreActionUnit> mInputMoreActionList = new ArrayList<>();
@@ -118,10 +134,18 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
         initViews();
     }
 
+
+
     private void initViews() {
         mActivity = (AppCompatActivity) getContext();
         inflate(mActivity, R.layout.chat_input_layout, this);
 //        mShortcutArea = findViewById(R.id.shortcut_area);
+        ll_shortCutlayout = findViewById(R.id.ll_shortcut);
+        tv_sendremind = findViewById(R.id.tv_sendremind);
+        tv_sendquestion = findViewById(R.id.tv_sendquestion);
+        tv_sendarticle = findViewById(R.id.tv_sendarti);
+        tv_sendshortcut = findViewById(R.id.tv_shortcut);
+        linearLayout = findViewById(R.id.ll_input_content);
         mInputMoreView = findViewById(R.id.more_groups);
         mSendAudioButton = findViewById(R.id.chat_voice_input);
         mAudioInputSwitchButton = findViewById(R.id.voice_input_switch);
@@ -132,6 +156,13 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
 
         // 子类实现所有的事件处理
         init();
+    }
+
+
+    public void setbottomMargin(int heigth) {
+        LayoutParams layoutParams = (LayoutParams) linearLayout.getLayoutParams();
+        layoutParams.bottomMargin = heigth;
+        linearLayout.setLayoutParams(layoutParams);
     }
 
     protected void assembleActions() {
@@ -183,7 +214,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
                 }
 
                 //健康档案
-                if (!mHealthFilesDisable){
+                if (!mHealthFilesDisable) {
                     actionUnit = new InputMoreActionUnit() {
                         @Override
                         public void onAction(String chatInfoId, int chatType) {

@@ -46,7 +46,7 @@ public class CustomHealthMessageController {
                 msgData.msgType = Constants.MSG_SINGLE;
                 msgData.userIds = data.userId;
                 msgData.id = data.msgDetailId;
-                appApplication.getHomeActivity().switchSecondFragment(Constants.FRAGMENT_SEND_MSG_DISPLAY,msgData);
+//                appApplication.getHomeActivity().switchSecondFragment(Constants.FRAGMENT_SEND_MSG_DISPLAY,msgData);
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {

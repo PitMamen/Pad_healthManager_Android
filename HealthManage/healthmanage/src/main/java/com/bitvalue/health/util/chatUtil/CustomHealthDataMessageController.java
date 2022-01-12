@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bitvalue.health.Application;
-import com.bitvalue.health.util.Constants;
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKitImpl;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
@@ -52,7 +51,7 @@ public class CustomHealthDataMessageController {
             public void onClick(View v) {
                 Log.e(TAG, "onClick-------------" );
                 Application appApplication = (Application) view.getContext();
-                appApplication.getHomeActivity().switchSecondFragment(Constants.FRAGMENT_USER_DATA, data);
+//                appApplication.getHomeActivity().switchSecondFragment(Constants.FRAGMENT_USER_DATA, data);
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {

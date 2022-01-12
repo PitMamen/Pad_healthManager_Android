@@ -36,7 +36,6 @@ public class CustomHealthMessageController {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtil.toastShortMessage("点击了健康消息");
             }
         });
         view.setOnLongClickListener(new View.OnLongClickListener() {

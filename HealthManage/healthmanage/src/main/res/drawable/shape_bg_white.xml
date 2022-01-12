@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<shape xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <corners
         android:bottomLeftRadius="@dimen/qb_px_3"
@@ -14,6 +15,7 @@
         android:color="@color/white" />
     <!-- 背景色 -->
     <solid android:color="@color/white" />
+
 
 
 </shape>

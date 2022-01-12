@@ -2,6 +2,8 @@ package com.bitvalue.health.model.cloudclinicmodel;
 
 import android.util.Log;
 
+import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
+import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.model.BaseModel;
 import com.bitvalue.health.callback.Callback;
 import com.bitvalue.health.contract.cloudcliniccontract.CloudClinicContract;
@@ -48,21 +50,31 @@ public class CloudClinicModel extends BaseModel implements CloudClinicContract.C
     }
 
     @Override
-    public void qryMedicalPatients(String attendanceStatus, Callback callback) {
+    public void qryMedicalPatients(RequestNewLeaveBean requestNewLeaveBean, Callback callback) {
+        if (null!=requestNewLeaveBean){
+            mApi.qryPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
+                if (!EmptyUtil.isEmpty(listApiResult)) {
+                    if (listApiResult.getCode() == 0) {
+                        NewLeaveBean resultData = listApiResult.getData();
+                        Log.e(TAG, "qryPatientList: " + resultData);
+                        if (!EmptyUtil.isEmpty(listApiResult.getData().getRows())){
+                            callback.onSuccess(listApiResult.getData().getRows(),1000);
+                        }else {
+                            callback.onFailedLog("未加载到患者数据! ",1001);
+                        }
 
-        mApi.getMyMedicalPatients(attendanceStatus).subscribeOn(Schedulers.io()).subscribe(result->{
-            if (!EmptyUtil.isEmpty(result)){
-               if (result.getCode()==0){
-                       callback.onSuccess(result.getData(),1000);
-               }else {
-                   callback.onFailedLog(result.getMessage(),1001);
-               }
-            }else {
-                Log.e(TAG, "qryMedicalPatients = null " );
-            }
-        },error->{
-            Log.e(TAG, "qryMedicalPatients: "+error.getMessage() );
-            callback.onError(error.getMessage(),1001);
-        });
+                    } else {
+                        callback.onFailedLog(listApiResult.getMessage(), 1001);
+                    }
+
+                } else {
+
+                    callback.onFailedLog("未加载到患者数据!", 1001);
+                }
+            }, error -> {
+                callback.onFailedLog(error.getMessage(), 1001);
+            });
+        }
     }
+
 }

@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,23 +23,27 @@ import androidx.fragment.app.FragmentManager;
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
+import com.bitvalue.sdk.collab.base.TUIKitListenerManager;
 import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.component.face.Emoji;
 import com.bitvalue.sdk.collab.component.face.FaceFragment;
 import com.bitvalue.sdk.collab.component.face.FaceManager;
 import com.bitvalue.sdk.collab.component.video.CameraActivity;
 import com.bitvalue.sdk.collab.component.video.JCameraView;
+import com.bitvalue.sdk.collab.modules.chat.GroupChatManagerKit;
 import com.bitvalue.sdk.collab.modules.chat.base.BaseInputFragment;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.bitvalue.sdk.collab.modules.chat.interfaces.IChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.layout.inputmore.InputMoreFragment;
 import com.bitvalue.sdk.collab.modules.conversation.base.DraftInfo;
+import com.bitvalue.sdk.collab.modules.group.info.GroupInfo;
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.FileUtil;
 import com.bitvalue.sdk.collab.utils.TUIKitConstants;
 import com.bitvalue.sdk.collab.utils.TUIKitLog;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
+import com.google.gson.Gson;
 import com.tencent.imsdk.v2.V2TIMCallback;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
@@ -76,9 +81,12 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     private String mInputContent;
     private OnStartActivityListener mStartActivityListener;
 
-    private Map<String,String> atUserInfoMap = new HashMap<>();
+    private Map<String, String> atUserInfoMap = new HashMap<>();
     private String displayInputString;
     private OnCustomClickListener onCustomClickListener;
+    private List<String> userIDs = new ArrayList<>();
+    private boolean isMass = false;
+
 
     public InputLayout(Context context) {
         super(context);
@@ -95,6 +103,13 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void init() {
+
+//        add
+        tv_sendremind.setOnClickListener(this);
+        tv_sendquestion.setOnClickListener(this);
+        tv_sendarticle.setOnClickListener(this);
+        tv_sendshortcut.setOnClickListener(this);
+
 
         mAudioInputSwitchButton.setOnClickListener(this);
         mEmojiInputButton.setOnClickListener(this);
@@ -190,8 +205,18 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         });
     }
 
-    public void updateInputText(String names, String ids){
-        if (names == null || ids == null || names.isEmpty() || ids.isEmpty()){
+
+    public void setUserIDs(List<String> userIDs) {
+        this.userIDs = userIDs;
+    }
+
+    public void setIsMass(boolean isMass) {
+        this.isMass = isMass;
+    }
+
+
+    public void updateInputText(String names, String ids) {
+        if (names == null || ids == null || names.isEmpty() || ids.isEmpty()) {
             return;
         }
 
@@ -202,10 +227,10 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         }
     }
 
-    private void updateAtUserInfoMap(String names, String ids){
+    private void updateAtUserInfoMap(String names, String ids) {
         displayInputString = "";
 
-        if (ids.equals(V2TIMGroupAtInfo.AT_ALL_TAG)){
+        if (ids.equals(V2TIMGroupAtInfo.AT_ALL_TAG)) {
             atUserInfoMap.put(names, ids);
 
             //for display
@@ -240,7 +265,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             }
         }
 
-        if(!displayInputString.isEmpty()) {
+        if (!displayInputString.isEmpty()) {
             displayInputString = displayInputString.substring(0, displayInputString.length() - 1);
         }
     }
@@ -254,28 +279,28 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     @Override
     protected void startHealthPlan() {
-        if (null != onCustomClickListener){
+        if (null != onCustomClickListener) {
             onCustomClickListener.onHealthPlanClick();
         }
     }
 
     @Override
     protected void startHealthAnalyse() {
-        if (null != onCustomClickListener){
+        if (null != onCustomClickListener) {
             onCustomClickListener.onHealthAnalyseClick();
         }
     }
 
     @Override
     protected void startHealthMsg() {
-        if (null != onCustomClickListener){
+        if (null != onCustomClickListener) {
             onCustomClickListener.onHealthMsgClick();
         }
     }
 
     @Override
     protected void startHealthFiles() {
-        if (null != onCustomClickListener){
+        if (null != onCustomClickListener) {
             onCustomClickListener.onHealthFilesClick();
         }
     }
@@ -287,21 +312,21 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
     @Override
     protected void startVideoCommunicate() {
-        if (null != onCustomClickListener){
+        if (null != onCustomClickListener) {
             onCustomClickListener.onVideoCommunicate();
         }
     }
 
     @Override
     protected void writeConsultConclusion() {
-        if (null != onCustomClickListener){
+        if (null != onCustomClickListener) {
             onCustomClickListener.onWriteConsultConclusion();
         }
     }
 
     @Override
     protected void endVideoConsult() {
-        if (null != onCustomClickListener){
+        if (null != onCustomClickListener) {
             onCustomClickListener.onEndVideoConsult();
         }
     }
@@ -329,13 +354,13 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             @Override
             public void onSuccess(Object data) {
                 TUIKitLog.i(TAG, "onSuccess: " + data);
-                if (data == null){
+                if (data == null) {
                     TUIKitLog.e(TAG, "data is null");
                     return;
                 }
 
                 String uri = data.toString();
-                if (TextUtils.isEmpty(uri)){
+                if (TextUtils.isEmpty(uri)) {
                     TUIKitLog.e(TAG, "uri is empty");
                     return;
                 }
@@ -347,15 +372,15 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
                     TUIKitLog.e(TAG, "mimeType is empty.");
                     return;
                 }
-                if (mimeType.contains("video")){
+                if (mimeType.contains("video")) {
                     MessageInfo msg = buildVideoMessage(FileUtil.getPathFromUri((Uri) data));
-                    if (msg == null){
+                    if (msg == null) {
                         TUIKitLog.e(TAG, "start send video error data: " + data);
                     } else if (mMessageHandler != null) {
                         mMessageHandler.sendMessage(msg);
                         hideSoftInput();
                     }
-                } else if (mimeType.contains("image")){
+                } else if (mimeType.contains("image")) {
                     MessageInfo info = MessageInfoUtil.buildImageMessage((Uri) data, true);
                     if (mMessageHandler != null) {
                         mMessageHandler.sendMessage(info);
@@ -374,15 +399,14 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         });
     }
 
-    private MessageInfo buildVideoMessage(String mUri)
-    {
+    private MessageInfo buildVideoMessage(String mUri) {
         android.media.MediaMetadataRetriever mmr = new android.media.MediaMetadataRetriever();
         try {
             mmr.setDataSource(mUri);
             String sDuration = mmr.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);//时长(毫秒)
             Bitmap bitmap = mmr.getFrameAtTime(0, android.media.MediaMetadataRetriever.OPTION_NEXT_SYNC);//缩略图
 
-            if (bitmap == null){
+            if (bitmap == null) {
                 TUIKitLog.e(TAG, "buildVideoMessage() bitmap is null");
                 return null;
             }
@@ -395,8 +419,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             MessageInfo msg = MessageInfoUtil.buildVideoMessage(imgPath, videoPath, imgWidth, imgHeight, duration);
 
             return msg;
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             TUIKitLog.e(TAG, "MediaMetadataRetriever exception " + ex);
         } finally {
             mmr.release();
@@ -508,13 +531,16 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         this.mStartActivityListener = listener;
     }
 
-    public interface OnCustomClickListener{
+    public interface OnCustomClickListener {
         /**
          * 健康计划模块
          */
         void onHealthPlanClick();
+
         void onHealthAnalyseClick();
+
         void onHealthMsgClick();
+
         void onHealthFilesClick();
 
 
@@ -522,11 +548,13 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
          * 虚拟诊间模块
          */
         void onVideoCommunicate();
+
         void onWriteConsultConclusion();
+
         void onEndVideoConsult();
     }
 
-    public void setOnCustomClickListener(InputLayout.OnCustomClickListener onCustomClickListener){
+    public void setOnCustomClickListener(OnCustomClickListener onCustomClickListener) {
         this.onCustomClickListener = onCustomClickListener;
     }
 
@@ -612,16 +640,17 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         } else if (view.getId() == R.id.send_btn) {
             if (mSendEnable) {
                 if (mMessageHandler != null) {
-                    if(mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_GROUP && !atUserInfoMap.isEmpty()) {
+                    if (mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_GROUP ) {    //&& !atUserInfoMap.isEmpty()
                         //发送时通过获取输入框匹配上@的昵称list，去从map中获取ID list。
                         List<String> atUserList = updateAtUserList(mTextInput.getMentionList(true));
                         if (atUserList == null || atUserList.isEmpty()) {
                             mMessageHandler.sendMessage(MessageInfoUtil.buildTextMessage(mTextInput.getText().toString().trim()));
-                        }else {
+                        } else {
                             mMessageHandler.sendMessage(MessageInfoUtil.buildTextAtMessage(atUserList, mTextInput.getText().toString().trim()));
                         }
-                    }else {
+                    } else {
                         mMessageHandler.sendMessage(MessageInfoUtil.buildTextMessage(mTextInput.getText().toString().trim()));
+
                     }
                 }
                 mTextInput.setText("");
@@ -629,14 +658,14 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         }
     }
 
-    private List<String> updateAtUserList(List<String> atMentionList){
-        if (atMentionList == null || atMentionList.isEmpty()){
+    private List<String> updateAtUserList(List<String> atMentionList) {
+        if (atMentionList == null || atMentionList.isEmpty()) {
             return null;
         }
 
         List<String> atUserIdList = new ArrayList<>();
-        for (String name : atMentionList){
-            if (atUserInfoMap.containsKey(name)){
+        for (String name : atMentionList) {
+            if (atUserInfoMap.containsKey(name)) {
                 atUserIdList.add(atUserInfoMap.get(name));
             }
         }
@@ -760,7 +789,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             mInputMoreFragment = new InputMoreFragment();
         }
 
-        assembleActions();
+//        assembleActions();    //聊天界面 更多显示 暂时注释
         mInputMoreFragment.setActions(mInputMoreActionList);
         hideSoftInput();
         mInputMoreView.setVisibility(View.VISIBLE);
@@ -835,6 +864,12 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         }
 
     }
+
+
+    public TextView getControlRemind() {
+        return tv_sendremind;
+    }
+
 
     public void setDraft() {
         if (mChatInfo == null) {

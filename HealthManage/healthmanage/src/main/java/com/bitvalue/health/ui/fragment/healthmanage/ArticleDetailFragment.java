@@ -22,6 +22,8 @@ import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
+import com.hjq.toast.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -64,9 +66,12 @@ public class ArticleDetailFragment extends BaseFragment {
     @Override
     public void initView(View rootView) {
         articleBean = (ArticleBean) getArguments().getSerializable(Constants.ARTICLE_DETAIL);
+        if (articleBean == null&&articleBean.previewUrl.isEmpty()) {
+            ToastUtil.toastShortMessage("文章数据错误");
+            return;
+        }
         tv_title.setText(articleBean.title);
-//        url = questionBean.questUrl;
-//        url = "http://192.168.1.122/s/8a755f7c24ad49c9a2be6e6f79c3ee60";
+        url = articleBean.previewUrl;
         initWebView(rootView);
     }
 
@@ -120,8 +125,8 @@ public class ArticleDetailFragment extends BaseFragment {
             }
         });
 
-//        webView.loadUrl(url);
-        webView.loadDataWithBaseURL(null, articleBean.content, "text/html", "UTF-8", null);
+        webView.loadUrl(url);
+//        webView.loadDataWithBaseURL(null, articleBean.content, "text/html", "UTF-8", null);
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override

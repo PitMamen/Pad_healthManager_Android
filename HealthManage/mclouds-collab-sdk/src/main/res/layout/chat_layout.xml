@@ -8,7 +8,7 @@
     <com.bitvalue.sdk.collab.component.TitleBarLayout
         android:id="@+id/chat_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/qb_px_50" />
+        android:layout_height="@dimen/qb_px_25" />
 
     <View
         android:id="@+id/view_line"

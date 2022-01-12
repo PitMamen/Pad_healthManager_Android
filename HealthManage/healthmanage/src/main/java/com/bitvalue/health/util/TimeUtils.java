@@ -1,6 +1,7 @@
 package com.bitvalue.health.util;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +20,8 @@ public class TimeUtils {
     public static final SimpleDateFormat YY_MM_DD_FORMAT_2 = new SimpleDateFormat("yyyy/MM/dd");
     public static final SimpleDateFormat YY_MM_DD_FORMAT_3 = new SimpleDateFormat("yyyy-MM-dd");
     public static final SimpleDateFormat YY_MM_DD_FORMAT_4 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static final SimpleDateFormat YY_MM_DD_FORMAT_5 = new SimpleDateFormat("yyyy");
+    public static final SimpleDateFormat YY_MM_DD_FORMAT_7 = new SimpleDateFormat("MM-dd HH:mm");
     @SuppressLint("NewApi")
 //    public static final SimpleDateFormat YY_MM_DD_FORMAT_5 = new SimpleDateFormat("YYYYMMddhhmmss");
     public static final SimpleDateFormat YY_MM_DD_FORMAT_6 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -45,11 +48,12 @@ public class TimeUtils {
         return YY_MM_DD_FORMAT_3.format(date);
     }
 
-    public static String parseString2StringWithSlash(String dateString){
-        return String.format("%s/%s/%s",  dateString.substring(0,4),  dateString.substring(4,6),  dateString.substring(6));
+    public static String parseString2StringWithSlash(String dateString) {
+        return String.format("%s/%s/%s", dateString.substring(0, 4), dateString.substring(4, 6), dateString.substring(6));
     }
-    public static String parseString2StringWithLevel(String dateString){
-        return String.format("%s-%s-%s",  dateString.substring(0,4),  dateString.substring(4,6),  dateString.substring(6));
+
+    public static String parseString2StringWithLevel(String dateString) {
+        return String.format("%s-%s-%s", dateString.substring(0, 4), dateString.substring(4, 6), dateString.substring(6));
     }
 
     /**
@@ -71,6 +75,22 @@ public class TimeUtils {
         return System.currentTimeMillis();
     }
 
+
+    public static String getCurrenTime() {
+        return YY_MM_DD_FORMAT_5.format(new Date());
+    }
+
+    public static String getCurrenTimeYMDHMS() {
+        return YY_MM_DD_FORMAT_3.format(new Date());
+    }
+
+
+    public static String getCurrentTimeMinute(){
+        return YY_MM_DD_FORMAT_7.format(new Date());
+    }
+
+
+
     /**
      * get current time in milliseconds, format is {@link #DEFAULT_DATE_FORMAT}
      *
@@ -81,7 +101,7 @@ public class TimeUtils {
     }
 
     /**
-    /**
+     * /**
      * get current time in milliseconds
      *
      * @return
@@ -89,7 +109,8 @@ public class TimeUtils {
     public static String getCurrentTimeInString(SimpleDateFormat dateFormat) {
         return getTime(getCurrentTimeInLong(), dateFormat);
     }
-    public static int getDateCount(long start, long end){
+
+    public static int getDateCount(long start, long end) {
         long time = end - start;
         int dayCount = (int) (time / (1000 * 60 * 60 * 24));
         return dayCount;
@@ -103,7 +124,7 @@ public class TimeUtils {
         return MM_DD_HH_MM_FORMAT.format(date);
     }
 
-    public static Date parseDate(String dateString,SimpleDateFormat simpleDateFormat) {
+    public static Date parseDate(String dateString, SimpleDateFormat simpleDateFormat) {
         try {
             return simpleDateFormat.parse(dateString);
         } catch (ParseException e) {
@@ -113,11 +134,23 @@ public class TimeUtils {
     }
 
     public static Date parseDate(String dateString) throws ParseException {
-        return DEFAULT_DATE_FORMAT.parse(dateString);
+        return YY_MM_DD_FORMAT_3.parse(dateString);
     }
 
+
+    public static String formatTime(String dateString) {
+        Date date = null;
+        try {
+            date = YY_MM_DD_FORMAT_3.parse(dateString);
+        } catch (ParseException e) {
+            Log.e("TTT", "日期转换异常---" );
+            return dateString;
+        }
+        return YY_MM_DD_FORMAT_3.format(date);
+    }
+
+
     /**
-     *
      * @param mss 要转换的毫秒数
      * @return 该毫秒数转换为 * days * hours * minutes * seconds 后的格式
      * @author fy.zhang
@@ -130,17 +163,15 @@ public class TimeUtils {
 
         String time = "00:00:00";
 
-        if(hours > 0 ) {
+        if (hours > 0) {
             time += ":" + String.format("%02d", hours);
-        }
-        else {
+        } else {
             time = "00";
         }
 
-        if(minutes > 0 ) {
+        if (minutes > 0) {
             time += ":" + String.format("%02d", minutes);
-        }
-        else {
+        } else {
             time += ":" + "00";
         }
 
@@ -153,11 +184,11 @@ public class TimeUtils {
 
         return time;
     }
+
     /**
-     *
      * @param begin 时间段的开始
      * @param end   时间段的结束
-     * @return  输入的两个Date类型数据之间的时间间格用* days * hours * minutes * seconds的格式展示
+     * @return 输入的两个Date类型数据之间的时间间格用* days * hours * minutes * seconds的格式展示
      * @author fy.zhang
      */
     public static String formatDuring(Date begin, Date end) {

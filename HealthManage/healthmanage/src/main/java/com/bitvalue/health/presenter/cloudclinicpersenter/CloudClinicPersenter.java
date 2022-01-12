@@ -2,6 +2,8 @@ package com.bitvalue.health.presenter.cloudclinicpersenter;
 
 import android.util.Log;
 
+import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
+import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
@@ -12,6 +14,7 @@ import com.tencent.imsdk.v2.V2TIMConversationResult;
 import com.tencent.imsdk.v2.V2TIMMessage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author created by bitvalue
@@ -61,14 +64,13 @@ public class CloudClinicPersenter extends BasePresenter<CloudClinicContract.Clou
     }
 
     @Override
-    public void qryMedicalPatients(String attendanceStatus) {
-      mModel.qryMedicalPatients(attendanceStatus,new CallBackAdapter(){
+    public void qryMedicalPatients(RequestNewLeaveBean requestNewLeaveBean) {
+      mModel.qryMedicalPatients(requestNewLeaveBean,new CallBackAdapter(){
           @Override
           public void onSuccess(Object o, int what) {
               super.onSuccess(o, what);
               if (isViewAttach()){
-                  ArrayList<VideoClientsResultBean> videoClientsResultBeans = (ArrayList<VideoClientsResultBean>) o;
-                  getView().qryMedicalPatientsSuccess(videoClientsResultBeans);
+                  getView().qryMedicalPatientsSuccess((List<NewLeaveBean.RowsDTO>) o);
               }
           }
 

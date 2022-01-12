@@ -23,6 +23,8 @@
     <string name="set_in_blacklist">您已被被对方设置为黑名单</string>
     <string name="wait_agree_friend">等待好友审核同意</string>
     <string name="bga_pp_format_remain_image">+%1$d</string>
+    <string name="bedreservation">床位预约</string>
+    <string name="newly_discharged_patients">新出院患者</string>
 
     <!-- 通用的 -->
     <string name="common_crash_hint">应用出了点小意外，正在重新启动</string>
@@ -96,6 +98,7 @@
     <string name="http_response_error">服务器响应异常，请稍后再试</string>
     <string name="http_server_error">服务器连接异常，请稍后再试</string>
     <string name="http_request_cancel">请求被中断，请重试</string>
+
 
     <!-- 状态布局 -->
     <string name="status_layout_no_data">空空如也</string>
@@ -210,7 +213,8 @@
     <string name="password_reset_phone_hint2">重新输入一次密码</string>
     <string name="password_reset_input_error">两次密码输入不一致，请重新输入</string>
     <string name="password_reset_success">修改成功</string>
-
+    <string name="create_ed_plan">新建/编辑随访计划</string>
+    <string name="plan_followup_detail">随访计划详情</string>
     <!-- 修改手机号 -->
     <string name="phone_reset_title">设置手机号</string>
     <string name="phone_reset_change_hint">下次登录请使用更换后的新手机号登录</string>
@@ -327,6 +331,8 @@
     <string name="write_calendar">请在设置里允许访问您设备上的日历，以便将日程同步到手机日历</string>
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
+    <string name="more">群发</string>
+    <string name="putaway">收起</string>
 
 
 

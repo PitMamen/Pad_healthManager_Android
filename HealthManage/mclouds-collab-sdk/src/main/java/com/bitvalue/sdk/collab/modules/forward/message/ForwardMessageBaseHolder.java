@@ -13,6 +13,7 @@ import com.bitvalue.sdk.collab.base.IBaseViewHolder;
 import com.bitvalue.sdk.collab.base.TUIChatControllerListener;
 import com.bitvalue.sdk.collab.base.TUIKitListenerManager;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.MessageContentHolder;
+import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.MessageCustomHolder;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.MessageEmptyHolder;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.MessageForwardHolder;
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
@@ -166,6 +167,9 @@ public abstract class ForwardMessageBaseHolder extends MessageContentHolder {
             switch (viewType) {
                 case MessageInfo.MSG_TYPE_TEXT:
                     holder = new ForwardMessageTextHolder(view);
+                    break;
+                case MessageInfo.MSG_TYPE_CUSTOM:
+                    holder = new MessageCustomHolder(view);
                     break;
                 case MessageInfo.MSG_TYPE_IMAGE:
                 case MessageInfo.MSG_TYPE_VIDEO:

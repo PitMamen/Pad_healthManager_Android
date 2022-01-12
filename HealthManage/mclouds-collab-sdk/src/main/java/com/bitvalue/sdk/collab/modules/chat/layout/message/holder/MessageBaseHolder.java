@@ -84,6 +84,9 @@ public abstract class MessageBaseHolder extends RecyclerView.ViewHolder implemen
                 case MessageInfo.MSG_TYPE_MERGE:
                     holder = new MessageForwardHolder(view);
                     break;
+                case MessageInfo.MSG_TYPE_CUSTOM:
+                    holder = new MessageCustomHolder(view);
+                    break;
                 default: {
                     for(TUIChatControllerListener chatListener : TUIKitListenerManager.getInstance().getTUIChatListeners()) {
                         IBaseViewHolder viewHolder = chatListener.createCommonViewHolder(parent, viewType);
