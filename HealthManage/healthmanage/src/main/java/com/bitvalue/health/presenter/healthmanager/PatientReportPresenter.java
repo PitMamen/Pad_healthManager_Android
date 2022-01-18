@@ -2,7 +2,9 @@ package com.bitvalue.health.presenter.healthmanager;
 
 import android.util.Log;
 
+import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
+import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
 import com.bitvalue.health.contract.healthmanagercontract.PatientReportContract;
@@ -12,6 +14,7 @@ import com.tencent.imsdk.v2.V2TIMConversationResult;
 import com.tencent.imsdk.v2.V2TIMMessage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author created by bitvalue
@@ -24,4 +27,24 @@ public class PatientReportPresenter extends BasePresenter<PatientReportContract.
     }
 
 
+    @Override
+    public void qryAllocatedPatienList(AllocatedPatientRequest allocatedPatientRequest) {
+        mModel.qryAllocatedPatienList(allocatedPatientRequest,new CallBackAdapter(){
+            @Override
+            public void onSuccess(Object o, int what) {
+                super.onSuccess(o, what);
+                if (isViewAttach()) {
+                    getView().qryAllocatedPatienSuccess((List<NewLeaveBean.RowsDTO>) o);
+                }
+            }
+
+            @Override
+            public void onFailedLog(String str, int what) {
+                super.onFailedLog(str, what);
+                if (isViewAttach()) {
+                    getView().qryAllocatedPatienFail(str);
+                }
+            }
+        });
+    }
 }

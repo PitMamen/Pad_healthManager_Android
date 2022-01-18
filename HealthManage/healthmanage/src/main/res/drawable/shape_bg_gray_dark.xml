@@ -3,17 +3,17 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <corners
-        android:bottomLeftRadius="@dimen/qb_px_15"
-        android:bottomRightRadius="@dimen/qb_px_15"
-        android:topLeftRadius="@dimen/qb_px_15"
-        android:topRightRadius="@dimen/qb_px_15" />
+        android:bottomLeftRadius="@dimen/qb_px_2"
+        android:bottomRightRadius="@dimen/qb_px_2"
+        android:topLeftRadius="@dimen/qb_px_2"
+        android:topRightRadius="@dimen/qb_px_2" />
 
 
     <stroke
         android:width="@dimen/qb_px_1"
-        android:color="@color/text_desc_dark" />
+        android:color="@color/text_desc_darka" />
     <!-- 背景色 -->
-    <solid android:color="@color/text_desc_dark" />
+    <solid android:color="@color/text_desc_darka" />
 
 
 </shape>

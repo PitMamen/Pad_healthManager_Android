@@ -124,6 +124,7 @@
     <color name="bg_gray_table">#F2F2F2</color>
     <color name="text_desc">#CCCCCC</color>
     <color name="text_desc_dark">#999999</color>
+    <color name="text_desc_darka">#A4ADB3</color>
     <color name="black_files">#AFB0B3</color>
     <color name="blue_files">#2784FF</color>
     <color name="text_green">#2FB315</color>

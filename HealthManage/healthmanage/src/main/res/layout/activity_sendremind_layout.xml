@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="#F5F5F5"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingDefaultResource">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_46"
+        android:background="@color/white"
+        tools:ignore="MissingConstraints">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/im_gobackhome"
+                android:layout_width="@dimen/qb_px_16"
+                android:layout_height="@dimen/qb_px_16"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:src="@mipmap/icon_fanhui"></ImageView>
+        </RelativeLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="发送提醒"
+            android:textColor="@color/text_black"
+            android:textSize="18sp"></TextView>
+
+
+        <TextView
+            android:id="@+id/tv_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/qb_px_30"
+            android:text="发送"
+            android:textSize="16sp"
+            android:textColor="@color/main_blue"></TextView>
+    </RelativeLayout>
+
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_remind"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/qb_px_15"
+        android:layout_below="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_52">
+
+
+
+
+        <LinearLayout
+            android:id="@+id/ll_careof_remind"
+            android:layout_marginStart="@dimen/qb_px_13"
+            android:background="@drawable/shape_remind_layout"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_marginTop="@dimen/qb_px_5"
+                android:layout_marginStart="@dimen/qb_px_8"
+                android:src="@mipmap/icon_ghtx"
+                android:layout_width="@dimen/qb_px_19"
+                android:layout_height="@dimen/qb_px_19"></ImageView>
+
+
+
+            <TextView
+                android:id="@+id/tv_careof_text"
+                android:text="关怀提醒"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_gravity="center"
+                ></TextView>
+
+
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/ll_medication_remind"
+            android:layout_marginStart="@dimen/qb_px_8"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:background="@drawable/shape_remind_unpress"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:layout_marginTop="@dimen/qb_px_5"
+                android:layout_marginStart="@dimen/qb_px_8"
+                android:src="@mipmap/icon_yytx"
+                android:layout_width="@dimen/qb_px_19"
+                android:layout_height="@dimen/qb_px_19"></ImageView>
+
+
+            <TextView
+                android:id="@+id/tv_medication_text"
+                android:text="用药提醒"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_one"
+                android:textSize="15sp"
+                android:layout_gravity="center_vertical"
+                ></TextView>
+
+
+
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:id="@+id/ll_followup_remind"
+            android:layout_marginStart="@dimen/qb_px_8"
+            android:layout_marginEnd="@dimen/qb_px_8"
+            android:background="@drawable/shape_remind_unpress"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_marginTop="@dimen/qb_px_5"
+                android:layout_marginStart="@dimen/qb_px_8"
+                android:src="@mipmap/icon_fztx"
+                android:layout_width="@dimen/qb_px_19"
+                android:layout_height="@dimen/qb_px_19"></ImageView>
+
+
+            <TextView
+                android:id="@+id/tv_followup_text"
+                android:text="复诊提醒"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_one"
+                android:textSize="15sp"
+                android:layout_gravity="center_vertical"
+                ></TextView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_below="@+id/ll_remind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/iv_triangle_care"
+                android:src="@drawable/layer_daosanjiao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></ImageView>
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/iv_triangle_medication"
+                android:visibility="invisible"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/layer_daosanjiao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></ImageView>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_triangle_followup"
+                android:visibility="invisible"
+                android:src="@drawable/layer_daosanjiao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></ImageView>
+
+
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+
+
+
+  <LinearLayout
+      android:background="@color/white"
+      android:layout_below="@+id/ll_remind"
+      android:layout_marginStart="@dimen/qb_px_15"
+      android:layout_marginTop="@dimen/qb_px_15"
+      android:layout_marginEnd="@dimen/qb_px_15"
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/qb_px_98">
+
+
+      <ImageView
+          android:layout_marginTop="@dimen/qb_px_16"
+          android:layout_marginStart="@dimen/qb_px_14"
+          android:src="@mipmap/icon_srxx"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"></ImageView>
+
+      <EditText
+          android:id="@+id/et_input_msg"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_marginTop="@dimen/qb_px_10"
+          android:background="@color/white"
+          android:gravity="left|top"
+          android:hint="输入消息内容..."
+          android:minHeight="@dimen/qb_px_50"
+          android:paddingHorizontal="@dimen/qb_px_6"
+          android:paddingVertical="@dimen/qb_px_6"
+          android:textColor="@color/text_main"
+          android:textSize="15sp"
+          />
+
+
+
+
+
+
+
+
+  </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>

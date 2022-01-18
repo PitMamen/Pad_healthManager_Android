@@ -61,6 +61,7 @@
             android:layout_marginLeft="@dimen/qb_px_7"
             android:layout_marginTop="@dimen/qb_px_7"
             android:text=""
+            android:layout_alignParentRight="true"
             android:textColor="@color/text_desc_dark"
             android:textSize="@dimen/qb_px_8"
             app:layout_constraintLeft_toRightOf="@id/img_head"

@@ -1,6 +1,5 @@
 package com.bitvalue.health.ui.fragment.cloudclinic;
 
-import static com.bitvalue.health.util.Constants.EVENT_MES_TYPE_CLOUDCLINC;
 import static com.bitvalue.health.util.Constants.GET_CONVERSATION_COUNT;
 
 import android.content.Context;
@@ -14,35 +13,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bitvalue.health.api.eventbusbean.MsgRemindObj;
 import com.bitvalue.health.api.eventbusbean.VideoRefreshObj;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
-import com.bitvalue.health.api.responsebean.ClientsResultBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
-import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.callback.OnItemClick;
-import com.bitvalue.health.callback.OnItemClickCallback;
 import com.bitvalue.health.contract.cloudcliniccontract.CloudClinicContract;
 import com.bitvalue.health.presenter.cloudclinicpersenter.CloudClinicPersenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.AllPatientAdapter;
-import com.bitvalue.health.ui.adapter.CloudClinicAdapter;
 import com.bitvalue.health.util.Constants;
-import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.DensityUtil;
-import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.MUtils;
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.sdk.collab.modules.chat.layout.input.ChatLayout;
-import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI;
 import com.bitvalue.sdk.collab.modules.conversation.ConversationLayout;
-import com.bitvalue.sdk.collab.modules.conversation.ConversationListLayout;
-import com.bitvalue.sdk.collab.modules.conversation.base.ConversationInfo;
-import com.google.gson.Gson;
-import com.hjq.toast.ToastUtils;
-import com.tencent.imsdk.message.Message;
-import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMConversationResult;
 import com.tencent.imsdk.v2.V2TIMMessage;
 
@@ -85,13 +69,14 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
     private int type = 0;  //用于区分 当前是点击的待就诊 还是 已结束
     private int newCount = 0;
     private HomeActivity homeActivity;
-    private CloudClinicAdapter allPatientAdapter;
+    private AllPatientAdapter allPatientAdapter;
     private RequestNewLeaveBean requestNewLeaveBean = new RequestNewLeaveBean();
     private int pageNo = 1;
     private int pageSize = 30;
     private List<NewLeaveBean.RowsDTO> patientList = new ArrayList<>();  //所有患者列表
     List<NewLeaveBean.RowsDTO> tempPatientList = new ArrayList<>();
     private boolean convasersionInited = false;
+
     @Override
     protected CloudClinicPersenter createPresenter() {
         return new CloudClinicPersenter();
@@ -137,8 +122,11 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
         contact_list.setLayoutManager(new LinearLayoutManager(homeActivity));
         contact_list.addItemDecoration(MUtils.spaceDivider(
                 DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
-        allPatientAdapter = new CloudClinicAdapter(R.layout.item_video_patient, patientList, this);
+        allPatientAdapter = new AllPatientAdapter(R.layout.item_video_patient, patientList, this);
         contact_list.setAdapter(allPatientAdapter);
+        allPatientAdapter.setOnItemClickListener((adapter, view, position) -> {
+            homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, patientList.get(position));
+        });
     }
 
 
@@ -157,16 +145,16 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
             NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
             info.setUserName(messageInfo.getTitle());
             info.setUserId(messageInfo.getId());
-            homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT,info);
+            homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
         });
         conversationLayout.setVisibility(View.VISIBLE);
     }
 
 
     //点击事件
-    @OnClick({ R.id.tv_wait, R.id.tv_end})
-    public void onClick(View view) {
-        switch (view.getId()) {
+    @OnClick({R.id.tv_wait, R.id.tv_end})
+    public void onClick(View view_) {
+        switch (view_.getId()) {
 
 //                咨询患者
             case R.id.tv_wait:
@@ -196,17 +184,18 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
                 tv_wait.setTextColor(homeActivity.getResources().getColor(R.color.main_blue));
                 tv_wait.setBackgroundResource(R.drawable.shape_bg_white_solid_1);
                 if (allPatientAdapter != null) {
-                    if (tempPatientList.size() == patientList.size()){
-                        Log.e(TAG, "11111111111111" );
+                    if (tempPatientList.size() == patientList.size()) {
+                        Log.e(TAG, "11111111111111");
                         allPatientAdapter.setNewData(tempPatientList);
-                    }else {
-                        Log.e(TAG, "00000000000000" );
+                    } else {
+                        Log.e(TAG, "00000000000000");
                         requestNewLeaveBean.setPageNo(pageNo);
                         requestNewLeaveBean.setPageSize(pageSize);
                         mPresenter.qryMedicalPatients(requestNewLeaveBean);
                     }
 
                 }
+
 
 
                 break;

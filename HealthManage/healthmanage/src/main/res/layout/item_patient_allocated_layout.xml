@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="3dp"
+    android:translationZ="3dp"
+    tools:ignore="MissingDefaultResource,Orientation">
+
+
+    <RelativeLayout
+        android:id="@+id/layout_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/qb_px_8"
+        tools:ignore="MissingConstraints">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:visibility="visible">
+
+            <CheckBox
+                android:id="@+id/ck_selct"
+                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                tools:ignore="MissingConstraints"></CheckBox>
+
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/img_head"
+            android:layout_width="@dimen/qb_px_26"
+            android:layout_height="@dimen/qb_px_26"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/qb_px_20"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_head_img"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_patient_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_50"
+            android:layout_marginTop="@dimen/qb_px_3"
+            android:text="王云"
+            android:textColor="@color/text_black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/img_head"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_department"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_patient_name"
+            android:layout_marginLeft="@dimen/qb_px_50"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:text="骨科"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="8sp">
+
+        </TextView>
+
+
+        <View
+            android:id="@+id/view_line_"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/qb_px_5"
+            android:layout_below="@+id/tv_patient_name"
+            android:layout_marginLeft="@dimen/qb_px_5"
+            android:layout_marginTop="@dimen/qb_px_6"
+            android:layout_toRightOf="@+id/tv_department"
+            android:background="@color/text_desc_dark">
+
+        </View>
+
+
+        <!--add-->
+
+        <TextView
+            android:id="@+id/tv_zhuanb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_patient_name"
+            android:layout_marginLeft="@dimen/qb_px_5"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_toRightOf="@+id/view_line_"
+            android:text="专病"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="8sp">
+
+        </TextView>
+
+
+        <View
+            android:id="@+id/line_view"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/qb_px_5"
+            android:layout_below="@+id/tv_patient_name"
+            android:layout_marginLeft="@dimen/qb_px_5"
+            android:layout_marginTop="@dimen/qb_px_6"
+            android:layout_toRightOf="@+id/tv_zhuanb"
+            android:background="@color/text_desc_dark">
+
+        </View>
+
+
+        <TextView
+            android:id="@+id/tv_bingqu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_patient_name"
+            android:layout_marginLeft="@dimen/qb_px_5"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_toRightOf="@+id/line_view"
+            android:text="病区"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="8sp"></TextView>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_pay_patient"
+            android:layout_width="@dimen/qb_px_37"
+            android:layout_height="@dimen/qb_px_10"
+            android:layout_below="@+id/tv_dis_time"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_marginEnd="@dimen/qb_px_10"
+            android:background="@color/text_green">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="付费患者"
+                android:textColor="@color/white"
+                android:textSize="10sp">
+
+
+            </TextView>
+
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/tv_diagnosis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_bingqu"
+            android:layout_marginLeft="@dimen/qb_px_50"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:text="诊断"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="8sp"></TextView>
+
+
+        <TextView
+            android:id="@+id/tv_dis_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/qb_px_10"
+            android:layout_marginBottom="@dimen/qb_px_15"
+            android:text="2021-11-25"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="MissingConstraints">
+
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/tv_patient_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_10"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_toRightOf="@+id/tv_patient_name"
+            android:text="女"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@id/img_head"
+            app:layout_constraintTop_toBottomOf="@id/tv_patient_name" />
+
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="@dimen/qb_px_1"
+            android:layout_height="@dimen/qb_px_5"
+            android:layout_marginLeft="@dimen/qb_px_8"
+            android:layout_marginTop="@dimen/qb_px_8"
+            android:layout_toRightOf="@+id/tv_patient_sex"
+            android:background="@color/text_desc_dark" />
+
+
+        <TextView
+            android:id="@+id/tv_patient_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_15"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_toRightOf="@+id/tv_patient_sex"
+            android:text="23岁"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="12sp" />
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

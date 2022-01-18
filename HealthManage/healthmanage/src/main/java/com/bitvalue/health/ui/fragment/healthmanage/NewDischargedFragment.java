@@ -7,8 +7,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,10 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.BaseFragment;
+import com.bitvalue.health.callback.OnItemClick;
 import com.bitvalue.health.contract.healthmanagercontract.NewOutHospitolContract;
 import com.bitvalue.health.presenter.healthmanager.NewOutHospitolPresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.NewLyDisCharPatienAdapter;
+import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.MUtils;
@@ -49,7 +54,7 @@ import static com.bitvalue.health.util.Constants.USER_ID;
  * @author created by bitvalue
  * @data : 11/29
  */
-public class NewDischargedFragment extends BaseFragment<NewOutHospitolPresenter> implements NewOutHospitolContract.View {
+public class NewDischargedFragment extends BaseFragment<NewOutHospitolPresenter> implements NewOutHospitolContract.View, OnItemClick {
     @BindView(R.id.rl_back)
     RelativeLayout iv_back; //返回
     @BindView(R.id.im_search_patient)
@@ -71,6 +76,14 @@ public class NewDischargedFragment extends BaseFragment<NewOutHospitolPresenter>
     WrapRecyclerView rv_search_patientlist;  //搜索出来的患者列表
 
 
+    @BindView(R.id.distribution_plan)
+    TextView distributionPlan;
+    @BindView(R.id.ll_allcheck_layout)
+    LinearLayout ll_allCheck;
+    @BindView(R.id.ck_allcheck)
+    CheckBox ck_allCheck;
+
+
     private NewLyDisCharPatienAdapter newLyDisCharPatienAdapter; //所有患者adapter
     private NewLyDisCharPatienAdapter searchDisCharPatienAdapter; //查询adapter
     private List<NewLeaveBean.RowsDTO> rowsDTOList = new ArrayList<>();  //所有出院患者
@@ -79,8 +92,11 @@ public class NewDischargedFragment extends BaseFragment<NewOutHospitolPresenter>
     private int cureentPage = 0;
     private int pageNo = 1;
     private int pageSize = 10;
-    private String isbedreservationactivity;
     private HomeActivity homeActivity;
+
+
+    private List<NewLeaveBean.RowsDTO> userIDList = new ArrayList<>();
+    private boolean isAllCheck;
 
     @Override
     protected NewOutHospitolPresenter createPresenter() {
@@ -103,8 +119,22 @@ public class NewDischargedFragment extends BaseFragment<NewOutHospitolPresenter>
     public void initView(View rootView) {
         super.initView(rootView);
         tv_title.setText(getString(R.string.newly_discharged_patients));
+
         initAllNewlyPatient();
-        initSearchButton();
+//        initSearchButton();
+        distributionPlan.setOnClickListener(v -> {
+            if (distributionPlan.getText().toString().contains("分配")){
+                ll_allCheck.setVisibility(View.VISIBLE);
+                newLyDisCharPatienAdapter.showCheckBox();
+            }else {
+                ll_allCheck.setVisibility(View.GONE);
+                newLyDisCharPatienAdapter.unAllCheckShowcheck(false);
+                // TODO: 2022/1/14 跳转至分配计划列表 需要携带 useridlist 过去
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_PLAN_LIST,userIDList);
+            }
+            distributionPlan.setText(distributionPlan.getText().toString().contains("分配") ? "下一步" : "分配随访计划");
+
+        });
     }
 
 
@@ -112,8 +142,30 @@ public class NewDischargedFragment extends BaseFragment<NewOutHospitolPresenter>
         LinearLayoutManager layoutManager = new LinearLayoutManager(homeActivity);
         recyclerView_patient.setLayoutManager(layoutManager);
         recyclerView_patient.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, this.getResources().getDimension(R.dimen.qb_px_3)), false));
-        newLyDisCharPatienAdapter = new NewLyDisCharPatienAdapter(R.layout.item_newly_dispatient_layout, rowsDTOList);
+        newLyDisCharPatienAdapter = new NewLyDisCharPatienAdapter(rowsDTOList, this);
         recyclerView_patient.setAdapter(newLyDisCharPatienAdapter);
+        //        全选
+        ck_allCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            userIDList.clear();
+            Log.e(TAG, "initAllNewlyPatient: "+isChecked );
+            if (isChecked) {
+                isAllCheck = true;
+                newLyDisCharPatienAdapter.AllChecked();
+                for (int i = 0; i < rowsDTOList.size(); i++) {
+//                    if (!userIDList.contains(rowsDTOList.get(i).getUserId()) && !EmptyUtil.isEmpty(rowsDTOList.get(i).getUserId())) {
+                        Log.e(TAG, "添加了----");
+                        userIDList.add(rowsDTOList.get(i));
+//                    }
+                }
+                Log.e(TAG, "患者ID集合: " + userIDList.size());
+            } else {
+                isAllCheck = false;
+                userIDList.clear();
+                newLyDisCharPatienAdapter.unAllCheckShowcheck(true);
+            }
+        });
+
+
         smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             //上拉刷新
             @Override
@@ -150,23 +202,39 @@ public class NewDischargedFragment extends BaseFragment<NewOutHospitolPresenter>
             }
         });
 
-        newLyDisCharPatienAdapter.setOnItemClickListener((adapter, view, position) -> {
-            //只是点击item 进入分配计划界面
-            String userID = rowsDTOList.get(position).getUserId();
-            if (!EmptyUtil.isEmpty(userID)){
-//                JumpActivity(userID);
-            }else {
-                ToastUtils.show("该患者暂未注册");
-            }
-        });
     }
 
 
     private void initSearchButton() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(homeActivity);
         rv_search_patientlist.setLayoutManager(layoutManager);
-        searchDisCharPatienAdapter = new NewLyDisCharPatienAdapter(R.layout.item_newly_dispatient_layout, rowsDTOList);
+        searchDisCharPatienAdapter = new NewLyDisCharPatienAdapter(searchrowsDTOList, this);
         rv_search_patientlist.setAdapter(searchDisCharPatienAdapter);
+
+        //        全选
+        ck_allCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            userIDList.clear();
+            if (isChecked) {
+                isAllCheck = true;
+                ck_allCheck.setChecked(isChecked);
+                searchDisCharPatienAdapter.AllChecked();
+                for (int i = 0; i < searchrowsDTOList.size(); i++) {
+                    if (!userIDList.contains(searchrowsDTOList.get(i).getUserId()) && !EmptyUtil.isEmpty(searchrowsDTOList.get(i).getUserId())) {
+                        Log.e(TAG, "添加了11----");
+                        userIDList.add(searchrowsDTOList.get(i));
+                    }
+                }
+                Log.e(TAG, "患者ID集合11: " + userIDList.size());
+            } else {
+                isAllCheck = false;
+                userIDList.clear();
+                searchDisCharPatienAdapter.unAllCheckShowcheck(true);
+            }
+        });
+
+
+
+
         //上下拉刷新
         smartRe_search_freshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
 
@@ -193,16 +261,6 @@ public class NewDischargedFragment extends BaseFragment<NewOutHospitolPresenter>
                 requestNewLeaveBean.setPageSize(pageSize);
                 mPresenter.qryPatientByName(requestNewLeaveBean);
                 smartRe_search_freshLayout.finishRefresh();
-            }
-        });
-
-        searchDisCharPatienAdapter.setOnItemClickListener((adapter, view, position) -> {
-            Log.e(TAG, "分配随访计划" );
-            String userID = searchrowsDTOList.get(position).getUserId();
-            if (!EmptyUtil.isEmpty(userID)){
-//                JumpActivity(userID);
-            }else {
-                ToastUtils.show("该患者暂未注册");
             }
         });
 
@@ -265,11 +323,14 @@ public class NewDischargedFragment extends BaseFragment<NewOutHospitolPresenter>
     public void getAllLeaveHospitolPatientsSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList) {
         getActivity().runOnUiThread(() -> {
             if (infoDetailDTOList != null && infoDetailDTOList.size() > 0) {
-                for (int i = 0; i < infoDetailDTOList.size(); i++) {
-                    Log.e(TAG, "姓名: "+ infoDetailDTOList.get(i).getUserName()+"UserId:"+infoDetailDTOList.get(i).getUserId());
-                }
                 rowsDTOList = infoDetailDTOList;
-                newLyDisCharPatienAdapter.setNewData(rowsDTOList);
+                newLyDisCharPatienAdapter.updateList(rowsDTOList);
+                if (ll_allCheck.getVisibility()==View.VISIBLE){
+                    newLyDisCharPatienAdapter.showCheckBox();
+                    if (isAllCheck){
+                        newLyDisCharPatienAdapter.AllChecked();
+                    }
+                }
 
             } else {
                 cureentPage = pageNo;
@@ -302,7 +363,13 @@ public class NewDischargedFragment extends BaseFragment<NewOutHospitolPresenter>
             } else {
                 smartRe_search_freshLayout.setVisibility(View.VISIBLE);
                 smartRefreshLayout.setVisibility(View.GONE);
-                searchDisCharPatienAdapter.setNewData(searchrowsDTOList);
+                searchDisCharPatienAdapter.updateList(searchrowsDTOList);
+                if (ll_allCheck.getVisibility()==View.VISIBLE){
+                    searchDisCharPatienAdapter.showCheckBox();
+                    if (isAllCheck){
+                        searchDisCharPatienAdapter.AllChecked();
+                    }
+                }
             }
         });
     }
@@ -313,11 +380,15 @@ public class NewDischargedFragment extends BaseFragment<NewOutHospitolPresenter>
 
     }
 
-
-//    private void JumpActivity(String userID){
-//        Intent intent = new Intent(this,FollowUpPlanActivity.class);
-//        intent.putExtra(USER_ID,userID);
-//        startActivity(intent);
-//    }
+    @Override
+    public void onItemClick(Object object, boolean isCheck) {
+        NewLeaveBean.RowsDTO item = (NewLeaveBean.RowsDTO) object;
+        Log.e(TAG, "onItemClick: " + item.getUserName() + " id:" + item.getUserId());
+        if (!EmptyUtil.isEmpty(item.getUserId())) {
+            userIDList.add(item);
+        } else {
+            ToastUtils.show("该患者未注册,暂不可分配随访任务!");
+        }
+    }
 
 }

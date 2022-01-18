@@ -7,5 +7,5 @@ import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
  * @data : 10/28
  */
 public interface OnItemClickCallback {
-    void onItemClick(VideoClientsResultBean item,int messageCount);
+    void onItemClick(Object object);
 }

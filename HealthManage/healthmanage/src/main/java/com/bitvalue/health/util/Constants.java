@@ -8,7 +8,8 @@ public class Constants {
     public static final String ROOM_ID = "room_id";
     public static final String USER_ID = "user_id";
     public static final String NEED_TOAST = "need_toast";
-    public static final String HOST_URL = "http://hmg.mclouds.org.cn";
+    public static final String HOST_URL = "http://192.168.1.122/";
+//    public static final String HOST_URL = "http://hmg.mclouds.org.cn";
     public static int screenWidth, screenHeight;
     public static final String KEY_REMEMBER_PSD = "key_remember_psd";
     public static final String KEY_TOKEN = "Authorization";
@@ -38,8 +39,12 @@ public class Constants {
     public static final String FRAGMENT_VIDEO_PATIENT_DATA = "fragment_video_patient_data";
     public static final String FRAGMENT_PERSONAL_DATA = "fragment_personal_data";
     public static final String FRAGMENT_CHAT_LOG = "fragment_chat_log";
+    public static final String FRAGMENT_SEND_REMIND = "fragment_send_remind";
+    public static final String FRAGMENT_QUICKREPLY = "fragment_quickreply";
     public static final String FRAGMENT_MEDICINE_GUIDE = "fragment_medicine_guide";
     public static final String FRAGMENT_NEW_LYDISCHARGED_PATIENT = "fragment_newly_changepatient";
+    public static final String FRAGMENT_PLAN_LIST = "fragment_plan_list";
+    public static final String FRAGMENT_DETAIL = "patient_detail";
 
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";
@@ -59,6 +64,7 @@ public class Constants {
     public static String VIDEO_FOR_MSG = "video_for_msg";
     public static final String PLAN_MSG = "plan_msg";
     public static final String PLAN_PREVIEW = "plan_preview";
+    public static final String LISTBEAN = "list_bean";
 
     public static final String ADD_VIDEO_DATA = "add_video_data";
     public static final String QUESTION_DETAIL = "question_detail";

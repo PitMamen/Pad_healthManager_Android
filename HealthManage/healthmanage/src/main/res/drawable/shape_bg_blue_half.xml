@@ -3,15 +3,15 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <corners
-        android:bottomLeftRadius="@dimen/qb_px_3"
-        android:topLeftRadius="@dimen/qb_px_3" />
+        android:bottomLeftRadius="@dimen/qb_px_2"
+        android:topLeftRadius="@dimen/qb_px_2" />
 
 
     <stroke
         android:width="@dimen/qb_px_1"
-        android:color="@color/main_blue" />
+        android:color="#CCCCCC" />
     <!-- 背景色 -->
-    <solid android:color="@color/main_blue" />
+    <solid android:color="#CCCCCC" />
 
 
 </shape>

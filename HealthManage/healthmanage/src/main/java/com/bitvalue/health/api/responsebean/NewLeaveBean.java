@@ -87,11 +87,22 @@ public class NewLeaveBean implements Serializable {
         private String userName;
         private String hzbq;//患者标签
         private String receiveTime = "";  //接收消息时间
+        private String bqmc;// 病区名称
+        private String cysj;//出院时间
+        private String ks;//科室代码
+        private String ksmc; //科室名称
+
+
+
+
+
+
         //add
-        public boolean isShowCheck = false;
-        public boolean isChecked;
+        public boolean isShowCheck = true;
+        public boolean isChecked =false;
         public boolean hasNewMessage = false;
         public int newMsgNum = 0;
+
 
         @Override
         public String toString() {
@@ -107,6 +118,7 @@ public class NewLeaveBean implements Serializable {
                     ", id=" + id +
                     ", idNumber='" + idNumber + '\'' +
                     ", infoDetail=" + infoDetail +
+                    ", planInfo=" + planInfo +
                     ", remark='" + remark + '\'' +
                     ", sex='" + sex + '\'' +
                     ", updateTime='" + updateTime + '\'' +
@@ -116,6 +128,14 @@ public class NewLeaveBean implements Serializable {
                     ", userName='" + userName + '\'' +
                     ", hzbq='" + hzbq + '\'' +
                     ", receiveTime='" + receiveTime + '\'' +
+                    ", bqmc='" + bqmc + '\'' +
+                    ", cysj='" + cysj + '\'' +
+                    ", ks='" + ks + '\'' +
+                    ", ksmc='" + ksmc + '\'' +
+                    ", isShowCheck=" + isShowCheck +
+                    ", isChecked=" + isChecked +
+                    ", hasNewMessage=" + hasNewMessage +
+                    ", newMsgNum=" + newMsgNum +
                     '}';
         }
 
@@ -130,6 +150,39 @@ public class NewLeaveBean implements Serializable {
              else {
                 return userId.equals(rowsDTO.userId);
             }
+        }
+
+
+        public String getBqmc() {
+            return bqmc;
+        }
+
+        public void setBqmc(String bqmc) {
+            this.bqmc = bqmc;
+        }
+
+        public String getCysj() {
+            return cysj;
+        }
+
+        public void setCysj(String cysj) {
+            this.cysj = cysj;
+        }
+
+        public String getKs() {
+            return ks;
+        }
+
+        public void setKs(String ks) {
+            this.ks = ks;
+        }
+
+        public String getKsmc() {
+            return ksmc;
+        }
+
+        public void setKsmc(String ksmc) {
+            this.ksmc = ksmc;
         }
 
         @Override

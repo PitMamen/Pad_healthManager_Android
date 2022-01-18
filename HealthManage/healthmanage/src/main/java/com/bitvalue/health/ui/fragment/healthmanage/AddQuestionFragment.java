@@ -2,6 +2,7 @@ package com.bitvalue.health.ui.fragment.healthmanage;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
+import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.message.GetMissionObj;
 import com.bitvalue.health.base.BaseAdapter;
 import com.bitvalue.health.base.BaseFragment;
@@ -19,6 +21,8 @@ import com.bitvalue.health.presenter.settingpresenter.AddQuestionPresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.QuestionAdapter;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.chatUtil.CustomCaseHistoryMessage;
+import com.bitvalue.health.util.chatUtil.CustomWenJuanMessage;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
@@ -60,7 +64,7 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
     private QuestionAdapter mAdapter;
     private List<QuestionResultBean.ListDTO> questionBeans = new ArrayList<>();
     private int total;
-    private GetMissionObj getMissionObj;
+//    private GetMissionObj getMissionObj;
 
     private int pageSize = 10;
     private int start = 1;
@@ -69,7 +73,7 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
 
     @Override
     public void initView(View view) {
-        getMissionObj = (GetMissionObj) getArguments().getSerializable(Constants.GET_MISSION_OBJ);
+//        getMissionObj = (GetMissionObj) getArguments().getSerializable(Constants.GET_MISSION_OBJ);
 
         tv_title.setText(getString(R.string.questionnaire_selection));
         homeActivity = (HomeActivity) getActivity();
@@ -133,16 +137,28 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
 
     }
 
+
+    private void sendQuestion(QuestionResultBean.ListDTO bean){
+        Log.e(TAG, "发送问卷---------" );
+        CustomWenJuanMessage questionMessage = new CustomWenJuanMessage();
+        questionMessage.name = bean.name;
+        questionMessage.url = bean.questUrl;
+        questionMessage.id = bean.id;
+        questionMessage.setType("CustomWenJuanMessage");
+        questionMessage.setDescription("问卷");
+        EventBus.getDefault().post(questionMessage);
+    }
+
     private void initList() {
 
         mAdapter = new QuestionAdapter(getActivity());
         mAdapter.setOnItemClickListener((recyclerView, itemView, position) -> {
-            QuestionResultBean.ListDTO listDTO = questionBeans.get(position);
-            if (null != getMissionObj) {
-                listDTO.TaskNo = getMissionObj.getTaskNo();
-                listDTO.MissionNo = getMissionObj.getMissionNo();
-            }
-            EventBus.getDefault().post(listDTO);
+//            QuestionResultBean.ListDTO listDTO = questionBeans.get(position);
+//            if (null != getMissionObj) {
+//                listDTO.TaskNo = getMissionObj.getTaskNo();
+//                listDTO.MissionNo = getMissionObj.getMissionNo();
+//            }
+            sendQuestion(questionBeans.get(position));
             homeActivity.getSupportFragmentManager().popBackStack();
         });
         list_normal.setAdapter(mAdapter);

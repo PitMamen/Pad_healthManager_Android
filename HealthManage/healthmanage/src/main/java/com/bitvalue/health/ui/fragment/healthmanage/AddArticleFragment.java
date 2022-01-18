@@ -25,6 +25,7 @@ import com.bitvalue.health.presenter.healthmanager.AddArticlePresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.ArticleAdapter;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.chatUtil.CustomCaseHistoryMessage;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
@@ -75,7 +76,7 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
 
     private List<ArticleBean> dailyArticles = new ArrayList<>();
     private List<ArticleBean> searchArticles = new ArrayList<>();
-    private GetMissionObj getMissionObj;
+//    private GetMissionObj getMissionObj;
     private int UsefulArticleCount = 10;
 
     @OnClick({R.id.layout_back})
@@ -99,7 +100,7 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
     @Override
     public void initView(View rootView) {
         tv_title.setText(getString(R.string.article_select));
-        getMissionObj = (GetMissionObj) getArguments().getSerializable(Constants.GET_MISSION_OBJ);
+//        getMissionObj = (GetMissionObj) getArguments().getSerializable(Constants.GET_MISSION_OBJ);
 
         initSearchButton();
         initDailyList();
@@ -153,12 +154,13 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
             if (dailyArticles.size() == 0) {
                 return;
             }
-            ArticleBean articleBean = dailyArticles.get(position);
-            if (null != getMissionObj) {
-                articleBean.TaskNo = getMissionObj.getTaskNo();
-                articleBean.MissionNo = getMissionObj.getMissionNo();
-            }
-            EventBus.getDefault().post(articleBean);
+//            ArticleBean articleBean = dailyArticles.get(position);
+//            if (null != getMissionObj) {
+//                articleBean.TaskNo = getMissionObj.getTaskNo();
+//                articleBean.MissionNo = getMissionObj.getMissionNo();
+//            }
+//            EventBus.getDefault().post(articleBean);
+            sendArticle(dailyArticles.get(position));
             homeActivity.getSupportFragmentManager().popBackStack();
         });
         list_daily.setAdapter(mDailyAdapter);
@@ -185,15 +187,12 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
     private void initSearchList() {
 
         mSearchAdapter = new ArticleAdapter(getActivity());
-        mSearchAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
-                if (searchArticles.size() == 0) {
-                    return;
-                }
-                EventBus.getDefault().post(searchArticles.get(position));
-                homeActivity.getSupportFragmentManager().popBackStack();
+        mSearchAdapter.setOnItemClickListener((recyclerView, itemView, position) -> {
+            if (searchArticles.size() == 0) {
+                return;
             }
+            sendArticle(searchArticles.get(position));
+            homeActivity.getSupportFragmentManager().popBackStack();
         });
         list_search.setAdapter(mSearchAdapter);
 
@@ -215,7 +214,16 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
 
     }
 
-
+    private void sendArticle(ArticleBean articleBean){
+        CustomCaseHistoryMessage message = new CustomCaseHistoryMessage();
+        message.title = "文章内容";
+        message.content = articleBean.title;
+        message.id = String.valueOf(articleBean.articleId);
+        message.url = articleBean.previewUrl;
+        message.setType("CustomArticleMessage");
+        message.setDescription("文章");
+        EventBus.getDefault().post(message);
+    }
     //接口请求 加载文章列表
     private void getDailyArticles() {
         mPresenter.getUsefulArticle(UsefulArticleCount);

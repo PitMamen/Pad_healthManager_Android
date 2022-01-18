@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="Orientation">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_46"
+        android:background="@color/white"
+        tools:ignore="MissingConstraints">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/im_gobackhome"
+                android:layout_width="@dimen/qb_px_16"
+                android:layout_height="@dimen/qb_px_16"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:src="@mipmap/icon_fanhui"></ImageView>
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="我的快捷回复"
+            android:textColor="@color/text_black"
+            android:textSize="18sp"></TextView>
+
+
+        <TextView
+            android:id="@+id/tv_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/qb_px_30"
+            android:text="编辑"
+            android:textColor="@color/main_blue"
+            android:visibility="gone"></TextView>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_commonlyuselayout"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:layout_marginStart="@dimen/qb_px_10"
+        android:layout_below="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_commonlyuse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="企业常用"
+            android:textColor="@color/black"
+            android:textSize="15sp">
+
+        </TextView>
+
+
+        <View
+            android:layout_below="@+id/tv_commonlyuse"
+            android:id="@+id/view_sfjh_bottom"
+            android:layout_width="@dimen/qb_px_42"
+            android:layout_height="2dp"
+            android:layout_marginTop="@dimen/qb_px_7"
+            android:background="@color/blue_one"></View>
+
+    </RelativeLayout>
+
+
+    <com.bitvalue.health.util.customview.WrapRecyclerView
+        android:id="@+id/list_quickreply"
+        android:layout_below="@+id/rl_commonlyuselayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/qb_px_8"
+       />
+
+
+
+
+</RelativeLayout>

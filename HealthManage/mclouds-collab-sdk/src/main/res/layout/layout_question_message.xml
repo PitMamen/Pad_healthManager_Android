@@ -13,9 +13,10 @@
 
         <ImageView
             android:layout_width="@dimen/qb_px_12"
+            android:layout_height="@dimen/qb_px_12"
             android:src="@drawable/icon_question_msg"
             android:scaleType="centerCrop"
-            android:layout_height="@dimen/qb_px_12"/>
+            />
 
         <TextView
             android:id="@+id/tv_title"
@@ -39,9 +40,6 @@
         android:text="标题:"
         android:textSize="@dimen/qb_px_7"
         android:textColor="@color/black" />
-
-
-
 
 
 

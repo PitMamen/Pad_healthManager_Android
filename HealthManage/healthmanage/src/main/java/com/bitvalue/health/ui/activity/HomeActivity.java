@@ -2,7 +2,9 @@ package com.bitvalue.health.ui.activity;
 
 
 import static com.bitvalue.health.util.Constants.EVENT_MES_TYPE_CLOUDCLINC;
+import static com.bitvalue.health.util.Constants.FRAGMENT_DETAIL;
 import static com.bitvalue.health.util.Constants.FRAGMENT_NEW_LYDISCHARGED_PATIENT;
+import static com.bitvalue.health.util.Constants.LISTBEAN;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -37,9 +39,12 @@ import com.bitvalue.health.presenter.homepersenter.HomePersenter;
 import com.bitvalue.health.ui.fragment.chat.ChatFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.ConsultingServiceFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddArticleFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.AddRemindFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddVideoFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.ArticleDetailFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.FollowUpPlanFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.NewDischargedFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.PatientDetailFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.PatientReportFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.HealthHistoryPreFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.WriteHealthFragment;
@@ -53,6 +58,7 @@ import com.bitvalue.health.ui.fragment.healthmanage.HealthUploadDataFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.NewMsgFragmentDisplay;
 import com.bitvalue.health.ui.fragment.healthmanage.PlanMsgFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.QuestionDetailFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.QuickReplyFragment;
 import com.bitvalue.health.ui.fragment.schedule.ScheduleFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddQuestionFragment;
 import com.bitvalue.health.ui.fragment.setting.CreateNewHealthPlanFragment;
@@ -74,6 +80,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -383,7 +390,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         if (isContain) {
             mapFragments.remove(keyFragment);
         }
-        Log.e(TAG, "switchSecondFragment: " + keyFragment);
         switch (keyFragment) {
 
             //聊天界面
@@ -429,23 +435,29 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 break;
 //         添加文章界面
             case Constants.FRAGMENT_ADD_PAPER:
-                GetMissionObj getMissionPaper = (GetMissionObj) object;
-                AddArticleFragment addArticleFragment;
-                addArticleFragment = new AddArticleFragment();
-                Bundle bundlePaper = new Bundle();
-                bundlePaper.putSerializable(Constants.GET_MISSION_OBJ, getMissionPaper);
-                addArticleFragment.setArguments(bundlePaper);
+//                GetMissionObj getMissionPaper = (GetMissionObj) object;
+//                AddArticleFragment addArticleFragment;
+//                addArticleFragment = new AddArticleFragment();
+//                Bundle bundlePaper = new Bundle();
+//                bundlePaper.putSerializable(Constants.GET_MISSION_OBJ, getMissionPaper);
+//                addArticleFragment.setArguments(bundlePaper);
+
+                AddArticleFragment addArticleFragment  = new AddArticleFragment();
                 mapFragments.put(Constants.FRAGMENT_ADD_PAPER, addArticleFragment);
                 break;
 
             //添加问卷界面
             case Constants.FRAGMENT_ADD_QUESTION:
-                GetMissionObj getMissionObj = (GetMissionObj) object;
-                AddQuestionFragment addQuestionFragment;
-                addQuestionFragment = new AddQuestionFragment();
-                Bundle bundleQue = new Bundle();
-                bundleQue.putSerializable(Constants.GET_MISSION_OBJ, getMissionObj);
-                addQuestionFragment.setArguments(bundleQue);
+//                GetMissionObj getMissionObj = (GetMissionObj) object;
+//                AddQuestionFragment addQuestionFragment;
+//                addQuestionFragment = new AddQuestionFragment();
+//                Bundle bundleQue = new Bundle();
+//                bundleQue.putSerializable(Constants.GET_MISSION_OBJ, getMissionObj);
+//                addQuestionFragment.setArguments(bundleQue);
+
+
+                AddQuestionFragment addQuestionFragment = new AddQuestionFragment();
+
                 mapFragments.put(Constants.FRAGMENT_ADD_QUESTION, addQuestionFragment);
                 break;
 
@@ -625,6 +637,38 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 mapFragments.put(Constants.FRAGMENT_NEW_LYDISCHARGED_PATIENT, dischargedFragment);
                 break;
 
+                //发送提醒界面
+            case Constants.FRAGMENT_SEND_REMIND:
+                AddRemindFragment addRemindFragment = new AddRemindFragment();
+                mapFragments.put(Constants.FRAGMENT_SEND_REMIND, addRemindFragment);
+                break;
+                //快捷回复界面
+            case Constants.FRAGMENT_QUICKREPLY:
+                QuickReplyFragment quickReplyFragment = new QuickReplyFragment();
+                mapFragments.put(Constants.FRAGMENT_QUICKREPLY, quickReplyFragment);
+                break;
+
+                //计划列表界面
+            case Constants.FRAGMENT_PLAN_LIST:
+                List<NewLeaveBean.RowsDTO> listBean = (List<NewLeaveBean.RowsDTO>) object;
+                FollowUpPlanFragment followUpPlanFragment = new FollowUpPlanFragment();
+                Bundle bundle_followup = new Bundle();
+                bundle_followup.putSerializable(LISTBEAN, (Serializable) listBean);
+                followUpPlanFragment.setArguments(bundle_followup);
+                mapFragments.put(Constants.FRAGMENT_PLAN_LIST, followUpPlanFragment);
+                break;
+
+                //患者详情界面
+            case Constants.FRAGMENT_DETAIL:
+                NewLeaveBean.RowsDTO  patientitem = (NewLeaveBean.RowsDTO) object;
+                PatientDetailFragment patientDetailFragment = new PatientDetailFragment();
+                Bundle bundle_detail = new Bundle();
+                bundle_detail.putSerializable(FRAGMENT_DETAIL, (Serializable) patientitem);
+                patientDetailFragment.setArguments(bundle_detail);
+                mapFragments.put(FRAGMENT_DETAIL, patientDetailFragment);
+                break;
+
+
 
             //患者资料详情  （暂时不用）
 //            case Constants.FRAGMENT_VIDEO_PATIENT_DATA:
@@ -711,7 +755,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                     return;
                 }
                 frameLayout_full.setVisibility(View.GONE);
-                switchSecondFragment(FRAGMENT_NEW_LYDISCHARGED_PATIENT,"");
+//                switchSecondFragment(FRAGMENT_NEW_LYDISCHARGED_PATIENT,"");
                 EventBus.getDefault().post(new MainRefreshObj()); // 通知健康管理界面获取数据 请求接口
                 afterTabSelect(0);
                 break;

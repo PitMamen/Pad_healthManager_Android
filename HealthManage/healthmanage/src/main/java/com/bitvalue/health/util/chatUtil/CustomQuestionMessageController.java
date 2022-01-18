@@ -1,16 +1,12 @@
 package com.bitvalue.health.util.chatUtil;
 
-import static com.bitvalue.health.util.Constants.ACTION_QUESTION_DETAIL;
-import static com.bitvalue.health.util.Constants.QUESTIONDETAIL;
-
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
 import com.bitvalue.health.Application;
-import com.bitvalue.health.api.responsebean.QuestionResultBean;
+import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.sdk.collab.R;
@@ -46,7 +42,6 @@ public class CustomQuestionMessageController {
         tv_questionContent.setText("内容:" + data.name);
         view.setClickable(true);
         view.setOnClickListener(v -> {
-            Application appApplication = (Application) view.getContext();
             /**
              * 如果集合大于一个 则跳转至列表界面  如果等于1 则直接跳转至webView 问卷详情界面
              */

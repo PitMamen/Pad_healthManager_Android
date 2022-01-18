@@ -20,11 +20,34 @@
         android:paddingVertical="@dimen/qb_px_8"
         tools:ignore="MissingConstraints">
 
-        <!--    http://img.duoziwang.com/2021/03/1623076080632524.jpg -->
+
+        <RelativeLayout
+            android:layout_centerVertical="true"
+            android:id="@+id/rl_check"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           >
+
+            <CheckBox
+                android:id="@+id/ck_selct"
+                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                tools:ignore="MissingConstraints"></CheckBox>
+
+        </RelativeLayout>
+
+
         <ImageView
             android:id="@+id/img_head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/qb_px_16"
             android:scaleType="centerCrop"
             android:src="@drawable/default_head_img"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -4,6 +4,10 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
 import static com.bitvalue.health.util.Constants.CHAT_TYPE;
+import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_PAPER;
+import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_QUESTION;
+import static com.bitvalue.health.util.Constants.FRAGMENT_QUICKREPLY;
+import static com.bitvalue.health.util.Constants.FRAGMENT_SEND_REMIND;
 import static com.bitvalue.health.util.Constants.SINGLECHAT;
 import static com.bitvalue.health.util.Constants.USER_IDS;
 import static com.tencent.imsdk.v2.V2TIMConversation.V2TIM_C2C;
@@ -176,30 +180,32 @@ public class ChatFragment extends BaseFragment {
             }
         });
 
-//        mChatLayout.getInputLayout().tv_sendremind.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, SendRemindActivity.class);
-//            intent.putStringArrayListExtra(USER_IDS, userIDList);
-//            startActivity(intent);
-//        });
-//
-//        mChatLayout.getInputLayout().tv_sendquestion.setOnClickListener(v -> {
+        mChatLayout.getInputLayout().tv_sendremind.setOnClickListener(v -> {
+            homeActivity.switchSecondFragment(FRAGMENT_SEND_REMIND,"");
+        });
+
+        mChatLayout.getInputLayout().tv_sendquestion.setOnClickListener(v -> {
+
+            homeActivity.switchSecondFragment(FRAGMENT_ADD_QUESTION,"");
+
 //            Intent intent = new Intent(this, SendArtQueActivity.class);
 //            intent.putExtra(CHAT_TYPE, SINGLECHAT);
 //            intent.putExtra(DATA_TYPE, "发送问卷");
 //            intent.putStringArrayListExtra(USER_IDS, userIDList);
 //            startActivity(intent);
-//        });
-//
-//        mChatLayout.getInputLayout().tv_sendarticle.setOnClickListener(v -> {
+        });
+
+        mChatLayout.getInputLayout().tv_sendarticle.setOnClickListener(v -> {
 //            Intent intent = new Intent(this, SendArtQueActivity.class);
 //            intent.putStringArrayListExtra(USER_IDS, userIDList);
 //            intent.putExtra(DATA_TYPE, "发送文章");
 //            intent.putExtra(CHAT_TYPE, SINGLECHAT);
 //            startActivity(intent);
-//        });
-//        mChatLayout.getInputLayout().tv_sendshortcut.setOnClickListener(v -> {
-//            startActivity(new Intent(this,QuickReplyActivity.class));
-//        });
+            homeActivity.switchSecondFragment(FRAGMENT_ADD_PAPER,"");
+        });
+        mChatLayout.getInputLayout().tv_sendshortcut.setOnClickListener(v -> {
+            homeActivity.switchSecondFragment(FRAGMENT_QUICKREPLY,"");
+        });
 
 
         mChatLayout.getInputLayout().setStartActivityListener(() -> {
@@ -436,8 +442,8 @@ public class ChatFragment extends BaseFragment {
         if (mChatLayout != null) {
             mChatLayout.exitChat();
         }
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
-//        EventBus.getDefault().unregister(this);
     }
 
 
@@ -479,17 +485,6 @@ public class ChatFragment extends BaseFragment {
 //            mChatLayout.getInputLayout().mTextInput.setText(result_id);
 //        }
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     public static class NewMsgData implements Serializable {

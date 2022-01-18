@@ -1,6 +1,7 @@
 package com.bitvalue.health.api;
 
 
+import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.requestbean.GetHistoryApi;
 import com.bitvalue.health.api.requestbean.LoginReqBean;
 import com.bitvalue.health.api.requestbean.PersonalDataBean;
@@ -199,6 +200,20 @@ public interface CommonService {
 
     @POST("bone-api/inner/qryPatientList")
     Observable<ApiResult<NewLeaveBean>> qryPatientList(@Body RequestNewLeaveBean leaveBean);
+
+
+
+
+    /**
+     * 所有未注册患者
+     *
+     * @param leaveBean
+     * @return
+     */
+
+    @POST("health-api/patient/qryPatientList")
+    Observable<ApiResult<NewLeaveBean>> qryallAllocatedPatientList(@Body AllocatedPatientRequest leaveBean);
+
 
 
     /**

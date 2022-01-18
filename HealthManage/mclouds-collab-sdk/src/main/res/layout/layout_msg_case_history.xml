@@ -12,9 +12,8 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="@dimen/qb_px_15"
-            android:layout_height="@dimen/qb_px_15"
-            android:layout_marginLeft="@dimen/qb_px_5"
+            android:layout_width="@dimen/qb_px_12"
+            android:layout_height="@dimen/qb_px_12"
             android:scaleType="centerCrop"
             android:src="@drawable/icon_blsxl" />
 
@@ -30,26 +29,24 @@
 
     </LinearLayout>
 
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/qb_px_8"
         android:orientation="horizontal">
-
         <TextView
+            android:text="标题:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/qb_px_5"
-            android:text="标题:"
             android:textColor="@color/text_black"
-            android:textSize="@dimen/qb_px_8"
-            android:textStyle="bold" />
-
+            android:textSize="@dimen/qb_px_7"
+            />
         <TextView
             android:id="@+id/tv_content"
-            android:layout_width="@dimen/qb_px_80"
+            android:layout_width="@dimen/qb_px_60"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/qb_px_10"
             android:text="详情"
             android:textColor="@color/text_desc_dark"
             android:textSize="@dimen/qb_px_7" />
