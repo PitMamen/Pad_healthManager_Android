@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_plans"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/qb_px_11"
+    android:paddingRight="@dimen/qb_px_11"
+    android:layout_height="@dimen/qb_px_180">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="@dimen/qb_px_20"
+        android:gravity="center_horizontal"
+        android:layout_marginRight="@dimen/qb_px_11"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_width="@dimen/qb_px_8"
+            android:background="@drawable/shape_circle_solid_blue"
+            android:layout_height="@dimen/qb_px_8"/>
+        <View
+            android:layout_width="@dimen/qb_px_1"
+            android:background="#CCCCCC"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_plan_title"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/text_black"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:text="第一次随访任务"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_plan_time"
+                    android:layout_width="wrap_content"
+                    android:text=""
+                    android:layout_marginLeft="@dimen/qb_px_20"
+                    android:paddingLeft="@dimen/qb_px_5"
+                    android:paddingRight="@dimen/qb_px_5"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_black"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/qb_px_15"
+                android:layout_marginBottom="@dimen/qb_px_15"
+                android:background="@drawable/shape_bg_gray_light2">
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/qb_px_15"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tv_question"
+                    style="@style/textview_content"
+                    android:text="问卷调查：暂无"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    />
+                <TextView
+                    android:id="@+id/tv_knowledge"
+                    style="@style/textview_content"
+                    android:text="文章阅读：暂无"
+                    android:layout_marginTop="@dimen/qb_px_10"/>
+                <TextView
+                    android:id="@+id/tv_check"
+                    style="@style/textview_content"
+                    android:text="检查提醒：暂无"
+                    android:layout_marginTop="@dimen/qb_px_10"/>
+                <TextView
+                    android:id="@+id/tv_exam"
+                    style="@style/textview_content"
+                    android:text="检验提醒：暂无"
+                    android:layout_marginTop="@dimen/qb_px_10"/>
+                <TextView
+                    android:id="@+id/tv_remind"
+                    style="@style/textview_content"
+                    android:text="健康提醒：暂无"
+                    android:layout_marginTop="@dimen/qb_px_10"/>
+            </LinearLayout>
+                <com.mxq.pq.BeveLabelView
+                    android:id="@+id/bl_tv"
+                    android:layout_width="@dimen/qb_px_62"
+                    android:layout_height="@dimen/qb_px_65"
+                    app:label_corner="@dimen/qb_px_20"
+                    app:label_length="45dp"
+                    app:label_bg_color="#7AC756"
+                    app:label_mode="right_top"
+                    app:label_text="进行中"
+                    app:label_text_color="@color/white"
+                    app:label_text_size="14sp" />
+            </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

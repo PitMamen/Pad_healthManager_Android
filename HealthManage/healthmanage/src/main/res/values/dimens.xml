@@ -752,4 +752,5 @@
     <dimen name="font_normal">16sp</dimen>
     <dimen name="margin_8dp">8dp</dimen>
     <dimen name="toollbar_height">48dp</dimen>
+    <dimen name="head_img_dimen">40dp</dimen>
 </resources>

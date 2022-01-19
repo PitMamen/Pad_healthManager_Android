@@ -280,13 +280,9 @@
     <color name="colorLineItem">#FFDDDDDD</color>
     <!--页面背景的颜色-->
     <color name="colorPageBg">#f2f4f5</color>
-
-
-
-
-
-
-
+    <color name="main_cyan">#7AC756</color>
+    <color name="main_yellow">#F59B0E</color>
+    <color name="text_yellow_dark">#ECC103</color>
 
 
 </resources>

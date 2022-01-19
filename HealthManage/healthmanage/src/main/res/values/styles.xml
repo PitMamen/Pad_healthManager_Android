@@ -67,7 +67,15 @@
         <item name="android:textColor">@color/text_black</item>
         <item name="android:textSize">@dimen/qb_px_8</item>
     </style>
+    <!-- textview 计划任务内容-->
+    <style name="textview_content">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#4D4D4D</item>
 
+        <item name="maxLines">1</item>
+        <item name="android:textSize">14sp</item>
+    </style>
     <!-- textview 下划线样式-->
     <style name="textview_select">
         <item name="android:layout_width">wrap_content</item>
