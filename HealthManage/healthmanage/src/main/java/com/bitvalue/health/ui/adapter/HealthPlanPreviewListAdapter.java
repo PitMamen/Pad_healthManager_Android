@@ -37,7 +37,7 @@ public class HealthPlanPreviewListAdapter extends BaseQuickAdapter<HealthPlanTas
     @Override
     protected void convert(@NotNull BaseViewHolder helper, @NotNull HealthPlanTaskListBean item) {
          helper.setText(R.id.tv_plan_title,item.getTask_describe())
-                 .setText(R.id.tv_plan_time,item.getExec_time()+"");
+                 .setText(R.id.tv_plan_time,TimeUtils.getTime(item.getExec_time()));
 
         BeveLabelView beveLabelView=   helper.getView(R.id.bl_tv);
 

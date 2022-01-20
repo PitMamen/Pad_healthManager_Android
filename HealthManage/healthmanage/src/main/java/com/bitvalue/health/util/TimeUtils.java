@@ -63,7 +63,7 @@ public class TimeUtils {
      * @return
      */
     public static String getTime(long timeInMillis) {
-        return getTime(timeInMillis, DEFAULT_DATE_FORMAT);
+        return getTime(timeInMillis, YY_MM_DD_FORMAT_2);
     }
 
     /**

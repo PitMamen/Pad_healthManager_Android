@@ -35,11 +35,14 @@ public class PlansAdapter extends BaseQuickAdapter<PlanListBean, BaseViewHolder>
 
     public void updateList(List<PlanListBean> data){
         soureceList = data;
-        for (int i = 0; i < soureceList.size(); i++) {
-            if (soureceList.get(i).isChecked) {
-                mSelectedPos = i;
+        if (soureceList!=null){
+            for (int i = 0; i < soureceList.size(); i++) {
+                if (soureceList.get(i).isChecked) {
+                    mSelectedPos = i;
+                }
             }
         }
+
     }
 
 
