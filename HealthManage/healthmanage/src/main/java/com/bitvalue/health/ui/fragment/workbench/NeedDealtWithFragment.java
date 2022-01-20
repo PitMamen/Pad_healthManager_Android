@@ -6,8 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -16,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.BaseFragment;
@@ -25,9 +30,17 @@ import com.bitvalue.health.presenter.mytodolistpersenter.MyToDoListPersenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.HealthPlanListAdapter;
 import com.bitvalue.health.ui.adapter.WaitOutRemindAdapter;
+import com.bitvalue.health.util.EmptyUtil;
+import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hjq.toast.ToastUtils;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,28 +50,42 @@ import butterknife.BindView;
 /**
  * @author created by bitvalue
  * @data : 11/10
- *
+ * <p>
  * 我的待办Fragment
  */
 public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> implements MyToDoListContact.MyToDoListView, PhoneFollowupCliclistener {
 
+    @BindView(R.id.rl_undistribution_refresh)
+    SmartRefreshLayout AllsmartRefreshLayout;  //上下拉刷新控件
     @BindView(R.id.list_patient_dynamic)
-    RecyclerView list_dynamic;  //患者动态 list
+    WrapRecyclerView list_dynamic;  //患者动态 list
+
+    @BindView(R.id.layout_search_result)
+    SmartRefreshLayout searchsmartRefreshLayout;  //搜索上下拉刷新控件
+    @BindView(R.id.search_allpatient)
+    WrapRecyclerView search_recyclerView;  //患者动态 list
+
+
+    @BindView(R.id.et_search)
+    EditText ed_search;
+
 
     @BindView(R.id.framelayout)
     FrameLayout framelayout;  //超时提醒 list
     private HomeActivity homeActivity;
-    private RequestNewLeaveBean requestNewLeaveBean = new RequestNewLeaveBean();
+    private AllocatedPatientRequest allocatedPatientRequest = new AllocatedPatientRequest();
     private HealthPlanListAdapter healthPlanListAdapter;
+    private HealthPlanListAdapter search_patientAdapter;
 
     private List<NewLeaveBean.RowsDTO> allDynamicList = new ArrayList<>(); //我的待办患者列表
+    private List<NewLeaveBean.RowsDTO> searchPatientList = new ArrayList<>(); //我的待办患者列表
 
     private HealthPlanPreviewFragment healthPlanPreviewFragment;
 
+    private int cureentPage = 0;
     private int pageNo = 1;
     private int pageSize = 100;
-
-
+    private int searchPageNo = 1;
 
 
     //初始化当前Fragment的实例
@@ -81,21 +108,142 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     public void initView(View rootView) {
         super.initView(rootView);
         list_dynamic.setLayoutManager(new LinearLayoutManager(homeActivity));
+        search_recyclerView.setLayoutManager(new LinearLayoutManager(homeActivity));
 
-        healthPlanListAdapter = new HealthPlanListAdapter();
-        list_dynamic.setAdapter(healthPlanListAdapter);
-
-        healthPlanListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.show(position+"点击");
-            }
-        });
-
+        initList();
+        initSearchButton();
+        initSearchList();
         replaceFragment();
     }
 
-    private void replaceFragment(){
+
+
+    //初始化搜索控件 并 设置监听
+    private void initSearchButton() {
+        ed_search.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (ed_search.getText().toString().isEmpty()) {
+
+                    ToastUtil.toastShortMessage("请输入搜索内容");
+                    return true;
+                }
+
+                //关闭软键盘
+                hideKeyboard(ed_search);
+                requestData(ed_search.getText().toString());
+                return true;
+            }
+            return false;
+        });
+
+        ed_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().isEmpty()) {
+                    AllsmartRefreshLayout.setVisibility(View.VISIBLE);
+                    searchsmartRefreshLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
+
+
+    private void initList() {
+        healthPlanListAdapter = new HealthPlanListAdapter();
+        list_dynamic.setAdapter(healthPlanListAdapter);
+        healthPlanListAdapter.setOnItemClickListener((adapter, view, position) -> ToastUtils.show(position + "点击"));
+
+        //        上下拉刷新 最外层的
+        AllsmartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+
+            //上拉刷新
+            @Override
+            public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
+                // TODO: 2021/12/8 加载下一页
+                if (cureentPage == pageNo) {
+                    pageNo = 1;
+                    Log.e(TAG, "无更多数据");
+                    AllsmartRefreshLayout.finishLoadMore();
+                    AllsmartRefreshLayout.finishRefresh();
+                    return;
+                }
+                pageNo++;
+                requestData("");
+                AllsmartRefreshLayout.finishLoadMore();
+                AllsmartRefreshLayout.finishRefresh();
+            }
+
+            //下拉刷新
+            @Override
+            public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
+                if (pageNo > 1) {
+                    pageNo--;
+                } else {
+                    AllsmartRefreshLayout.finishRefresh();
+                    return;
+                }
+
+                allDynamicList.clear();
+                requestData("");
+                AllsmartRefreshLayout.finishRefresh();
+            }
+        });
+    }
+
+    private void initSearchList(){
+        search_patientAdapter = new HealthPlanListAdapter();
+        search_recyclerView.setAdapter(search_patientAdapter);
+        search_patientAdapter.setOnItemClickListener((adapter, view, position) -> ToastUtils.show(position + "点击"));
+
+        //        上下拉刷新 最外层的
+        searchsmartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+
+            //上拉刷新
+            @Override
+            public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
+                // TODO: 2021/12/8 加载下一页
+                if (cureentPage == searchPageNo) {
+                    searchPageNo = 1;
+                    Log.e(TAG, "无更多数据");
+                    searchsmartRefreshLayout.finishLoadMore();
+                    searchsmartRefreshLayout.finishRefresh();
+                    return;
+                }
+                searchPageNo++;
+                requestData(ed_search.getText().toString());
+                searchsmartRefreshLayout.finishLoadMore();
+                searchsmartRefreshLayout.finishRefresh();
+            }
+
+            //下拉刷新
+            @Override
+            public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
+                if (searchPageNo > 1) {
+                    searchPageNo--;
+                } else {
+                    searchsmartRefreshLayout.finishRefresh();
+                    return;
+                }
+
+                searchPatientList.clear();
+                requestData(ed_search.getText().toString());
+                searchsmartRefreshLayout.finishRefresh();
+            }
+        });
+    }
+
+    private void replaceFragment() {
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
 
@@ -110,13 +258,27 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     @Override
     public void initData() {
         super.initData();
-        showLoading();
-        requestNewLeaveBean.setKeyWord("");
-        requestNewLeaveBean.setPageNo(pageNo);
-        requestNewLeaveBean.setPageSize(pageSize);
-        mPresenter.qryPatientList(requestNewLeaveBean);
-        mPresenter.qryWaitOotList(requestNewLeaveBean);
+        requestData("");
     }
+
+
+    private void requestData(String name) {
+        showLoading();
+        allocatedPatientRequest.userName = name;
+        if (!EmptyUtil.isEmpty(name)){
+            allocatedPatientRequest.pageNo = searchPageNo;
+        }else {
+            allocatedPatientRequest.pageNo = pageNo;
+        }
+        allocatedPatientRequest.pageSize = pageSize;
+//        allocatedPatientRequest.existsPlanFlag = "1";
+        if (!EmptyUtil.isEmpty(name)){
+            mPresenter.qryPatientByName(allocatedPatientRequest);
+        }else {
+            mPresenter.qryPatientList(allocatedPatientRequest);
+        }
+    }
+
 
     @Override
     protected MyToDoListPersenter createPresenter() {
@@ -127,7 +289,6 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     protected int provideContentViewId() {
         return R.layout.fragment_workbench;
     }
-
 
 
     @Override
@@ -160,13 +321,7 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     }
 
     @Override
-    public void qryWitoutListSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList) {
-
-
-    }
-
-    @Override
-    public void qryWaitoutListFail(String messageFail) {
+    public void qryPatientListFail(String messageFail) {
         getActivity().runOnUiThread(() -> {
             hideDialog();
             ToastUtils.show(messageFail);
@@ -174,10 +329,30 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     }
 
     @Override
-    public void qryPatientListFail(String messageFail) {
-        getActivity().runOnUiThread(() -> {
+    public void qryPatientByNameSuccess(List<NewLeaveBean.RowsDTO> itinfoDetailDTOList) {
+        homeActivity.runOnUiThread(() -> {
             hideDialog();
-            ToastUtils.show(messageFail);
+            searchPatientList.clear();
+            searchPatientList.addAll(itinfoDetailDTOList);
+            if (null==searchPatientList||searchPatientList.size()==0){
+                cureentPage = searchPageNo;
+                ToastUtil.toastShortMessage("未查询到结果");
+                searchsmartRefreshLayout.setVisibility(View.GONE);
+                AllsmartRefreshLayout.setVisibility(View.VISIBLE);
+            }else {
+                searchsmartRefreshLayout.setVisibility(View.VISIBLE);
+                AllsmartRefreshLayout.setVisibility(View.GONE);
+                search_patientAdapter.setNewData(searchPatientList);
+            }
+
+        });
+    }
+
+    @Override
+    public void qryPatientByNameFail(String failmessage) {
+        homeActivity.runOnUiThread(() -> {
+            hideDialog();
+            ToastUtils.show(failmessage);
         });
     }
 }

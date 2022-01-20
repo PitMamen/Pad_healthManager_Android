@@ -215,7 +215,7 @@ public interface CommonService {
 
 
     /**
-     * 所有未注册患者
+     * 所有患者、未注册患者、未分配患者
      *
      * @param leaveBean
      * @return

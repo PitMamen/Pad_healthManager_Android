@@ -1,5 +1,6 @@
 package com.bitvalue.health.presenter.mytodolistpersenter;
 
+import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
@@ -20,7 +21,7 @@ public class MyToDoListPersenter extends BasePresenter<MyToDoListContact.MyToDoL
     }
 
     @Override
-    public void qryPatientList(RequestNewLeaveBean requestNewLeaveBean) {
+    public void qryPatientList(AllocatedPatientRequest requestNewLeaveBean) {
         mModel.qryPatientList(requestNewLeaveBean, new CallBackAdapter() {
             @Override
             public void onSuccess(Object o, int what) {
@@ -41,13 +42,13 @@ public class MyToDoListPersenter extends BasePresenter<MyToDoListContact.MyToDoL
     }
 
     @Override
-    public void qryWaitOotList(RequestNewLeaveBean requestNewLeaveBean) {
-        mModel.qryPatientList(requestNewLeaveBean, new CallBackAdapter() {
+    public void qryPatientByName(AllocatedPatientRequest requestNewLeaveBean) {
+        mModel.qryPatientByName(requestNewLeaveBean, new CallBackAdapter() {
             @Override
             public void onSuccess(Object o, int what) {
                 super.onSuccess(o, what);
                 if (isViewAttach()) {
-                    getView().qryWitoutListSuccess((List<NewLeaveBean.RowsDTO>) o);
+                    getView().qryPatientByNameSuccess((List<NewLeaveBean.RowsDTO>) o);
                 }
             }
 
@@ -55,9 +56,10 @@ public class MyToDoListPersenter extends BasePresenter<MyToDoListContact.MyToDoL
             public void onFailedLog(String str, int what) {
                 super.onFailedLog(str, what);
                 if (isViewAttach()) {
-                    getView().qryWaitoutListFail(str);
+                    getView().qryPatientByNameFail(str);
                 }
             }
         });
     }
+
 }

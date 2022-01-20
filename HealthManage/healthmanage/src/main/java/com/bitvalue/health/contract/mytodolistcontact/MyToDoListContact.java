@@ -1,5 +1,6 @@
 package com.bitvalue.health.contract.mytodolistcontact;
 
+import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.model.IModel;
@@ -17,10 +18,11 @@ public interface MyToDoListContact {
 
         // 查询所有患者 新接口
         void qryPatientListSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList);
-        void qryWitoutListSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList);
 
         void qryPatientListFail(String messageFail);
-        void qryWaitoutListFail(String messageFail);
+
+        void qryPatientByNameSuccess(List<NewLeaveBean.RowsDTO> itinfoDetailDTOList);
+        void qryPatientByNameFail(String failmessage);
 
     }
 
@@ -28,8 +30,9 @@ public interface MyToDoListContact {
     public interface MyToDoListModel extends IModel {
 
         //获取所有患者列表
-        void qryPatientList(RequestNewLeaveBean requestNewLeaveBean, Callback callback);
-        void qryWaitoutList(RequestNewLeaveBean requestNewLeaveBean, Callback callback);
+        void qryPatientList(AllocatedPatientRequest requestNewLeaveBean, Callback callback);
+        //根据名字搜索患者
+        void qryPatientByName(AllocatedPatientRequest requestNewLeaveBean,Callback callback);
 
     }
 
@@ -38,9 +41,9 @@ public interface MyToDoListContact {
 
 //        需要获取 所有患者列表
 
-        void qryPatientList(RequestNewLeaveBean requestNewLeaveBean);
-        void qryWaitOotList(RequestNewLeaveBean requestNewLeaveBean);
-
+        void qryPatientList(AllocatedPatientRequest requestNewLeaveBean);
+        //根据关键字 查询患者
+        void qryPatientByName(AllocatedPatientRequest requestNewLeaveBean);
 
     }
 }

@@ -73,7 +73,7 @@
             android:layout_marginTop="@dimen/qb_px_5"
             android:text="骨科"
             android:textColor="@color/text_desc_dark"
-            android:textSize="8sp">
+            android:textSize="12sp">
 
         </TextView>
 
@@ -84,7 +84,7 @@
             android:layout_height="@dimen/qb_px_5"
             android:layout_below="@+id/tv_patient_name"
             android:layout_marginLeft="@dimen/qb_px_5"
-            android:layout_marginTop="@dimen/qb_px_6"
+            android:layout_marginTop="@dimen/qb_px_8"
             android:layout_toRightOf="@+id/tv_department"
             android:background="@color/text_desc_dark">
 
@@ -103,7 +103,7 @@
             android:layout_toRightOf="@+id/view_line_"
             android:text="专病"
             android:textColor="@color/text_desc_dark"
-            android:textSize="8sp">
+            android:textSize="12sp">
 
         </TextView>
 
@@ -114,7 +114,7 @@
             android:layout_height="@dimen/qb_px_5"
             android:layout_below="@+id/tv_patient_name"
             android:layout_marginLeft="@dimen/qb_px_5"
-            android:layout_marginTop="@dimen/qb_px_6"
+            android:layout_marginTop="@dimen/qb_px_8"
             android:layout_toRightOf="@+id/tv_zhuanb"
             android:background="@color/text_desc_dark">
 
@@ -131,7 +131,7 @@
             android:layout_toRightOf="@+id/line_view"
             android:text="病区"
             android:textColor="@color/text_desc_dark"
-            android:textSize="8sp"></TextView>
+            android:textSize="12sp"></TextView>
 
 
         <RelativeLayout
@@ -169,7 +169,7 @@
             android:layout_marginTop="@dimen/qb_px_5"
             android:text="诊断"
             android:textColor="@color/text_desc_dark"
-            android:textSize="8sp"></TextView>
+            android:textSize="12sp"></TextView>
 
 
         <TextView
