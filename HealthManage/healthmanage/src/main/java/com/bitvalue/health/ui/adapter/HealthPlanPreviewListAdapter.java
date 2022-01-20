@@ -1,13 +1,7 @@
 package com.bitvalue.health.ui.adapter;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.bitvalue.health.Application;
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
-import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.TaskInfoDTO;
-import com.bitvalue.health.callback.PhoneFollowupCliclistener;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.TypeConstants;
 import com.bitvalue.healthmanage.R;
@@ -17,7 +11,6 @@ import com.mxq.pq.BeveLabelView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HealthPlanPreviewListAdapter extends BaseQuickAdapter<HealthPlanTaskListBean, BaseViewHolder> {
