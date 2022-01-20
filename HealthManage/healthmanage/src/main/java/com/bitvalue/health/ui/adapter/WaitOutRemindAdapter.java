@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
  * @data : 01/10
  */
 public class WaitOutRemindAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
-    public static final String TAG = SFJH_HZZX_Adapter.class.getSimpleName();
+    public static final String TAG = WaitOutRemindAdapter.class.getSimpleName();
     private static Context mcontext;
     private List<NewLeaveBean.RowsDTO> sfjhBeanList = new ArrayList<>(); //随访计划 数据
     private PhoneFollowupCliclistener phoneFollowupCliclistener;
@@ -55,14 +55,7 @@ public class WaitOutRemindAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            if (sfjhBeanList != null) {
-                ((WaitOutRemindAdapter.WaitoutViewHodler) holder).bingData(sfjhBeanList.get(position));
-                ((WaitOutRemindAdapter.WaitoutViewHodler) holder).tv_phone.setOnClickListener(v -> {
-                    if (null != phoneFollowupCliclistener) {
-                        phoneFollowupCliclistener.phoneNumberCallback(sfjhBeanList.get(position).getInfoDetail().getDhhm());
-                    }
-                });
-            }
+
 
 
     }
@@ -84,8 +77,7 @@ public class WaitOutRemindAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 
     public static class WaitoutViewHodler extends RecyclerView.ViewHolder {
-        @BindView(R.id.tv_phone_visitor)
-        TextView tv_phone;
+
         @BindView(R.id.img_head)
         ImageView iv_head;
         @BindView(R.id.tv_name)
@@ -96,16 +88,7 @@ public class WaitOutRemindAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView tv_sex;
         @BindView(R.id.tv_time)
         TextView tv_time;
-        @BindView(R.id.tv_type_one)
-        TextView tv_type_one;
-        @BindView(R.id.tv_type_two)
-        TextView tv_type_two;
-        @BindView(R.id.tv_type_three)
-        TextView tv_type_three;
-        @BindView(R.id.tv_type_status)
-        TextView tv_type_status;
-        @BindView(R.id.tv_sf_type)
-        TextView tv_PackageType;  //套餐类型
+
 
 
         public WaitoutViewHodler(@NonNull View itemView) {
@@ -121,12 +104,9 @@ public class WaitOutRemindAdapter extends RecyclerView.Adapter<RecyclerView.View
             tv_age.setText(finatime + "岁");
             tv_sex.setText(sfjhBean.getSex());
             tv_time.setText(sfjhBean.getDiagDate());
-            tv_PackageType.setText(sfjhBean.getDiagnosis());
-            tv_phone.setVisibility(isNumeric(sfjhBean.getInfoDetail().getDhhm()) && !EmptyUtil.isEmpty(sfjhBean.getInfoDetail().getDhhm()) ? View.VISIBLE : View.GONE);
+
+//            tv_phone.setVisibility(isNumeric(sfjhBean.getInfoDetail().getDhhm()) && !EmptyUtil.isEmpty(sfjhBean.getInfoDetail().getDhhm()) ? View.VISIBLE : View.GONE);
             iv_head.setImageDrawable(sfjhBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
-            tv_type_status.setText("已超时");
-            tv_type_status.setTextColor(mcontext.getResources().getColor(R.color.orange_deep_text));
-            tv_type_status.setBackground(mcontext.getResources().getDrawable(R.drawable.shape_orange_small));
 
         }
 

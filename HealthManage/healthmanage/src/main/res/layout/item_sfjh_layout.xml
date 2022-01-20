@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_plans"
     android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/qb_px_120">
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/divider" />
 
     <RelativeLayout
         android:id="@+id/layout_item"
@@ -23,8 +20,8 @@
         <!--    http://img.duoziwang.com/2021/03/1623076080632524.jpg -->
         <ImageView
             android:id="@+id/img_head"
-            android:layout_width="@dimen/qb_px_23"
-            android:layout_height="@dimen/qb_px_23"
+            android:layout_width="@dimen/qb_px_32"
+            android:layout_height="@dimen/qb_px_32"
             android:scaleType="centerCrop"
             android:src="@drawable/default_head_img"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -36,7 +33,7 @@
             android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/qb_px_30"
+            android:layout_marginLeft="@dimen/qb_px_35"
             android:text="王秋"
             android:textColor="@color/text_black"
             android:textSize="15sp"
@@ -45,11 +42,25 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_vip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_10"
+            android:layout_toEndOf="@+id/tv_name"
+            android:drawableLeft="@mipmap/icon_ffyh"
+            android:drawablePadding="@dimen/qb_px_2"
+            android:text="付费用户"
+            android:textColor="@color/text_yellow_dark"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@id/img_head"
+            app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+        <TextView
             android:id="@+id/tv_sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
-            android:layout_marginLeft="@dimen/qb_px_30"
+            android:layout_marginLeft="@dimen/qb_px_35"
             android:layout_marginTop="@dimen/qb_px_5"
             android:text="女"
             android:textColor="@color/text_desc_dark"
@@ -103,225 +114,98 @@
 
     </RelativeLayout>
 
-    <View
-        android:id="@+id/view_line_s"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/layout_item"
-        android:background="@color/cal_days_title"></View>
-
-
-    <RelativeLayout
-        android:visibility="gone"
-        android:id="@+id/rl_sfjh_center"
-        android:layout_below="@+id/view_line_s"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/tv_sf_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/qb_px_10"
-            android:layout_marginTop="@dimen/qb_px_10"
-            android:text="高血压套餐"
-            android:textColor="@color/text_black"
-            android:textSize="14sp"
-            tools:ignore="MissingConstraints">
-
-        </TextView>
-
-
-
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/rr_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_sfjh_center"
-        android:gravity="center">
-
-
-        <TextView
-            android:id="@+id/tv_type_one"
-            android:layout_width="@dimen/qb_px_35"
-            android:layout_height="@dimen/qb_px_15"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/qb_px_11"
-            android:background="@drawable/shape_bg_item"
-            android:gravity="center"
-            android:text="PICC术后"
-            android:textColor="@color/black_666666"
-            android:textSize="12sp"></TextView>
-
-
-        <TextView
-            android:id="@+id/tv_type_two"
-            android:layout_width="@dimen/qb_px_35"
-            android:layout_height="@dimen/qb_px_15"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/qb_px_11"
-            android:layout_toRightOf="@+id/tv_type_one"
-            android:background="@drawable/shape_bg_item"
-            android:gravity="center"
-            android:text="起搏器"
-            android:textColor="@color/black_666666"
-            android:textSize="12sp"></TextView>
-
-
-        <TextView
-            android:id="@+id/tv_type_three"
-            android:layout_width="@dimen/qb_px_35"
-            android:layout_height="@dimen/qb_px_15"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/qb_px_11"
-            android:layout_toRightOf="@+id/tv_type_two"
-            android:background="@drawable/shape_bg_item"
-            android:gravity="center"
-            android:text="心衰"
-            android:textColor="@color/black_666666"
-            android:textSize="12sp"></TextView>
-
-
-        <TextView
-            android:id="@+id/tv_type_status"
-            android:layout_width="@dimen/qb_px_35"
-            android:layout_height="@dimen/qb_px_15"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="@dimen/qb_px_20"
-            android:background="@drawable/shape_bg_item"
-            android:gravity="center"
-            android:text="已超时"
-            android:textColor="@color/red_FF0000"
-            android:textSize="12sp"
-            android:visibility="visible"></TextView>
-
-    </RelativeLayout>
 
     <View
-        android:id="@+id/view_line_"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/rr_status"
-        android:background="@color/cal_days_title">
-    </View>
-
-
-    <LinearLayout
-        android:id="@+id/ll_uploadsign"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/qb_px_20"
-        android:layout_below="@+id/view_line_"
-        android:layout_marginTop="@dimen/qb_px_5"
-        android:orientation="horizontal">
-
-
-        <RelativeLayout
-            android:layout_width="@dimen/qb_px_40"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/qb_px_15"
-            android:background="@drawable/shape_upload_sign">
-
-            <TextView
-                android:id="@+id/tv_isupload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="已传"
-                android:textColor="@color/main_blue_"
-                android:textSize="@dimen/qb_px_8">
-
-            </TextView>
-
-
-        </RelativeLayout>
-
-
-        <TextView
-            android:id="@+id/tv_stay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/qb_px_20"
-            android:text="心电图、冠状CTA"
-            android:textColor="@color/gray"
-            android:textSize="@dimen/qb_px_8">
-
-        </TextView>
-
-
-    </LinearLayout>
-
+        android:background="@color/divider"
+        android:layout_marginStart="@dimen/qb_px_11"
+        android:layout_marginRight="@dimen/qb_px_11"
+        android:layout_height="0.5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_uploadsign"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="@dimen/qb_px_5"
+        android:layout_marginStart="@dimen/qb_px_11"
+        android:layout_marginEnd="@dimen/qb_px_11"
         android:layout_marginTop="@dimen/qb_px_5">
 
-        <TextView
-            android:id="@+id/tv_phone_visitor"
-            android:layout_width="@dimen/qb_px_39"
-            android:layout_height="@dimen/qb_px_16"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/qb_px_13"
-            android:background="@drawable/phone_visitor_shape"
-            android:gravity="center"
-            android:text="电话随访"
-            android:textColor="@color/white"
-            android:textSize="14sp">
 
-        </TextView>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_plan_title"
+                android:layout_width="wrap_content"
+                android:textColor="@color/text_black"
+                android:textSize="14sp"
+                android:text="我的计划名称我的计划名称我的计划名称我的我的计划名称我的计划名称我的计划名称计划名称我的计划名称我的计划名称"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+               />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_20">
+                <TextView
+                    android:id="@+id/tv_plan_num"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/text_desc_dark"
+                    android:textSize="12sp"
+                    android:text="第一次"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_plan_state"
+                    android:layout_width="wrap_content"
+                    android:text="进行中"
+                    android:layout_marginLeft="@dimen/qb_px_20"
+                    android:paddingLeft="@dimen/qb_px_8"
+                    android:paddingRight="@dimen/qb_px_8"
+                    android:textSize="11sp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/shape_bg_cyan_small"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_remind_patient"
-            android:layout_width="@dimen/qb_px_39"
-            android:layout_height="@dimen/qb_px_16"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/qb_px_13"
-            android:background="@drawable/phone_visitor_shape"
-            android:gravity="center"
-            android:text="提醒患者"
-            android:textColor="@color/white"
-            android:textSize="14sp">
+        </LinearLayout>
 
-        </TextView>
+       <LinearLayout
+           android:id="@+id/ll_iv"
+           android:layout_width="wrap_content"
+           android:orientation="horizontal"
+           android:layout_height="wrap_content">
+           <ImageView
+               android:id="@+id/iv_check_plan"
+               app:layout_constraintEnd_toEndOf="parent"
+               android:src="@mipmap/icon_txhz"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginEnd="@dimen/qb_px_11"
+               android:layout_marginStart="@dimen/qb_px_11"
+               tools:ignore="MissingConstraints" />
 
-
-        <TextView
-            android:id="@+id/tv_followfeedback"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/qb_px_16"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/qb_px_13"
-            android:background="@drawable/shape_follow_feedback"
-            android:gravity="center"
-            android:text="查看随访计划"
-            android:textColor="@color/white"
-            android:textSize="14sp">
-
-        </TextView>
+           <ImageView
+               android:id="@+id/iv_send_msg"
+               app:layout_constraintEnd_toStartOf="@id/iv_check_plan"
+               app:layout_constraintStart_toEndOf="@id/tv_plan_title"
+               android:src="@mipmap/icon_sfjh"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               tools:ignore="MissingConstraints" />
+       </LinearLayout>
 
 
     </LinearLayout>
 
+
     <View
-        android:layout_alignParentBottom="true"
-        android:background="@color/cal_days_title"
         android:layout_width="match_parent"
-        android:layout_height="3dp">
+        android:background="@color/beauty_color_bacg"
+        android:layout_height="@dimen/qb_px_5"/>
 
-    </View>
-
-
-
-
-
-
-
-
-
-</RelativeLayout>
+</LinearLayout>

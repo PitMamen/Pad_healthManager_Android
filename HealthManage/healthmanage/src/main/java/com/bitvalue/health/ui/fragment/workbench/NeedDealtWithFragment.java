@@ -4,59 +4,35 @@ import static com.bitvalue.health.util.DataUtil.isNumeric;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
-import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
-import com.bitvalue.health.api.responsebean.VisitBean;
 import com.bitvalue.health.base.BaseFragment;
-import com.bitvalue.health.base.presenter.BasePresenter;
-import com.bitvalue.health.callback.OnItemClickCallback;
 import com.bitvalue.health.callback.PhoneFollowupCliclistener;
 import com.bitvalue.health.contract.mytodolistcontact.MyToDoListContact;
 import com.bitvalue.health.presenter.mytodolistpersenter.MyToDoListPersenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
-import com.bitvalue.health.ui.adapter.DiagnosisTreatmentAdapter;
-import com.bitvalue.health.ui.adapter.SFJH_HZZX_Adapter;
-import com.bitvalue.health.ui.adapter.VisitAdapter;
+import com.bitvalue.health.ui.adapter.HealthPlanListAdapter;
 import com.bitvalue.health.ui.adapter.WaitOutRemindAdapter;
-import com.bitvalue.health.ui.adapter.WaitVisitListAdapter;
-import com.bitvalue.health.util.DensityUtil;
-import com.bitvalue.health.util.MUtils;
-import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hjq.toast.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import lecho.lib.hellocharts.model.Axis;
-import lecho.lib.hellocharts.model.AxisValue;
-import lecho.lib.hellocharts.model.Column;
-import lecho.lib.hellocharts.model.ColumnChartData;
-import lecho.lib.hellocharts.model.ComboLineColumnChartData;
-import lecho.lib.hellocharts.model.Line;
-import lecho.lib.hellocharts.model.LineChartData;
-import lecho.lib.hellocharts.model.PieChartData;
-import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.model.SliceValue;
-import lecho.lib.hellocharts.model.SubcolumnValue;
-import lecho.lib.hellocharts.model.ValueShape;
-import lecho.lib.hellocharts.model.Viewport;
-import lecho.lib.hellocharts.util.ChartUtils;
-import lecho.lib.hellocharts.view.ComboLineColumnChartView;
-import lecho.lib.hellocharts.view.LineChartView;
-import lecho.lib.hellocharts.view.PieChartView;
 
 /**
  * @author created by bitvalue
@@ -69,14 +45,16 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     @BindView(R.id.list_patient_dynamic)
     RecyclerView list_dynamic;  //患者动态 list
 
-    @BindView(R.id.list_timeout_remind)
-    RecyclerView list_timeout_remind;  //超时提醒 list
+    @BindView(R.id.framelayout)
+    FrameLayout framelayout;  //超时提醒 list
     private HomeActivity homeActivity;
     private RequestNewLeaveBean requestNewLeaveBean = new RequestNewLeaveBean();
-    private SFJH_HZZX_Adapter  Adapter_Dynamic;
-    private WaitOutRemindAdapter Adapter_WaitOutRemind;
+    private HealthPlanListAdapter healthPlanListAdapter;
+
     private List<NewLeaveBean.RowsDTO> allDynamicList = new ArrayList<>(); //我的待办患者列表
-    private List<NewLeaveBean.RowsDTO> waitoutListData = new ArrayList<>(); //超时提醒list
+
+    private HealthPlanPreviewFragment healthPlanPreviewFragment;
+
     private int pageNo = 1;
     private int pageSize = 100;
 
@@ -103,16 +81,31 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     public void initView(View rootView) {
         super.initView(rootView);
         list_dynamic.setLayoutManager(new LinearLayoutManager(homeActivity));
-        list_timeout_remind.setLayoutManager(new LinearLayoutManager(homeActivity));
-        Adapter_Dynamic = new SFJH_HZZX_Adapter(allDynamicList, homeActivity);
-        list_dynamic.setAdapter(Adapter_Dynamic);
-        Adapter_Dynamic.setOnItemPhoneNumCallback(this);
 
-        Adapter_WaitOutRemind = new WaitOutRemindAdapter(waitoutListData, homeActivity);
-        list_timeout_remind.setAdapter(Adapter_WaitOutRemind);
-        Adapter_WaitOutRemind.setOnItemPhoneNumCallback(this);
+        healthPlanListAdapter = new HealthPlanListAdapter();
+        list_dynamic.setAdapter(healthPlanListAdapter);
+
+        healthPlanListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ToastUtils.show(position+"点击");
+            }
+        });
+
+        replaceFragment();
     }
 
+    private void replaceFragment(){
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+
+        if (healthPlanPreviewFragment == null) {
+            healthPlanPreviewFragment = new HealthPlanPreviewFragment();
+        }
+        transaction.add(R.id.framelayout, healthPlanPreviewFragment);
+        transaction.commit();
+
+    }
 
     @Override
     public void initData() {
@@ -161,18 +154,14 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
             hideDialog();
             allDynamicList.addAll(infoDetailDTOList);
 
-            Adapter_Dynamic.updateSFJHList(allDynamicList);
+            healthPlanListAdapter.setNewData(allDynamicList);
 
         });
     }
 
     @Override
     public void qryWitoutListSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList) {
-        getActivity().runOnUiThread(() -> {
-            hideDialog();
-            waitoutListData.addAll(infoDetailDTOList);
-            Adapter_WaitOutRemind.updateList(waitoutListData);
-        });
+
 
     }
 

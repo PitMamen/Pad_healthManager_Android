@@ -11,6 +11,7 @@ import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
+import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
 import com.bitvalue.health.api.responsebean.LoginResBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.PatientResultBean;
@@ -24,6 +25,7 @@ import com.bitvalue.health.api.responsebean.TaskPlanDetailBean;
 import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -118,6 +120,14 @@ public interface CommonService {
     @GET("health-api/health/patient/queryHealthPlan")
     Observable<ApiResult<PlanDetailResult>> queryhealtPlan(@Query("planId") String planID);
 
+    /**
+     * 健康计划  任务按时间排序
+     *
+     * @param planID
+     * @return
+     */
+    @GET("health-api/patient/queryHealthPlanTaskList")
+    Observable<ApiResult<List<HealthPlanTaskListBean>>> queryHealthPlanTaskList(@Query("planId") int planID);
 
     /***
      * 提交健康评估 接口
