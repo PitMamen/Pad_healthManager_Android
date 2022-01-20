@@ -47,4 +47,60 @@ public class PatientReportModel extends BaseModel implements PatientReportContra
             });
         }
     }
+
+    @Override
+    public void qryByNameAllocatedPatienList(AllocatedPatientRequest allocatedPatientRequest,Callback callback) {
+        if (allocatedPatientRequest!=null){
+            mApi.qryallAllocatedPatientList(allocatedPatientRequest).subscribeOn(Schedulers.io()).subscribe(result->{
+                if (!EmptyUtil.isEmpty(result)){
+                    Log.e(TAG, "qryAllocatedPatienList: "+result.getData().getRows() );
+                    if (result.getCode() == 0) {
+                        if (!EmptyUtil.isEmpty(result.getData().getRows())){
+                            callback.onSuccess(result.getData().getRows(),1000);
+                        }else {
+                            callback.onFailedLog("未查询到患者",1001);
+                        }
+
+                    } else {
+                        callback.onFailedLog(result.getMessage(), 1001);
+                    }
+
+                }
+            },error->{
+                Log.e(TAG, "qryAllocatedPatienList: "+error.getMessage() );
+                callback.onFailedLog(error.getMessage(),1001);
+            });
+        }
+
+
+
+
+
+
+    }
+
+    @Override
+    public void qryUnregisterPatienList(AllocatedPatientRequest allocatedPatientRequest, Callback callback) {
+        if (allocatedPatientRequest!=null){
+            mApi.qryallAllocatedPatientList(allocatedPatientRequest).subscribeOn(Schedulers.io()).subscribe(result->{
+                if (!EmptyUtil.isEmpty(result)){
+                    Log.e(TAG, "qryAllocatedPatienList: "+result.getData().getRows() );
+                    if (result.getCode() == 0) {
+                        if (!EmptyUtil.isEmpty(result.getData().getRows())){
+                            callback.onSuccess(result.getData().getRows(),1000);
+                        }else {
+                            callback.onFailedLog("未查询到患者",1001);
+                        }
+
+                    } else {
+                        callback.onFailedLog(result.getMessage(), 1001);
+                    }
+
+                }
+            },error->{
+                Log.e(TAG, "qryAllocatedPatienList: "+error.getMessage() );
+                callback.onFailedLog(error.getMessage(),1001);
+            });
+        }
+    }
 }

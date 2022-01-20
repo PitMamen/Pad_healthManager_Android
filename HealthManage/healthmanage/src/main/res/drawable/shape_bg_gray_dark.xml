@@ -3,10 +3,10 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <corners
-        android:bottomLeftRadius="@dimen/qb_px_2"
-        android:bottomRightRadius="@dimen/qb_px_2"
-        android:topLeftRadius="@dimen/qb_px_2"
-        android:topRightRadius="@dimen/qb_px_2" />
+        android:bottomLeftRadius="@dimen/qb_px_2_1"
+        android:bottomRightRadius="@dimen/qb_px_2_1"
+        android:topLeftRadius="@dimen/qb_px_2_1"
+        android:topRightRadius="@dimen/qb_px_2_1" />
 
 
     <stroke

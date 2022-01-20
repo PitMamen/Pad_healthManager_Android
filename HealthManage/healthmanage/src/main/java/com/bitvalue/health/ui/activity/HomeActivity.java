@@ -4,6 +4,7 @@ package com.bitvalue.health.ui.activity;
 import static com.bitvalue.health.util.Constants.EVENT_MES_TYPE_CLOUDCLINC;
 import static com.bitvalue.health.util.Constants.FRAGMENT_DETAIL;
 import static com.bitvalue.health.util.Constants.FRAGMENT_NEW_LYDISCHARGED_PATIENT;
+import static com.bitvalue.health.util.Constants.FRAGMENT_PLAN_LIST;
 import static com.bitvalue.health.util.Constants.LISTBEAN;
 
 import android.os.Bundle;
@@ -649,13 +650,13 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 break;
 
                 //计划列表界面
-            case Constants.FRAGMENT_PLAN_LIST:
-                List<NewLeaveBean.RowsDTO> listBean = (List<NewLeaveBean.RowsDTO>) object;
+            case FRAGMENT_PLAN_LIST:
+//                List<NewLeaveBean.RowsDTO> listBean = (List<NewLeaveBean.RowsDTO>) object;
                 FollowUpPlanFragment followUpPlanFragment = new FollowUpPlanFragment();
-                Bundle bundle_followup = new Bundle();
-                bundle_followup.putSerializable(LISTBEAN, (Serializable) listBean);
-                followUpPlanFragment.setArguments(bundle_followup);
-                mapFragments.put(Constants.FRAGMENT_PLAN_LIST, followUpPlanFragment);
+//                Bundle bundle_followup = new Bundle();
+//                bundle_followup.putSerializable(LISTBEAN, (Serializable) listBean);
+//                followUpPlanFragment.setArguments(bundle_followup);
+                mapFragments.put(FRAGMENT_PLAN_LIST, followUpPlanFragment);
                 break;
 
                 //患者详情界面
@@ -755,7 +756,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                     return;
                 }
                 frameLayout_full.setVisibility(View.GONE);
-//                switchSecondFragment(FRAGMENT_NEW_LYDISCHARGED_PATIENT,"");
+                switchSecondFragment(FRAGMENT_PLAN_LIST,"");
                 EventBus.getDefault().post(new MainRefreshObj()); // 通知健康管理界面获取数据 请求接口
                 afterTabSelect(0);
                 break;

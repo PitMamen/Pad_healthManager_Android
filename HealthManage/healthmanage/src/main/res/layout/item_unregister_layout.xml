@@ -18,24 +18,6 @@
         tools:ignore="MissingConstraints">
 
 
-        <RelativeLayout
-            android:id="@+id/rl_check"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:visibility="visible">
-
-            <CheckBox
-                android:id="@+id/ck_selct"
-                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:scaleX="0.7"
-                android:scaleY="0.7"
-                tools:ignore="MissingConstraints"></CheckBox>
-
-        </RelativeLayout>
 
 
         <ImageView
@@ -233,7 +215,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp">
     </View>
-
 
 
 </RelativeLayout>

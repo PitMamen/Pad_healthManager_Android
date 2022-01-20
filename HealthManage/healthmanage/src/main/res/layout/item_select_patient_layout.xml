@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+
+    <RelativeLayout
+        android:background="@drawable/shape_select_patient_"
+        android:layout_marginTop="@dimen/qb_px_8"
+        android:layout_marginStart="@dimen/qb_px_5"
+        android:layout_width="56dp"
+        android:layout_height="24dp">
+
+        <TextView
+            android:id="@+id/tv_pat_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/qb_px_3"
+            android:layout_marginEnd="@dimen/qb_px_5"
+            android:text="李江山"
+            android:textColor="#7AC756"
+            android:textSize="12sp"></TextView>
+
+
+
+        <TextView
+            android:id="@+id/tv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="X"
+            android:layout_marginEnd="@dimen/qb_px_2"
+            android:layout_alignParentRight="true"
+            android:textColor="#7AC756"
+            android:textSize="12sp"></TextView>
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

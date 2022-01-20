@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +19,7 @@ import com.bitvalue.health.callback.OnItemClickCallback;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.healthmanage.R;
-import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.android.material.bottomappbar.BottomAppBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +31,15 @@ import butterknife.ButterKnife;
  * @author created by bitvalue
  * @data : 01/18
  */
-public class AllocatedPatientAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class UnRegisterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+
     public static final String TAG = NewLyDisCharPatienAdapter.class.getSimpleName();
     private List<NewLeaveBean.RowsDTO> PatientList;
     private OnItemClick itemClickCallback;
     private OnItemClickCallback onItemClickCallback;
 
 
-    public AllocatedPatientAdapter(List<NewLeaveBean.RowsDTO> sfjhBeanList, OnItemClick callback,OnItemClickCallback onItemClickCallback) {
+    public UnRegisterAdapter(List<NewLeaveBean.RowsDTO> sfjhBeanList, OnItemClick callback, OnItemClickCallback onItemClickCallback) {
         this.PatientList = sfjhBeanList;
         this.itemClickCallback = callback;
         this.onItemClickCallback = onItemClickCallback;
@@ -121,27 +121,21 @@ public class AllocatedPatientAdapter extends RecyclerView.Adapter<RecyclerView.V
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_patient_allocated_layout, parent, false);
-        return new AllocatedPatientAdapter.PatientViewHodler(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_unregister_layout, parent, false);
+        return new UnRegisterAdapter.PatientViewHodler(view);
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (null != PatientList) {
-            ((AllocatedPatientAdapter.PatientViewHodler) holder).bindData(PatientList.get(position));
+            ((UnRegisterAdapter.PatientViewHodler) holder).bindData(PatientList.get(position));
 
-             ((PatientViewHodler) holder).checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                 if (null!=itemClickCallback)
-                 itemClickCallback.onItemClick(PatientList.get(position),isChecked);
-             });
-
-             ((PatientViewHodler) holder).im_head.setOnClickListener(v -> {
-                 if (null!=onItemClickCallback){
-                     onItemClickCallback.onItemClick(PatientList.get(position));
-                 }
-             });
-
+            ((PatientViewHodler) holder).im_head.setOnClickListener(v -> {
+               if (null!=onItemClickCallback){
+                   onItemClickCallback.onItemClick(PatientList.get(position));
+                }
+            });
 
         }
     }
@@ -162,8 +156,6 @@ public class AllocatedPatientAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView tv_sex;
         @BindView(R.id.tv_patient_age)
         TextView tv_age;
-        @BindView(R.id.ck_selct)
-        CheckBox checkBox;
         @BindView(R.id.tv_dis_time)
         TextView time;
         @BindView(R.id.tv_department)
@@ -194,9 +186,6 @@ public class AllocatedPatientAdapter extends RecyclerView.Adapter<RecyclerView.V
             String curen = TimeUtils.getCurrenTime();
             int finatime = Integer.valueOf(curen) - Integer.valueOf((bean.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
             tv_age.setText(finatime+"岁");
-            Log.e(TAG, "userName: " + bean.getUserName() + "  useriD:" + bean.getUserId() + " isShow?" + bean.isShowCheck());
-            checkBox.setVisibility(bean.isShowCheck() ? View.VISIBLE : View.GONE);
-            checkBox.setChecked(bean.isChecked());
             im_head.setImageDrawable(bean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
 
         }

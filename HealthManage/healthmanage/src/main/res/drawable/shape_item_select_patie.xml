@@ -9,13 +9,12 @@
         android:topRightRadius="@dimen/qb_px_2_1" />
 
 
-<!--    边框背景 及宽度-->
+    <!--    边框背景 及宽度-->
     <stroke
-        android:width="@dimen/qb_px_1"
-        android:color="@color/cal_days_title" />
+        android:width="0.25dp"
+        android:color="@color/text_desc" />
     <!-- 内部填充背景色 -->
-<!--    <solid android:color="#0088F4" />-->
-    <solid android:color="#F5F5F5" />
+    <solid android:color="#FFFFFF" />
 
 
 </shape>

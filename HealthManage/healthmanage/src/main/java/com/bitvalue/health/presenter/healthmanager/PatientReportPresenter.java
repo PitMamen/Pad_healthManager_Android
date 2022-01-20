@@ -47,4 +47,46 @@ public class PatientReportPresenter extends BasePresenter<PatientReportContract.
             }
         });
     }
+
+    @Override
+    public void qryByNameAllocatedPatienList(AllocatedPatientRequest allocatedPatientRequest) {
+        mModel.qryAllocatedPatienList(allocatedPatientRequest,new CallBackAdapter(){
+            @Override
+            public void onSuccess(Object o, int what) {
+                super.onSuccess(o, what);
+                if (isViewAttach()) {
+                    getView().qryByNameAllocatedPatienListSuccess((List<NewLeaveBean.RowsDTO>) o);
+                }
+            }
+
+            @Override
+            public void onFailedLog(String str, int what) {
+                super.onFailedLog(str, what);
+                if (isViewAttach()) {
+                    getView().qryByNameAllocatedPatienListFail(str);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void qryUnregisterPatienList(AllocatedPatientRequest allocatedPatientRequest) {
+        mModel.qryUnregisterPatienList(allocatedPatientRequest,new CallBackAdapter(){
+            @Override
+            public void onSuccess(Object o, int what) {
+                super.onSuccess(o, what);
+                if (isViewAttach()) {
+                    getView().qryUnregisterSuccess((List<NewLeaveBean.RowsDTO>) o);
+                }
+            }
+
+            @Override
+            public void onFailedLog(String str, int what) {
+                super.onFailedLog(str, what);
+                if (isViewAttach()) {
+                    getView().qryUnregisterFail(str);
+                }
+            }
+        });
+    }
 }

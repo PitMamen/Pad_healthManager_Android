@@ -15,6 +15,9 @@ public class PlanListBean implements Serializable,Comparable<PlanListBean> {
     public long updateTime;
     public int userNum;
 
+    public boolean isChecked;
+
+
     @Override
     public int compareTo(PlanListBean planListBean) {
         return planListBean.userNum - this.userNum;

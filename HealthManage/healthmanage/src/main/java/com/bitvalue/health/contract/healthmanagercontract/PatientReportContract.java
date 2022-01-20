@@ -25,17 +25,29 @@ public interface PatientReportContract {
         void qryAllocatedPatienFail(String failMessage);
 
 
+        void qryUnregisterSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList);
+        void qryUnregisterFail(String messageFail);
+
+
+        void qryByNameAllocatedPatienListSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList);
+        void qryByNameAllocatedPatienListFail(String failMessage);
+
+
     }
 
 
     interface Model extends IModel {
         void qryAllocatedPatienList(AllocatedPatientRequest allocatedPatientRequest,Callback callback);
+        void qryByNameAllocatedPatienList(AllocatedPatientRequest allocatedPatientRequest,Callback callback);
+        void qryUnregisterPatienList(AllocatedPatientRequest allocatedPatientRequest,Callback callback);
     }
 
 
     interface Presenter {
 
         void qryAllocatedPatienList(AllocatedPatientRequest allocatedPatientRequest);
+        void qryByNameAllocatedPatienList(AllocatedPatientRequest allocatedPatientRequest);
+        void qryUnregisterPatienList(AllocatedPatientRequest allocatedPatientRequest);
 
     }
 }

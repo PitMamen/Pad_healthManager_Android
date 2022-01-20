@@ -140,15 +140,19 @@ public class NewLeaveBean implements Serializable {
         }
 
         @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            RowsDTO rowsDTO = (RowsDTO) o;
-            if (rowsDTO.userId == null) {
-                return true;
-            }
-             else {
-                return userId.equals(rowsDTO.userId);
+        public boolean equals(Object obj) {
+            if (obj instanceof RowsDTO) {
+                RowsDTO user=(RowsDTO) obj;
+                if (this.userId==null){
+                    return true;
+                }
+                if (this.userId.equals(user.userId)) {
+                    return true;
+                }else {
+                    return false;
+                }
+            }else {
+                return false;
             }
         }
 

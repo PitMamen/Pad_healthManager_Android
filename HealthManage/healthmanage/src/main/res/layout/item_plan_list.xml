@@ -5,22 +5,69 @@
     android:background="@drawable/shape_bg_white"
     android:layout_height="@dimen/qb_px_35">
 
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/rl_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:visibility="visible">
+
+        <CheckBox
+            android:id="@+id/ck_selct"
+            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+           ></CheckBox>
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+
     <TextView
         android:id="@+id/tv_plan_name"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="骨科"
-        android:layout_marginStart="@dimen/qb_px_10"
+        android:layout_marginStart="@dimen/qb_px_18"
         android:textColor="@color/black"
         android:textSize="12sp" />
 
+
+    <TextView
+        android:id="@+id/tv_bone_number_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/qb_px_5"
+        android:layout_toLeftOf="@+id/view_line"
+        android:text="骨科"
+        android:textColor="@color/text_desc_dark"
+        android:textSize="11sp" />
+
+
+
+
     <View
+         android:id="@+id/view_line"
         android:layout_width="1.5dp"
+        android:layout_centerVertical="true"
         android:layout_height="@dimen/qb_px_15"
-        android:layout_marginTop="@dimen/qb_px_15"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/qb_px_40"
+        android:layout_marginTop="@dimen/qb_px_15"
+        android:layout_marginRight="@dimen/qb_px_30"
         android:background="@color/bg_gray_light_two" />
 
 
@@ -29,49 +76,13 @@
         android:id="@+id/tv_bone_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2"
-        android:layout_marginEnd="@dimen/qb_px_15"
+        android:text="专病1"
+        android:layout_marginEnd="@dimen/qb_px_9"
         android:layout_alignParentRight="true"
-        android:textColor="@color/main_blue_"
+        android:textColor="@color/text_desc_dark"
         android:textSize="12sp" />
 
-    <TextView
-        android:layout_marginEnd="@dimen/qb_px_5"
-        android:layout_centerVertical="true"
-        android:layout_below="@+id/tv_bone_number"
-        android:layout_alignParentRight="true"
-        android:id="@+id/tv_bone_number_des"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="个案数量"
-        android:textColor="@color/text_desc_dark"
-        android:textSize="11sp" />
 
 
-
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_alignParentRight="true"-->
-<!--        android:orientation="vertical"-->
-<!--        android:layout_centerVertical="true"-->
-<!--        android:gravity="center_horizontal"-->
-<!--        android:layout_height="@dimen/qb_px_35">-->
-<!--        <TextView-->
-<!--            android:id="@+id/tv_bone_number"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="2"-->
-<!--            android:textColor="@color/main_blue_"-->
-<!--            android:textSize="12sp" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/tv_bone_number_des"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="个案数量"-->
-<!--            android:textColor="@color/text_desc_dark"-->
-<!--            android:textSize="11sp" />-->
-<!--    </LinearLayout>-->
 
 </RelativeLayout>
