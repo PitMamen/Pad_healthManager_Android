@@ -136,7 +136,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMessage(VideoRefreshObj mainRefreshObj) {
-        Log.e(TAG, "onEventMessage:-----"+mPresenter);
+        Log.e(TAG, "onEventMessage:-----" + mPresenter);
         requestNewLeaveBean.setPageNo(pageNo);
         requestNewLeaveBean.setPageSize(pageSize);
         mPresenter.qryMedicalPatients(requestNewLeaveBean);
@@ -147,12 +147,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
             info.setUserId(messageInfo.getId());
             homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
         });
-        if (contact_list.getVisibility()==View.VISIBLE){
-            conversationLayout.setVisibility(View.GONE);
-        }else {
-            conversationLayout.setVisibility(View.VISIBLE);
-
-        }
+        conversationLayout.setVisibility(contact_list.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
 
@@ -200,7 +195,6 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
                     }
 
                 }
-
 
 
                 break;

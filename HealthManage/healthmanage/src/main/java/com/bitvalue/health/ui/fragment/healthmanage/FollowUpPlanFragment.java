@@ -65,6 +65,7 @@ import okhttp3.Call;
 /**
  * @author created by bitvalue
  * @data : 01/14
+ * 患者报道 右边的 计划列表界面
  */
 public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener, OnItemClick, AlreadySelectPatientAdapter.OnDeleteCallBack {
     @BindView(R.id.rl_back)

@@ -29,7 +29,6 @@ import com.bitvalue.health.contract.mytodolistcontact.MyToDoListContact;
 import com.bitvalue.health.presenter.mytodolistpersenter.MyToDoListPersenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.HealthPlanListAdapter;
-import com.bitvalue.health.ui.adapter.WaitOutRemindAdapter;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
@@ -160,7 +159,7 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
 
 
     private void initList() {
-        healthPlanListAdapter = new HealthPlanListAdapter();
+        healthPlanListAdapter = new HealthPlanListAdapter(homeActivity);
         list_dynamic.setAdapter(healthPlanListAdapter);
         healthPlanListAdapter.setOnItemClickListener((adapter, view, position) -> ToastUtils.show(position + "点击"));
 
@@ -202,7 +201,7 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     }
 
     private void initSearchList(){
-        search_patientAdapter = new HealthPlanListAdapter();
+        search_patientAdapter = new HealthPlanListAdapter(homeActivity);
         search_recyclerView.setAdapter(search_patientAdapter);
         search_patientAdapter.setOnItemClickListener((adapter, view, position) -> ToastUtils.show(position + "点击"));
 
