@@ -42,22 +42,6 @@ public class MyToDoListPersenter extends BasePresenter<MyToDoListContact.MyToDoL
 
     @Override
     public void qryWaitOotList(RequestNewLeaveBean requestNewLeaveBean) {
-        mModel.qryPatientList(requestNewLeaveBean, new CallBackAdapter() {
-            @Override
-            public void onSuccess(Object o, int what) {
-                super.onSuccess(o, what);
-                if (isViewAttach()) {
-                    getView().qryWitoutListSuccess((List<NewLeaveBean.RowsDTO>) o);
-                }
-            }
 
-            @Override
-            public void onFailedLog(String str, int what) {
-                super.onFailedLog(str, what);
-                if (isViewAttach()) {
-                    getView().qryWaitoutListFail(str);
-                }
-            }
-        });
     }
 }

@@ -45,7 +45,9 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
                 .setText(R.id.tv_age,finatime + "岁")
                 .setText(R.id.tv_sex,sfjhBean.getSex())
                 .setText(R.id.tv_time,sfjhBean.getDiagDate())
-                .setImageDrawable(R.id.img_head,sfjhBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+                .setImageDrawable(R.id.img_head,sfjhBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female))
+        .addOnClickListener(R.id.iv_send_msg)
+        .addOnClickListener(R.id.iv_check_plan);
 
     }
 

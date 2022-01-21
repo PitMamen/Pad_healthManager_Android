@@ -2,6 +2,7 @@ package com.bitvalue.health.contract.healthmanagercontract;
 
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
 import com.bitvalue.health.api.responsebean.PlanDetailResult;
+import com.bitvalue.health.api.responsebean.PlanTaskDetail;
 import com.bitvalue.health.api.responsebean.TaskPlanDetailBean;
 import com.bitvalue.health.base.model.IModel;
 import com.bitvalue.health.base.view.IView;
@@ -17,7 +18,7 @@ public interface HealthPlanPreviewContract {
     interface View extends IView {
         void queryhealtPlanSuccess(List<HealthPlanTaskListBean> taskListBeanList);
 
-        void queryHealthPlanContentSuccess(TaskPlanDetailBean taskPlanDetailBean);
+        void queryHealthPlanContentSuccess(PlanTaskDetail taskPlanDetailBean);
 
         void queryHealthFail(String failMessage);
 
@@ -25,7 +26,7 @@ public interface HealthPlanPreviewContract {
 
     interface Model extends IModel {
 
-        void queryHealthPlanContent(String contentId, String planType, String userid, Callback callback);
+        void queryTaskDetail(int planID, int taskId,String userId, Callback callback);
 
         void queryhealtPlan(int planID, Callback callback);
 

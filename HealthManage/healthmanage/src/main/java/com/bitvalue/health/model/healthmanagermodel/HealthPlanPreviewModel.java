@@ -27,24 +27,25 @@ import io.reactivex.subjects.Subject;
  * @data :
  */
 public class HealthPlanPreviewModel extends BaseModel implements HealthPlanPreviewContract.Model {
+    @SuppressLint("CheckResult")
     @Override
-    public void queryHealthPlanContent(String contentId, String planType, String userid, Callback callback) {
-        mApi.queryHealthPlanContent(contentId, planType, userid)
-                .subscribeOn(Schedulers.io())//子线程发射
+    public void queryTaskDetail(int planID, int taskId, String userId, Callback callback) {
+        mApi.queryTaskDetail(planID, taskId, userId).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//主线程接收
                 .subscribe(result -> {
-            if (!EmptyUtil.isEmpty(result)) {
-                if (result.getCode() == 0) {
-                    if (!EmptyUtil.isEmpty(result.getData())) {
-                        callback.onSuccess(result.getData(), 1000);
+                    if (!EmptyUtil.isEmpty(result)) {
+                        if (result.getCode() == 0) {
+                            if (!EmptyUtil.isEmpty(result.getData())) {
+                                callback.onSuccess(result.getData(), 1000);
+                            }
+                        } else {
+                            callback.onFailedLog(result.getMessage(), 1001);
+                        }
                     }
-                } else {
-                    callback.onFailedLog(result.getMessage(), 1001);
-                }
-            }
-        }, error -> {
-            callback.onFailedLog(error.getMessage(), 1001);
-        });
+                }, error -> {
+                    callback.onFailedLog(error.getMessage(), 1001);
+                });
+
     }
 
     @SuppressLint("CheckResult")
@@ -54,52 +55,72 @@ public class HealthPlanPreviewModel extends BaseModel implements HealthPlanPrevi
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//主线程接收
                 .subscribe(result -> {
-            if (!EmptyUtil.isEmpty(result)) {
-                if (result.getCode() == 0) {
-                    if (!EmptyUtil.isEmpty(result.getData())) {
-                        List<HealthPlanTaskListBean> list=result.getData();
-                        List<HealthPlanTaskListBean> formartList=new ArrayList<>();
-                            for (int i = 0; i < list.size(); i++) {
-                                HealthPlanTaskListBean bean=list.get(i);
+                    if (!EmptyUtil.isEmpty(result)) {
+                        if (result.getCode() == 0) {
+                            if (!EmptyUtil.isEmpty(result.getData())) {
+                                List<HealthPlanTaskListBean> list = result.getData();
+                                List<HealthPlanTaskListBean> formartList = new ArrayList<>();
+                                for (int i = 0; i < list.size(); i++) {
+                                    HealthPlanTaskListBean bean = list.get(i);
 
-                            HealthPlanTaskListBean formartBean=new HealthPlanTaskListBean();
-                            formartBean.setTask_describe("第"+(i+1)+"次随访任务");
+                                    HealthPlanTaskListBean formartBean = new HealthPlanTaskListBean();
+                                    formartBean.setTask_describe("第" + (i + 1) + "次随访任务");
 
-                                formartBean.setPlan_id(bean.getPlan_id());
-                            formartBean.setTask_id(bean.getTask_id());
-                            formartBean.setExec_time(bean.getExec_time());
-                            formartBean.setExec_flag(bean.getExec_flag());
-                            List<TaskInfoDTO> formartTaskInfo=new ArrayList<>();
+                                    formartBean.setUser_id(bean.getUser_id());
+                                    formartBean.setPlan_id(bean.getPlan_id());
+                                    formartBean.setPlan_name(bean.getPlan_name());
+                                    formartBean.setTask_id(bean.getTask_id());
+                                    formartBean.setExec_time(bean.getExec_time());
 
-                            for (TaskInfoDTO task:bean.getTaskInfo()) {
-                                boolean added=false;
-                                for (TaskInfoDTO formartTask:formartTaskInfo) {
+                                    List<TaskInfoDTO> formartTaskInfo = new ArrayList<>();
 
-                                    if (task.getPlanType().equals(formartTask.getPlanType())){
-                                        //相同就组合在一起
-                                        formartTask.setPlanDescribe(formartTask.getPlanDescribe()+"、"+task.getPlanDescribe());
-                                        added=true;
-                                        break;
+                                    boolean allTaskFinished = true;
+                                    for (TaskInfoDTO task : bean.getTaskInfo()) {
+                                        if (bean.getExec_flag() == 0) {
+                                            //只要有一个没完成 整体任务就是进行中
+                                            allTaskFinished = false;
+                                        }
+                                        boolean added = false;
+                                        for (TaskInfoDTO formartTask : formartTaskInfo) {
+
+                                            if (task.getPlanType().equals(formartTask.getPlanType())) {
+                                                //相同就组合在一起
+                                                formartTask.setFormartPlanDescribe(formartTask.getFormartPlanDescribe() + "、" + task.getPlanDescribe());
+                                                added = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!added) {
+                                            task.setFormartPlanDescribe(task.getPlanDescribe());
+                                            formartTaskInfo.add(task);
+                                        }
+
                                     }
-                                }
-                                if (!added){
-                                    formartTaskInfo.add(task);
+
+                                    //状态标识 0等待开启 1进行中 2已完成
+                                    long l = System.currentTimeMillis() - bean.getExec_time();
+                                    if (l < 0) {
+                                        //等待开启
+                                        formartBean.setExec_flag(0);
+                                    } else {
+                                        formartBean.setExec_flag(allTaskFinished ? 2 : 1);
+                                    }
+
+
+                                    formartBean.setFormartTaskInfo(formartTaskInfo);
+                                    formartBean.setTaskInfo(bean.getTaskInfo());
+                                    formartList.add(formartBean);
                                 }
 
+                                callback.onSuccess(formartList, 1000);
                             }
-                            formartBean.setTaskInfo(formartTaskInfo);
-                            formartList.add(formartBean);
+                        } else {
+                            callback.onFailedLog(result.getMessage(), 1001);
                         }
-
-                        callback.onSuccess(formartList, 1000);
                     }
-                } else {
-                    callback.onFailedLog(result.getMessage(), 1001);
-                }
-            }
-        }, error -> {
-            callback.onFailedLog(error.getMessage(), 1001);
-        });
+                }, error -> {
+                    callback.onFailedLog(error.getMessage(), 1001);
+                });
 
     }
 }

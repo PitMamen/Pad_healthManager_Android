@@ -104,17 +104,48 @@
                     android:text="健康提醒：暂无"
                     android:layout_marginTop="@dimen/qb_px_10"/>
             </LinearLayout>
-                <com.mxq.pq.BeveLabelView
-                    android:id="@+id/bl_tv"
+                <FrameLayout
                     android:layout_width="@dimen/qb_px_62"
-                    android:layout_height="@dimen/qb_px_65"
-                    app:label_corner="@dimen/qb_px_20"
-                    app:label_length="45dp"
-                    app:label_bg_color="#7AC756"
-                    app:label_mode="right_top"
-                    app:label_text="进行中"
-                    app:label_text_color="@color/white"
-                    app:label_text_size="14sp" />
+                    android:layout_height="@dimen/qb_px_65">
+                    <com.mxq.pq.BeveLabelView
+                        android:visibility="invisible"
+                        android:id="@+id/bl_tv_ddkq"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:label_corner="@dimen/qb_px_20"
+                        app:label_length="45dp"
+                        app:label_bg_color="@color/blue_f1"
+                        app:label_mode="right_top"
+                        app:label_text="等待开启"
+                        app:label_text_color="@color/white"
+                        app:label_text_size="14sp" />
+                    <com.mxq.pq.BeveLabelView
+                        android:visibility="invisible"
+                        android:id="@+id/bl_tv_jxz"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:label_corner="@dimen/qb_px_20"
+                        app:label_length="45dp"
+                        app:label_bg_color="#7AC756"
+                        app:label_mode="right_top"
+                        app:label_text="进行中"
+                        app:label_text_color="@color/white"
+                        app:label_text_size="14sp" />
+                    <com.mxq.pq.BeveLabelView
+                        android:visibility="invisible"
+                        android:id="@+id/bl_tv_ywc"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:label_corner="@dimen/qb_px_20"
+                        app:label_length="45dp"
+                        app:label_bg_color="#999"
+                        app:label_mode="right_top"
+                        app:label_text="已完成"
+                        app:label_text_color="@color/white"
+                        app:label_text_size="14sp" />
+
+                </FrameLayout>
+
             </LinearLayout>
 
 

@@ -75,15 +75,15 @@ public class HealthPlanDetailAdapter extends AppAdapter<PlanDetailResult.UserPla
             if (null != planDetailsDTO.planDescribe){
                 tv_step_desc.setText(planDetailsDTO.planDescribe);
             }
-            tv_step_time.setText(planDetailsDTO.execTime);
-            int dateCount = TimeUtils.getDateCount(System.currentTimeMillis(), TimeUtils.parseDate(planDetailsDTO.execTime, TimeUtils.YY_MM_DD_FORMAT_3).getTime());
+            tv_step_time.setText(planDetailsDTO.execTime+"");
+            int dateCount = TimeUtils.getDateCount(System.currentTimeMillis(), TimeUtils.parseDate(planDetailsDTO.execTime+"", TimeUtils.YY_MM_DD_FORMAT_3).getTime());
             if (planDetailsDTO.execFlag == 1) {//已执行
                 layout_health_btn.setBackground(getItemView().getContext().getResources().getDrawable(R.drawable.shape_bg_green));
                 img_boll.setImageDrawable(getItemView().getContext().getResources().getDrawable(R.drawable.shape_boll_green));
                 img_btn.setImageDrawable(getItemView().getContext().getResources().getDrawable(R.drawable.icon_lian_b));
                 tv_health_report.setTextColor(getItemView().getContext().getResources().getColor(R.color.text_green));
             } else if (planDetailsDTO.execFlag == 0 && TimeUtils.getDateCount(System.currentTimeMillis()
-                    , TimeUtils.parseDate(planDetailsDTO.execTime, TimeUtils.YY_MM_DD_FORMAT_3).getTime()) < 0) {//未执行已超期
+                    , TimeUtils.parseDate(planDetailsDTO.execTime+"", TimeUtils.YY_MM_DD_FORMAT_3).getTime()) < 0) {//未执行已超期
                 layout_health_btn.setBackground(getItemView().getContext().getResources().getDrawable(R.drawable.shape_bg_oran_small));
                 img_boll.setImageDrawable(getItemView().getContext().getResources().getDrawable(R.drawable.shape_boll_orange));
                 img_btn.setImageDrawable(getItemView().getContext().getResources().getDrawable(R.drawable.icon_lian_or));

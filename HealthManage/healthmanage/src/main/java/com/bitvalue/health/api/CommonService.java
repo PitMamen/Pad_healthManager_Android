@@ -17,6 +17,7 @@ import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.PatientResultBean;
 import com.bitvalue.health.api.responsebean.PlanDetailResult;
 import com.bitvalue.health.api.responsebean.PlanListBean;
+import com.bitvalue.health.api.responsebean.PlanTaskDetail;
 import com.bitvalue.health.api.responsebean.SaveAnalyseApi;
 import com.bitvalue.health.api.responsebean.SaveCaseApi;
 import com.bitvalue.health.api.responsebean.SearchArticleResult;
@@ -119,7 +120,14 @@ public interface CommonService {
      */
     @GET("health-api/health/patient/queryHealthPlan")
     Observable<ApiResult<PlanDetailResult>> queryhealtPlan(@Query("planId") String planID);
-
+    /**
+     * 健康计划详情查看（任务列表查看）
+     *
+     * @param planID
+     * @return
+     */
+    @GET("health-api/health/patient/queryHealthPlan")
+    Observable<ApiResult<PlanTaskDetail>> queryTaskDetail(@Query("planId") int planID, @Query("taskId") int taskId, @Query("userId") String userId);
     /**
      * 健康计划  任务按时间排序
      *
@@ -128,6 +136,7 @@ public interface CommonService {
      */
     @GET("health-api/patient/queryHealthPlanTaskList")
     Observable<ApiResult<List<HealthPlanTaskListBean>>> queryHealthPlanTaskList(@Query("planId") int planID);
+
 
     /***
      * 提交健康评估 接口

@@ -518,7 +518,7 @@ public class TaskView extends LinearLayout {
                 data = missionViewRemind.getAssembleData();
                 if (null != data) {
                     data.planDescribe = et_task_intro.getText().toString();
-                    data.execTime = TimeUtils.getTime((System.currentTimeMillis() + Integer.parseInt(mDayCount) * 24 * 60 * 60 * 1000), TimeUtils.YY_MM_DD_FORMAT_3);
+//                    data.execTime = TimeUtils.getTime((System.currentTimeMillis() + Integer.parseInt(mDayCount) * 24 * 60 * 60 * 1000), TimeUtils.YY_MM_DD_FORMAT_3);
                     userPlanDetailsDTOS.add(data);
                 }
             } else if (view instanceof MissionViewArticle) {
@@ -526,7 +526,7 @@ public class TaskView extends LinearLayout {
                 data = missionViewArticle.getAssembleData();
                 if (null != data) {
                     data.planDescribe = et_task_intro.getText().toString();
-                    data.execTime = TimeUtils.getTime((System.currentTimeMillis() + Integer.parseInt(mDayCount) * 24 * 60 * 60 * 1000), TimeUtils.YY_MM_DD_FORMAT_3);
+//                    data.execTime = TimeUtils.getTime((System.currentTimeMillis() + Integer.parseInt(mDayCount) * 24 * 60 * 60 * 1000), TimeUtils.YY_MM_DD_FORMAT_3);
                     userPlanDetailsDTOS.add(data);
                 }
             } else {
@@ -534,7 +534,7 @@ public class TaskView extends LinearLayout {
                 data = missionViewQuestion.getAssembleData();
                 if (null != data) {
                     data.planDescribe = et_task_intro.getText().toString();
-                    data.execTime = TimeUtils.getTime((System.currentTimeMillis() + Integer.parseInt(mDayCount) * 24 * 60 * 60 * 1000), TimeUtils.YY_MM_DD_FORMAT_3);
+//                    data.execTime = TimeUtils.getTime((System.currentTimeMillis() + Integer.parseInt(mDayCount) * 24 * 60 * 60 * 1000), TimeUtils.YY_MM_DD_FORMAT_3);
 //                    data.execTime = mDayCount + "天后";
                     userPlanDetailsDTOS.add(data);
                 }

@@ -180,7 +180,7 @@
            android:orientation="horizontal"
            android:layout_height="wrap_content">
            <ImageView
-               android:id="@+id/iv_check_plan"
+               android:id="@+id/iv_send_msg"
                app:layout_constraintEnd_toEndOf="parent"
                android:src="@mipmap/icon_txhz"
                android:layout_width="wrap_content"
@@ -190,7 +190,7 @@
                tools:ignore="MissingConstraints" />
 
            <ImageView
-               android:id="@+id/iv_send_msg"
+               android:id="@+id/iv_check_plan"
                app:layout_constraintEnd_toStartOf="@id/iv_check_plan"
                app:layout_constraintStart_toEndOf="@id/tv_plan_title"
                android:src="@mipmap/icon_sfjh"

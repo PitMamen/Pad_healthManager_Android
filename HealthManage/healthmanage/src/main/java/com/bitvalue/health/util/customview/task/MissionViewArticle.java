@@ -212,8 +212,8 @@ public class MissionViewArticle extends LinearLayout implements DataInterface {
         userPlanDetailsDTO.planType = "Knowledge";
         userPlanDetailsDTO.planDescribe = "专家团队对您近期的病情变化进行跟踪后，为您选择的科普文章，请及时查阅。";
         userPlanDetailsDTO.execFlag = 0;
-        userPlanDetailsDTO.content = articleBeans.get(0).content;
-        userPlanDetailsDTO.title = articleBeans.get(0).title;
+//        userPlanDetailsDTO.content = articleBeans.get(0).content;
+//        userPlanDetailsDTO.title = articleBeans.get(0).title;
         return userPlanDetailsDTO;
     }
 

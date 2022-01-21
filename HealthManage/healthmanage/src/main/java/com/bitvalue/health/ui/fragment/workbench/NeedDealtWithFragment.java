@@ -4,11 +4,14 @@ import static com.bitvalue.health.util.DataUtil.isNumeric;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.lang.UScript;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -25,7 +28,9 @@ import com.bitvalue.health.presenter.mytodolistpersenter.MyToDoListPersenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.HealthPlanListAdapter;
 import com.bitvalue.health.ui.adapter.WaitOutRemindAdapter;
+import com.bitvalue.health.util.Constants;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hjq.toast.ToastUtils;
 
@@ -41,19 +46,24 @@ import butterknife.BindView;
  * 我的待办Fragment
  */
 public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> implements MyToDoListContact.MyToDoListView, PhoneFollowupCliclistener {
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
+    @BindView(R.id.img_back)
+    ImageView img_back;
 
     @BindView(R.id.list_patient_dynamic)
-    RecyclerView list_dynamic;  //患者动态 list
+    RecyclerView list_dynamic;
 
     @BindView(R.id.framelayout)
-    FrameLayout framelayout;  //超时提醒 list
+    FrameLayout framelayout;
     private HomeActivity homeActivity;
     private RequestNewLeaveBean requestNewLeaveBean = new RequestNewLeaveBean();
     private HealthPlanListAdapter healthPlanListAdapter;
 
     private List<NewLeaveBean.RowsDTO> allDynamicList = new ArrayList<>(); //我的待办患者列表
 
-    private HealthPlanPreviewFragment healthPlanPreviewFragment;
+    private HealthPlanTaskDetailFragment healthPlanPreviewFragment;
 
     private int pageNo = 1;
     private int pageSize = 100;
@@ -80,30 +90,50 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
+        tv_title.setText("随访计划");
+        img_back.setVisibility(View.GONE);
         list_dynamic.setLayoutManager(new LinearLayoutManager(homeActivity));
 
         healthPlanListAdapter = new HealthPlanListAdapter();
         list_dynamic.setAdapter(healthPlanListAdapter);
 
-        healthPlanListAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+
+
+        healthPlanListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtils.show(position+"点击");
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.iv_send_msg:
+                        ToastUtil.toastShortMessage("发送消息");
+                        break;
+                    case R.id.iv_check_plan:
+                        replaceFragment(386,(NewLeaveBean.RowsDTO)adapter.getItem(position));
+                        break;
+                }
             }
         });
 
-        replaceFragment();
+
     }
 
-    private void replaceFragment(){
+    private void replaceFragment(int planId, NewLeaveBean.RowsDTO userInfo){
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
 
+        Bundle args=new Bundle();
+        args.putInt(Constants.PLAN_ID,planId);
+        args.putSerializable(Constants.USERINFO, userInfo);
         if (healthPlanPreviewFragment == null) {
-            healthPlanPreviewFragment = new HealthPlanPreviewFragment();
+            healthPlanPreviewFragment = new HealthPlanTaskDetailFragment();
+
+            healthPlanPreviewFragment.setArguments(args);
+
+            transaction.add(R.id.framelayout, healthPlanPreviewFragment);
+            transaction.commit();
+        }else {
+            healthPlanPreviewFragment.refreshData(planId,userInfo);
         }
-        transaction.add(R.id.framelayout, healthPlanPreviewFragment);
-        transaction.commit();
+
 
     }
 

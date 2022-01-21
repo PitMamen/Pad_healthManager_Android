@@ -9,19 +9,29 @@ public class HealthPlanTaskListBean {
     private String user_id;
     private String task_describe;
     private Long exec_time;
-    private Long exec_flag;
+    private int exec_flag;
     private Integer goods_id;
     private Integer task_id;
     private List<TaskInfoDTO> taskInfo;
+    //为了计划显示组装的列表
+    private List<TaskInfoDTO> formartTaskInfo;
     private Integer plan_id;
     private String plan_name;
     private Long start_date;
 
-    public Long getExec_flag() {
+    public List<TaskInfoDTO> getFormartTaskInfo() {
+        return formartTaskInfo;
+    }
+
+    public void setFormartTaskInfo(List<TaskInfoDTO> formartTaskInfo) {
+        this.formartTaskInfo = formartTaskInfo;
+    }
+
+    public int getExec_flag() {
         return exec_flag;
     }
 
-    public void setExec_flag(Long exec_flag) {
+    public void setExec_flag(int exec_flag) {
         this.exec_flag = exec_flag;
     }
 
