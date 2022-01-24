@@ -60,8 +60,10 @@ public class HealthPlanPreviewFragment extends BaseFragment<HealthPlanPreviewPre
 
 //        planDetailResultFor = (PlanDetailResult) getArguments().getSerializable(Constants.PLAN_PREVIEW);
 //        mIds = getArguments().getStringArrayList(Constants.MSG_IDS);
-//        planId = getArguments().getString(Constants.PLAN_ID);
-
+        if (getArguments()!=null){
+            planId = getArguments().getInt(Constants.PLAN_ID);
+            Log.e(TAG, "planid__: "+planId );
+        }
         planRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new HealthPlanPreviewListAdapter();
 

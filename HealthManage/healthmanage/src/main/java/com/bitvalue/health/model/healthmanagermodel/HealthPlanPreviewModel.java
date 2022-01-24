@@ -1,6 +1,7 @@
 package com.bitvalue.health.model.healthmanagermodel;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -54,6 +55,7 @@ public class HealthPlanPreviewModel extends BaseModel implements HealthPlanPrevi
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//主线程接收
                 .subscribe(result -> {
+                    Log.e(TAG, "queryhealtPlan: "+result );
             if (!EmptyUtil.isEmpty(result)) {
                 if (result.getCode() == 0) {
                     if (!EmptyUtil.isEmpty(result.getData())) {

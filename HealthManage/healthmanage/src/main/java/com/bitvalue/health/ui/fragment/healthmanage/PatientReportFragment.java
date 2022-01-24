@@ -390,8 +390,8 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
 
     //请求未分配患者
     private void requestDistribution(String name) {
-//        allocatedPatientRequest.existsPlanFlag = "1";
-//        allocatedPatientRequest.isRegister = "1";
+        allocatedPatientRequest.existsPlanFlag = "2";
+        allocatedPatientRequest.isRegister = "1";
         allocatedPatientRequest.pageNo = pageNo;
         allocatedPatientRequest.pageSize = pageSize;
         allocatedPatientRequest.userName = name;
@@ -571,7 +571,6 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
         } else {
             tempPaitentList.remove(item);
         }
-
         EventBus.getDefault().post(tempPaitentList);
 
 

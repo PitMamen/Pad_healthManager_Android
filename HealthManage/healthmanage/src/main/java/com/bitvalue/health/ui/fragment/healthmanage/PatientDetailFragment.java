@@ -25,6 +25,7 @@ import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
+import com.hjq.toast.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -138,6 +139,11 @@ public class PatientDetailFragment extends BaseFragment {
         switch (view.getId()) {
             //发送消息
             case R.id.tv_sendmessage:
+                if (EmptyUtil.isEmpty(itemPosition.getUserId())){
+                    ToastUtils.show("该患者未注册!");
+                    return;
+                }
+
                 NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
                 info.setUserName(itemPosition.getUserName());
                 info.setUserId(itemPosition.getUserId());
@@ -146,6 +152,13 @@ public class PatientDetailFragment extends BaseFragment {
 
 //          随访计划
             case R.id.tv_logout:
+                  if (itemPosition.getPlanInfo().size()==0){
+                      ToastUtils.show("该患者暂未分配计划!");
+                      return;
+                  }
+
+                String planID = itemPosition.getPlanInfo().get(0).getPlanId();
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW,Integer.valueOf(planID));
                 break;
         }
     }

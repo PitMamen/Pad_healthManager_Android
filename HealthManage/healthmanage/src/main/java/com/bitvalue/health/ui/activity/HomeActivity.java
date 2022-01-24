@@ -54,7 +54,6 @@ import com.bitvalue.health.ui.fragment.healthmanage.HealthAnalyseDisplayFragment
 import com.bitvalue.health.ui.fragment.healthmanage.HealthAnalyseFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.HealthMessageFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.HealthPlanDetailFragment;
-import com.bitvalue.health.ui.fragment.healthmanage.HealthPlanPreviewFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.HealthUploadDataFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.NewMsgFragmentDisplay;
 import com.bitvalue.health.ui.fragment.healthmanage.PlanMsgFragment;
@@ -68,6 +67,7 @@ import com.bitvalue.health.ui.fragment.setting.MedicalRecordsFragment;
 import com.bitvalue.health.ui.fragment.setting.NewHealthPlanFragmentModify;
 import com.bitvalue.health.ui.fragment.setting.PersonalDataFragment;
 import com.bitvalue.health.ui.fragment.setting.SettingsFragment;
+import com.bitvalue.health.ui.fragment.workbench.HealthPlanPreviewFragment;
 import com.bitvalue.health.ui.fragment.workbench.NeedDealtWithFragment;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.SharedPreManager;
@@ -312,7 +312,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 break;
 
 
-
 //            健康计划
             case chat_index:
                 img_person.setImageResource(R.drawable.tab_icon_jkgl);
@@ -443,7 +442,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 //                bundlePaper.putSerializable(Constants.GET_MISSION_OBJ, getMissionPaper);
 //                addArticleFragment.setArguments(bundlePaper);
 
-                AddArticleFragment addArticleFragment  = new AddArticleFragment();
+                AddArticleFragment addArticleFragment = new AddArticleFragment();
                 mapFragments.put(Constants.FRAGMENT_ADD_PAPER, addArticleFragment);
                 break;
 
@@ -585,9 +584,11 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
             //健康套餐计划 预览
             case Constants.FRAGMENT_HEALTH_PLAN_PREVIEW:
-                PlanDetailResult planDetailResult = (PlanDetailResult) object;
+//                PlanDetailResult planDetailResult = (PlanDetailResult) object;
+                int PlanId = (int) object;
                 Bundle bundlePre = new Bundle();
-                bundlePre.putSerializable(Constants.PLAN_PREVIEW, planDetailResult);
+                bundlePre.putInt(Constants.PLAN_ID, PlanId);
+//                bundlePre.putSerializable(Constants.PLAN_PREVIEW, planDetailResult);
                 HealthPlanPreviewFragment healthPlanPreviewFragment;
                 healthPlanPreviewFragment = new HealthPlanPreviewFragment();
                 healthPlanPreviewFragment.setArguments(bundlePre);
@@ -632,24 +633,24 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 mapFragments.put(Constants.FRAGMENT_CHAT_LOG, chatLogFragment);
                 break;
 
-                //新出院患者界面
+            //新出院患者界面
             case Constants.FRAGMENT_NEW_LYDISCHARGED_PATIENT:
                 NewDischargedFragment dischargedFragment = new NewDischargedFragment();
                 mapFragments.put(Constants.FRAGMENT_NEW_LYDISCHARGED_PATIENT, dischargedFragment);
                 break;
 
-                //发送提醒界面
+            //发送提醒界面
             case Constants.FRAGMENT_SEND_REMIND:
                 AddRemindFragment addRemindFragment = new AddRemindFragment();
                 mapFragments.put(Constants.FRAGMENT_SEND_REMIND, addRemindFragment);
                 break;
-                //快捷回复界面
+            //快捷回复界面
             case Constants.FRAGMENT_QUICKREPLY:
                 QuickReplyFragment quickReplyFragment = new QuickReplyFragment();
                 mapFragments.put(Constants.FRAGMENT_QUICKREPLY, quickReplyFragment);
                 break;
 
-                //计划列表界面
+            //计划列表界面
             case FRAGMENT_PLAN_LIST:
 //                List<NewLeaveBean.RowsDTO> listBean = (List<NewLeaveBean.RowsDTO>) object;
                 FollowUpPlanFragment followUpPlanFragment = new FollowUpPlanFragment();
@@ -659,16 +660,15 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 mapFragments.put(FRAGMENT_PLAN_LIST, followUpPlanFragment);
                 break;
 
-                //患者详情界面
+            //患者详情界面
             case Constants.FRAGMENT_DETAIL:
-                NewLeaveBean.RowsDTO  patientitem = (NewLeaveBean.RowsDTO) object;
+                NewLeaveBean.RowsDTO patientitem = (NewLeaveBean.RowsDTO) object;
                 PatientDetailFragment patientDetailFragment = new PatientDetailFragment();
                 Bundle bundle_detail = new Bundle();
                 bundle_detail.putSerializable(FRAGMENT_DETAIL, (Serializable) patientitem);
                 patientDetailFragment.setArguments(bundle_detail);
                 mapFragments.put(FRAGMENT_DETAIL, patientDetailFragment);
                 break;
-
 
 
             //患者资料详情  （暂时不用）
@@ -756,7 +756,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                     return;
                 }
                 frameLayout_full.setVisibility(View.GONE);
-                switchSecondFragment(FRAGMENT_PLAN_LIST,"");
+                switchSecondFragment(FRAGMENT_PLAN_LIST, "");
                 EventBus.getDefault().post(new MainRefreshObj()); // 通知健康管理界面获取数据 请求接口
                 afterTabSelect(0);
                 break;
