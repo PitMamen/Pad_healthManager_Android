@@ -50,7 +50,7 @@ public class HealthPlanPreviewModel extends BaseModel implements HealthPlanPrevi
 
     @SuppressLint("CheckResult")
     @Override
-    public void queryhealtPlan(int planID, Callback callback) {
+    public void queryhealtPlan(String planID, Callback callback) {
         mApi.queryHealthPlanTaskList(planID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())//主线程接收

@@ -1,5 +1,7 @@
 package com.bitvalue.health.ui.adapter;
 
+import android.text.TextUtils;
+
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
 import com.bitvalue.health.api.responsebean.TaskInfoDTO;
 import com.bitvalue.health.util.TimeUtils;
@@ -46,7 +48,12 @@ public class HealthPlanPreviewListAdapter extends BaseQuickAdapter<HealthPlanTas
 
         List<TaskInfoDTO> taskInfoDTOList = item.getFormartTaskInfo();
 
+
+
         for (TaskInfoDTO task:taskInfoDTOList) {
+            if (TextUtils.isEmpty(task.getFormartPlanDescribe())){
+                task.setFormartPlanDescribe("暂无");
+            }
             switch (task.getPlanType()){
                 case TypeConstants.Knowledge:
 

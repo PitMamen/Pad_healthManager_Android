@@ -28,7 +28,7 @@ public interface HealthPlanPreviewContract {
 
         void queryTaskDetail(int planID, int taskId,String userId, Callback callback);
 
-        void queryhealtPlan(int planID, Callback callback);
+        void queryhealtPlan(String planID, Callback callback);
 
     }
 

@@ -39,8 +39,9 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * 健康计划  按时间的任务列表
+ * 健康计划  按时间的任务列表  (弃用)
  */
+@Deprecated
 public class HealthPlanPreviewFragment extends BaseFragment<HealthPlanPreviewPresenter> implements HealthPlanPreviewContract.View {
 
     @BindView(R.id.tv_title)
@@ -63,7 +64,7 @@ public class HealthPlanPreviewFragment extends BaseFragment<HealthPlanPreviewPre
 
 
     private HealthPlanPreviewListAdapter mAdapter;
-    private int planId;
+    private String planId;
 
 
     /**
@@ -78,7 +79,7 @@ public class HealthPlanPreviewFragment extends BaseFragment<HealthPlanPreviewPre
         if (getArguments()==null){
             return;
         }
-        planId = getArguments().getInt(Constants.PLAN_ID);
+        planId = getArguments().getString(Constants.PLAN_ID);
         NewLeaveBean.RowsDTO userInfo= (NewLeaveBean.RowsDTO) getArguments().getSerializable(Constants.USERINFO);
 
 
@@ -106,7 +107,7 @@ public class HealthPlanPreviewFragment extends BaseFragment<HealthPlanPreviewPre
 
     }
 
-    public void refreshData(int planId, NewLeaveBean.RowsDTO userInfo) {
+    public void refreshData(String planId, NewLeaveBean.RowsDTO userInfo) {
 
 
 

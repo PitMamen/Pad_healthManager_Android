@@ -2,6 +2,7 @@ package com.bitvalue.health.model.mytodolist;
 
 import android.util.Log;
 
+import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.model.BaseModel;
@@ -17,9 +18,9 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class MyToDoListModel extends BaseModel implements MyToDoListContact.MyToDoListModel {
     @Override
-    public void qryPatientList(RequestNewLeaveBean requestNewLeaveBean, Callback callback) {
+    public void qryPatientList(AllocatedPatientRequest requestNewLeaveBean, Callback callback) {
         if (null != requestNewLeaveBean) {
-            mApi.qryPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
+            mApi.qryallAllocatedPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
                 if (!EmptyUtil.isEmpty(listApiResult)) {
                     if (listApiResult.getCode() == 0) {
                         NewLeaveBean newLeaveBeanList = listApiResult.getData();
@@ -44,9 +45,9 @@ public class MyToDoListModel extends BaseModel implements MyToDoListContact.MyTo
     }
 
     @Override
-    public void qryWaitoutList(RequestNewLeaveBean requestNewLeaveBean, Callback callback) {
+    public void qryPatientByName(AllocatedPatientRequest requestNewLeaveBean, Callback callback) {
         if (null != requestNewLeaveBean) {
-            mApi.qryPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
+            mApi.qryallAllocatedPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
                 if (!EmptyUtil.isEmpty(listApiResult)) {
                     if (listApiResult.getCode() == 0) {
                         NewLeaveBean newLeaveBeanList = listApiResult.getData();
@@ -69,4 +70,5 @@ public class MyToDoListModel extends BaseModel implements MyToDoListContact.MyTo
             });
         }
     }
+
 }

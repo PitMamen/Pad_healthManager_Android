@@ -8,6 +8,7 @@ import com.bitvalue.health.api.requestbean.PersonalDataBean;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.requestbean.ReportStatusBean;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
+import com.bitvalue.health.api.requestbean.SendUserRemind;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
@@ -135,7 +136,7 @@ public interface CommonService {
      * @return
      */
     @GET("health-api/patient/queryHealthPlanTaskList")
-    Observable<ApiResult<List<HealthPlanTaskListBean>>> queryHealthPlanTaskList(@Query("planId") int planID);
+    Observable<ApiResult<List<HealthPlanTaskListBean>>> queryHealthPlanTaskList(@Query("planId") String planID);
 
 
     /***
@@ -146,6 +147,13 @@ public interface CommonService {
     @POST("health-api/health/doctor/sendUserEevaluate")
     Observable<ApiResult<SaveAnalyseApi>> commitHealthAnaly(@Body SaveAnalyseApi bodyRequest);
 
+    /***
+     * 发送健康提醒消息
+     * @param bodyRequest
+     * @return
+     */
+    @POST("health-api/health/doctor/sendUserRemind")
+    Observable<ApiResult> sendUserRemind(@Body SendUserRemind bodyRequest);
 
     /****
      * 查看任务详情
@@ -224,7 +232,7 @@ public interface CommonService {
 
 
     /**
-     * 所有未注册患者
+     * 所有患者、未注册患者、未分配患者
      *
      * @param leaveBean
      * @return

@@ -2,6 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:background="@color/beauty_color_bacg">
 
 
@@ -22,8 +25,8 @@
         <LinearLayout
             android:id="@+id/ll_search"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/qb_px_32"
-            android:layout_margin="@dimen/qb_px_11"
+            android:layout_height="@dimen/qb_px_28"
+            android:layout_margin="@dimen/qb_px_10"
             android:layout_below="@+id/rl_title"
             android:background="@drawable/shape_bg_white"
             android:orientation="horizontal">
@@ -55,12 +58,52 @@
 
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_patient_dynamic"
+        <!--    所有患者-->
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/rl_undistribution_refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ll_view"
+            app:srlEnablePreviewInEditMode="false">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <com.bitvalue.health.util.customview.WrapRecyclerView
+                android:id="@+id/list_patient_dynamic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
+
+
+
+
+        <!--    搜索出的患者-->
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/layout_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ll_search_allchecklayout"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:visibility="gone"
+            app:srlEnablePreviewInEditMode="false">
+
+            <com.bitvalue.health.util.customview.WrapRecyclerView
+                android:id="@+id/search_allpatient"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
+
+
+
+
+
+
+
+
 
 
     </LinearLayout>

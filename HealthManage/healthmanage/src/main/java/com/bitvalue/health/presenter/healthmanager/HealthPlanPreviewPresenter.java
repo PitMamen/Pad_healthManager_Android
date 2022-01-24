@@ -42,7 +42,7 @@ public class HealthPlanPreviewPresenter extends BasePresenter<HealthPlanPreviewC
     }
 
 
-    public void queryhealtPlan(int planID) {
+    public void queryhealtPlan(String planID) {
         mModel.queryhealtPlan(planID, new CallBackAdapter() {
             @Override
             public void onSuccess(Object o, int what) {

@@ -67,7 +67,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
     private HealthPlanPreviewListAdapter planAdapter;
     private HealthPlanTaskDetailAdapter taskDetailAdapter;
-    private int planId;
+    private String planId;
 
 
     /**
@@ -93,7 +93,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         if (getArguments()==null){
             return;
         }
-        planId = getArguments().getInt(Constants.PLAN_ID);
+        planId = getArguments().getString(Constants.PLAN_ID);
         NewLeaveBean.RowsDTO userInfo= (NewLeaveBean.RowsDTO) getArguments().getSerializable(Constants.USERINFO);
 
 
@@ -135,7 +135,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
     }
 
     //刷新计划列表
-    public void refreshData(int planId, NewLeaveBean.RowsDTO userInfo) {
+    public void refreshData(String planId, NewLeaveBean.RowsDTO userInfo) {
 
         ll_task_tetail.setVisibility(View.GONE);
         planRecyclerView.setVisibility(View.VISIBLE);

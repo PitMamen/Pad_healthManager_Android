@@ -51,6 +51,9 @@ public class HealthPlanTaskDetailAdapter extends BaseQuickAdapter<PlanTaskDetail
             tv_state.setTextColor(Application.instance().getResources().getColor(R.color.main_blue));
         }
 
+        if (TextUtils.isEmpty(task.getPlanDescribe())){
+            task.setPlanDescribe("暂无");
+        }
             switch (task.getPlanType()){
                 case TypeConstants.Knowledge:
 
