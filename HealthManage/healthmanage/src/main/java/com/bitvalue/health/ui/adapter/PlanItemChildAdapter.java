@@ -1,9 +1,12 @@
 package com.bitvalue.health.ui.adapter;
 
+import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
+import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.healthmanage.R;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -32,9 +35,14 @@ public class PlanItemChildAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO.
 
 
        int position= holder.getAdapterPosition()+1;
-        holder.setText(R.id.tv_plan_num, "第" + position + "次");
+//        holder.setText(R.id.tv_plan_num, "第" + position + "次");
         holder.setText(R.id.tv_plan_title, item.getPlanName());
         holder.addOnClickListener(R.id.iv_send_msg)
         .addOnClickListener(R.id.iv_check_plan);
+
+//        TextView stateTv=holder.getView(R.id.tv_plan_state);
+//        long l = System.currentTimeMillis() - TimeUtils.formatTimeToLong(item.getStartDate());
+
+
     }
 }

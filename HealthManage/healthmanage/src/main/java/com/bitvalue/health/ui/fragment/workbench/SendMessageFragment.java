@@ -42,7 +42,16 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
     EditText et_text_tx;
     @BindView(R.id.tv_send)
     TextView tv_send;
-
+    @BindView(R.id.img_head)
+    ImageView img_head;
+    @BindView(R.id.tv_name)
+    TextView tv_name;
+    @BindView(R.id.tv_sex)
+    TextView tv_sex;
+    @BindView(R.id.tv_age)
+    TextView tv_age;
+    @BindView(R.id.tv_phone)
+    TextView tv_phone;
 
 
 
@@ -50,7 +59,7 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
 
     private HealthPlanPreviewListAdapter mAdapter;
     private String planId;
-    private String userId;
+    private NewLeaveBean.RowsDTO userInfo;
 
 
     /**
@@ -64,9 +73,24 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
             return;
         }
         planId = getArguments().getString(Constants.PLAN_ID);
-        userId = getArguments().getString(Constants.USER_ID);
+        userInfo= (NewLeaveBean.RowsDTO) getArguments().getSerializable(Constants.USERINFO);
+
+        if (planId==null || userInfo==null)
+            return;
 
         tv_title.setText("发送提醒");
+
+
+        if (userInfo!=null){
+            String curen = TimeUtils.getCurrenTime();
+            int finatime = Integer.valueOf(curen) - Integer.valueOf((userInfo.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
+            img_head.setImageDrawable(userInfo.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+            tv_name.setText(userInfo.getUserName());
+            tv_sex.setText(userInfo.getSex());
+            tv_age.setText(finatime+"岁");
+            tv_phone.setText(userInfo.getInfoDetail().getSjhm());
+        }
+
 
         tv_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +104,7 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
                 SaveAnalyseApi saveAnalyseApi = new SaveAnalyseApi();
                 saveAnalyseApi.evalContent = msg;
                 saveAnalyseApi.evalTime = TimeUtils.getTime(System.currentTimeMillis(), TimeUtils.YY_MM_DD_FORMAT_4);
-                saveAnalyseApi.userId = userId;
+                saveAnalyseApi.userId = userInfo.getUserId();
                 saveAnalyseApi.planId = planId;
                 saveAnalyseApi.type=2;
 
@@ -104,11 +128,7 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
     }
 
 
-    public void refreshData(String planId, String userId) {
-        et_text_tx.setText("");
-        this.planId=planId;
-        this.userId=userId;
-    }
+
 
     @Override
     protected SendMessagePresenter createPresenter() {

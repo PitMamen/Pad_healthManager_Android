@@ -149,7 +149,16 @@ public class TimeUtils {
         return YY_MM_DD_FORMAT_3.format(date);
     }
 
+    public static long formatTimeToLong(String dateString) {
 
+        try {
+            Date  date = YY_MM_DD_FORMAT_3.parse(dateString);
+            return date.getTime();
+        } catch (ParseException e) {
+            Log.e("TTT", "日期转换异常---" );
+            return 0;
+        }
+    }
     /**
      * @param mss 要转换的毫秒数
      * @return 该毫秒数转换为 * days * hours * minutes * seconds 后的格式

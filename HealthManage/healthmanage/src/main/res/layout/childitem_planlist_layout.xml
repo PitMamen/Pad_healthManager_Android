@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:layout_marginStart="@dimen/qb_px_11"
-        android:layout_marginEnd="@dimen/qb_px_11"
+        android:padding="@dimen/qb_px_10"
         >
 <!--        android:layout_marginTop="@dimen/qb_px_5"-->
 
@@ -21,6 +20,7 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:gravity="center_vertical"
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/tv_plan_title"
@@ -36,8 +36,9 @@
                 android:layout_width="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/qb_px_5"
-                android:layout_height="@dimen/qb_px_20">
+                android:layout_height="wrap_content">
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_plan_num"
                     android:layout_width="wrap_content"
                     android:textColor="@color/text_desc_dark"
@@ -48,7 +49,6 @@
                     android:id="@+id/tv_plan_state"
                     android:layout_width="wrap_content"
                     android:text="进行中"
-                    android:layout_marginLeft="@dimen/qb_px_20"
                     android:paddingLeft="@dimen/qb_px_8"
                     android:paddingRight="@dimen/qb_px_8"
                     android:textSize="11sp"

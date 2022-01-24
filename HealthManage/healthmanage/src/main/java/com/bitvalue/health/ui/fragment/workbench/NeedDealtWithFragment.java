@@ -176,7 +176,7 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
         healthPlanListAdapter.setOnPlanTaskItemClickListener(new HealthPlanListAdapter.OnPlanTaskItemClickListener() {
             @Override
             public void onSendMsgItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
-                    replaceSendFragment(planId,rowsDTO.getUserId());
+                    replaceSendFragment(planId,rowsDTO);
             }
 
             @Override
@@ -277,37 +277,32 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
         Bundle args=new Bundle();
         args.putString(Constants.PLAN_ID,planId);
         args.putSerializable(Constants.USERINFO, userInfo);
-        if (healthPlanPreviewFragment == null) {
+
             healthPlanPreviewFragment = new HealthPlanTaskDetailFragment();
 
             healthPlanPreviewFragment.setArguments(args);
 
             transaction.replace(R.id.framelayout, healthPlanPreviewFragment);
             transaction.commit();
-        }else {
-            healthPlanPreviewFragment.refreshData(planId,userInfo);
-        }
+
 
 
     }
-    private void replaceSendFragment(String planId, String userId){
+    private void replaceSendFragment(String planId, NewLeaveBean.RowsDTO userInfo){
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
 
         Bundle args=new Bundle();
         args.putString(Constants.PLAN_ID,planId);
-        args.putString(Constants.USER_ID, userId);
-        if (sendMessageFragment == null) {
+        args.putSerializable(Constants.USERINFO, userInfo);
+
             sendMessageFragment = new SendMessageFragment();
 
             sendMessageFragment.setArguments(args);
 
             transaction.replace(R.id.framelayout, sendMessageFragment);
             transaction.commit();
-        }else {
 
-            sendMessageFragment.refreshData( planId,  userId);
-        }
 
 
     }

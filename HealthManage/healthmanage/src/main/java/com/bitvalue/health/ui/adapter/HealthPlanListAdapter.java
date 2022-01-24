@@ -2,6 +2,7 @@ package com.bitvalue.health.ui.adapter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -59,6 +60,8 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
                 .setText(R.id.tv_sex, sfjhBean.getSex())
                 .setText(R.id.tv_time, sfjhBean.getDiagDate())
                 .setImageDrawable(R.id.img_head, sfjhBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+
+
         WrapRecyclerView childItemLRecycleView = helper.getView(R.id.plan_list);
         childItemLRecycleView.setLayoutManager(new LinearLayoutManager(homeActivity));
         PlanItemChildAdapter childAdapter = new PlanItemChildAdapter(sfjhBean.getPlanInfo());
@@ -79,6 +82,7 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
 //                    }
 //                }
 //
+
 //                adapter.setNewData(data);
 
                 switch (view.getId()){
