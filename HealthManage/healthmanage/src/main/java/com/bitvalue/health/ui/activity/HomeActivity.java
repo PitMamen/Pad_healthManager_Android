@@ -589,7 +589,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 //                PlanDetailResult planDetailResult = (PlanDetailResult) object;
                 NewLeaveBean.RowsDTO RowsDTO = (NewLeaveBean.RowsDTO) object;
                 Bundle bundlePre = new Bundle();
-                bundlePre.putString(Constants.PLAN_ID, RowsDTO.getPlanInfo().get(0).getPlanId());
+                bundlePre.putString(Constants.PLAN_ID, RowsDTO.planId);
                 bundlePre.putSerializable(Constants.USERINFO, RowsDTO);
 //                bundlePre.putSerializable(Constants.PLAN_PREVIEW, planDetailResult);
                 HealthPlanTaskDetailFragment healthPlanPreviewFragment = new HealthPlanTaskDetailFragment();
@@ -603,7 +603,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 NewLeaveBean.RowsDTO userInfo = (NewLeaveBean.RowsDTO) object;
                 SendMessageFragment sendMessageFragment = new SendMessageFragment();
                 Bundle bundle1 = new Bundle();
-                bundle1.putString(Constants.PLAN_ID,userInfo.getPlanInfo().get(0).getPlanId());
+                bundle1.putString(Constants.PLAN_ID,userInfo.planId);
                 bundle1.putSerializable(Constants.USERINFO,userInfo);
                 sendMessageFragment.setArguments(bundle1);
                 mapFragments.put(Constants.FRAGMENT_SEND_MESSAGE, sendMessageFragment);

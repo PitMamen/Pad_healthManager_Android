@@ -91,6 +91,7 @@ public class NewLeaveBean implements Serializable {
         private String cysj;//出院时间
         private String ks;//科室代码
         private String ksmc; //科室名称
+        public String planId;  //自定义添加的planId，后台没有
 
 
 

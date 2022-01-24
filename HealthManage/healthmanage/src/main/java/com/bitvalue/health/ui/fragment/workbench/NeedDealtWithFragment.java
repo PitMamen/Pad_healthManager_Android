@@ -176,11 +176,13 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
         healthPlanListAdapter.setOnPlanTaskItemClickListener(new HealthPlanListAdapter.OnPlanTaskItemClickListener() {
             @Override
             public void onSendMsgItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
+                rowsDTO.planId = planId;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE,rowsDTO);
             }
 
             @Override
             public void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
+                rowsDTO.planId = planId;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW,rowsDTO);
             }
         });

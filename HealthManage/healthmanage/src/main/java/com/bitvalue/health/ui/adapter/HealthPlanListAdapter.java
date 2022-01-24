@@ -65,37 +65,22 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
         PlanItemChildAdapter childAdapter = new PlanItemChildAdapter(sfjhBean.getPlanInfo());
         childItemLRecycleView.setAdapter(childAdapter);
         childAdapter.setNewData(sfjhBean.getPlanInfo());
-        childAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        childAdapter.setOnItemChildClickListener((adapter, view, position) -> {
 
-                NewLeaveBean.RowsDTO.PlanInfoDetailDTO planInfo = (NewLeaveBean.RowsDTO.PlanInfoDetailDTO) adapter.getItem(position);
+            NewLeaveBean.RowsDTO.PlanInfoDetailDTO planInfo = (NewLeaveBean.RowsDTO.PlanInfoDetailDTO) adapter.getItem(position);
 
-//                List<NewLeaveBean.RowsDTO.PlanInfoDetailDTO> data = adapter.getData();
-//                for (int i = 0; i < data.size(); i++) {
-//                    if (position==i){
-//                        data.get(i).setChecked(true);
-//                    }else {
-//                        data.get(i).setChecked(false);
-//                    }
-//                }
-//
+            switch (view.getId()){
+                case R.id.iv_send_msg:
+                    if (onPlanTaskItemClickListener!=null){
+                        onPlanTaskItemClickListener.onSendMsgItemClick(planInfo.getPlanId(),  sfjhBean);
+                    }
 
-//                adapter.setNewData(data);
-
-                switch (view.getId()){
-                    case R.id.iv_send_msg:
-                        if (onPlanTaskItemClickListener!=null){
-                            onPlanTaskItemClickListener.onSendMsgItemClick(planInfo.getPlanId(),  sfjhBean);
-                        }
-
-                        break;
-                    case R.id.iv_check_plan:
-                        if (onPlanTaskItemClickListener!=null){
-                            onPlanTaskItemClickListener.onCkeckPlanItemClick(planInfo.getPlanId(), sfjhBean);
-                        }
-                        break;
-                }
+                    break;
+                case R.id.iv_check_plan:
+                    if (onPlanTaskItemClickListener!=null){
+                        onPlanTaskItemClickListener.onCkeckPlanItemClick(planInfo.getPlanId(), sfjhBean);
+                    }
+                    break;
             }
         });
 
