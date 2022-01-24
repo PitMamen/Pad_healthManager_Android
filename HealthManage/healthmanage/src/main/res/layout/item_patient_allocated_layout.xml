@@ -134,30 +134,7 @@
             android:textSize="12sp"></TextView>
 
 
-        <RelativeLayout
-            android:id="@+id/rl_pay_patient"
-            android:layout_width="@dimen/qb_px_37"
-            android:layout_height="@dimen/qb_px_10"
-            android:layout_below="@+id/tv_dis_time"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/qb_px_5"
-            android:layout_marginEnd="@dimen/qb_px_10"
-            android:background="@color/text_green">
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="付费患者"
-                android:textColor="@color/white"
-                android:textSize="10sp">
-
-
-            </TextView>
-
-
-        </RelativeLayout>
 
 
         <TextView
@@ -222,6 +199,35 @@
             android:text="23岁"
             android:textColor="@color/text_desc_dark"
             android:textSize="12sp" />
+
+
+
+        <RelativeLayout
+            android:layout_toRightOf="@+id/tv_patient_age"
+            android:layout_marginLeft="@dimen/qb_px_10"
+            android:id="@+id/rl_pay_patient"
+            android:layout_width="@dimen/qb_px_37"
+            android:layout_height="@dimen/qb_px_10"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_marginEnd="@dimen/qb_px_10"
+            android:background="@color/text_green">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="付费患者"
+                android:textColor="@color/white"
+                android:textSize="10sp">
+
+
+            </TextView>
+
+
+        </RelativeLayout>
+
+
 
 
     </RelativeLayout>
