@@ -4,6 +4,7 @@ import static com.bitvalue.health.util.DataUtil.isNumeric;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.lang.UScript;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -29,6 +32,7 @@ import com.bitvalue.health.contract.mytodolistcontact.MyToDoListContact;
 import com.bitvalue.health.presenter.mytodolistpersenter.MyToDoListPersenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.HealthPlanListAdapter;
+import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
@@ -53,6 +57,11 @@ import butterknife.BindView;
  * 我的待办Fragment
  */
 public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> implements MyToDoListContact.MyToDoListView, PhoneFollowupCliclistener {
+    @BindView(R.id.tv_title)
+    TextView tv_title;
+
+    @BindView(R.id.img_back)
+    ImageView img_back;
 
     @BindView(R.id.rl_undistribution_refresh)
     SmartRefreshLayout AllsmartRefreshLayout;  //上下拉刷新控件
@@ -68,9 +77,8 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     @BindView(R.id.et_search)
     EditText ed_search;
 
-
     @BindView(R.id.framelayout)
-    FrameLayout framelayout;  //超时提醒 list
+    FrameLayout framelayout;
     private HomeActivity homeActivity;
     private AllocatedPatientRequest allocatedPatientRequest = new AllocatedPatientRequest();
     private HealthPlanListAdapter healthPlanListAdapter;
@@ -79,7 +87,8 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     private List<NewLeaveBean.RowsDTO> allDynamicList = new ArrayList<>(); //我的待办患者列表
     private List<NewLeaveBean.RowsDTO> searchPatientList = new ArrayList<>(); //我的待办患者列表
 
-    private HealthPlanPreviewFragment healthPlanPreviewFragment;
+    private HealthPlanTaskDetailFragment healthPlanPreviewFragment;
+    private SendMessageFragment sendMessageFragment;
 
     private int cureentPage = 0;
     private int pageNo = 1;
@@ -106,13 +115,15 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
+        tv_title.setText("随访计划");
+        img_back.setVisibility(View.GONE);
         list_dynamic.setLayoutManager(new LinearLayoutManager(homeActivity));
         search_recyclerView.setLayoutManager(new LinearLayoutManager(homeActivity));
 
         initList();
         initSearchButton();
         initSearchList();
-        replaceFragment();
+
     }
 
 
@@ -161,7 +172,19 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     private void initList() {
         healthPlanListAdapter = new HealthPlanListAdapter(homeActivity);
         list_dynamic.setAdapter(healthPlanListAdapter);
-        healthPlanListAdapter.setOnItemClickListener((adapter, view, position) -> ToastUtils.show(position + "点击"));
+
+        healthPlanListAdapter.setOnPlanTaskItemClickListener(new HealthPlanListAdapter.OnPlanTaskItemClickListener() {
+            @Override
+            public void onSendMsgItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
+                    replaceSendFragment(planId,rowsDTO.getUserId());
+            }
+
+            @Override
+            public void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
+                replacePlanFragment(planId,rowsDTO);
+            }
+        });
+
 
         //        上下拉刷新 最外层的
         AllsmartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
@@ -196,9 +219,14 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
                 allDynamicList.clear();
                 requestData("");
                 AllsmartRefreshLayout.finishRefresh();
+
             }
         });
     }
+
+
+
+
 
     private void initSearchList(){
         search_patientAdapter = new HealthPlanListAdapter(homeActivity);
@@ -242,18 +270,47 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
         });
     }
 
-    private void replaceFragment() {
+        private void replacePlanFragment(String planId, NewLeaveBean.RowsDTO userInfo){
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
 
+        Bundle args=new Bundle();
+        args.putString(Constants.PLAN_ID,planId);
+        args.putSerializable(Constants.USERINFO, userInfo);
         if (healthPlanPreviewFragment == null) {
-            healthPlanPreviewFragment = new HealthPlanPreviewFragment();
+            healthPlanPreviewFragment = new HealthPlanTaskDetailFragment();
+
+            healthPlanPreviewFragment.setArguments(args);
+
+            transaction.replace(R.id.framelayout, healthPlanPreviewFragment);
+            transaction.commit();
+        }else {
+            healthPlanPreviewFragment.refreshData(planId,userInfo);
         }
-        transaction.add(R.id.framelayout, healthPlanPreviewFragment);
-        transaction.commit();
+
 
     }
+    private void replaceSendFragment(String planId, String userId){
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
 
+        Bundle args=new Bundle();
+        args.putString(Constants.PLAN_ID,planId);
+        args.putString(Constants.USER_ID, userId);
+        if (sendMessageFragment == null) {
+            sendMessageFragment = new SendMessageFragment();
+
+            sendMessageFragment.setArguments(args);
+
+            transaction.replace(R.id.framelayout, sendMessageFragment);
+            transaction.commit();
+        }else {
+
+            sendMessageFragment.refreshData( planId,  userId);
+        }
+
+
+    }
     @Override
     public void initData() {
         super.initData();
@@ -335,7 +392,7 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
             searchPatientList.addAll(itinfoDetailDTOList);
             if (null==searchPatientList||searchPatientList.size()==0){
                 cureentPage = searchPageNo;
-                ToastUtil.toastShortMessage("未查询到结果");
+//                ToastUtil.toastShortMessage("未查询到结果");
                 searchsmartRefreshLayout.setVisibility(View.GONE);
                 AllsmartRefreshLayout.setVisibility(View.VISIBLE);
             }else {

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_plans"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/qb_px_15"
+        android:layout_marginBottom="@dimen/qb_px_15"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/textview_content"
+            android:text="问卷调查："
+            android:layout_marginRight="@dimen/qb_px_50"
+            />
+
+        <TextView
+            android:layout_alignParentEnd="true"
+            android:id="@+id/tv_state"
+            style="@style/textview_content"
+            android:layout_width="wrap_content"
+            android:text="已完成"
+            />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/divider"
+        android:layout_height="0.5dp"/>
+
+</LinearLayout>

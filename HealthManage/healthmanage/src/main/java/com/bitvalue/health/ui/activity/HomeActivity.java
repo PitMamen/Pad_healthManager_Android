@@ -67,7 +67,7 @@ import com.bitvalue.health.ui.fragment.setting.MedicalRecordsFragment;
 import com.bitvalue.health.ui.fragment.setting.NewHealthPlanFragmentModify;
 import com.bitvalue.health.ui.fragment.setting.PersonalDataFragment;
 import com.bitvalue.health.ui.fragment.setting.SettingsFragment;
-import com.bitvalue.health.ui.fragment.workbench.HealthPlanPreviewFragment;
+import com.bitvalue.health.ui.fragment.workbench.HealthPlanTaskDetailFragment;
 import com.bitvalue.health.ui.fragment.workbench.NeedDealtWithFragment;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.SharedPreManager;
@@ -585,12 +585,12 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             //健康套餐计划 预览
             case Constants.FRAGMENT_HEALTH_PLAN_PREVIEW:
 //                PlanDetailResult planDetailResult = (PlanDetailResult) object;
-                int PlanId = (int) object;
+                NewLeaveBean.RowsDTO  RowsDTO = ( NewLeaveBean.RowsDTO ) object;
                 Bundle bundlePre = new Bundle();
-                bundlePre.putInt(Constants.PLAN_ID, PlanId);
+                bundlePre.putString(Constants.PLAN_ID, RowsDTO.getPlanInfo().get(0).getPlanId());
+                bundlePre.putSerializable(Constants.USERINFO,RowsDTO);
 //                bundlePre.putSerializable(Constants.PLAN_PREVIEW, planDetailResult);
-                HealthPlanPreviewFragment healthPlanPreviewFragment;
-                healthPlanPreviewFragment = new HealthPlanPreviewFragment();
+                HealthPlanTaskDetailFragment   healthPlanPreviewFragment = new HealthPlanTaskDetailFragment();
                 healthPlanPreviewFragment.setArguments(bundlePre);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW, healthPlanPreviewFragment);
                 break;

@@ -333,13 +333,7 @@
     <string name="confirm">确定</string>
     <string name="more">群发</string>
     <string name="putaway">收起</string>
-
-
-
-
-
-
-
+    <string name="pls_send_health_message">请输入需要提醒患者的内容（限250字内）：</string>
 
 
 </resources>

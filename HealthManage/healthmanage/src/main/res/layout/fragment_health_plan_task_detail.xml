@@ -82,7 +82,7 @@
                 android:layout_width="@dimen/qb_px_1"
                 android:layout_height="@dimen/qb_px_8"
                 android:layout_marginLeft="@dimen/qb_px_5"
-               android:layout_marginTop="@dimen/qb_px_1"
+               android:layout_marginTop="@dimen/qb_px_2"
                 android:background="@color/text_desc_dark"
                 app:layout_constraintLeft_toRightOf="@id/tv_sex"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -110,12 +110,12 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/qb_px_5"
             android:layout_marginBottom="@dimen/qb_px_15"
+            android:drawableRight="@mipmap/next"
             android:paddingHorizontal="@dimen/qb_px_3"
             android:paddingVertical="@dimen/qb_px_2"
             android:text="患者详情"
             android:textColor="@color/main_blue"
             android:textSize="12sp"
-            android:drawableRight="@mipmap/next"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             tools:ignore="MissingConstraints" />
@@ -131,6 +131,47 @@
         android:layout_height="0.5dp"/>
 
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/ll_task_tetail"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/qb_px_10"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_plan_title"
+                android:layout_width="wrap_content"
+                android:textColor="@color/text_black"
+                android:textStyle="bold"
+                android:gravity="top"
+                android:textSize="15sp"
+                android:text="第一次随访任务"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                />
+            <TextView
+                android:id="@+id/tv_plan_time"
+                android:layout_width="wrap_content"
+                android:text=""
+                android:layout_marginLeft="@dimen/qb_px_20"
+                android:paddingLeft="@dimen/qb_px_5"
+                android:paddingRight="@dimen/qb_px_5"
+                android:textSize="15sp"
+                android:gravity="top"
+                android:textColor="@color/text_gray"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/qb_px_11"
+            android:id="@+id/task_tetail_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginTop="@dimen/qb_px_11"
         android:id="@+id/list_health_plan"

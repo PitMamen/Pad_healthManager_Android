@@ -2,6 +2,7 @@ package com.bitvalue.health.presenter.healthmanager;
 
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
 import com.bitvalue.health.api.responsebean.PlanDetailResult;
+import com.bitvalue.health.api.responsebean.PlanTaskDetail;
 import com.bitvalue.health.api.responsebean.TaskPlanDetailBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
@@ -20,13 +21,13 @@ import java.util.List;
 public class HealthPlanPreviewPresenter extends BasePresenter<HealthPlanPreviewContract.View, HealthPlanPreviewContract.Model> {
 
 
-    public void queryHealthPlanContent(String contentId, String planType, String userid) {
-        mModel.queryHealthPlanContent(contentId, planType, userid, new CallBackAdapter() {
+    public void queryTaskDetail(int planID, int taskId,String userId) {
+        mModel.queryTaskDetail( planID,  taskId, userId, new CallBackAdapter() {
             @Override
             public void onSuccess(Object o, int what) {
                 super.onSuccess(o, what);
                 if (isViewAttach()) {
-                    getView().queryHealthPlanContentSuccess((TaskPlanDetailBean) o);
+                    getView().queryHealthPlanContentSuccess((PlanTaskDetail) o);
                 }
             }
 
@@ -41,7 +42,7 @@ public class HealthPlanPreviewPresenter extends BasePresenter<HealthPlanPreviewC
     }
 
 
-    public void queryhealtPlan(int planID) {
+    public void queryhealtPlan(String planID) {
         mModel.queryhealtPlan(planID, new CallBackAdapter() {
             @Override
             public void onSuccess(Object o, int what) {

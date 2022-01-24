@@ -412,6 +412,7 @@ public class NewLeaveBean implements Serializable {
             private String owner;
             private String endTime;
             private String patientName;
+            private boolean checked;
 
             @Override
             public String toString() {
@@ -430,6 +431,13 @@ public class NewLeaveBean implements Serializable {
                         '}';
             }
 
+            public boolean isChecked() {
+                return checked;
+            }
+
+            public void setChecked(boolean checked) {
+                this.checked = checked;
+            }
 
             public String getPatientName() {
                 return patientName;

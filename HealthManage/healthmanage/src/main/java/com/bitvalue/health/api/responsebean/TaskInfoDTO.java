@@ -6,10 +6,19 @@ public class TaskInfoDTO {
     private Integer taskId;
     private String planType;
     private String planDescribe;
+    private String formartPlanDescribe;
     private String contentId;
     private String execTime;
     private Integer execFlag;
     private Integer noticeFlag;
+
+    public String getFormartPlanDescribe() {
+        return formartPlanDescribe;
+    }
+
+    public void setFormartPlanDescribe(String formartPlanDescribe) {
+        this.formartPlanDescribe = formartPlanDescribe;
+    }
 
     public Integer getId() {
         return id;

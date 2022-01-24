@@ -157,8 +157,8 @@ public class PatientDetailFragment extends BaseFragment {
                       return;
                   }
 
-                String planID = itemPosition.getPlanInfo().get(0).getPlanId();
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW,Integer.valueOf(planID));
+//                String planID = itemPosition.getPlanInfo().get(0).getPlanId();
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW,itemPosition);
                 break;
         }
     }

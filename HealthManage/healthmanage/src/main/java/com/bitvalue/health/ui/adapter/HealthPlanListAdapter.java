@@ -1,19 +1,25 @@
 package com.bitvalue.health.ui.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.callback.PhoneFollowupCliclistener;
+import com.bitvalue.health.ui.fragment.workbench.HealthPlanTaskDetailFragment;
+import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -58,8 +64,51 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
         PlanItemChildAdapter childAdapter = new PlanItemChildAdapter(sfjhBean.getPlanInfo());
         childItemLRecycleView.setAdapter(childAdapter);
         childAdapter.setNewData(sfjhBean.getPlanInfo());
+        childAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
+                NewLeaveBean.RowsDTO.PlanInfoDetailDTO planInfo = (NewLeaveBean.RowsDTO.PlanInfoDetailDTO) adapter.getItem(position);
+
+//                List<NewLeaveBean.RowsDTO.PlanInfoDetailDTO> data = adapter.getData();
+//                for (int i = 0; i < data.size(); i++) {
+//                    if (position==i){
+//                        data.get(i).setChecked(true);
+//                    }else {
+//                        data.get(i).setChecked(false);
+//                    }
+//                }
+//
+//                adapter.setNewData(data);
+
+                switch (view.getId()){
+                    case R.id.iv_send_msg:
+                        if (onPlanTaskItemClickListener!=null){
+                            onPlanTaskItemClickListener.onSendMsgItemClick(planInfo.getPlanId(),  sfjhBean);
+                        }
+
+                        break;
+                    case R.id.iv_check_plan:
+                        if (onPlanTaskItemClickListener!=null){
+                            onPlanTaskItemClickListener.onCkeckPlanItemClick(planInfo.getPlanId(), sfjhBean);
+                        }
+                        break;
+                }
+            }
+        });
 
     }
 
+    private OnPlanTaskItemClickListener onPlanTaskItemClickListener;
+
+    public interface OnPlanTaskItemClickListener {
+
+        void onSendMsgItemClick(String planId,NewLeaveBean.RowsDTO planInfoDetailDTO);
+        void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO planInfoDetailDTO);
+    }
+
+    public void setOnPlanTaskItemClickListener(OnPlanTaskItemClickListener listener) {
+        onPlanTaskItemClickListener = listener;
+    }
 
 }

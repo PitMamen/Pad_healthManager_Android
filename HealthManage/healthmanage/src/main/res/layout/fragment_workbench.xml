@@ -15,13 +15,18 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
-
+        <include layout="@layout/layout_third_title"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/qb_px_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider" />
 
         <LinearLayout
             android:id="@+id/ll_search"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/qb_px_32"
-            android:layout_margin="@dimen/qb_px_11"
+            android:layout_height="@dimen/qb_px_28"
+            android:layout_margin="@dimen/qb_px_10"
             android:layout_below="@+id/rl_title"
             android:background="@drawable/shape_bg_white"
             android:orientation="horizontal">

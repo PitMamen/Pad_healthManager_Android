@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_third_title"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_gray"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/qb_px_15"
+            android:paddingTop="@dimen/qb_px_10">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_white"
+                android:orientation="vertical"
+                android:padding="@dimen/qb_px_13">
+
+                <TextView
+                    android:id="@+id/tv_text_analyse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pls_send_health_message"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/qb_px_10"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_text_tx"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/qb_px_10"
+                    android:background="@drawable/shape_bg_gray"
+                    android:gravity="left|top"
+                    android:hint="请输入文字"
+                    android:minHeight="@dimen/qb_px_115"
+                    android:paddingHorizontal="@dimen/qb_px_6"
+                    android:paddingVertical="@dimen/qb_px_6"
+                    android:textColor="@color/text_main"
+                    android:textSize="@dimen/qb_px_8"
+                    android:maxLength="250"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_text_analyse" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:layout_marginBottom="@dimen/qb_px_10">
+
+                <TextView
+                    android:id="@+id/tv_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/qb_px_10"
+                    android:background="@drawable/shape_btn_blue_dark"
+                    android:paddingHorizontal="@dimen/qb_px_30"
+                    android:paddingVertical="@dimen/qb_px_5"
+                    android:text="发送提醒"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_10" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
