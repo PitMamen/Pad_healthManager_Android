@@ -69,6 +69,7 @@ import com.bitvalue.health.ui.fragment.setting.PersonalDataFragment;
 import com.bitvalue.health.ui.fragment.setting.SettingsFragment;
 import com.bitvalue.health.ui.fragment.workbench.HealthPlanTaskDetailFragment;
 import com.bitvalue.health.ui.fragment.workbench.NeedDealtWithFragment;
+import com.bitvalue.health.ui.fragment.workbench.SendMessageFragment;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
@@ -213,6 +214,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             Log.e(TAG, "initView  loginBean is null ");
             return;
         }
+        frameLayout_full.setVisibility(View.GONE);
         initFragments(work_bench);  //默认首页工作台界面
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig);
     }
@@ -254,7 +256,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         transaction.add(R.id.layout_fragment, fragmentArrays[1]);
         transaction.add(R.id.layout_fragment, fragmentArrays[2]);
         transaction.add(R.id.layout_fragment, fragmentArrays[3]);
-        transaction.add(R.id.framelaout_workbench, fragmentArrays[4]);
+        transaction.add(R.id.layout_fragment, fragmentArrays[4]);
         transaction.add(R.id.framelaout_workbench, fragmentArrays[5]);
         transaction.commitAllowingStateLoss();
         afterTabSelect(index);
@@ -276,7 +278,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
         //如果点击的当前Fragment还没加入集合中 则添加
         if (!fragmentArrays[index].isAdded()) {
-            if (index != work_bench && index != calendar) {
+            if (index != calendar) {
                 supportFragmentManager.beginTransaction().add(R.id.layout_fragment, fragmentArrays[index]);
             } else {
                 supportFragmentManager.beginTransaction().add(R.id.framelaout_workbench, fragmentArrays[index]);
@@ -585,15 +587,29 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             //健康套餐计划 预览
             case Constants.FRAGMENT_HEALTH_PLAN_PREVIEW:
 //                PlanDetailResult planDetailResult = (PlanDetailResult) object;
-                NewLeaveBean.RowsDTO  RowsDTO = ( NewLeaveBean.RowsDTO ) object;
+                NewLeaveBean.RowsDTO RowsDTO = (NewLeaveBean.RowsDTO) object;
                 Bundle bundlePre = new Bundle();
                 bundlePre.putString(Constants.PLAN_ID, RowsDTO.getPlanInfo().get(0).getPlanId());
-                bundlePre.putSerializable(Constants.USERINFO,RowsDTO);
+                bundlePre.putSerializable(Constants.USERINFO, RowsDTO);
 //                bundlePre.putSerializable(Constants.PLAN_PREVIEW, planDetailResult);
-                HealthPlanTaskDetailFragment   healthPlanPreviewFragment = new HealthPlanTaskDetailFragment();
+                HealthPlanTaskDetailFragment healthPlanPreviewFragment = new HealthPlanTaskDetailFragment();
                 healthPlanPreviewFragment.setArguments(bundlePre);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW, healthPlanPreviewFragment);
                 break;
+
+
+            //发送消息提醒界面
+            case Constants.FRAGMENT_SEND_MESSAGE:
+                NewLeaveBean.RowsDTO userInfo = (NewLeaveBean.RowsDTO) object;
+                SendMessageFragment sendMessageFragment = new SendMessageFragment();
+                Bundle bundle1 = new Bundle();
+                bundle1.putString(Constants.PLAN_ID,userInfo.getPlanInfo().get(0).getPlanId());
+                bundle1.putSerializable(Constants.USERINFO,userInfo);
+                sendMessageFragment.setArguments(bundle1);
+                mapFragments.put(Constants.FRAGMENT_SEND_MESSAGE, sendMessageFragment);
+                break;
+
+
 //
             /**
              * 书写病历 界面切换
@@ -670,6 +686,16 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 mapFragments.put(FRAGMENT_DETAIL, patientDetailFragment);
                 break;
 
+            //套餐详情界面
+//            case Constants.FRAGMENT_PLAN_TASK_DETAIL:
+//                NewLeaveBean.RowsDTO rowsDTO = (NewLeaveBean.RowsDTO) object;
+//                HealthPlanTaskDetailFragment healthPlanTaskDetailFragment = new HealthPlanTaskDetailFragment();
+//                Bundle bundle_plandetail = new Bundle();
+//                bundle_plandetail.putString(Constants.PLAN_ID,);
+//                healthPlanTaskDetailFragment.setArguments(bundle_plandetail);
+//                bundle_plandetail.putSerializable(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW,rowsDTO);
+//                break;
+
 
             //患者资料详情  （暂时不用）
 //            case Constants.FRAGMENT_VIDEO_PATIENT_DATA:
@@ -730,7 +756,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 } else {
                     return;
                 }
-                frameLayout_full.setVisibility(View.VISIBLE);
+                frameLayout_full.setVisibility(View.GONE);
                 afterTabSelect(4);
                 break;
 

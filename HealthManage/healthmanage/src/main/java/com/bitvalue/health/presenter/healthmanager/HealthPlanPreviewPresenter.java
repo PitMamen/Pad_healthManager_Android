@@ -37,6 +37,7 @@ public class HealthPlanPreviewPresenter extends BasePresenter<HealthPlanPreviewC
             public void onFailedLog(String str, int what) {
                 super.onFailedLog(str, what);
                 if (isViewAttach()) {
+                    Log.e(TAG, "onFailedLog: "+str );
                     getView().queryHealthFail(str);
                 }
             }
@@ -45,9 +46,6 @@ public class HealthPlanPreviewPresenter extends BasePresenter<HealthPlanPreviewC
 
 
     public void queryhealtPlan(String planID) {
-        if (mModel==null){
-            Log.e("TAG","mModel==null");
-        }
         mModel.queryhealtPlan(planID, new CallBackAdapter() {
             @Override
             public void onSuccess(Object o, int what) {
@@ -61,6 +59,7 @@ public class HealthPlanPreviewPresenter extends BasePresenter<HealthPlanPreviewC
             public void onFailedLog(String str, int what) {
                 super.onFailedLog(str, what);
                 if (isViewAttach()) {
+                    Log.e(TAG, "onFailedLog111: "+str );
                     getView().queryHealthFail(str);
                 }
 

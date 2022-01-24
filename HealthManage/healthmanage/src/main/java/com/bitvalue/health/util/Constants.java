@@ -45,6 +45,7 @@ public class Constants {
     public static final String FRAGMENT_NEW_LYDISCHARGED_PATIENT = "fragment_newly_changepatient";
     public static final String FRAGMENT_PLAN_LIST = "fragment_plan_list";
     public static final String FRAGMENT_DETAIL = "patient_detail";
+    public static final String FRAGMENT_SEND_MESSAGE = "send_message";
 
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";

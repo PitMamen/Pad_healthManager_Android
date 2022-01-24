@@ -100,7 +100,10 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         planId = getArguments().getString(Constants.PLAN_ID);
         NewLeaveBean.RowsDTO userInfo= (NewLeaveBean.RowsDTO) getArguments().getSerializable(Constants.USERINFO);
         tv_gotoDetail.setOnClickListener(v -> {
-           homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL,userInfo);
+            homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL,userInfo);
+//            if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+//                homeActivity.getSupportFragmentManager().popBackStack();
+//            }
         });
 
 
@@ -108,12 +111,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         planRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         planAdapter = new HealthPlanPreviewListAdapter();
         planRecyclerView.setAdapter(planAdapter);
-        planAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                showTaskDetailView((HealthPlanTaskListBean)adapter.getItem(position));
-            }
-        });
+        planAdapter.setOnItemClickListener((adapter, view, position) -> showTaskDetailView((HealthPlanTaskListBean)adapter.getItem(position)));
 
         //任务详情的列表
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

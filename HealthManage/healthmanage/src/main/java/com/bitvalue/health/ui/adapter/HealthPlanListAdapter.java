@@ -38,8 +38,6 @@ import java.util.List;
 public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO, BaseViewHolder> {
 
     public static final String TAG = HealthPlanListAdapter.class.getSimpleName();
-    private List<NewLeaveBean.RowsDTO> sfjhBeanList = new ArrayList<>(); //随访计划 数据
-    private PhoneFollowupCliclistener phoneFollowupCliclistener;
     private Context homeActivity;
 
     public HealthPlanListAdapter(Context context) {
