@@ -1,5 +1,7 @@
 package com.bitvalue.health.presenter.healthmanager;
 
+import android.util.Log;
+
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
 import com.bitvalue.health.api.responsebean.PlanDetailResult;
 import com.bitvalue.health.api.responsebean.PlanTaskDetail;
@@ -43,6 +45,9 @@ public class HealthPlanPreviewPresenter extends BasePresenter<HealthPlanPreviewC
 
 
     public void queryhealtPlan(String planID) {
+        if (mModel==null){
+            Log.e("TAG","mModel==null");
+        }
         mModel.queryhealtPlan(planID, new CallBackAdapter() {
             @Override
             public void onSuccess(Object o, int what) {
