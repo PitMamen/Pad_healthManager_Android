@@ -6,6 +6,6 @@ import com.hjq.http.config.IRequestApi;
 public class PlanListApi implements IRequestApi {
     @Override
     public String getApi() {
-        return Constants.API_HEALTH +  "/health/doctor/qryMyPlanTemplates";
+        return Constants.API_HEALTH +  "/health/doctor/qryMyPlanTemplates/?status=1";
     }
 }

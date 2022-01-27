@@ -82,6 +82,9 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     @BindView(R.id.et_search)
     EditText et_search;
 
+    @BindView(R.id.ll_sp)
+    LinearLayout ll_spinner;
+
 
     @BindView(R.id.all_check)
     RelativeLayout rl_allcheck;
@@ -188,13 +191,12 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     public void initView(View rootView) {
         super.initView(rootView);
         EventBus.getDefault().register(this);
-
-        initUnregisterPatient();
         initallocatedList();
+        initUnregisterPatient();
         initSpinnerCon();
         initSearchButton();
         initSearchList();
-
+        homeActivity.switchSecondFragment(FRAGMENT_PLAN_LIST, "");
         ll_unregister.setVisibility(View.GONE);
 
     }
@@ -203,6 +205,8 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     @Override
     public void initData() {
         super.initData();
+        requestDistribution("");
+        requestUnregister();
     }
 
 
@@ -276,6 +280,8 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
 
             }
         });
+
+
         spinnew_inpatient.setAdapter(spinnerAdapter);
     }
 

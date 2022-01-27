@@ -73,7 +73,7 @@ public class PlansAdapter extends BaseQuickAdapter<PlanListBean, BaseViewHolder>
             }
         });
         holder.setText(R.id.tv_plan_name, item.templateName);
-        holder.setText(R.id.tv_bone_number_des, item.templateName);
-        holder.setText(R.id.tv_bone_number, item.userNum + "");
+        holder.setText(R.id.tv_bone_number_des, item.templateName.trim());
+        holder.setText(R.id.tv_bone_number, item.diseaseName);
     }
 }

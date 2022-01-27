@@ -215,7 +215,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             return;
         }
         frameLayout_full.setVisibility(View.GONE);
-        initFragments(work_bench);  //默认首页工作台界面
+        EventBus.getDefault().post(new MainRefreshObj()); // 通知患者报道界面获取数据 请求接口
+        initFragments(chat_index);  //默认首页工作台界面
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig);
     }
 
@@ -299,9 +300,9 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
         switch (index) {
 
-            //工作台
+            //随访计划
             case work_bench:
-                iv_wkbench.setImageResource(R.drawable.tab_icon_gzt);
+                iv_wkbench.setImageResource(R.mipmap.tab_icon_jh);
                 tv_wkbench.setTextColor(getResources().getColor(R.color.white));
                 layout_workbench.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
@@ -314,16 +315,16 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 break;
 
 
-//            健康计划
+//            患者报道
             case chat_index:
-                img_person.setImageResource(R.drawable.tab_icon_jkgl);
+                img_person.setImageResource(R.mipmap.tab_icon_ct);
                 tv_person.setTextColor(getResources().getColor(R.color.white));
                 layout_person.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
 
 //                云门诊
             case video_index:
-                img_group.setImageResource(R.drawable.tab_icon_ct);
+                img_group.setImageResource(R.mipmap.tab_icon_zx);
                 tv_group.setTextColor(getResources().getColor(R.color.white));
                 layout_group.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
@@ -350,7 +351,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
      */
     private void initNaviUI() {
 
-        iv_wkbench.setImageResource(R.drawable.tab_icon_gzt);
+        iv_wkbench.setImageResource(R.mipmap.tab_icon_jh);
 //        tv_wkbench.setTextColor(getResources().getColor(R.color.gray));
         layout_workbench.setBackgroundColor(getResources().getColor(R.color.home_blue));
 
@@ -360,12 +361,12 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         layout_calender.setBackgroundColor(getResources().getColor(R.color.home_blue));
 
 
-        img_person.setImageResource(R.drawable.tab_icon_jkgl);
+        img_person.setImageResource(R.mipmap.tab_icon_ct);
 //        tv_person.setTextColor(getResources().getColor(R.color.gray));
         layout_person.setBackgroundColor(getResources().getColor(R.color.home_blue));
 
 
-        img_group.setImageResource(R.drawable.tab_icon_ct);
+        img_group.setImageResource(R.mipmap.tab_icon_zx);
 //        tv_group.setTextColor(getResources().getColor(R.color.gray));
         layout_group.setBackgroundColor(getResources().getColor(R.color.home_blue));
 
@@ -748,18 +749,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     @OnClick({R.id.layout_person, R.id.layout_settings, R.id.layout_group, R.id.layout_send, R.id.layout_fragment_end, R.id.layout_workbench, R.id.layout_calendar})
     public void clickleftbutton(View view) {
         switch (view.getId()) {
-//            工作台点击
-            case R.id.layout_workbench:
-                //这里不能让一直连续点 做个限制
-                if (tabPosition != 4) {
-                    backAllThirdAct();
-                } else {
-                    return;
-                }
-                frameLayout_full.setVisibility(View.GONE);
-                afterTabSelect(4);
-                break;
-
 
 //                日程点击事件
             case R.id.layout_calendar:
@@ -783,9 +772,25 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 }
                 frameLayout_full.setVisibility(View.GONE);
                 switchSecondFragment(FRAGMENT_PLAN_LIST, "");
-                EventBus.getDefault().post(new MainRefreshObj()); // 通知健康管理界面获取数据 请求接口
                 afterTabSelect(0);
                 break;
+
+
+
+            //            随访计划
+            case R.id.layout_workbench:
+                //这里不能让一直连续点 做个限制
+                if (tabPosition != 4) {
+                    backAllThirdAct();
+                } else {
+                    return;
+                }
+                frameLayout_full.setVisibility(View.GONE);
+                afterTabSelect(4);
+                break;
+
+
+
 
             //个人设置按钮 点击事件
             case R.id.layout_settings:

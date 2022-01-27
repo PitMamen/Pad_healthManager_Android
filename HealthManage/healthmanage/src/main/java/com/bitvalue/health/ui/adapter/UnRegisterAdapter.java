@@ -180,7 +180,7 @@ public class UnRegisterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public void bindData(NewLeaveBean.RowsDTO bean) {
             tv_name.setText(bean.getUserName());
             tv_sex.setText(bean.getSex());
-            tv_disa.setText(bean.getDiagnosis());
+            tv_disa.setText(bean.getCyzd());
             tv_zhuanbing.setText(bean.getKsmc());
             tv_bingqu.setText(bean.getBqmc());
             String curen = TimeUtils.getCurrenTime();

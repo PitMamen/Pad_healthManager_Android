@@ -58,6 +58,12 @@ public class QuickReplyFragment extends BaseFragment implements OnItemClickCallb
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
+        back.setOnClickListener(v -> {
+            if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                homeActivity.getSupportFragmentManager().popBackStack();
+            }
+        });
+
         quickReplyList.add(new QuickReplyBean("你好,很高兴为您服务?"));
         quickReplyList.add(new QuickReplyBean("是否有预约挂号?"));
         quickReplyList.add(new QuickReplyBean("请问您哪里不舒服?有些什么病症"));

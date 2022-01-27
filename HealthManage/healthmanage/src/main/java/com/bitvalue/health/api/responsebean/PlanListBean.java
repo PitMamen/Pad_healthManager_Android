@@ -11,9 +11,12 @@ public class PlanListBean implements Serializable,Comparable<PlanListBean> {
     public String basetimeType;
     public String userId;
     public String status = "0";
+    public String diseaseName = "";
     public long createTime;
     public long updateTime;
     public int userNum;
+    public String belong;
+    public String deptName;
 
     public boolean isChecked;
 

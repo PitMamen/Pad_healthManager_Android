@@ -9,6 +9,7 @@ import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.requestbean.ReportStatusBean;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.requestbean.SendUserRemind;
+import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
@@ -228,6 +229,16 @@ public interface CommonService {
     @POST("bone-api/inner/qryPatientList")
     Observable<ApiResult<NewLeaveBean>> qryPatientList(@Body RequestNewLeaveBean leaveBean);
 
+
+
+
+    /**
+     * 查看患者上传资料
+     * @param bean
+     * @return
+     */
+    @POST("health-api/health/doctor/qryUserLocalVisit")
+    Observable<ApiResult<List<TaskDetailBean>>> qryUserLocalVisit(@Body UserLocalVisitBean bean);
 
 
 

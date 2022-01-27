@@ -16,24 +16,21 @@ import java.util.List;
  * @author created by bitvalue
  * @data : 01/07
  */
-public class ImageListDisplayAdapter extends BaseQuickAdapter<TaskDetailBean.HealthImagesDTO, BaseViewHolder> {
-    private List<TaskDetailBean.HealthImagesDTO> listImage;
+public class ImageListDisplayAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
 
 
-    public ImageListDisplayAdapter(int layoutResId, @Nullable List<TaskDetailBean.HealthImagesDTO> data) {
+    public ImageListDisplayAdapter(int layoutResId, @Nullable List<String> data) {
         super(layoutResId, data);
-        this.listImage = data;
-
     }
 
 
     @Override
-    protected void convert(BaseViewHolder holder, TaskDetailBean.HealthImagesDTO item) {
+    protected void convert(BaseViewHolder holder, String item) {
        if (item==null){
            return;
        }
         ImageView imageView = holder.getView(R.id.iv_pic);
-        GlideEngine.loadImage(imageView,item.fileUrl);
+        GlideEngine.loadImage(imageView,item);
     }
 }

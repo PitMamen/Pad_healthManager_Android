@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -14,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/qb_px_50"
-            android:background="#182152"
+            android:background="@color/home_blue"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -25,21 +27,24 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="联系人"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-
                 <ImageView
                     android:id="@+id/img_top"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/logo" />
+                    android:src="@mipmap/logo" />
+
+                <TextView
+                    android:id="@+id/tv_top"
+                    android:layout_marginTop="@dimen/qb_px_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="病友服务"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="visible" />
+
+
             </LinearLayout>
 
         </LinearLayout>
@@ -127,29 +132,49 @@
             android:visibility="visible">
 
             <RelativeLayout
-                android:id="@+id/layout_workbench"
+                android:id="@+id/layout_person"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_wkbench"
+                    android:id="@+id/tv_person"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_person"
                     android:gravity="center_horizontal"
-                    android:text="我的待办"
-                    android:layout_below="@+id/img_wkbench"
+                    android:text="患者报道"
                     android:textColor="@color/white"
                     android:textSize="8sp"
                     android:visibility="visible" />
 
                 <ImageView
-                    android:id="@+id/img_wkbench"
+                    android:id="@+id/img_person"
                     android:layout_width="@dimen/qb_px_15"
                     android:layout_height="@dimen/qb_px_15"
-                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/tab_icon_gzt" />
+                    android:src="@mipmap/tab_icon_ct" />
+
+                <LinearLayout
+                    android:id="@+id/layout_pot_health"
+                    android:layout_width="@dimen/qb_px_11"
+                    android:layout_height="@dimen/qb_px_11"
+                    android:layout_marginLeft="@dimen/qb_px_27"
+                    android:layout_marginTop="@dimen/qb_px_6"
+                    android:background="@drawable/shape_boll_red"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_new_count_health"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/qb_px_7" />
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -202,67 +227,38 @@
 <!--        add-->
 
 
-
-
-
-
-
-
-
-
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/qb_px_33"
-            android:layout_marginTop="@dimen/qb_px_10"
+            android:layout_marginTop="@dimen/qb_px_24"
             android:gravity="center"
             android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/layout_person"
+                android:id="@+id/layout_workbench"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+
                 <TextView
-                    android:id="@+id/tv_person"
+                    android:id="@+id/tv_wkbench"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/img_person"
+                    android:layout_below="@+id/img_wkbench"
                     android:gravity="center_horizontal"
-                    android:text="患者报道"
+                    android:text="随访计划"
                     android:textColor="@color/white"
                     android:textSize="8sp"
                     android:visibility="visible" />
 
                 <ImageView
-                    android:id="@+id/img_person"
+                    android:id="@+id/img_wkbench"
                     android:layout_width="@dimen/qb_px_15"
                     android:layout_height="@dimen/qb_px_15"
-                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/tab_icon_jkgl" />
-
-                <LinearLayout
-                    android:id="@+id/layout_pot_health"
-                    android:layout_width="@dimen/qb_px_11"
-                    android:layout_height="@dimen/qb_px_11"
-                    android:layout_marginLeft="@dimen/qb_px_27"
-                    android:layout_marginTop="@dimen/qb_px_6"
-                    android:background="@drawable/shape_boll_red"
-                    android:gravity="center"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/tv_new_count_health"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="1"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/qb_px_7" />
-                </LinearLayout>
+                    android:src="@mipmap/tab_icon_jh" />
 
             </RelativeLayout>
 
@@ -271,7 +267,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/qb_px_33"
-            android:layout_marginTop="@dimen/qb_px_10"
+            android:layout_marginTop="@dimen/qb_px_13"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="visible">
@@ -299,7 +295,7 @@
                     android:layout_height="@dimen/qb_px_15"
                     android:layout_centerInParent="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/tab_icon_ct" />
+                    android:src="@mipmap/tab_icon_zx" />
 
                 <LinearLayout
                     android:id="@+id/layout_pot_video"
@@ -330,7 +326,7 @@
             android:layout_marginTop="@dimen/qb_px_10"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <RelativeLayout
                 android:id="@+id/layout_send"
@@ -458,7 +454,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="个人中心"
+                    android:text="设置"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     android:visibility="visible" />

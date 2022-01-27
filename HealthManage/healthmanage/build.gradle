@@ -69,7 +69,7 @@ android {
 //            buildConfigField('String', 'HOST_URL', '"http://happy-mao01.imwork.net:39596/"')//演示环境
 
             // 设置清单占位符
-            manifestPlaceholders = ['app_name': '健康管理']
+            manifestPlaceholders = ['app_name': '病友服务']
             // 调试模式下只保留一种架构的 so 库，提升打包速度
             ndk {
                 abiFilters 'armeabi-v7a','x86','armeabi'
@@ -80,7 +80,7 @@ android {
         preview {
             applicationIdSuffix ''
             // 设置清单占位符
-            manifestPlaceholders = ['app_name': '健康管理']
+            manifestPlaceholders = ['app_name': '病友服务']
         }
 
         release {
@@ -102,7 +102,7 @@ android {
             // 正式服务器的主机地址
             buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
             // 设置清单占位符
-            manifestPlaceholders = ['app_name': '健康管理']
+            manifestPlaceholders = ['app_name': '病友服务']
             // 仅保留两种架构的 so 库，根据 Bugly 统计得出
             ndk {
                 // armeabi：万金油架构平台（占用率：0%）

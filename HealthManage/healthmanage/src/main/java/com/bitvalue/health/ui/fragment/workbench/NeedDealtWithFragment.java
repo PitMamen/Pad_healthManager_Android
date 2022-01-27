@@ -182,6 +182,7 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
 
             @Override
             public void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
+                Log.e(TAG, "-------------------: " );
                 rowsDTO.planId = planId;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW,rowsDTO);
             }

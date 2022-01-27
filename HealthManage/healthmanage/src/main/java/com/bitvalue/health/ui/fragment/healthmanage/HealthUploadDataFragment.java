@@ -122,16 +122,16 @@ public class HealthUploadDataFragment extends BaseFragment<HealthUploadDataPrese
         if (null == taskDetailBean) {
             return;
         }
-        currentID = taskDetailBean.userGoodsId;
+        currentID = taskDetailBean.getUserGoodsId();
 
         getActivity().runOnUiThread(() -> {
-            tv_hospital.setText(taskDetailBean.hospital);
-            tv_type.setText(taskDetailBean.visitType);
-            tv_time.setText(taskDetailBean.visitTime);
-            tv_result.setText(taskDetailBean.diagnosis);
+            tv_hospital.setText(taskDetailBean.getHospital());
+            tv_type.setText(taskDetailBean.getVisitType());
+            tv_time.setText(taskDetailBean.getVisitTime());
+            tv_result.setText(taskDetailBean.getDiagnosis());
 
-            for (int i = 0; i < taskDetailBean.healthImages.size(); i++) {
-                photos.add(taskDetailBean.healthImages.get(i).fileUrl);
+            for (int i = 0; i < taskDetailBean.getHealthImages().size(); i++) {
+                photos.add(taskDetailBean.getHealthImages().get(i).getFileUrl());
             }
 
             ninePhotoLayout.setDelegate(HealthUploadDataFragment.this);

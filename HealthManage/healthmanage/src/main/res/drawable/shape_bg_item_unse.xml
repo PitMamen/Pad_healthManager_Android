@@ -3,10 +3,10 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <corners
-        android:bottomLeftRadius="@dimen/qb_px_2_1"
-        android:bottomRightRadius="@dimen/qb_px_2_1"
-        android:topLeftRadius="@dimen/qb_px_2_1"
-        android:topRightRadius="@dimen/qb_px_2_1" />
+        android:bottomLeftRadius="0dp"
+        android:bottomRightRadius="0dp"
+        android:topLeftRadius="@dimen/qb_px_4"
+        android:topRightRadius="@dimen/qb_px_4" />
 
 
     <!--    边框背景 及宽度-->

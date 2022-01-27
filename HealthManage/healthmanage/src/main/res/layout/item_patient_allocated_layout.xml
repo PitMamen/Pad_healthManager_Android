@@ -134,16 +134,13 @@
             android:textSize="12sp"></TextView>
 
 
-
-
-
         <TextView
             android:id="@+id/tv_diagnosis"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_bingqu"
             android:layout_marginLeft="@dimen/qb_px_50"
-            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_marginTop="@dimen/qb_px_3"
             android:text="诊断"
             android:textColor="@color/text_desc_dark"
             android:textSize="12sp"></TextView>
@@ -154,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/qb_px_4"
             android:layout_marginRight="@dimen/qb_px_10"
             android:layout_marginBottom="@dimen/qb_px_15"
             android:text="2021-11-25"
@@ -201,36 +198,58 @@
             android:textSize="12sp" />
 
 
-
-        <RelativeLayout
-            android:layout_toRightOf="@+id/tv_patient_age"
-            android:layout_marginLeft="@dimen/qb_px_10"
-            android:id="@+id/rl_pay_patient"
-            android:layout_width="@dimen/qb_px_37"
-            android:layout_height="@dimen/qb_px_10"
-            android:layout_marginTop="@dimen/qb_px_5"
-            android:layout_marginEnd="@dimen/qb_px_10"
-            android:background="@color/text_green">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="付费患者"
-                android:textColor="@color/white"
-                android:textSize="10sp">
+        <!--        <RelativeLayout-->
+        <!--            android:id="@+id/rl_pay_patient"-->
+        <!--            android:layout_width="@dimen/qb_px_37"-->
+        <!--            android:layout_height="@dimen/qb_px_10"-->
+        <!--            android:layout_marginLeft="@dimen/qb_px_10"-->
+        <!--            android:layout_marginTop="@dimen/qb_px_5"-->
+        <!--            android:layout_marginEnd="@dimen/qb_px_10"-->
+        <!--            android:layout_toRightOf="@+id/tv_patient_age"-->
+        <!--            android:background="@color/text_green">-->
 
 
-            </TextView>
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_centerInParent="true"-->
+        <!--                android:text="付费患者"-->
+        <!--                android:textColor="@color/white"-->
+        <!--                android:textSize="10sp">-->
 
 
-        </RelativeLayout>
+        <!--            </TextView>-->
 
 
+        <!--        </RelativeLayout>-->
 
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_pay_patient"
+        android:layout_alignParentRight="true"
+        android:layout_width="@dimen/qb_px_37"
+        android:layout_height="@dimen/qb_px_10"
+        android:layout_marginEnd="@dimen/qb_px_10"
+        android:layout_marginTop="@dimen/qb_px_42"
+        android:background="@color/text_green">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="付费用户"
+            android:textColor="@color/white"
+            android:textSize="10sp">
+
+
+        </TextView>
+
+
+    </RelativeLayout>
+
 
 
     <View

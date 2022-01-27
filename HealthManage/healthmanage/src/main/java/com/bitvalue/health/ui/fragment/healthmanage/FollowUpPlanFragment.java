@@ -44,6 +44,7 @@ import com.bitvalue.health.util.customview.MPopupWindow;
 import com.bitvalue.health.util.customview.TypeGravity;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
+import com.google.gson.Gson;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.http.listener.OnHttpListener;

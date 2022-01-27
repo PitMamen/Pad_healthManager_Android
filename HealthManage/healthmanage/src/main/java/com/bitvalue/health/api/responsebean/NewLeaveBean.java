@@ -74,6 +74,7 @@ public class NewLeaveBean implements Serializable {
         private String diagnosis;
         private String diagnosisCode;
         private String hospitalCode;
+        private String cyzd;
         private int id;
         private String idNumber;
         private InfoDetailDTO infoDetail;
@@ -157,6 +158,14 @@ public class NewLeaveBean implements Serializable {
             }
         }
 
+
+        public String getCyzd() {
+            return cyzd;
+        }
+
+        public void setCyzd(String cyzd) {
+            this.cyzd = cyzd;
+        }
 
         public String getBqmc() {
             return bqmc;

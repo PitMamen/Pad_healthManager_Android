@@ -1,4 +1,4 @@
-package com.bitvalue.health.api.responsebean;
+package com.bitvalue.health.api.requestbean;
 
 import java.io.Serializable;
 
