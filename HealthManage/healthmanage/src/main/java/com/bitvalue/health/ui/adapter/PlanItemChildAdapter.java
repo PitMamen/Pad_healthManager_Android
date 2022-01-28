@@ -29,20 +29,8 @@ public class PlanItemChildAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO.
         if (item == null) {
             return;
         }
-
-
-//        holder.setBackgroundColor(R.id.ll_bg, item.isChecked()?Application.instance().getResources().getColor(R.color.blue_one):Application.instance().getResources().getColor(R.color.white));
-
-
-       int position= holder.getAdapterPosition()+1;
-//        holder.setText(R.id.tv_plan_num, "第" + position + "次");
         holder.setText(R.id.tv_plan_title, item.getPlanName());
         holder.addOnClickListener(R.id.iv_send_msg)
         .addOnClickListener(R.id.iv_check_plan);
-
-//        TextView stateTv=holder.getView(R.id.tv_plan_state);
-//        long l = System.currentTimeMillis() - TimeUtils.formatTimeToLong(item.getStartDate());
-
-
     }
 }

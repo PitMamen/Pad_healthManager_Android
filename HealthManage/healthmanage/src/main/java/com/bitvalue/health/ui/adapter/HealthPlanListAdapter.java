@@ -39,12 +39,10 @@ import java.util.List;
 public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO, BaseViewHolder> {
 
     public static final String TAG = HealthPlanListAdapter.class.getSimpleName();
-    private Context homeActivity;
     private OnItemClickCallback onItemClickCallback;
 
     public HealthPlanListAdapter(Context context,OnItemClickCallback callback) {
         super(R.layout.item_sfjh_layout);
-        homeActivity = context;
         this.onItemClickCallback = callback;
     }
 
@@ -70,10 +68,10 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
 
 
         WrapRecyclerView childItemLRecycleView = helper.getView(R.id.plan_list);
-        childItemLRecycleView.setLayoutManager(new LinearLayoutManager(homeActivity));
+        childItemLRecycleView.setLayoutManager(new LinearLayoutManager(Application.instance()));
         PlanItemChildAdapter childAdapter = new PlanItemChildAdapter(sfjhBean.getPlanInfo());
         childItemLRecycleView.setAdapter(childAdapter);
-        childAdapter.setNewData(sfjhBean.getPlanInfo());
+//        childAdapter.setNewData(sfjhBean.getPlanInfo());
         childAdapter.setOnItemChildClickListener((adapter, view, position) -> {
 
             NewLeaveBean.RowsDTO.PlanInfoDetailDTO planInfo = (NewLeaveBean.RowsDTO.PlanInfoDetailDTO) adapter.getItem(position);

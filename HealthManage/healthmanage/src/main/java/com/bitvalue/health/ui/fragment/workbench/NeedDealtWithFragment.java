@@ -88,8 +88,6 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     private List<NewLeaveBean.RowsDTO> allDynamicList = new ArrayList<>(); //我的待办患者列表
     private List<NewLeaveBean.RowsDTO> searchPatientList = new ArrayList<>(); //我的待办患者列表
 
-    private HealthPlanTaskDetailFragment healthPlanPreviewFragment;
-    private SendMessageFragment sendMessageFragment;
 
     private int cureentPage = 0;
     private int pageNo = 1;
