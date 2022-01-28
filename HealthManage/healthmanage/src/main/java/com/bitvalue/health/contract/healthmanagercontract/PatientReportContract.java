@@ -2,6 +2,7 @@ package com.bitvalue.health.contract.healthmanagercontract;
 
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
+import com.bitvalue.health.api.responsebean.InpatientBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.model.IModel;
 import com.bitvalue.health.base.view.IView;
@@ -33,6 +34,12 @@ public interface PatientReportContract {
         void qryByNameAllocatedPatienListFail(String failMessage);
 
 
+
+        void getInpartientListSuccess(List<InpatientBean> beanList);
+        void getInpartientListFail(String faileMessage);
+
+
+
     }
 
 
@@ -40,6 +47,8 @@ public interface PatientReportContract {
         void qryAllocatedPatienList(AllocatedPatientRequest allocatedPatientRequest,Callback callback);
         void qryByNameAllocatedPatienList(AllocatedPatientRequest allocatedPatientRequest,Callback callback);
         void qryUnregisterPatienList(AllocatedPatientRequest allocatedPatientRequest,Callback callback);
+
+        void getInpartientList(String depatmentID,Callback callback);
     }
 
 
@@ -49,5 +58,7 @@ public interface PatientReportContract {
         void qryByNameAllocatedPatienList(AllocatedPatientRequest allocatedPatientRequest);
         void qryUnregisterPatienList(AllocatedPatientRequest allocatedPatientRequest);
 
+
+        void getInpartientList(String depatmentID);
     }
 }

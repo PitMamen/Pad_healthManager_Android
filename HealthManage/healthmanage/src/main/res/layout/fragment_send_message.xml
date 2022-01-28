@@ -110,12 +110,12 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/qb_px_5"
             android:layout_marginBottom="@dimen/qb_px_15"
+            android:drawableRight="@mipmap/next"
             android:paddingHorizontal="@dimen/qb_px_3"
             android:paddingVertical="@dimen/qb_px_2"
             android:text="患者详情"
             android:textColor="@color/main_blue"
             android:textSize="12sp"
-            android:drawableRight="@mipmap/next"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             tools:ignore="MissingConstraints" />

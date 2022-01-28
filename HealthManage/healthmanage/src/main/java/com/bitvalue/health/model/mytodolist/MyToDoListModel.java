@@ -28,7 +28,7 @@ public class MyToDoListModel extends BaseModel implements MyToDoListContact.MyTo
                         if (!EmptyUtil.isEmpty(listApiResult.getData().getRows())){
                             callback.onSuccess(listApiResult.getData().getRows(),1000);
                         }else {
-                            callback.onFailedLog("未加载到患者",1001);
+                            callback.onFailedLog("无更多患者!",1001);
                         }
                     } else {
                         callback.onFailedLog(listApiResult.getMessage(), 1001);
@@ -36,7 +36,7 @@ public class MyToDoListModel extends BaseModel implements MyToDoListContact.MyTo
 
                 } else {
 
-                    callback.onFailedLog("listApiResult = null", 1001);
+                    callback.onFailedLog("无更多患者!", 1001);
                 }
             }, error -> {
                 callback.onFailedLog(error.getMessage(), 1001);
@@ -55,7 +55,7 @@ public class MyToDoListModel extends BaseModel implements MyToDoListContact.MyTo
                         if (!EmptyUtil.isEmpty(listApiResult.getData().getRows())){
                             callback.onSuccess(listApiResult.getData().getRows(),1000);
                         }else {
-                            callback.onFailedLog("未加载到患者",1001);
+                            callback.onFailedLog("无更多患者!",1001);
                         }
                     } else {
                         callback.onFailedLog(listApiResult.getMessage(), 1001);
@@ -63,7 +63,7 @@ public class MyToDoListModel extends BaseModel implements MyToDoListContact.MyTo
 
                 } else {
 
-                    callback.onFailedLog("listApiResult = null", 1001);
+                    callback.onFailedLog("无更多患者!", 1001);
                 }
             }, error -> {
                 callback.onFailedLog(error.getMessage(), 1001);

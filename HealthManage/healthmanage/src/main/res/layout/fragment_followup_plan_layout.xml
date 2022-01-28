@@ -135,7 +135,7 @@
 
         <LinearLayout
             android:id="@+id/ll_keshi"
-            android:layout_width="@dimen/qb_px_60"
+            android:layout_width="@dimen/qb_px_70"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/qb_px_5"
             android:background="@drawable/shape_spinner_">
@@ -143,6 +143,7 @@
 
             <TextView
                 android:id="@+id/sp_text"
+                android:textSize="10sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -168,12 +169,13 @@
             android:layout_toRightOf="@+id/ll_keshi"
             android:layout_marginStart="@dimen/qb_px_5"
             android:background="@drawable/shape_spinner_"
-            android:layout_width="@dimen/qb_px_60"
+            android:layout_width="@dimen/qb_px_70"
             android:layout_height="match_parent">
 
 
             <TextView
                 android:id="@+id/sp_text_zhuanb"
+                android:textSize="10sp"
                 android:paddingHorizontal="@dimen/qb_px_5"
                 android:layout_gravity="center_vertical"
                 android:text="请选专病"

@@ -1,15 +1,10 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
-import static com.bitvalue.health.util.Constants.EVENT_MES_TYPE_CLOUDCLINC;
-import static com.bitvalue.health.util.Constants.LISTBEAN;
-
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -21,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.ApiResult;
-import com.bitvalue.health.api.eventbusbean.MsgRemindObj;
+import com.bitvalue.health.api.eventbusbean.MainRefreshObj;
 import com.bitvalue.health.api.requestbean.MealCreateOrderApi;
+import com.bitvalue.health.api.responsebean.DepartmentResponeBean;
+import com.bitvalue.health.api.responsebean.DiseaseListBean;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.PlanListBean;
@@ -30,26 +27,24 @@ import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.OnItemClick;
 import com.bitvalue.health.callback.ViewCallback;
+import com.bitvalue.health.model.planmodel.DiseaseListApi;
 import com.bitvalue.health.model.planmodel.PlanListApi;
+import com.bitvalue.health.model.planmodel.getDepartmentListApi;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.AlreadySelectPatientAdapter;
 import com.bitvalue.health.ui.adapter.PlansAdapter;
 import com.bitvalue.health.util.Constants;
-import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.EmptyUtil;
-import com.bitvalue.health.util.MUtils;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.MPopupWindow;
 import com.bitvalue.health.util.customview.TypeGravity;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
-import com.google.gson.Gson;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.http.listener.OnHttpListener;
 import com.hjq.toast.ToastUtils;
-import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -57,7 +52,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -111,9 +108,12 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     private boolean isSortTime = true;//初始值按时间排序
     private HomeActivity homeActivity;
     private List<NewLeaveBean.RowsDTO> selectPatientList = new ArrayList<>();
-    private static final String[] inpatientAreaList = {"科室一", "科室二", "科室三", "科室四", "科室五", "科室六", "科室七"};  //病区 先写死
-    private static final String[] zhuanbinglist = {"专病一", "专病二", "专病三", "专病四", "专病五", "专病六", "专病七"};  //病区 先写死
+
+
+    private String[] zhuanbinglist;  //专病 先写死
     private PlanListBean selectPlanBean = null;  //从计划列表中选中的套餐计划
+    private List<String> departmentList = new ArrayList<>();
+    private Map<String, Integer> map = new HashMap<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -157,15 +157,18 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     /**
      * 初始化科室 Spinner
      */
-    private void initSpinnerDepartment(){
-        spinnerAdapter = new ArrayAdapter<>(homeActivity, android.R.layout.simple_spinner_item, inpatientAreaList);
-        //设置下拉列表的风格,simple_spinner_dropdown_item是android系统自带的样式，等会自己定义改动
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    private void initSpinnerDepartment() {
+
         //将adapter 加入到spinner中
         spinner_keshi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                tv_keshi.setText(inpatientAreaList[position]);
+                String selectDepartmentName = departmentList.get(position);
+                tv_keshi.setText(selectDepartmentName.length() >= 8 ? selectDepartmentName.substring(0, 7) : selectDepartmentName);
+                tv_zhuabing.setText("请选专病");
+                int departmentID = map.get(departmentList.get(position));
+                getDiseaseList(departmentID);
+
             }
 
             @Override
@@ -173,19 +176,18 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
 
             }
         });
-        spinner_keshi.setAdapter(spinnerAdapter);
+
     }
 
 
-    private void initSpinnerSpecial(){
-        spinnerzhuanbingAdapter = new ArrayAdapter<>(homeActivity, android.R.layout.simple_spinner_item, zhuanbinglist);
-        //设置下拉列表的风格,simple_spinner_dropdown_item是android系统自带的样式，等会自己定义改动
-        spinnerzhuanbingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    private void initSpinnerSpecial() {
+
         //将adapter 加入到spinner中
         sp_zhuanbing.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                tv_zhuabing.setText(zhuanbinglist[position]);
+                String selectZhuanBing = zhuanbinglist[position];
+                tv_zhuabing.setText(selectZhuanBing.length() >= 8 ? selectZhuanBing.substring(0, 7) : selectZhuanBing);
             }
 
             @Override
@@ -193,18 +195,15 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
 
             }
         });
-        sp_zhuanbing.setAdapter(spinnerzhuanbingAdapter);
     }
-
-
-
-
 
 
     @Override
     public void onResume() {
         super.onResume();
         getMyPlans();
+        getDepartmentList();
+
     }
 
     @Override
@@ -241,6 +240,70 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     }
 
 
+    /**
+     * 获取科室接口
+     */
+    private void getDepartmentList() {
+        EasyHttp.get(this).api(new getDepartmentListApi()).request(new HttpCallback<ApiResult<List<DepartmentResponeBean>>>(this) {
+            @Override
+            public void onSucceed(ApiResult<List<DepartmentResponeBean>> result) {
+                super.onSucceed(result);
+                if (!EmptyUtil.isEmpty(result)) {
+                    if (!EmptyUtil.isEmpty(result.getData()) && result.getData().size() > 0) {
+                        for (int i = 0; i < result.getData().size(); i++) {
+                            departmentList.add(result.getData().get(i).getDepartmentName());
+                            map.put(result.getData().get(i).getDepartmentName(), result.getData().get(i).getDepartmentId());
+                        }
+                        spinnerAdapter = new ArrayAdapter<>(homeActivity, android.R.layout.simple_spinner_item, departmentList);
+                        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner_keshi.setAdapter(spinnerAdapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
+    }
+
+
+    /**
+     * 获取专病接口
+     */
+    private void getDiseaseList(int departmentID) {
+        DiseaseListApi diseaseListApi = new DiseaseListApi();
+        diseaseListApi.departmentId = departmentID;
+        EasyHttp.get(this).api(diseaseListApi).request(new HttpCallback<ApiResult<List<DiseaseListBean>>>(this) {
+            @Override
+            public void onSucceed(ApiResult<List<DiseaseListBean>> result) {
+                super.onSucceed(result);
+                Log.e(TAG, "onSucceed: " + result.getData());
+                if (!EmptyUtil.isEmpty(result)) {
+                    if (!EmptyUtil.isEmpty(result.getData()) && result.getData().size() > 0) {
+                        zhuanbinglist = new String[result.getData().size()];
+                        for (int i = 0; i < result.getData().size(); i++) {
+                            zhuanbinglist[i] = result.getData().get(i).diseaseName;
+                        }
+                        spinnerzhuanbingAdapter = new ArrayAdapter<>(homeActivity, android.R.layout.simple_spinner_item, zhuanbinglist);
+                        //设置下拉列表的风格,simple_spinner_dropdown_item是android系统自带的样式，等会自己定义改动
+                        spinnerzhuanbingAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        sp_zhuanbing.setAdapter(spinnerzhuanbingAdapter);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
+    }
+
+
     /***
      * 分配计划
      * @param packegeID 套餐ID    pakecgeName 套餐名称   UserID 患者ID
@@ -261,7 +324,9 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
             public void onSucceed(ApiResult result) {
                 super.onSucceed(result);
                 hideDialog();
+                //分配计划成功后 通知待分配界面 获取最新数据
                 if (result.getCode() == 0) {
+                    EventBus.getDefault().post(new MainRefreshObj());
                     ToastUtils.show("分配随访计划成功!");
                 } else {
                     ToastUtils.show(result.getMessage());

@@ -13,7 +13,9 @@ import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
+import com.bitvalue.health.api.responsebean.DepartmentResponeBean;
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
+import com.bitvalue.health.api.responsebean.InpatientBean;
 import com.bitvalue.health.api.responsebean.LoginResBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.PatientResultBean;
@@ -122,6 +124,7 @@ public interface CommonService {
      */
     @GET("health-api/health/patient/queryHealthPlan")
     Observable<ApiResult<PlanDetailResult>> queryhealtPlan(@Query("planId") String planID);
+
     /**
      * 健康计划详情查看（任务列表查看）
      *
@@ -130,6 +133,7 @@ public interface CommonService {
      */
     @GET("health-api/health/patient/queryHealthPlan")
     Observable<ApiResult<PlanTaskDetail>> queryTaskDetail(@Query("planId") int planID, @Query("taskId") int taskId, @Query("userId") String userId);
+
     /**
      * 健康计划  任务按时间排序
      *
@@ -211,10 +215,6 @@ public interface CommonService {
     Observable<ApiResult<String>> logout();
 
 
-
-
-
-
     /***
      * 骨肿瘤接口
      */
@@ -230,16 +230,14 @@ public interface CommonService {
     Observable<ApiResult<NewLeaveBean>> qryPatientList(@Body RequestNewLeaveBean leaveBean);
 
 
-
-
     /**
      * 查看患者上传资料
+     *
      * @param bean
      * @return
      */
     @POST("health-api/health/doctor/qryUserLocalVisit")
     Observable<ApiResult<List<TaskDetailBean>>> qryUserLocalVisit(@Body UserLocalVisitBean bean);
-
 
 
     /**
@@ -253,6 +251,18 @@ public interface CommonService {
     Observable<ApiResult<NewLeaveBean>> qryallAllocatedPatientList(@Body AllocatedPatientRequest leaveBean);
 
 
+    /**
+     * 病区接口
+     */
+    @GET("/account-api/businessManagement/getInpatientAreaList")
+    Observable<ApiResult<List<InpatientBean>>> getInpatientAreaList(@Query("departmentId") String departmentId);
+
+    /**
+     * 科室接口
+     */
+    @GET("/account-api/businessManagement/getDepartmentList")
+    Observable<ApiResult<List<DepartmentResponeBean>>> getDepartmentList();
+
 
     /**
      * 所有新出院患者
@@ -263,11 +273,6 @@ public interface CommonService {
 
     @POST("bone-api/inner/qryPatientNewOutList")
     Observable<ApiResult<NewLeaveBean>> getAllNewLeaveHospitolPatients(@Body RequestNewLeaveBean leaveBean);
-
-
-
-
-
 
 
 }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
+import com.bitvalue.health.callback.OnItemClickCallback;
 import com.bitvalue.health.callback.PhoneFollowupCliclistener;
 import com.bitvalue.health.ui.fragment.workbench.HealthPlanTaskDetailFragment;
 import com.bitvalue.health.util.Constants;
@@ -39,10 +40,12 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
 
     public static final String TAG = HealthPlanListAdapter.class.getSimpleName();
     private Context homeActivity;
+    private OnItemClickCallback onItemClickCallback;
 
-    public HealthPlanListAdapter(Context context) {
+    public HealthPlanListAdapter(Context context,OnItemClickCallback callback) {
         super(R.layout.item_sfjh_layout);
         homeActivity = context;
+        this.onItemClickCallback = callback;
     }
 
 
@@ -58,6 +61,12 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
                 .setText(R.id.tv_sex, sfjhBean.getSex())
                 .setText(R.id.tv_time, sfjhBean.getDiagDate())
                 .setImageDrawable(R.id.img_head, sfjhBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+
+        helper.setOnClickListener(R.id.img_head, v -> {
+            if (onItemClickCallback!=null){
+                onItemClickCallback.onItemClick(sfjhBean);
+            }
+        });
 
 
         WrapRecyclerView childItemLRecycleView = helper.getView(R.id.plan_list);
@@ -80,7 +89,10 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
                     if (onPlanTaskItemClickListener!=null){
                         onPlanTaskItemClickListener.onCkeckPlanItemClick(planInfo.getPlanId(), sfjhBean);
                     }
+
                     break;
+
+
             }
         });
 
@@ -92,6 +104,7 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
 
         void onSendMsgItemClick(String planId,NewLeaveBean.RowsDTO planInfoDetailDTO);
         void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO planInfoDetailDTO);
+//        void onHeadItemClick(NewLeaveBean.RowsDTO rowsDTO);
     }
 
     public void setOnPlanTaskItemClickListener(OnPlanTaskItemClickListener listener) {

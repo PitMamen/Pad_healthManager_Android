@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import com.bitvalue.health.contract.healthmanagercontract.HealthPlanPreviewContr
 import com.bitvalue.health.contract.healthmanagercontract.SendMessageContract;
 import com.bitvalue.health.presenter.healthmanager.HealthPlanPreviewPresenter;
 import com.bitvalue.health.presenter.healthmanager.SendMessagePresenter;
+import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.HealthPlanPreviewListAdapter;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.TimeUtils;
@@ -52,7 +55,13 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
     TextView tv_age;
     @BindView(R.id.tv_phone)
     TextView tv_phone;
+    @BindView(R.id.tv_time)
+    TextView tv_gotoDetail;
+    @BindView(R.id.layout_back)
+    LinearLayout back;
 
+
+    private HomeActivity homeActivity;
 
 
 
@@ -68,7 +77,10 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
      */
     @Override
     public void initView(View rootView) {
-
+        back.setOnClickListener(v -> {
+            if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0)
+                homeActivity.getSupportFragmentManager().popBackStack();
+        });
         if (getArguments()==null){
             return;
         }
@@ -89,6 +101,9 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
             tv_sex.setText(userInfo.getSex());
             tv_age.setText(finatime+"岁");
             tv_phone.setText(userInfo.getInfoDetail().getSjhm());
+            tv_gotoDetail.setOnClickListener(v -> {
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, userInfo);
+            });
         }
 
 
@@ -118,7 +133,7 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-
+        homeActivity = (HomeActivity) context;
     }
 
     @Override

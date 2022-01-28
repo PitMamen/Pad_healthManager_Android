@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
+import com.bitvalue.health.api.responsebean.InpatientBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
@@ -88,5 +89,29 @@ public class PatientReportPresenter extends BasePresenter<PatientReportContract.
                 }
             }
         });
+    }
+
+    @Override
+    public void getInpartientList(String depatmentID) {
+          if (!EmptyUtil.isEmpty(depatmentID)){
+              mModel.getInpartientList(depatmentID,new CallBackAdapter(){
+                  @Override
+                  public void onSuccess(Object o, int what) {
+                      super.onSuccess(o, what);
+                      if (isViewAttach()) {
+                          getView().getInpartientListSuccess((List<InpatientBean>) o);
+                      }
+                  }
+
+                  @Override
+                  public void onFailedLog(String str, int what) {
+                      super.onFailedLog(str, what);
+                      if (isViewAttach()) {
+                          getView().getInpartientListFail(str);
+                      }
+                  }
+              });
+
+          }
     }
 }

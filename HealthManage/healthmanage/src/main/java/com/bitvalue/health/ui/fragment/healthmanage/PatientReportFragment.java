@@ -21,10 +21,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bitvalue.health.Application;
 import com.bitvalue.health.api.eventbusbean.MainRefreshObj;
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.responsebean.DiseaseSpeciesBean;
-import com.bitvalue.health.api.responsebean.InpatientAreaBean;
+import com.bitvalue.health.api.responsebean.InpatientBean;
+import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.callback.OnItemClick;
@@ -41,6 +43,7 @@ import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.MUtils;
+import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
@@ -126,7 +129,8 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     private boolean allCheck = false;
 
 
-    private static final String[] inpatientAreaList = {"病区一", "病区二", "病区三", "病区四", "病区五", "病区六", "病区七"};  //病区 先写死
+    private  String[] inpatientAreaList =null;  //病区 先写死
+
     private ArrayAdapter<String> spinnerAdapter;
     private List<NewLeaveBean.RowsDTO> tempPaitentList = new ArrayList<>();
     private List<NewLeaveBean.RowsDTO> rowsDTOList = new ArrayList<>();  //未分配患者集合列表
@@ -180,6 +184,8 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MainRefreshObj mainRefreshObj) {
         // TODO: 2022/1/11 request
+        Log.e(TAG, "收到获取最新未分配界面--------- " );
+        requestDistribution("");
     }
 
     /**
@@ -191,6 +197,12 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     public void initView(View rootView) {
         super.initView(rootView);
         EventBus.getDefault().register(this);
+        //获取病区
+        LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, Application.instance());
+        if (null != loginBean) {
+            int departmentID = loginBean.getAccount().user.departmentId;
+            mPresenter.getInpartientList(String.valueOf(departmentID));
+        }
         initallocatedList();
         initUnregisterPatient();
         initSpinnerCon();
@@ -265,13 +277,11 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
 
     //初始化选择病区spinner控件
     private void initSpinnerCon() {
-        spinnerAdapter = new ArrayAdapter<>(homeActivity, android.R.layout.simple_spinner_item, inpatientAreaList);
-        //设置下拉列表的风格,simple_spinner_dropdown_item是android系统自带的样式，等会自己定义改动
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //将adapter 加入到spinner中
         spinnew_inpatient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e(TAG, "onItemSelected: " + position);
                 sp_text.setText(inpatientAreaList[position]);
             }
 
@@ -281,8 +291,6 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
             }
         });
 
-
-        spinnew_inpatient.setAdapter(spinnerAdapter);
     }
 
 
@@ -294,12 +302,11 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     }
 
 
-
     //初始化搜索控件
-    private void initSearchList(){
+    private void initSearchList() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(homeActivity);
         recyclerView_SearchPatient.setLayoutManager(layoutManager);
-        searchPatientAdapter = new AllocatedPatientAdapter(searchrowsDTOList, this,this);
+        searchPatientAdapter = new AllocatedPatientAdapter(searchrowsDTOList, this, this);
         recyclerView_SearchPatient.setAdapter(searchPatientAdapter);
 
         search_smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
@@ -333,7 +340,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
                     search_smartRefreshLayout.finishRefresh();
                     return;
                 }
-                 pageNo = searchPageNo;
+                pageNo = searchPageNo;
                 requestDistribution(et_search.getText().toString());
                 search_smartRefreshLayout.finishRefresh();
             }
@@ -341,46 +348,44 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     }
 
 
-
-    private void initSearchButton(){
+    private void initSearchButton() {
         //初始化搜索控件 并 设置监听
-            et_search.setOnEditorActionListener((v, actionId, event) -> {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (et_search.getText().toString().isEmpty()) {
+        et_search.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (et_search.getText().toString().isEmpty()) {
 
-                        ToastUtil.toastShortMessage("请输入搜索内容");
-                        return true;
-                    }
-
-                    //关闭软键盘
-                    hideKeyboard(et_search);
-                    getSearchPatients();
+                    ToastUtil.toastShortMessage("请输入搜索内容");
                     return true;
                 }
-                return false;
-            });
 
-            et_search.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //关闭软键盘
+                hideKeyboard(et_search);
+                getSearchPatients();
+                return true;
+            }
+            return false;
+        });
 
+        et_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().isEmpty()) {
+                    smartRefreshLayout.setVisibility(View.VISIBLE);
+                    search_smartRefreshLayout.setVisibility(View.GONE);
                 }
+            }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (s.toString().isEmpty()) {
-                        smartRefreshLayout.setVisibility(View.VISIBLE);
-                        search_smartRefreshLayout.setVisibility(View.GONE);
-                    }
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-            });
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
     }
-
 
 
     //根据关键字 查询相关文章(线上获取)
@@ -401,9 +406,9 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
         allocatedPatientRequest.pageNo = pageNo;
         allocatedPatientRequest.pageSize = pageSize;
         allocatedPatientRequest.userName = name;
-        if (!EmptyUtil.isEmpty(name)){
+        if (!EmptyUtil.isEmpty(name)) {
             mPresenter.qryByNameAllocatedPatienList(allocatedPatientRequest);  //请求 待分配  已注册的患者
-        }else {
+        } else {
             mPresenter.qryAllocatedPatienList(allocatedPatientRequest);  //请求 待分配  已注册的患者
         }
     }
@@ -534,37 +539,67 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
 
     /**
      * 根据名字搜索 患者成功回调
+     *
      * @param infoDetailDTOList
      */
     @Override
     public void qryByNameAllocatedPatienListSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList) {
-     homeActivity.runOnUiThread(() -> {
-         Log.e(TAG, "qryByNameAllocatedPatienListSuccess-------" );
-         searchrowsDTOList = infoDetailDTOList;
-         if (searchrowsDTOList==null||searchrowsDTOList.size()==0){
-             currentPage = searchPageNo;
-             ToastUtils.show("无相关患者!");
-             search_smartRefreshLayout.setVisibility(View.GONE);
-             smartRefreshLayout.setVisibility(View.VISIBLE);
-         }else {
-             search_smartRefreshLayout.setVisibility(View.VISIBLE);
-             smartRefreshLayout.setVisibility(View.GONE);
-             searchPatientAdapter.updateList(searchrowsDTOList);
-         }
-     });
+        homeActivity.runOnUiThread(() -> {
+            Log.e(TAG, "qryByNameAllocatedPatienListSuccess-------");
+            searchrowsDTOList = infoDetailDTOList;
+            if (searchrowsDTOList == null || searchrowsDTOList.size() == 0) {
+                currentPage = searchPageNo;
+                ToastUtils.show("无相关患者!");
+                search_smartRefreshLayout.setVisibility(View.GONE);
+                smartRefreshLayout.setVisibility(View.VISIBLE);
+            } else {
+                search_smartRefreshLayout.setVisibility(View.VISIBLE);
+                smartRefreshLayout.setVisibility(View.GONE);
+                searchPatientAdapter.updateList(searchrowsDTOList);
+            }
+        });
     }
 
     /**
      * 根据名字搜索 患者失败回调
+     *
      * @param
      */
     @Override
     public void qryByNameAllocatedPatienListFail(String failMessage) {
-      homeActivity.runOnUiThread(() -> {
-          currentPage = searchPageNo;
-          Log.e(TAG, "qryByNameAllocatedPatienListFail: "+failMessage );
-          ToastUtils.show(failMessage);
-      });
+        homeActivity.runOnUiThread(() -> {
+            currentPage = searchPageNo;
+            Log.e(TAG, "qryByNameAllocatedPatienListFail: " + failMessage);
+            ToastUtils.show(failMessage);
+        });
+    }
+
+
+    /***
+     * 获取病区成功回调
+     * @param beanList
+     */
+    @Override
+    public void getInpartientListSuccess(List<InpatientBean> beanList) {
+        if (beanList != null) {
+            inpatientAreaList = new String[beanList.size()];
+            for (int i = 0; i < beanList.size(); i++) {
+                inpatientAreaList[i] = beanList.get(i).getInpatientAreaName();
+            }
+            spinnerAdapter = new ArrayAdapter<>(homeActivity, android.R.layout.simple_spinner_dropdown_item, inpatientAreaList);
+            //设置下拉列表的风格,simple_spinner_dropdown_item是android系统自带的样式，等会自己定义改动
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);  //android.R.layout.simple_spinner_dropdown_item
+            spinnew_inpatient.setAdapter(spinnerAdapter);
+        }
+    }
+
+    /***
+     * 获取病区失败回调
+     * @param faileMessage
+     */
+    @Override
+    public void getInpartientListFail(String faileMessage) {
+
     }
 
     @Override

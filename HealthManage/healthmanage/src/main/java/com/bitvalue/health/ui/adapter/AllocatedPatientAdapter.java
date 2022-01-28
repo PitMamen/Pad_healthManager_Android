@@ -186,15 +186,16 @@ public class AllocatedPatientAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         public void bindData(NewLeaveBean.RowsDTO bean) {
+            Log.e(TAG, "患者详情: "+bean.toString() );
             tv_name.setText(bean.getUserName());
             tv_sex.setText(bean.getSex());
             tv_disa.setText(bean.getCyzd());
-            tv_zhuanbing.setText(bean.getKsmc());
+            tv_department.setText(bean.getKsmc());
+            tv_zhuanbing.setText(bean.getBqmc());
             tv_bingqu.setText(bean.getBqmc());
             String curen = TimeUtils.getCurrenTime();
             int finatime = Integer.valueOf(curen) - Integer.valueOf((bean.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
             tv_age.setText(finatime+"岁");
-            Log.e(TAG, "userName: " + bean.getUserName() + "  useriD:" + bean.getUserId() + " isShow?" + bean.isShowCheck());
             checkBox.setVisibility(bean.isShowCheck() ? View.VISIBLE : View.GONE);
             checkBox.setChecked(bean.isChecked());
             im_head.setImageDrawable(bean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));

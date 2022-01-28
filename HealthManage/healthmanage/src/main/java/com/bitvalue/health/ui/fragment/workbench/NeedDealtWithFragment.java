@@ -27,6 +27,7 @@ import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.BaseFragment;
+import com.bitvalue.health.callback.OnItemClickCallback;
 import com.bitvalue.health.callback.PhoneFollowupCliclistener;
 import com.bitvalue.health.contract.mytodolistcontact.MyToDoListContact;
 import com.bitvalue.health.presenter.mytodolistpersenter.MyToDoListPersenter;
@@ -56,7 +57,7 @@ import butterknife.BindView;
  * <p>
  * 我的待办Fragment
  */
-public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> implements MyToDoListContact.MyToDoListView, PhoneFollowupCliclistener {
+public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> implements MyToDoListContact.MyToDoListView, PhoneFollowupCliclistener, OnItemClickCallback {
     @BindView(R.id.tv_title)
     TextView tv_title;
 
@@ -170,7 +171,7 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
 
 
     private void initList() {
-        healthPlanListAdapter = new HealthPlanListAdapter(homeActivity);
+        healthPlanListAdapter = new HealthPlanListAdapter(homeActivity,this);
         list_dynamic.setAdapter(healthPlanListAdapter);
 
         healthPlanListAdapter.setOnPlanTaskItemClickListener(new HealthPlanListAdapter.OnPlanTaskItemClickListener() {
@@ -179,7 +180,6 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
                 rowsDTO.planId = planId;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE,rowsDTO);
             }
-
             @Override
             public void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
                 Log.e(TAG, "-------------------: " );
@@ -232,16 +232,18 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
 
 
     private void initSearchList(){
-        search_patientAdapter = new HealthPlanListAdapter(homeActivity);
+        search_patientAdapter = new HealthPlanListAdapter(homeActivity,this);
         search_recyclerView.setAdapter(search_patientAdapter);
         search_patientAdapter.setOnPlanTaskItemClickListener(new HealthPlanListAdapter.OnPlanTaskItemClickListener() {
             @Override
             public void onSendMsgItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
+                rowsDTO.planId = planId;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE,rowsDTO);
             }
 
             @Override
             public void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
+                rowsDTO.planId = planId;
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW,rowsDTO);
             }
         });
@@ -282,43 +284,6 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
             }
         });
     }
-
-//        private void replacePlanFragment(String planId, NewLeaveBean.RowsDTO userInfo){
-//        FragmentManager manager = getActivity().getSupportFragmentManager();
-//        FragmentTransaction transaction = manager.beginTransaction();
-//
-//        Bundle args=new Bundle();
-//        args.putString(Constants.PLAN_ID,planId);
-//        args.putSerializable(Constants.USERINFO, userInfo);
-//
-//            healthPlanPreviewFragment = new HealthPlanTaskDetailFragment();
-//
-//            healthPlanPreviewFragment.setArguments(args);
-//
-//            transaction.replace(R.id.framelayout, healthPlanPreviewFragment);
-//            transaction.commit();
-//
-//
-//
-//    }
-//    private void replaceSendFragment(String planId, NewLeaveBean.RowsDTO userInfo){
-//        FragmentManager manager = getActivity().getSupportFragmentManager();
-//        FragmentTransaction transaction = manager.beginTransaction();
-//
-//        Bundle args=new Bundle();
-//        args.putString(Constants.PLAN_ID,planId);
-//        args.putSerializable(Constants.USERINFO, userInfo);
-//
-//            sendMessageFragment = new SendMessageFragment();
-//
-//            sendMessageFragment.setArguments(args);
-//
-//            transaction.replace(R.id.framelayout, sendMessageFragment);
-//            transaction.commit();
-//
-//
-//
-//    }
     @Override
     public void initData() {
         super.initData();
@@ -418,5 +383,15 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
             hideDialog();
             ToastUtils.show(failmessage);
         });
+    }
+
+    /***
+     * 点击患者头像 进入患者详情界面回调
+     * @param object
+     */
+    @Override
+    public void onItemClick(Object object) {
+        NewLeaveBean.RowsDTO item = (NewLeaveBean.RowsDTO) object;
+        homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, item);
     }
 }

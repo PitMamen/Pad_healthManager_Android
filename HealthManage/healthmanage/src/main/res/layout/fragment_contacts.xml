@@ -98,21 +98,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/qb_px_2"
                     android:paddingHorizontal="@dimen/qb_px_5"
                     android:text="请选择病区"
+                    android:textSize="10sp"
                     android:textColor="#999999">
 
                 </TextView>
 
                 <Spinner
                     android:id="@+id/sp_bq"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/qb_px_7"
-                    android:gravity="right"
                     android:spinnerMode="dropdown"></Spinner>
 
 
@@ -151,7 +148,7 @@
                     android:paddingHorizontal="@dimen/qb_px_6"
                     android:paddingVertical="@dimen/qb_px_6"
                     android:textColor="@color/text_main"
-                    android:textSize="12sp" />
+                    android:textSize="10sp" />
 
             </LinearLayout>
 

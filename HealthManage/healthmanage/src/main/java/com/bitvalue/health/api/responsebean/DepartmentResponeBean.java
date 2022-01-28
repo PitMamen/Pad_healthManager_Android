@@ -6,13 +6,14 @@ import java.util.List;
 /**
  * @author created by bitvalue
  * @data : 01/26
+ * 科室实体
  */
 public class DepartmentResponeBean implements Serializable {
     private int departmentId;
     private String departmentName;
     private int hospitalId;
     private int parentId;
-    private List<ChildrenDTO> children;
+    private ChildrenDTO children;
 
     public int getDepartmentId() {
         return departmentId;
@@ -46,11 +47,11 @@ public class DepartmentResponeBean implements Serializable {
         this.parentId = parentId;
     }
 
-    public List<ChildrenDTO> getChildren() {
+    public ChildrenDTO getChildren() {
         return children;
     }
 
-    public void setChildren(List<ChildrenDTO> children) {
+    public void setChildren(ChildrenDTO children) {
         this.children = children;
     }
 

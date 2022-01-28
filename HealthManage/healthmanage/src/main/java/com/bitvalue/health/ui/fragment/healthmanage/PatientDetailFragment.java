@@ -72,6 +72,9 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
     @BindView(R.id.tv_heigth)
     TextView tv_heigth;
 
+    @BindView(R.id.tv_specialdisease)
+    TextView tv_specialdisease;
+
     @BindView(R.id.list_visitload)
     WrapRecyclerView list_visitlod;
     @BindView(R.id.ll_image)
@@ -113,11 +116,16 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
             tv_sex.setText(itemPosition.getSex());
             tv_depatment.setText(itemPosition.getKsmc());
             tv_inpatient_area.setText(itemPosition.getBqmc());
-            tv_diseasename.setText(itemPosition.getDiagnosis());
+            tv_diseasename.setText(itemPosition.getCyzd());
+            tv_specialdisease.setText(itemPosition.getBqmc());
             String curen = TimeUtils.getCurrenTime();
             int finatime = Integer.valueOf(curen) - Integer.valueOf((itemPosition.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
             tv_age.setText(finatime + "岁");
-            tv_phone.setText(itemPosition.getInfoDetail().getSjhm());
+            if (itemPosition.getInfoDetail().getSjhm().equals("******")){
+                tv_phone.setText(itemPosition.getInfoDetail().getDhhm());
+            }else {
+                tv_phone.setText(itemPosition.getInfoDetail().getSjhm());
+            }
             tv_address.setText(itemPosition.getInfoDetail().getGzdwdz());
             tv_heigth.setText(itemPosition.getSex().equals("女") ? "162cm" : "175cm");
 

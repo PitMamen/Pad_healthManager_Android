@@ -215,7 +215,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             return;
         }
         frameLayout_full.setVisibility(View.GONE);
-        EventBus.getDefault().post(new MainRefreshObj()); // 通知患者报道界面获取数据 请求接口
+//        EventBus.getDefault().post(new MainRefreshObj()); // 通知患者报道界面获取数据 请求接口
         initFragments(chat_index);  //默认首页工作台界面
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig);
     }

@@ -317,7 +317,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="糖尿病"
+                android:text="无"
                 android:layout_marginLeft="@dimen/qb_px_10"
                 android:textColor="@color/black"
                 android:textSize="15sp"></TextView>
