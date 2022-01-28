@@ -36,9 +36,9 @@ public class PlanItemChildAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO.
 
        int position= holder.getAdapterPosition()+1;
 //        holder.setText(R.id.tv_plan_num, "第" + position + "次");
-        holder.setText(R.id.tv_plan_title, item.getPlanName());
-        holder.addOnClickListener(R.id.iv_send_msg)
-        .addOnClickListener(R.id.iv_check_plan);
+        holder.setText(R.id.tv_plan_title, item.getPlanName())
+                .setText(R.id.tv_plan_time,item.getStartDate());
+
 
 //        TextView stateTv=holder.getView(R.id.tv_plan_state);
 //        long l = System.currentTimeMillis() - TimeUtils.formatTimeToLong(item.getStartDate());

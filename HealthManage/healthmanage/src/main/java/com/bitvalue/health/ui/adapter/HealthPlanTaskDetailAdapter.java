@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.Application;
+import com.bitvalue.health.api.responsebean.HealthImagesDTO;
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
 import com.bitvalue.health.api.responsebean.PlanDetailResult;
 import com.bitvalue.health.api.responsebean.PlanTaskDetail;
@@ -23,6 +24,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import cc.shinichi.library.ImagePreview;
+import cc.shinichi.library.bean.ImageInfo;
 
 public class HealthPlanTaskDetailAdapter extends BaseQuickAdapter<PlanTaskDetail.UserPlanDetailsDTO, BaseViewHolder> {
 
@@ -71,17 +75,39 @@ public class HealthPlanTaskDetailAdapter extends BaseQuickAdapter<PlanTaskDetail
                 case TypeConstants.Remind:
                     helper.setText(R.id.tv_title,"健康提醒："+task.getPlanDescribe());
                     break;
+                case TypeConstants.Evaluate:
+                    helper.setText(R.id.tv_title,"健康评估："+task.getPlanDescribe());
+                    break;
             }
 
 
 
-            if (task.getContentInfo().getHealthImages()!=null && task.getContentInfo().getHealthImages().size()>0){
+            if (task.getContentInfo()!=null && task.getContentInfo().getHealthImages()!=null && task.getContentInfo().getHealthImages().size()>0){
 
                 helper.setVisible(R.id.recyclerView,true);
                 RecyclerView recyclerView=helper.getView(R.id.recyclerView);
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 4);
                 recyclerView.setLayoutManager(gridLayoutManager);
                 HealthTaskImageAdapter imageAdapter=new HealthTaskImageAdapter(task.getContentInfo().getHealthImages());
+                imageAdapter.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+                        final List<String> imageList = new ArrayList<>();
+                        for (HealthImagesDTO image : task.getContentInfo().getHealthImages()) {
+
+                            imageList.add(image.getFileUrl());
+                        }
+                        ImagePreview
+                                .getInstance()
+                                // 上下文，必须是activity，不需要担心内存泄漏，本框架已经处理好；
+                                .setContext(mContext)
+                                .setIndex(position)
+                                .setImageList( imageList)
+                                // 开启预览
+                                .start();
+                    }
+                });
                 recyclerView.setAdapter(imageAdapter);//设置数据
             }else {
                 helper.setVisible(R.id.recyclerView,false);

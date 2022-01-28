@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     android:paddingLeft="@dimen/qb_px_11"
     android:paddingRight="@dimen/qb_px_11"
-    android:layout_height="@dimen/qb_px_180">
+    android:layout_height="@dimen/qb_px_150">
 
 
     <LinearLayout
@@ -98,11 +98,7 @@
                     style="@style/textview_content"
                     android:text="检验提醒：暂无"
                     android:layout_marginTop="@dimen/qb_px_10"/>
-                <TextView
-                    android:id="@+id/tv_remind"
-                    style="@style/textview_content"
-                    android:text="健康提醒：暂无"
-                    android:layout_marginTop="@dimen/qb_px_10"/>
+
             </LinearLayout>
                 <FrameLayout
                     android:layout_width="@dimen/qb_px_62"

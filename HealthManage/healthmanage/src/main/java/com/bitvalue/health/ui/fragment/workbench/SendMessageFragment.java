@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.Application;
+import com.bitvalue.health.api.requestbean.SendUserRemind;
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.PlanTaskDetail;
@@ -26,7 +27,9 @@ import com.bitvalue.health.presenter.healthmanager.SendMessagePresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.HealthPlanPreviewListAdapter;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.TimeUtils;
+import com.bitvalue.health.util.TypeConstants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 
@@ -35,7 +38,7 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- * 发送提醒
+ * 发送提醒 评估
  */
 public class SendMessageFragment extends BaseFragment<SendMessagePresenter> implements SendMessageContract.View {
 
@@ -57,6 +60,8 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
     TextView tv_phone;
     @BindView(R.id.tv_time)
     TextView tv_gotoDetail;
+    @BindView(R.id.tv_text_analyse)
+    TextView tv_text_analyse;
     @BindView(R.id.layout_back)
     LinearLayout back;
 
@@ -66,8 +71,8 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
 
 
 
-    private HealthPlanPreviewListAdapter mAdapter;
-    private String planId;
+
+
     private NewLeaveBean.RowsDTO userInfo;
 
 
@@ -84,13 +89,19 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
         if (getArguments()==null){
             return;
         }
-        planId = getArguments().getString(Constants.PLAN_ID);
+
         userInfo= (NewLeaveBean.RowsDTO) getArguments().getSerializable(Constants.USERINFO);
 
-        if (planId==null || userInfo==null)
+        if ( userInfo==null)
             return;
+        if (TypeConstants.Evaluate.equals(userInfo.getSendPlanType())){
+            tv_title.setText("健康评估");
+            tv_text_analyse.setText("请输入健康评估的内容：");
+            tv_send.setText("发送评估");
+        }else {
+            tv_title.setText("发送提醒");
+        }
 
-        tv_title.setText("发送提醒");
 
 
         if (userInfo!=null){
@@ -110,25 +121,48 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
         tv_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String msg = et_text_tx.getText().toString().trim();
-                if (TextUtils.isEmpty(msg)){
-                    ToastUtil.toastShortMessage("请输入提醒内容");
+                String content = et_text_tx.getText().toString().trim();
+                if (TextUtils.isEmpty(content)){
+                    ToastUtil.toastShortMessage("请输入内容");
                     return;
                 }
+                if (TypeConstants.Evaluate.equals(userInfo.getSendPlanType())){
+                    sendUserEevaluate(content);
+                }else if(TypeConstants.Remind.equals(userInfo.getSendPlanType())){
+                    sendUserRemind(content);
+                }
 
-                SaveAnalyseApi saveAnalyseApi = new SaveAnalyseApi();
-                saveAnalyseApi.evalContent = msg;
-                saveAnalyseApi.evalTime = TimeUtils.getTime(System.currentTimeMillis(), TimeUtils.YY_MM_DD_FORMAT_4);
-                saveAnalyseApi.userId = userInfo.getUserId();
-                saveAnalyseApi.planId = planId;
-                saveAnalyseApi.type=2;
 
-                mPresenter.sendMessage(saveAnalyseApi);
             }
+
         });
     }
 
+    //健康评估
+    private void sendUserEevaluate(String content) {
+        SaveAnalyseApi saveAnalyseApi = new SaveAnalyseApi();
+        saveAnalyseApi.evalContent = content;
+        saveAnalyseApi.evalTime = TimeUtils.getTime(System.currentTimeMillis(), TimeUtils.YY_MM_DD_FORMAT_4);
+        saveAnalyseApi.userId = userInfo.getUserId();
+        saveAnalyseApi.planId = userInfo.planId;
+        saveAnalyseApi.describe=content;
+        saveAnalyseApi.taskId=userInfo.getTaskId();
+        saveAnalyseApi.type=1;
 
+        mPresenter.sendUserEevaluate(saveAnalyseApi);
+    }
+
+    //健康提醒
+    private void sendUserRemind(String content) {
+        SendUserRemind remindApi=new SendUserRemind();
+        remindApi.setPlanId(userInfo.getPlanId());
+        remindApi.setTaskId(userInfo.getTaskId());
+        remindApi.setRemindContent(content);
+        remindApi.setDescribe(content);
+        remindApi.setUserId(userInfo.getUserId());
+        remindApi.setType(1);
+        mPresenter.sendUserRemind(remindApi);
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -159,7 +193,27 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
 
     @Override
     public void sendSuccess() {
-        ToastUtil.toastShortMessage("发送成功！");
+        String title="";
+        if (TypeConstants.Evaluate.equals(userInfo.getSendPlanType())){
+            title="发送健康评估";
+        }else {
+            title="发送健康提醒";
+        }
+        DataUtil.showNormalDialog(homeActivity, title, "发送成功！", "确定", "", new DataUtil.OnNormalDialogClicker() {
+            @Override
+            public void onPositive() {
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0)
+                    homeActivity.getSupportFragmentManager().popBackStack();
+
+            }
+
+            @Override
+            public void onNegative() {
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0)
+                    homeActivity.getSupportFragmentManager().popBackStack();
+            }
+        });
+
     }
 
 

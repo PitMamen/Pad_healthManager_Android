@@ -6,4 +6,5 @@ public class TypeConstants {
     public static final String Check="Check";
     public static final String Exam="Exam";
     public static final String Remind="Remind";
+    public static final String Evaluate="Evaluate";
 }

@@ -64,24 +64,35 @@
             android:layout_width="wrap_content"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/iv_send_msg"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:src="@mipmap/icon_txhz"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/qb_px_11"
-                android:layout_marginStart="@dimen/qb_px_11"
-                tools:ignore="MissingConstraints" />
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_send_msg"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                android:src="@mipmap/icon_txhz"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="@dimen/qb_px_11"-->
+<!--                android:layout_marginStart="@dimen/qb_px_11"-->
+<!--                tools:ignore="MissingConstraints" />-->
 
-            <ImageView
-                android:id="@+id/iv_check_plan"
-                app:layout_constraintEnd_toStartOf="@id/iv_send_msg"
-                app:layout_constraintStart_toEndOf="@id/tv_plan_title"
-                android:src="@mipmap/icon_sfjh"
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_check_plan"-->
+<!--                app:layout_constraintEnd_toStartOf="@id/iv_send_msg"-->
+<!--                app:layout_constraintStart_toEndOf="@id/tv_plan_title"-->
+<!--                android:src="@mipmap/icon_sfjh"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                tools:ignore="MissingConstraints" />-->
+            <TextView
+                android:id="@+id/tv_plan_time"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="MissingConstraints" />
+                android:text=""
+                android:layout_marginLeft="@dimen/qb_px_20"
+                android:paddingLeft="@dimen/qb_px_5"
+                android:paddingRight="@dimen/qb_px_5"
+                android:textSize="15sp"
+                android:gravity="top"
+                android:textColor="@color/text_gray"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </LinearLayout>

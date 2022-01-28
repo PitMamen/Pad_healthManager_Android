@@ -57,7 +57,7 @@ import butterknife.BindView;
  * <p>
  * 我的待办Fragment
  */
-public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> implements MyToDoListContact.MyToDoListView, PhoneFollowupCliclistener, OnItemClickCallback {
+public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> implements MyToDoListContact.MyToDoListView, PhoneFollowupCliclistener {
     @BindView(R.id.tv_title)
     TextView tv_title;
 
@@ -88,8 +88,6 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     private List<NewLeaveBean.RowsDTO> allDynamicList = new ArrayList<>(); //我的待办患者列表
     private List<NewLeaveBean.RowsDTO> searchPatientList = new ArrayList<>(); //我的待办患者列表
 
-    private HealthPlanTaskDetailFragment healthPlanPreviewFragment;
-    private SendMessageFragment sendMessageFragment;
 
     private int cureentPage = 0;
     private int pageNo = 1;
@@ -171,15 +169,18 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
 
 
     private void initList() {
-        healthPlanListAdapter = new HealthPlanListAdapter(homeActivity,this);
+        healthPlanListAdapter = new HealthPlanListAdapter(homeActivity);
         list_dynamic.setAdapter(healthPlanListAdapter);
-
-        healthPlanListAdapter.setOnPlanTaskItemClickListener(new HealthPlanListAdapter.OnPlanTaskItemClickListener() {
+        healthPlanListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void onSendMsgItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
-                rowsDTO.planId = planId;
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE,rowsDTO);
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                if (view.getId()==R.id.img_head){
+                    homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, adapter.getItem(position));
+                }
             }
+        });
+        healthPlanListAdapter.setOnPlanTaskItemClickListener(new HealthPlanListAdapter.OnPlanTaskItemClickListener() {
+
             @Override
             public void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
                 Log.e(TAG, "-------------------: " );
@@ -232,14 +233,18 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
 
 
     private void initSearchList(){
-        search_patientAdapter = new HealthPlanListAdapter(homeActivity,this);
+        search_patientAdapter = new HealthPlanListAdapter(homeActivity);
         search_recyclerView.setAdapter(search_patientAdapter);
-        search_patientAdapter.setOnPlanTaskItemClickListener(new HealthPlanListAdapter.OnPlanTaskItemClickListener() {
+        healthPlanListAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
-            public void onSendMsgItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
-                rowsDTO.planId = planId;
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE,rowsDTO);
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                if (view.getId()==R.id.img_head){
+                    homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, adapter.getItem(position));
+                }
             }
+        });
+        search_patientAdapter.setOnPlanTaskItemClickListener(new HealthPlanListAdapter.OnPlanTaskItemClickListener() {
+
 
             @Override
             public void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
@@ -385,13 +390,4 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
         });
     }
 
-    /***
-     * 点击患者头像 进入患者详情界面回调
-     * @param object
-     */
-    @Override
-    public void onItemClick(Object object) {
-        NewLeaveBean.RowsDTO item = (NewLeaveBean.RowsDTO) object;
-        homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, item);
-    }
 }

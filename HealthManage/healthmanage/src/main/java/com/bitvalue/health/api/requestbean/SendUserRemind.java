@@ -11,13 +11,40 @@ public class SendUserRemind {
     private Integer id;
     private String picList;
     private String remindContent;
+    private String describe;
     private String remindName;
     private String remindUser;
+    private String taskId;
+    private String planId;
     private Integer type;
     private String userId;
     private List<VedioInfoDTO> vedioInfo;
     private String videoList;
     private String voiceList;
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getPlanId() {
+        return planId;
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
+    }
+
+    public void setPlanId(String planId) {
+        this.planId = planId;
+    }
 
     public List<ArticleInfoDTO> getArticleInfo() {
         return articleInfo;

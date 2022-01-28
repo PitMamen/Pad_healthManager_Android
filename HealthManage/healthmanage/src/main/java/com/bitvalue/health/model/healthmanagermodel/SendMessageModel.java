@@ -26,7 +26,7 @@ public class SendMessageModel extends BaseModel implements SendMessageContract.M
 
     @SuppressLint("CheckResult")
     @Override
-    public void sendMessage(SaveAnalyseApi requestBean, Callback callback) {
+    public void sendUserEevaluate(SaveAnalyseApi requestBean, Callback callback) {
         mApi.commitHealthAnaly(requestBean)
                 .subscribeOn(Schedulers.io())
                   .observeOn(AndroidSchedulers.mainThread())//主线程接收
@@ -45,5 +45,27 @@ public class SendMessageModel extends BaseModel implements SendMessageContract.M
         },error->{
             callback.onFailedLog(error.getMessage(),1001);
         });
+    }
+    @SuppressLint("CheckResult")
+    @Override
+    public void sendUserRemind(SendUserRemind sendUserRemind, Callback callback) {
+        mApi.sendUserRemind(sendUserRemind)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())//主线程接收
+                .subscribe(result->{
+                    if (!EmptyUtil.isEmpty(result)){
+                        if (result.getCode()==0){
+                            if (!EmptyUtil.isEmpty(result.getData())){
+                                callback.onSuccess(result.getData(),1000);
+                            }else {
+                                callback.onFailedLog(result.getMessage(),1001);
+                            }
+                        }else {
+                            callback.onFailedLog(result.getMessage(),1001);
+                        }
+                    }
+                },error->{
+                    callback.onFailedLog(error.getMessage(),1001);
+                });
     }
 }

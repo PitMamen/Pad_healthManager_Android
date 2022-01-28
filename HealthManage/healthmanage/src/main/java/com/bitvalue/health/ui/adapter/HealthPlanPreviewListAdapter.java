@@ -68,9 +68,7 @@ public class HealthPlanPreviewListAdapter extends BaseQuickAdapter<HealthPlanTas
                 case TypeConstants.Exam:
                     helper.setText(R.id.tv_exam,"检验提醒："+task.getFormartPlanDescribe());
                     break;
-                case TypeConstants.Remind:
-                    helper.setText(R.id.tv_remind,"健康提醒："+task.getFormartPlanDescribe());
-                    break;
+
             }
         }
 

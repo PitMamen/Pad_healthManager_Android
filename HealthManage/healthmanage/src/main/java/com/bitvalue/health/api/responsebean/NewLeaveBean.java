@@ -93,7 +93,8 @@ public class NewLeaveBean implements Serializable {
         private String ks;//科室代码
         private String ksmc; //科室名称
         public String planId;  //自定义添加的planId，后台没有
-
+        private String taskId;  //自定义添加的taskId，后台没有
+        private String sendPlanType;// 自定义添加的发送消息时判断发送类型 ：Evaluate健康评估  Remind健康提醒
 
 
 
@@ -158,6 +159,29 @@ public class NewLeaveBean implements Serializable {
             }
         }
 
+        public String getSendPlanType() {
+            return sendPlanType;
+        }
+
+        public void setSendPlanType(String sendPlanType) {
+            this.sendPlanType = sendPlanType;
+        }
+
+        public String getPlanId() {
+            return planId;
+        }
+
+        public void setPlanId(String planId) {
+            this.planId = planId;
+        }
+
+        public String getTaskId() {
+            return taskId;
+        }
+
+        public void setTaskId(String taskId) {
+            this.taskId = taskId;
+        }
 
         public String getCyzd() {
             return cyzd;

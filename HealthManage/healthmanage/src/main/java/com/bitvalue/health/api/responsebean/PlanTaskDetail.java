@@ -11,6 +11,8 @@ public class PlanTaskDetail implements Serializable {
     public String startDate;
     public String endDate;
     public String createTime;
+    public String owner;
+    public String taskId;
     public List<UserPlanDetailsDTO> userPlanDetails;
 
 
