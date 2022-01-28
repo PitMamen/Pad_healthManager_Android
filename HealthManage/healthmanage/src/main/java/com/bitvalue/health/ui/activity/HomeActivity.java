@@ -604,7 +604,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 NewLeaveBean.RowsDTO userInfo = (NewLeaveBean.RowsDTO) object;
                 SendMessageFragment sendMessageFragment = new SendMessageFragment();
                 Bundle bundle1 = new Bundle();
-                bundle1.putString(Constants.PLAN_ID,userInfo.planId);
                 bundle1.putSerializable(Constants.USERINFO,userInfo);
                 sendMessageFragment.setArguments(bundle1);
                 mapFragments.put(Constants.FRAGMENT_SEND_MESSAGE, sendMessageFragment);

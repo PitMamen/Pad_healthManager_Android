@@ -39,11 +39,13 @@ import java.util.List;
 public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO, BaseViewHolder> {
 
     public static final String TAG = HealthPlanListAdapter.class.getSimpleName();
-    private OnItemClickCallback onItemClickCallback;
+    private Context homeActivity;
 
-    public HealthPlanListAdapter(Context context,OnItemClickCallback callback) {
+
+    public HealthPlanListAdapter(Context context) {
         super(R.layout.item_sfjh_layout);
-        this.onItemClickCallback = callback;
+        homeActivity = context;
+
     }
 
 
@@ -58,39 +60,22 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
                 .setText(R.id.tv_age, finatime + "岁")
                 .setText(R.id.tv_sex, sfjhBean.getSex())
                 .setText(R.id.tv_time, sfjhBean.getDiagDate())
-                .setImageDrawable(R.id.img_head, sfjhBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+                .setImageDrawable(R.id.img_head, sfjhBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female))
+                .addOnClickListener(R.id.img_head);
 
-        helper.setOnClickListener(R.id.img_head, v -> {
-            if (onItemClickCallback!=null){
-                onItemClickCallback.onItemClick(sfjhBean);
-            }
-        });
 
 
         WrapRecyclerView childItemLRecycleView = helper.getView(R.id.plan_list);
         childItemLRecycleView.setLayoutManager(new LinearLayoutManager(Application.instance()));
         PlanItemChildAdapter childAdapter = new PlanItemChildAdapter(sfjhBean.getPlanInfo());
         childItemLRecycleView.setAdapter(childAdapter);
-//        childAdapter.setNewData(sfjhBean.getPlanInfo());
-        childAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+        childAdapter.setNewData(sfjhBean.getPlanInfo());
+        childAdapter.setOnItemClickListener((adapter, view, position) -> {
 
             NewLeaveBean.RowsDTO.PlanInfoDetailDTO planInfo = (NewLeaveBean.RowsDTO.PlanInfoDetailDTO) adapter.getItem(position);
 
-            switch (view.getId()){
-                case R.id.iv_send_msg:
-                    if (onPlanTaskItemClickListener!=null){
-                        onPlanTaskItemClickListener.onSendMsgItemClick(planInfo.getPlanId(),  sfjhBean);
-                    }
-
-                    break;
-                case R.id.iv_check_plan:
-                    if (onPlanTaskItemClickListener!=null){
-                        onPlanTaskItemClickListener.onCkeckPlanItemClick(planInfo.getPlanId(), sfjhBean);
-                    }
-
-                    break;
-
-
+            if (onPlanTaskItemClickListener!=null){
+                onPlanTaskItemClickListener.onCkeckPlanItemClick(planInfo.getPlanId(), sfjhBean);
             }
         });
 
@@ -100,9 +85,7 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
 
     public interface OnPlanTaskItemClickListener {
 
-        void onSendMsgItemClick(String planId,NewLeaveBean.RowsDTO planInfoDetailDTO);
         void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO planInfoDetailDTO);
-//        void onHeadItemClick(NewLeaveBean.RowsDTO rowsDTO);
     }
 
     public void setOnPlanTaskItemClickListener(OnPlanTaskItemClickListener listener) {

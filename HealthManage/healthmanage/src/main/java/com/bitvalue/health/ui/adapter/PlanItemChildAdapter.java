@@ -30,7 +30,7 @@ public class PlanItemChildAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO.
             return;
         }
         holder.setText(R.id.tv_plan_title, item.getPlanName());
-        holder.addOnClickListener(R.id.iv_send_msg)
-        .addOnClickListener(R.id.iv_check_plan);
+//        holder.addOnClickListener(R.id.iv_send_msg).addOnClickListener(R.id.iv_check_plan);
+
     }
 }

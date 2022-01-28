@@ -2,7 +2,9 @@ package com.bitvalue.health.ui.fragment.workbench;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,6 +28,7 @@ import com.bitvalue.health.ui.adapter.HealthPlanPreviewListAdapter;
 import com.bitvalue.health.ui.adapter.HealthPlanTaskDetailAdapter;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.TimeUtils;
+import com.bitvalue.health.util.TypeConstants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -71,9 +74,11 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
     private HealthPlanPreviewListAdapter planAdapter;
     private HealthPlanTaskDetailAdapter taskDetailAdapter;
+    private PlanTaskDetail planTaskDetail;
+    private NewLeaveBean.RowsDTO userInfo;
     private String planId;
     private HomeActivity homeActivity;
-
+    private View footerview;
 
     /**
      * 控件初始化
@@ -99,12 +104,9 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         }
         planId = getArguments().getString(Constants.PLAN_ID);
         Log.e(TAG, "planId: "+planId );
-        NewLeaveBean.RowsDTO userInfo= (NewLeaveBean.RowsDTO) getArguments().getSerializable(Constants.USERINFO);
+        userInfo= (NewLeaveBean.RowsDTO) getArguments().getSerializable(Constants.USERINFO);
         tv_gotoDetail.setOnClickListener(v -> {
             homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL,userInfo);
-//            if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
-//                homeActivity.getSupportFragmentManager().popBackStack();
-//            }
         });
 
 
@@ -117,6 +119,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         //任务详情的列表
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         taskDetailAdapter=new HealthPlanTaskDetailAdapter();
+
         taskRecyclerView.setAdapter(taskDetailAdapter);
 
 
@@ -124,7 +127,51 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
     }
 
+    private void initFooterViewClick(View footerview) {
 
+
+
+        //健康评估
+        Button tv_send_jkpg = footerview.findViewById(R.id.tv_send_jkpg);
+        //健康提醒
+        Button tv_send_jktx = footerview.findViewById(R.id.tv_send_jktx);
+        //结束计划
+        Button tv_send_end = footerview.findViewById(R.id.tv_send_end);
+
+        tv_send_jkpg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ( planTaskDetail==null || userInfo==null){
+                    return;
+                }
+                userInfo.setSendPlanType(TypeConstants.Evaluate);
+                userInfo.setPlanId(planTaskDetail.planId+"");
+                userInfo.setTaskId(planTaskDetail.taskId);
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE,userInfo);
+            }
+        });
+        tv_send_jktx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ( planTaskDetail==null || userInfo==null){
+                    return;
+                }
+                userInfo.setSendPlanType(TypeConstants.Remind);
+                userInfo.setPlanId(planTaskDetail.planId+"");
+                userInfo.setTaskId(planTaskDetail.taskId);
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE,userInfo);
+            }
+        });
+        tv_send_end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ( planTaskDetail==null){
+                    return;
+                }
+                ToastUtil.toastShortMessage("正在开发");
+            }
+        });
+    }
 
 
     @Override
@@ -189,7 +236,14 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
     @Override
     public void queryHealthPlanContentSuccess(PlanTaskDetail taskPlanDetailBean) {
+        this.planTaskDetail=taskPlanDetailBean;
         taskDetailAdapter.setNewData(taskPlanDetailBean.userPlanDetails);
+        if (footerview==null){
+            footerview= LayoutInflater.from(getContext()).inflate(R.layout.layout_plan_task_footer,null);
+            initFooterViewClick(footerview);
+            taskDetailAdapter.addFooterView(footerview);
+        }
+
     }
 
     @Override

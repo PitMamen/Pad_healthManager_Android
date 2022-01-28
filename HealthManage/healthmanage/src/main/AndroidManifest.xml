@@ -69,7 +69,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
+        <meta-data android:name="com.bitvalue.health.util.ImageGlideModule"
+            android:value="AppGlideModule"/>
 
         <activity
             android:name="com.bitvalue.health.ui.activity.HomeActivity"

@@ -57,7 +57,7 @@ import butterknife.BindView;
  * <p>
  * 我的待办Fragment
  */
-public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> implements MyToDoListContact.MyToDoListView, PhoneFollowupCliclistener, OnItemClickCallback {
+public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> implements MyToDoListContact.MyToDoListView, PhoneFollowupCliclistener {
     @BindView(R.id.tv_title)
     TextView tv_title;
 
@@ -169,21 +169,17 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
 
 
     private void initList() {
-        healthPlanListAdapter = new HealthPlanListAdapter(homeActivity,this);
+        healthPlanListAdapter = new HealthPlanListAdapter(homeActivity);
         list_dynamic.setAdapter(healthPlanListAdapter);
-
-        healthPlanListAdapter.setOnPlanTaskItemClickListener(new HealthPlanListAdapter.OnPlanTaskItemClickListener() {
-            @Override
-            public void onSendMsgItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
-                rowsDTO.planId = planId;
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE,rowsDTO);
+        healthPlanListAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            if (view.getId()==R.id.img_head){
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, adapter.getItem(position));
             }
-            @Override
-            public void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
-                Log.e(TAG, "-------------------: " );
-                rowsDTO.planId = planId;
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW,rowsDTO);
-            }
+        });
+        healthPlanListAdapter.setOnPlanTaskItemClickListener((planId, rowsDTO) -> {
+            Log.e(TAG, "-------------------: " );
+            rowsDTO.planId = planId;
+            homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW,rowsDTO);
         });
 
 
@@ -230,20 +226,16 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
 
 
     private void initSearchList(){
-        search_patientAdapter = new HealthPlanListAdapter(homeActivity,this);
+        search_patientAdapter = new HealthPlanListAdapter(homeActivity);
         search_recyclerView.setAdapter(search_patientAdapter);
-        search_patientAdapter.setOnPlanTaskItemClickListener(new HealthPlanListAdapter.OnPlanTaskItemClickListener() {
-            @Override
-            public void onSendMsgItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
-                rowsDTO.planId = planId;
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE,rowsDTO);
+        healthPlanListAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+            if (view.getId()==R.id.img_head){
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, adapter.getItem(position));
             }
-
-            @Override
-            public void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO rowsDTO) {
-                rowsDTO.planId = planId;
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW,rowsDTO);
-            }
+        });
+        search_patientAdapter.setOnPlanTaskItemClickListener((planId, rowsDTO) -> {
+            rowsDTO.planId = planId;
+            homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW,rowsDTO);
         });
 
         //        上下拉刷新 最外层的
@@ -383,13 +375,4 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
         });
     }
 
-    /***
-     * 点击患者头像 进入患者详情界面回调
-     * @param object
-     */
-    @Override
-    public void onItemClick(Object object) {
-        NewLeaveBean.RowsDTO item = (NewLeaveBean.RowsDTO) object;
-        homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, item);
-    }
 }

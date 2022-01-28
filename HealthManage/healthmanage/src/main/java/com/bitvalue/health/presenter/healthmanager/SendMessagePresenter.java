@@ -1,5 +1,6 @@
 package com.bitvalue.health.presenter.healthmanager;
 
+import com.bitvalue.health.api.requestbean.SendUserRemind;
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
 import com.bitvalue.health.api.responsebean.PlanTaskDetail;
 import com.bitvalue.health.api.responsebean.SaveAnalyseApi;
@@ -28,8 +29,12 @@ public class SendMessagePresenter extends BasePresenter<SendMessageContract.View
     }
 
 
-    public void sendMessage(SaveAnalyseApi saveAnalyseApi) {
-        mModel.sendMessage(saveAnalyseApi,  new CallBackAdapter() {
+    /**
+     * 健康评估
+     * @param saveAnalyseApi
+     */
+    public void sendUserEevaluate(SaveAnalyseApi saveAnalyseApi) {
+        mModel.sendUserEevaluate(saveAnalyseApi,  new CallBackAdapter() {
             @Override
             public void onSuccess(Object o, int what) {
                 super.onSuccess(o, what);
@@ -42,6 +47,30 @@ public class SendMessagePresenter extends BasePresenter<SendMessageContract.View
                 if (isViewAttach()) {
                     if (str!=null)
                     ToastUtil.toastShortMessage(str);
+                }
+
+
+            }
+        });
+    }
+
+    /**
+     * 健康提醒
+     */
+    public void sendUserRemind(SendUserRemind sendUserRemind) {
+        mModel.sendUserRemind(sendUserRemind,  new CallBackAdapter() {
+            @Override
+            public void onSuccess(Object o, int what) {
+                super.onSuccess(o, what);
+                getView().sendSuccess();
+            }
+
+            @Override
+            public void onFailedLog(String str, int what) {
+                super.onFailedLog(str, what);
+                if (isViewAttach()) {
+                    if (str!=null)
+                        ToastUtil.toastShortMessage(str);
                 }
 
 

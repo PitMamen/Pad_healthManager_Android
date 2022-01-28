@@ -22,7 +22,8 @@ public interface SendMessageContract {
 
     interface Model extends IModel {
 
-        void sendMessage(SaveAnalyseApi body, Callback callback);
+        void sendUserEevaluate(SaveAnalyseApi body, Callback callback);
+        void sendUserRemind(SendUserRemind sendUserRemind, Callback callback);
 
     }
 
