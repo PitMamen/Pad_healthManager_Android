@@ -567,10 +567,10 @@
 
         <com.bitvalue.health.util.customview.WrapRecyclerView
             android:id="@+id/list_visitload"
-            android:layout_below="@+id/tv_patient_bq"
-            android:layout_marginTop="@dimen/qb_px_5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_patient_bq"
+            android:layout_marginTop="@dimen/qb_px_5">
 
         </com.bitvalue.health.util.customview.WrapRecyclerView>
 
@@ -620,18 +620,18 @@
             android:layout_below="@+id/list_visitload"
             android:layout_centerHorizontal="true"
             android:text="查看完整记录"
-            android:visibility="gone"
             android:textColor="@color/main_blue_"
-            android:textSize="14sp"></TextView>
+            android:textSize="14sp"
+            android:visibility="gone"></TextView>
 
 
         <RelativeLayout
-            android:visibility="gone"
-            android:layout_alignParentBottom="true"
             android:id="@+id/rl_sendmessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/qb_px_16">
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/qb_px_16"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/tv_sendmessage"

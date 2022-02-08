@@ -230,11 +230,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/qb_px_33"
-            android:layout_marginTop="@dimen/qb_px_24"
+            android:layout_marginTop="@dimen/qb_px_22"
             android:gravity="center"
             android:orientation="vertical">
 
             <RelativeLayout
+                android:gravity="center_vertical"
                 android:id="@+id/layout_workbench"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

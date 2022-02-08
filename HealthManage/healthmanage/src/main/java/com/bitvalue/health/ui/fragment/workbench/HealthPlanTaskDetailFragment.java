@@ -44,8 +44,8 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
     @BindView(R.id.tv_title)
     TextView tv_title;
-    @BindView(R.id.layout_back)
-    View layout_back;
+//    @BindView(R.id.layout_back)
+//    View layout_back;
     @BindView(R.id.img_head)
     ImageView img_head;
     @BindView(R.id.tv_name)
@@ -87,16 +87,16 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
     @Override
     public void initView(View rootView) {
 
-        layout_back.setOnClickListener(v -> {
-            if (ll_task_tetail.getVisibility() == View.VISIBLE){
-                ll_task_tetail.setVisibility(View.GONE);
-                planRecyclerView.setVisibility(View.VISIBLE);
-            }else {
-                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                    homeActivity.getSupportFragmentManager().popBackStack();
-                }
-            }
-        });
+//        layout_back.setOnClickListener(v -> {
+//            if (ll_task_tetail.getVisibility() == View.VISIBLE){
+//                ll_task_tetail.setVisibility(View.GONE);
+//                planRecyclerView.setVisibility(View.VISIBLE);
+//            }else {
+//                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+//                    homeActivity.getSupportFragmentManager().popBackStack();
+//                }
+//            }
+//        });
 
 
         if (getArguments()==null){

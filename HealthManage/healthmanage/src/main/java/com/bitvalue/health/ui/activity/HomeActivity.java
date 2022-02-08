@@ -322,7 +322,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 layout_person.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
 
-//                云门诊
+//                咨询
             case video_index:
                 img_group.setImageResource(R.mipmap.tab_icon_zx);
                 tv_group.setTextColor(getResources().getColor(R.color.white));

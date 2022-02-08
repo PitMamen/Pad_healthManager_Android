@@ -14,6 +14,7 @@ import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
 import com.bitvalue.health.api.responsebean.DepartmentResponeBean;
+import com.bitvalue.health.api.responsebean.GoodListBean;
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
 import com.bitvalue.health.api.responsebean.InpatientBean;
 import com.bitvalue.health.api.responsebean.LoginResBean;
@@ -142,6 +143,14 @@ public interface CommonService {
      */
     @GET("health-api/patient/queryHealthPlanTaskList")
     Observable<ApiResult<List<HealthPlanTaskListBean>>> queryHealthPlanTaskList(@Query("planId") String planID);
+
+
+    /***
+     * 按科室查询套餐接口
+     */
+    @GET("health-api/health/patient/queryGoodsList")
+    Observable<ApiResult<List<GoodListBean>>> queryGoodList(@Query("departmentId") int departmentId,@Query("goodsType") String goodType);
+
 
 
     /***

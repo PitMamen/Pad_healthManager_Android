@@ -7,7 +7,31 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_third_title"/>
+<!--    <include layout="@layout/layout_third_title"/>-->
+
+
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_46"
+        android:background="@color/white"
+        >
+
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="患者详情"
+            android:textColor="@color/text_black"
+            android:textSize="18sp"></TextView>
+
+    </RelativeLayout>
+
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/qb_px_1"
@@ -145,16 +169,17 @@
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/tv_plan_title"
+                android:layout_marginTop="@dimen/qb_px_3"
                 android:layout_width="wrap_content"
                 android:textColor="@color/text_black"
                 android:textStyle="bold"
-                android:gravity="top"
                 android:textSize="15sp"
                 android:text="第一次随访任务"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 />
             <TextView
+                android:layout_marginTop="@dimen/qb_px_3"
                 android:id="@+id/tv_plan_time"
                 android:layout_width="wrap_content"
                 android:text=""
@@ -162,7 +187,6 @@
                 android:paddingLeft="@dimen/qb_px_5"
                 android:paddingRight="@dimen/qb_px_5"
                 android:textSize="15sp"
-                android:gravity="top"
                 android:textColor="@color/text_gray"
                 android:layout_height="wrap_content" />
         </LinearLayout>

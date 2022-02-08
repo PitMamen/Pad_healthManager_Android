@@ -18,8 +18,8 @@
 
        <RelativeLayout
            android:id="@+id/rl_undistribution"
-           android:layout_width="@dimen/qb_px_80"
-           android:layout_height="@dimen/qb_px_30"
+           android:layout_width="@dimen/qb_px_60"
+           android:layout_height="@dimen/qb_px_25"
            android:layout_marginStart="@dimen/qb_px_10"
            android:layout_marginTop="@dimen/qb_px_11"
            android:background="@drawable/shape_button_select">
@@ -46,8 +46,8 @@
            android:layout_marginTop="@dimen/qb_px_11"
            android:layout_marginStart="@dimen/qb_px_10"
            android:background="@drawable/shape_bg_item_unse"
-           android:layout_width="@dimen/qb_px_80"
-           android:layout_height="@dimen/qb_px_30">
+           android:layout_width="@dimen/qb_px_60"
+           android:layout_height="@dimen/qb_px_25">
 
 
            <TextView
@@ -87,7 +87,7 @@
             <LinearLayout
                 android:id="@+id/ll_sp"
                 android:layout_width="@dimen/qb_px_56"
-                android:layout_height="@dimen/qb_px_28"
+                android:layout_height="@dimen/qb_px_25"
                 android:layout_marginStart="@dimen/qb_px_10"
                 android:layout_marginTop="@dimen/qb_px_10"
                 android:background="@drawable/shape_item_select_patie"
@@ -100,14 +100,14 @@
                     android:layout_gravity="center"
                     android:paddingHorizontal="@dimen/qb_px_5"
                     android:text="请选择病区"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     android:textColor="#999999">
 
                 </TextView>
 
                 <Spinner
                     android:id="@+id/sp_bq"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:spinnerMode="dropdown"></Spinner>
@@ -119,7 +119,7 @@
             <LinearLayout
                 android:id="@+id/ll_search"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/qb_px_28"
+                android:layout_height="@dimen/qb_px_25"
                 android:layout_below="@+id/rl_title"
                 android:layout_marginStart="@dimen/qb_px_13"
                 android:layout_marginTop="@dimen/qb_px_10"
@@ -138,9 +138,9 @@
 
                 <EditText
                     android:id="@+id/et_search"
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/qb_px_5"
                     android:background="@color/white"
                     android:hint="搜索患者姓名、病区"
                     android:imeOptions="actionSearch"
@@ -148,7 +148,7 @@
                     android:paddingHorizontal="@dimen/qb_px_6"
                     android:paddingVertical="@dimen/qb_px_6"
                     android:textColor="@color/text_main"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -157,8 +157,8 @@
 
         <RelativeLayout
             android:id="@+id/all_check"
-            android:layout_width="@dimen/qb_px_37"
-            android:layout_height="@dimen/qb_px_30"
+            android:layout_width="@dimen/qb_px_54"
+            android:layout_height="@dimen/qb_px_25"
             android:layout_marginStart="@dimen/qb_px_10"
             android:layout_marginTop="@dimen/qb_px_45"
             android:background="@drawable/shape_bg_gray_dark">
@@ -169,7 +169,7 @@
                 android:layout_centerInParent="true"
                 android:text="全 选"
                 android:textColor="@color/white"
-                android:textSize="12sp"></TextView>
+                android:textSize="15sp"></TextView>
 
 
         </RelativeLayout>
