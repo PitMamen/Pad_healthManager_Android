@@ -7,28 +7,28 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-<!--    <include layout="@layout/layout_third_title"/>-->
+    <include layout="@layout/layout_third_title"/>
 
 
 
-    <RelativeLayout
-        android:id="@+id/rl_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/qb_px_46"
-        android:background="@color/white"
-        >
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/rl_title"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/qb_px_46"-->
+<!--        android:background="@color/white"-->
+<!--        >-->
 
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="患者详情"
-            android:textColor="@color/text_black"
-            android:textSize="18sp"></TextView>
+<!--        <TextView-->
+<!--            android:id="@+id/tv_title"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:text="计划详情"-->
+<!--            android:textColor="@color/text_black"-->
+<!--            android:textSize="18sp"></TextView>-->
 
-    </RelativeLayout>
+<!--    </RelativeLayout>-->
 
 
 

@@ -129,7 +129,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     private boolean allCheck = false;
 
 
-    private  String[] inpatientAreaList =null;  //病区 先写死
+    private String[] inpatientAreaList = null;  //病区 先写死
 
     private ArrayAdapter<String> spinnerAdapter;
     private List<NewLeaveBean.RowsDTO> tempPaitentList = new ArrayList<>();
@@ -184,7 +184,9 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MainRefreshObj mainRefreshObj) {
         // TODO: 2022/1/11 request
-        Log.e(TAG, "收到获取最新未分配界面--------- " );
+        Log.e(TAG, "收到获取最新未分配界面--------- ");
+        tempPaitentList.clear();
+        requestDistribution(et_search.getText().toString());
         requestDistribution("");
     }
 
@@ -357,7 +359,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
                     ToastUtil.toastShortMessage("请输入搜索内容");
                     return true;
                 }
-
+                isSearchButton = true;
                 //关闭软键盘
                 hideKeyboard(et_search);
                 getSearchPatients();
@@ -375,6 +377,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().isEmpty()) {
+                    isSearchButton = false;
                     smartRefreshLayout.setVisibility(View.VISIBLE);
                     search_smartRefreshLayout.setVisibility(View.GONE);
                 }
@@ -429,6 +432,8 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     }
 
 
+    private boolean isSearchButton = false; //区分 所有患者全选 或 搜索出来的患者全选
+
     @OnClick({R.id.all_check, R.id.rl_undistribution, R.id.rl_unregister})
     public void OnClick(View view) {
         switch (view.getId()) {
@@ -437,17 +442,34 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
                 if (!allCheck) {
                     allCheck = true;
                     rl_allcheck.setBackground(homeActivity.getDrawable(R.drawable.shape_button_select));
-                    if (allocatedPatientAdapter != null) {
-                        allocatedPatientAdapter.AllChecked();
-                        tempPaitentList.addAll(rowsDTOList);
+
+                    if (!isSearchButton) {
+                        if (allocatedPatientAdapter != null) {
+                            allocatedPatientAdapter.AllChecked();
+                            tempPaitentList.addAll(rowsDTOList);
+                        }
+                    } else {
+                        if (searchPatientAdapter != null) {
+                            searchPatientAdapter.AllChecked();
+                            tempPaitentList.addAll(searchrowsDTOList);
+                        }
                     }
                 } else {
                     allCheck = false;
                     rl_allcheck.setBackground(homeActivity.getDrawable(R.drawable.shape_bg_gray_dark));
-                    if (allocatedPatientAdapter != null) {
-                        allocatedPatientAdapter.unAllCheck();
-                        tempPaitentList.removeAll(rowsDTOList);
+                    if (!isSearchButton) {
+                        if (allocatedPatientAdapter != null) {
+                            allocatedPatientAdapter.unAllCheck();
+                            tempPaitentList.removeAll(rowsDTOList);
+                        }
+                    } else {
+                        if (searchPatientAdapter != null) {
+                            searchPatientAdapter.unAllCheck();
+                            tempPaitentList.removeAll(searchrowsDTOList);
+                        }
                     }
+
+
                 }
                 break;
 
@@ -494,6 +516,10 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     @Override
     public void qryAllocatedPatienSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList) {
         homeActivity.runOnUiThread(() -> {
+            if (infoDetailDTOList.size() == 0) {
+                ToastUtils.show("无更多患者!");
+                return;
+            }
             rowsDTOList = infoDetailDTOList;
             allocatedPatientAdapter.updateList(rowsDTOList);
         });
@@ -613,6 +639,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
             tempPaitentList.remove(item);
         }
         EventBus.getDefault().post(tempPaitentList);
+//        tempPaitentList.clear();
 
 
     }

@@ -58,16 +58,14 @@
         android:textSize="11sp" />
 
 
-
-
     <View
-         android:id="@+id/view_line"
+        android:id="@+id/view_line"
         android:layout_width="1.5dp"
-        android:layout_centerVertical="true"
         android:layout_height="@dimen/qb_px_15"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_marginTop="@dimen/qb_px_15"
-        android:layout_marginRight="@dimen/qb_px_40"
+        android:layout_marginRight="@dimen/qb_px_42"
         android:background="@color/bg_gray_light_two" />
 
 

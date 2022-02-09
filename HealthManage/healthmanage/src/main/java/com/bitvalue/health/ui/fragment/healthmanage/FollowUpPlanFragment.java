@@ -20,6 +20,7 @@ import com.bitvalue.health.api.eventbusbean.MainRefreshObj;
 import com.bitvalue.health.api.requestbean.MealCreateOrderApi;
 import com.bitvalue.health.api.responsebean.DepartmentResponeBean;
 import com.bitvalue.health.api.responsebean.DiseaseListBean;
+import com.bitvalue.health.api.responsebean.GoodListBean;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.PlanListBean;
@@ -28,6 +29,7 @@ import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.OnItemClick;
 import com.bitvalue.health.callback.ViewCallback;
 import com.bitvalue.health.model.planmodel.DiseaseListApi;
+import com.bitvalue.health.model.planmodel.GoodListApi;
 import com.bitvalue.health.model.planmodel.PlanListApi;
 import com.bitvalue.health.model.planmodel.getDepartmentListApi;
 import com.bitvalue.health.ui.activity.HomeActivity;
@@ -99,7 +101,7 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     @BindView(R.id.list_plans)
     RecyclerView list_plans;
 
-    private ArrayList<PlanListBean> planListBeans = new ArrayList<>();
+    private List<GoodListBean> planListBeans = new ArrayList<>();
     private AlreadySelectPatientAdapter adapter_selectPatient;
     private ArrayAdapter<String> spinnerAdapter;
     private ArrayAdapter<String> spinnerzhuanbingAdapter;
@@ -111,7 +113,7 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
 
 
     private String[] zhuanbinglist;  //专病 先写死
-    private PlanListBean selectPlanBean = null;  //从计划列表中选中的套餐计划
+    private GoodListBean selectPlanBean = null;  //从计划列表中选中的套餐计划
     private List<String> departmentList = new ArrayList<>();
     private Map<String, Integer> map = new HashMap<>();
 
@@ -167,7 +169,9 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                 tv_keshi.setText(selectDepartmentName.length() >= 8 ? selectDepartmentName.substring(0, 7) : selectDepartmentName);
                 tv_zhuabing.setText("请选专病");
                 int departmentID = map.get(departmentList.get(position));
+                Log.e(TAG, "科室ID: "+departmentID );
                 getDiseaseList(departmentID);
+                getMyPlans(departmentID);
 
             }
 
@@ -201,7 +205,7 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     @Override
     public void onResume() {
         super.onResume();
-        getMyPlans();
+        getMyPlans(0);
         getDepartmentList();
 
     }
@@ -215,16 +219,17 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     /**
      * 获取套餐列表
      */
-    private void getMyPlans() {
-        EasyHttp.post(this).api(new PlanListApi()).request(new HttpCallback<ApiResult<ArrayList<PlanListBean>>>(this) {
+    private void getMyPlans(int departmentId) {
+        GoodListApi goodListApi = new GoodListApi();
+        goodListApi.goodsType = "plan_package";
+        goodListApi.departmentId = departmentId;
+        EasyHttp.get(this).api(goodListApi).request(new HttpCallback<ApiResult<List<GoodListBean>>>(this){
             @Override
-            public void onStart(Call call) {
-                super.onStart(call);
-            }
-
-            @Override
-            public void onSucceed(ApiResult<ArrayList<PlanListBean>> result) {
+            public void onSucceed(ApiResult<List<GoodListBean>> result) {
                 super.onSucceed(result);
+                if (result.getData().size()==0){
+                    ToastUtils.show("该科室暂无套餐!");
+                }
                 if (!EmptyUtil.isEmpty(result)) {
                     planListBeans = result.getData();
                     plansAdapter.updateList(planListBeans);
@@ -237,6 +242,34 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                 super.onFail(e);
             }
         });
+
+
+
+
+
+
+
+//        EasyHttp.post(this).api(new PlanListApi()).request(new HttpCallback<ApiResult<ArrayList<PlanListBean>>>(this) {
+//            @Override
+//            public void onStart(Call call) {
+//                super.onStart(call);
+//            }
+//
+//            @Override
+//            public void onSucceed(ApiResult<ArrayList<PlanListBean>> result) {
+//                super.onSucceed(result);
+//                if (!EmptyUtil.isEmpty(result)) {
+//                    planListBeans = result.getData();
+//                    plansAdapter.updateList(planListBeans);
+//                    plansAdapter.setNewData(planListBeans);
+//                }
+//            }
+//
+//            @Override
+//            public void onFail(Exception e) {
+//                super.onFail(e);
+//            }
+//        });
     }
 
 
@@ -371,13 +404,13 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                 }
 
                 for (int i = 0; i < selectPatientList.size(); i++) {
-                    mealOrderPackege(selectPlanBean.templateId, selectPatientList.get(i).getUserId());
+                    mealOrderPackege(String.valueOf(selectPlanBean.getTemplateId()), selectPatientList.get(i).getUserId());
                 }
                 break;
 
 //                按创建时间排序
             case R.id.tv_sortby_time:
-                showPopChoose(R.layout.pop_sort);
+//                showPopChoose(R.layout.pop_sort);
                 break;
 
         }
@@ -419,7 +452,7 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                     tv_sort_time.setTextColor(isSortTime ? homeActivity.getColor(R.color.main_blue) : homeActivity.getColor(R.color.white));
                     tv_sort_time.setOnClickListener(v -> {
                         isSortTime = true;
-                        getMyPlans();
+                        getMyPlans(0);
                         tv_sort_num.setTextColor(homeActivity.getColor(R.color.white));
                         tv_sort_time.setTextColor(homeActivity.getColor(R.color.main_blue));
                         tv_sortby_time.setText("按创建时间排序");
@@ -427,7 +460,7 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                     });
                     tv_sort_num.setOnClickListener(v -> {
                         isSortTime = false;
-                        Collections.sort(planListBeans);
+//                        Collections.sort(planListBeans);
                         plansAdapter.setNewData(planListBeans);
                         tv_sort_num.setTextColor(homeActivity.getColor(R.color.main_blue));
                         tv_sort_time.setTextColor(homeActivity.getColor(R.color.white));
@@ -460,13 +493,13 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
 
     @Override
     public void onItemClick(Object object, boolean isCheck) {
-        selectPlanBean = (PlanListBean) object;
-        Log.e(TAG, "选中的planName: " + selectPlanBean.templateName);
+        selectPlanBean = (GoodListBean) object;
+        Log.e(TAG, "选中的planName: " + selectPlanBean.getGoodsName());
         if (selectPlanBean != null) {
             if (rl_select_planl.getVisibility() == View.GONE) {
                 rl_select_planl.setVisibility(View.VISIBLE);
             }
-            tv_select_planname.setText(selectPlanBean.templateName);
+            tv_select_planname.setText(selectPlanBean.getGoodsName());
         }
     }
 

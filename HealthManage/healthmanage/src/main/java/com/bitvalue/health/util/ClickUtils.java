@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class ClickUtils {
 
     // 两次点击按钮之间的点击间隔不能少于2000毫秒
-    private static final int MIN_CLICK_DELAY_TIME = 300;
+    private static final int MIN_CLICK_DELAY_TIME = 3000;
     private static HashMap<Integer, Long> sLastClickTimeMap = new HashMap<>();
     private static long lastTime = 0;
 

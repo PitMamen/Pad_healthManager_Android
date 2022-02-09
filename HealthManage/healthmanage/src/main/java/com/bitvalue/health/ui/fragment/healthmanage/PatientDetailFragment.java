@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bitvalue.health.Application;
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
@@ -79,6 +81,8 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
     WrapRecyclerView list_visitlod;
     @BindView(R.id.ll_image)
     LinearLayout ll_image_default;
+    @BindView(R.id.iv_patient_icon)
+    ImageView iv_head;
 
     private NewLeaveBean.RowsDTO itemPosition;
     private ImageListDisplayAdapter displayAdapter;
@@ -110,6 +114,7 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
         Bundle bundle = getArguments();
         itemPosition = (NewLeaveBean.RowsDTO) bundle.getSerializable(FRAGMENT_DETAIL);
         if (itemPosition != null) {
+            iv_head.setImageDrawable(itemPosition.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
             tv_sendMessage.setBackground(EmptyUtil.isEmpty(itemPosition.getUserId()) ? homeActivity.getDrawable(R.drawable.shape_bg_gray_) : homeActivity.getDrawable(R.drawable.shape_bg_blue_dark));
             tv_distributionplan.setBackground((EmptyUtil.isEmpty(itemPosition.getUserId()) || (itemPosition.getPlanInfo().size() == 0)) ? homeActivity.getDrawable(R.drawable.shape_bg_gray_) : homeActivity.getDrawable(R.drawable.shape_bg_blue_dark));
             tv_name.setText(itemPosition.getUserName());

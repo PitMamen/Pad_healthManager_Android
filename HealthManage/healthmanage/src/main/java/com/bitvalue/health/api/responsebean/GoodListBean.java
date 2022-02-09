@@ -8,6 +8,7 @@ import java.util.List;
  * @data : 02/08
  */
 public class GoodListBean implements Serializable {
+    public boolean isChecked;
     private String bannerList;
     private String belong;
     private String buyTheNumber;
@@ -15,6 +16,7 @@ public class GoodListBean implements Serializable {
     private String goodsDescribe;
     private int goodsId;
     private List<String> goodsImages;
+    private List<DiseaseInfo> diseaseInfo;
     private String goodsName;
     private String goodsSpec;
     private String goodsType;
@@ -31,6 +33,24 @@ public class GoodListBean implements Serializable {
     private String topFlag;
     private String updateTime;
     private String validDate;
+    private String deptName;
+
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public List<DiseaseInfo> getDiseaseInfo() {
+        return diseaseInfo;
+    }
+
+    public void setDiseaseInfo(List<DiseaseInfo> diseaseInfo) {
+        this.diseaseInfo = diseaseInfo;
+    }
 
     public String getBannerList() {
         return bannerList;
@@ -215,4 +235,14 @@ public class GoodListBean implements Serializable {
     public void setValidDate(String validDate) {
         this.validDate = validDate;
     }
+
+
+
+    public static class DiseaseInfo implements Serializable{
+        public int id;
+        public int templateId;
+        public String diseaseCode;
+        public String diseaseName;
+    }
+
 }

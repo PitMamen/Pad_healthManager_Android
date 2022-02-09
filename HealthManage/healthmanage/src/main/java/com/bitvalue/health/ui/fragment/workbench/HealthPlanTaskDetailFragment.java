@@ -36,6 +36,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 健康计划 每次任务详情
@@ -44,8 +45,8 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
     @BindView(R.id.tv_title)
     TextView tv_title;
-//    @BindView(R.id.layout_back)
-//    View layout_back;
+    @BindView(R.id.layout_back)
+    View layout_back;
     @BindView(R.id.img_head)
     ImageView img_head;
     @BindView(R.id.tv_name)
@@ -87,16 +88,17 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
     @Override
     public void initView(View rootView) {
 
-//        layout_back.setOnClickListener(v -> {
-//            if (ll_task_tetail.getVisibility() == View.VISIBLE){
-//                ll_task_tetail.setVisibility(View.GONE);
-//                planRecyclerView.setVisibility(View.VISIBLE);
-//            }else {
-//                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
-//                    homeActivity.getSupportFragmentManager().popBackStack();
-//                }
-//            }
-//        });
+        layout_back.setOnClickListener(v -> {
+            if (ll_task_tetail.getVisibility() == View.VISIBLE){
+                layout_back.setVisibility(View.GONE);
+                ll_task_tetail.setVisibility(View.GONE);
+                planRecyclerView.setVisibility(View.VISIBLE);
+            }else {
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
+            }
+        });
 
 
         if (getArguments()==null){
@@ -206,6 +208,8 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
     //显示每次任务详情
     private void showTaskDetailView(HealthPlanTaskListBean item) {
+        Log.e(TAG, "显示详情----------" );
+        layout_back.setVisibility(View.VISIBLE);
         ll_task_tetail.setVisibility(View.VISIBLE);
         planRecyclerView.setVisibility(View.GONE);
         tv_plan_title.setText(item.getTask_describe());

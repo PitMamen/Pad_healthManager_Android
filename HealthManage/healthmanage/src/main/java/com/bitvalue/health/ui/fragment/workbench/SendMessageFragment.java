@@ -26,6 +26,7 @@ import com.bitvalue.health.presenter.healthmanager.HealthPlanPreviewPresenter;
 import com.bitvalue.health.presenter.healthmanager.SendMessagePresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.HealthPlanPreviewListAdapter;
+import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.TimeUtils;
@@ -119,11 +120,14 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
                     ToastUtil.toastShortMessage("请输入内容");
                     return;
                 }
-                if (TypeConstants.Evaluate.equals(userInfo.getSendPlanType())){
-                    sendUserEevaluate(content);
-                }else if(TypeConstants.Remind.equals(userInfo.getSendPlanType())){
-                    sendUserRemind(content);
+                if (!ClickUtils.isFastClick()){
+                    if (TypeConstants.Evaluate.equals(userInfo.getSendPlanType())){
+                        sendUserEevaluate(content);
+                    }else if(TypeConstants.Remind.equals(userInfo.getSendPlanType())){
+                        sendUserRemind(content);
+                    }
                 }
+
 
 
             }
