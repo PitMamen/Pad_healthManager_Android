@@ -127,7 +127,7 @@ public class HealthUploadDataFragment extends BaseFragment<HealthUploadDataPrese
         getActivity().runOnUiThread(() -> {
             tv_hospital.setText(taskDetailBean.getHospital());
             tv_type.setText(taskDetailBean.getVisitType());
-            tv_time.setText(taskDetailBean.getVisitTime());
+            tv_time.setText(taskDetailBean.getVisitTime()+"");
             tv_result.setText(taskDetailBean.getDiagnosis());
 
             for (int i = 0; i < taskDetailBean.getHealthImages().size(); i++) {

@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -75,6 +76,8 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
     @BindView(R.id.search_allpatient)
     WrapRecyclerView search_recyclerView;  //患者动态 list
 
+    @BindView(R.id.rl_default_view)
+    RelativeLayout default_view;
 
     @BindView(R.id.et_search)
     EditText ed_search;
@@ -126,8 +129,8 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
         super.initView(rootView);
         tv_title.setText("随访计划");
         img_back.setVisibility(View.GONE);
-        list_dynamic.setLayoutManager(new XLinearLayoutManager(homeActivity,LinearLayoutManager.VERTICAL, false));
-        search_recyclerView.setLayoutManager(new XLinearLayoutManager(homeActivity,LinearLayoutManager.VERTICAL, false));
+        list_dynamic.setLayoutManager(new XLinearLayoutManager(homeActivity, LinearLayoutManager.VERTICAL, false));
+        search_recyclerView.setLayoutManager(new XLinearLayoutManager(homeActivity, LinearLayoutManager.VERTICAL, false));
 
         initList();
         initSearchButton();
@@ -338,8 +341,9 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
         getActivity().runOnUiThread(() -> {
             //拿到所有患者 需要过滤一些没有userID的患者
             hideDialog();
-            if (infoDetailDTOList!=null){
-                allDynamicList= infoDetailDTOList;
+            if (infoDetailDTOList != null) {
+                allDynamicList = infoDetailDTOList;
+                default_view.setVisibility(infoDetailDTOList.size() == 0 ? View.VISIBLE : View.GONE);
             }
             healthPlanListAdapter.setNewData(allDynamicList);
 

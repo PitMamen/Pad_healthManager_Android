@@ -63,6 +63,9 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
     TextView tv_inpatient_area;//病区名称
     @BindView(R.id.tv_diseasename)
     TextView tv_diseasename;//诊断
+    @BindView(R.id.tv_more_data)
+    TextView tv_moredata;//更多数据
+
 
     //    @BindView(R.id.rl_sendmessage)
 //    RelativeLayout sendMessage;
@@ -126,9 +129,9 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
             String curen = TimeUtils.getCurrenTime();
             int finatime = Integer.valueOf(curen) - Integer.valueOf((itemPosition.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
             tv_age.setText(finatime + "岁");
-            if (itemPosition.getInfoDetail().getSjhm().equals("******")){
+            if (itemPosition.getInfoDetail().getSjhm().equals("******")) {
                 tv_phone.setText(itemPosition.getInfoDetail().getDhhm());
-            }else {
+            } else {
                 tv_phone.setText(itemPosition.getInfoDetail().getSjhm());
             }
             tv_address.setText(itemPosition.getInfoDetail().getGzdwdz());
@@ -160,12 +163,12 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
     }
 
 
-    @OnClick({R.id.tv_sendmessage, R.id.tv_logout})
+    @OnClick({R.id.tv_sendmessage, R.id.tv_logout, R.id.tv_more_data})
     public void OnClick(View view) {
         switch (view.getId()) {
             //发送消息
             case R.id.tv_sendmessage:
-                if (EmptyUtil.isEmpty(itemPosition.getUserId())){
+                if (EmptyUtil.isEmpty(itemPosition.getUserId())) {
                     ToastUtils.show("该患者未注册!");
                     return;
                 }
@@ -178,14 +181,20 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
 
 //          随访计划
             case R.id.tv_logout:
-                  if (itemPosition.getPlanInfo().size()==0){
-                      ToastUtils.show("该患者暂未分配计划!");
-                      return;
-                  }
+                if (itemPosition.getPlanInfo().size() == 0) {
+                    ToastUtils.show("该患者暂未分配计划!");
+                    return;
+                }
 
                 String planID = itemPosition.getPlanInfo().get(0).getPlanId();
-                  itemPosition.planId = planID;
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW,itemPosition);
+                itemPosition.planId = planID;
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW, itemPosition);
+                break;
+
+            //更多数据
+            case R.id.tv_more_data:
+                if (!EmptyUtil.isEmpty(itemPosition))
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_MORE_DATA, itemPosition);
                 break;
         }
     }
@@ -194,7 +203,7 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
     @Override
     public void qryUserVisitSuccess(List<String> listBean) {
         homeActivity.runOnUiThread(() -> {
-            if (listBean!=null&&listBean.size()>0){
+            if (listBean != null && listBean.size() > 0) {
                 hideDialog();
                 displayAdapter.setNewData(listBean);
             }
@@ -204,8 +213,8 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
     @Override
     public void qryUserVisitFail(String failMessage) {
         homeActivity.runOnUiThread(() -> {
-           hideDialog();
-            Log.e(TAG, "qryUserVisitFail: "+failMessage );
+            hideDialog();
+            Log.e(TAG, "qryUserVisitFail: " + failMessage);
 //           ToastUtils.show(failMessage);
         });
     }

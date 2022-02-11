@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_pic"
+        android:src="@mipmap/iness_image"
+        android:layout_width="@dimen/qb_px_84"
+        android:layout_height="@dimen/qb_px_84"></ImageView>
+
+</RelativeLayout>

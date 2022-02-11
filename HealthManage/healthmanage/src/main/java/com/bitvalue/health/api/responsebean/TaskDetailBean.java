@@ -14,7 +14,7 @@ public final class TaskDetailBean implements Serializable {
     private String userId;
     private String hospital;
     private String dept;
-    private String visitTime;
+    private long visitTime;
     private String visitType;
     private String diagnosis;
     private String userGoodsId;
@@ -54,11 +54,11 @@ public final class TaskDetailBean implements Serializable {
         this.dept = dept;
     }
 
-    public String getVisitTime() {
+    public long getVisitTime() {
         return visitTime;
     }
 
-    public void setVisitTime(String visitTime) {
+    public void setVisitTime(long visitTime) {
         this.visitTime = visitTime;
     }
 

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_data_time"
+            android:text="时间"
+            android:textSize="@dimen/qb_px_10"
+            android:layout_marginTop="@dimen/qb_px_8"
+            android:layout_marginStart="@dimen/qb_px_10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+
+        <TextView
+            android:id="@+id/tv_data_title"
+            android:text="标题"
+            android:textSize="@dimen/qb_px_10"
+            android:layout_marginTop="@dimen/qb_px_8"
+            android:layout_marginLeft="@dimen/qb_px_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+    </LinearLayout>
+
+
+
+
+    <com.bitvalue.health.util.customview.WrapRecyclerView
+        android:id="@+id/item_image_datalist"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.bitvalue.health.util.customview.WrapRecyclerView>
+
+
+
+
+
+
+</LinearLayout>

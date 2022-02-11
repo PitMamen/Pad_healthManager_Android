@@ -100,6 +100,8 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
 
     @BindView(R.id.list_plans)
     RecyclerView list_plans;
+    @BindView(R.id.rl_default_view)
+    RelativeLayout default_view;
 
     private List<GoodListBean> planListBeans = new ArrayList<>();
     private AlreadySelectPatientAdapter adapter_selectPatient;
@@ -169,7 +171,7 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                 tv_keshi.setText(selectDepartmentName.length() >= 8 ? selectDepartmentName.substring(0, 7) : selectDepartmentName);
                 tv_zhuabing.setText("请选专病");
                 int departmentID = map.get(departmentList.get(position));
-                Log.e(TAG, "科室ID: "+departmentID );
+                Log.e(TAG, "科室ID: " + departmentID);
                 getDiseaseList(departmentID);
                 getMyPlans(departmentID);
 
@@ -223,13 +225,11 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
         GoodListApi goodListApi = new GoodListApi();
         goodListApi.goodsType = "plan_package";
         goodListApi.departmentId = departmentId;
-        EasyHttp.get(this).api(goodListApi).request(new HttpCallback<ApiResult<List<GoodListBean>>>(this){
+        EasyHttp.get(this).api(goodListApi).request(new HttpCallback<ApiResult<List<GoodListBean>>>(this) {
             @Override
             public void onSucceed(ApiResult<List<GoodListBean>> result) {
                 super.onSucceed(result);
-                if (result.getData().size()==0){
-                    ToastUtils.show("该科室暂无套餐!");
-                }
+                default_view.setVisibility(result.getData().size() == 0 ? View.VISIBLE : View.GONE);
                 if (!EmptyUtil.isEmpty(result)) {
                     planListBeans = result.getData();
                     plansAdapter.updateList(planListBeans);
@@ -242,34 +242,6 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                 super.onFail(e);
             }
         });
-
-
-
-
-
-
-
-//        EasyHttp.post(this).api(new PlanListApi()).request(new HttpCallback<ApiResult<ArrayList<PlanListBean>>>(this) {
-//            @Override
-//            public void onStart(Call call) {
-//                super.onStart(call);
-//            }
-//
-//            @Override
-//            public void onSucceed(ApiResult<ArrayList<PlanListBean>> result) {
-//                super.onSucceed(result);
-//                if (!EmptyUtil.isEmpty(result)) {
-//                    planListBeans = result.getData();
-//                    plansAdapter.updateList(planListBeans);
-//                    plansAdapter.setNewData(planListBeans);
-//                }
-//            }
-//
-//            @Override
-//            public void onFail(Exception e) {
-//                super.onFail(e);
-//            }
-//        });
     }
 
 

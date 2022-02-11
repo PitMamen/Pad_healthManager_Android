@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/layout_third_title"/>
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/rl_default_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_default"
+            android:background="@mipmap/no_data"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></ImageView>
+
+        <TextView
+            android:textSize="@dimen/qb_px_12"
+            android:textColor="@color/bg_gray_black"
+            android:layout_marginTop="@dimen/qb_px_8"
+            android:text="暂无更多数据"
+            android:layout_below="@+id/iv_default"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+    </RelativeLayout>
+
+
+
+    <com.bitvalue.health.util.customview.WrapRecyclerView
+        android:id="@+id/list_moredata"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.bitvalue.health.util.customview.WrapRecyclerView>
+
+
+
+</LinearLayout>

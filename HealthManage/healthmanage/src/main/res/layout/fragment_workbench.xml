@@ -58,6 +58,35 @@
 
 
 
+        <RelativeLayout
+            android:id="@+id/rl_default_view"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_default"
+                android:background="@mipmap/no_data"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></ImageView>
+
+            <TextView
+                android:textSize="@dimen/qb_px_12"
+                android:textColor="@color/bg_gray_black"
+                android:layout_marginTop="@dimen/qb_px_8"
+                android:text="暂无数据"
+                android:layout_below="@+id/iv_default"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </TextView>
+
+
+        </RelativeLayout>
+
+
+
         <!--    所有患者-->
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/rl_undistribution_refresh"
@@ -96,16 +125,6 @@
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 
-
-
-
-
-
-
-
-
-
-
     </LinearLayout>
 
     <View
@@ -114,15 +133,6 @@
         android:layout_gravity="center"
         android:background="@color/cal_days_title"></View>
 
-
-<!--    <FrameLayout-->
-<!--        android:id="@+id/framelayout"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_weight="1.2">-->
-
-
-<!--    </FrameLayout>-->
 
 
 </LinearLayout>

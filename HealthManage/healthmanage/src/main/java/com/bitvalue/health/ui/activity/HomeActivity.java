@@ -3,6 +3,7 @@ package com.bitvalue.health.ui.activity;
 
 import static com.bitvalue.health.util.Constants.EVENT_MES_TYPE_CLOUDCLINC;
 import static com.bitvalue.health.util.Constants.FRAGMENT_DETAIL;
+import static com.bitvalue.health.util.Constants.FRAGMENT_MORE_DATA;
 import static com.bitvalue.health.util.Constants.FRAGMENT_NEW_LYDISCHARGED_PATIENT;
 import static com.bitvalue.health.util.Constants.FRAGMENT_PLAN_LIST;
 import static com.bitvalue.health.util.Constants.LISTBEAN;
@@ -44,6 +45,7 @@ import com.bitvalue.health.ui.fragment.healthmanage.AddRemindFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddVideoFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.ArticleDetailFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.FollowUpPlanFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.MoreDataFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.NewDischargedFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.PatientDetailFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.PatientReportFragment;
@@ -684,6 +686,16 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 bundle_detail.putSerializable(FRAGMENT_DETAIL, (Serializable) patientitem);
                 patientDetailFragment.setArguments(bundle_detail);
                 mapFragments.put(FRAGMENT_DETAIL, patientDetailFragment);
+                break;
+
+                //患者详情界面的更多数据界面
+            case FRAGMENT_MORE_DATA:
+                NewLeaveBean.RowsDTO patientitemmoredata = (NewLeaveBean.RowsDTO) object;
+                MoreDataFragment moredataFragment = new MoreDataFragment();
+                Bundle bundle_detail_moredata = new Bundle();
+                bundle_detail_moredata.putSerializable(FRAGMENT_DETAIL, (Serializable) patientitemmoredata);
+                moredataFragment.setArguments(bundle_detail_moredata);
+                mapFragments.put(FRAGMENT_MORE_DATA, moredataFragment);
                 break;
 
             //套餐详情界面

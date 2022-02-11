@@ -11,25 +11,6 @@
 
 
 
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/rl_title"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/qb_px_46"-->
-<!--        android:background="@color/white"-->
-<!--        >-->
-
-
-<!--        <TextView-->
-<!--            android:id="@+id/tv_title"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_centerInParent="true"-->
-<!--            android:text="计划详情"-->
-<!--            android:textColor="@color/text_black"-->
-<!--            android:textSize="18sp"></TextView>-->
-
-<!--    </RelativeLayout>-->
-
 
 
     <View
@@ -153,6 +134,37 @@
         android:layout_marginStart="@dimen/qb_px_11"
         android:layout_marginRight="@dimen/qb_px_11"
         android:layout_height="0.5dp"/>
+
+
+
+    <RelativeLayout
+        android:id="@+id/rl_default_view"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_default"
+            android:background="@mipmap/no_data"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></ImageView>
+
+        <TextView
+            android:textSize="@dimen/qb_px_10"
+            android:textColor="@color/bg_gray_black"
+            android:layout_marginTop="@dimen/qb_px_8"
+            android:text="暂无套餐计划"
+            android:layout_below="@+id/iv_default"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+
+    </RelativeLayout>
+
+
 
 
     <LinearLayout

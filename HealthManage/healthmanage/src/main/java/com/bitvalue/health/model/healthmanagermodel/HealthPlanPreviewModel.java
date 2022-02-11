@@ -57,7 +57,6 @@ public class HealthPlanPreviewModel extends BaseModel implements HealthPlanPrevi
                 .observeOn(AndroidSchedulers.mainThread())//主线程接收
                 .subscribe(result -> {
                     if (!EmptyUtil.isEmpty(result)) {
-                        Log.e(TAG, "queryhealtPlan: "+result.toString() );
                         if (result.getCode() == 0) {
                             if (!EmptyUtil.isEmpty(result.getData())) {
                                 List<HealthPlanTaskListBean> list = result.getData();
@@ -115,6 +114,9 @@ public class HealthPlanPreviewModel extends BaseModel implements HealthPlanPrevi
                                 }
 
                                 callback.onSuccess(formartList, 1000);
+                            }else {
+                                callback.onSuccess(result.getData(), 1000);
+
                             }
                         } else {
                             callback.onFailedLog("请求失败", 1001);

@@ -125,6 +125,8 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     LinearLayout linearLayout_all;
     @BindView(R.id.ll_unregister)
     LinearLayout ll_unregister;
+    @BindView(R.id.rl_default_view)
+    RelativeLayout default_view;
 
     private boolean allCheck = false;
 
@@ -483,6 +485,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
 
                 linearLayout_all.setVisibility(View.VISIBLE);
                 ll_unregister.setVisibility(View.GONE);
+                default_view.setVisibility(rowsDTOList.size() == 0 ? View.VISIBLE : View.GONE);
                 if (allocatedPatientAdapter != null) {
                     allocatedPatientAdapter.updateList(rowsDTOList);
                 }
@@ -497,7 +500,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
                 rl_unregister.setBackground(homeActivity.getDrawable(R.drawable.shape_button_select));
                 tv_allocated_patient.setTextColor(homeActivity.getColor(R.color.black));
                 rl_undistribution.setBackground(homeActivity.getDrawable(R.drawable.shape_bg_item_unse));
-
+                default_view.setVisibility(unregisterList.size() == 0 ? View.VISIBLE : View.GONE);
                 linearLayout_all.setVisibility(View.GONE);
                 ll_unregister.setVisibility(View.VISIBLE);
                 if (unRegisterAdapter != null) {
@@ -516,8 +519,9 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     @Override
     public void qryAllocatedPatienSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList) {
         homeActivity.runOnUiThread(() -> {
+            Log.e(TAG, "qryAllocatedPatienSuccess: "+infoDetailDTOList.size() );
+            default_view.setVisibility(infoDetailDTOList.size() == 0 ? View.VISIBLE : View.GONE);
             if (infoDetailDTOList.size() == 0) {
-                ToastUtils.show("无更多患者!");
                 return;
             }
             rowsDTOList = infoDetailDTOList;
@@ -547,6 +551,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     public void qryUnregisterSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList) {
         homeActivity.runOnUiThread(() -> {
             unregisterList = infoDetailDTOList;
+//            default_view.setVisibility(infoDetailDTOList.size() == 0 ? View.VISIBLE : View.GONE);
             unRegisterAdapter.updateList(unregisterList);
 
         });

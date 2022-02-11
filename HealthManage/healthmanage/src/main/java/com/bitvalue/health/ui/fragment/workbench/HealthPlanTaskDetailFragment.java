@@ -71,6 +71,8 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
     TextView tv_plan_time;
     @BindView(R.id.task_tetail_listview)
     RecyclerView taskRecyclerView;
+    @BindView(R.id.rl_default_view)
+    RelativeLayout default_view;
 
 
     private HealthPlanPreviewListAdapter planAdapter;
@@ -83,17 +85,18 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
     /**
      * 控件初始化
+     *
      * @param rootView
      */
     @Override
     public void initView(View rootView) {
 
         layout_back.setOnClickListener(v -> {
-            if (ll_task_tetail.getVisibility() == View.VISIBLE){
+            if (ll_task_tetail.getVisibility() == View.VISIBLE) {
                 layout_back.setVisibility(View.GONE);
                 ll_task_tetail.setVisibility(View.GONE);
                 planRecyclerView.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
                 }
@@ -101,14 +104,14 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         });
 
 
-        if (getArguments()==null){
+        if (getArguments() == null) {
             return;
         }
         planId = getArguments().getString(Constants.PLAN_ID);
-        Log.e(TAG, "planId: "+planId );
-        userInfo= (NewLeaveBean.RowsDTO) getArguments().getSerializable(Constants.USERINFO);
+        Log.e(TAG, "planId: " + planId);
+        userInfo = (NewLeaveBean.RowsDTO) getArguments().getSerializable(Constants.USERINFO);
         tv_gotoDetail.setOnClickListener(v -> {
-            homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL,userInfo);
+            homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, userInfo);
         });
 
 
@@ -116,21 +119,20 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         planRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         planAdapter = new HealthPlanPreviewListAdapter();
         planRecyclerView.setAdapter(planAdapter);
-        planAdapter.setOnItemClickListener((adapter, view, position) -> showTaskDetailView((HealthPlanTaskListBean)adapter.getItem(position)));
+        planAdapter.setOnItemClickListener((adapter, view, position) -> showTaskDetailView((HealthPlanTaskListBean) adapter.getItem(position)));
 
         //任务详情的列表
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        taskDetailAdapter=new HealthPlanTaskDetailAdapter();
+        taskDetailAdapter = new HealthPlanTaskDetailAdapter();
 
         taskRecyclerView.setAdapter(taskDetailAdapter);
 
 
-        refreshData(planId,userInfo);
+        refreshData(planId, userInfo);
 
     }
 
     private void initFooterViewClick(View footerview) {
-
 
 
         //健康评估
@@ -143,31 +145,31 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         tv_send_jkpg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ( planTaskDetail==null || userInfo==null){
+                if (planTaskDetail == null || userInfo == null) {
                     return;
                 }
                 userInfo.setSendPlanType(TypeConstants.Evaluate);
-                userInfo.setPlanId(planTaskDetail.planId+"");
+                userInfo.setPlanId(planTaskDetail.planId + "");
                 userInfo.setTaskId(planTaskDetail.taskId);
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE,userInfo);
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE, userInfo);
             }
         });
         tv_send_jktx.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ( planTaskDetail==null || userInfo==null){
+                if (planTaskDetail == null || userInfo == null) {
                     return;
                 }
                 userInfo.setSendPlanType(TypeConstants.Remind);
-                userInfo.setPlanId(planTaskDetail.planId+"");
+                userInfo.setPlanId(planTaskDetail.planId + "");
                 userInfo.setTaskId(planTaskDetail.taskId);
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE,userInfo);
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE, userInfo);
             }
         });
         tv_send_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ( planTaskDetail==null){
+                if (planTaskDetail == null) {
                     return;
                 }
                 ToastUtil.toastShortMessage("正在开发");
@@ -194,13 +196,13 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         ll_task_tetail.setVisibility(View.GONE);
         planRecyclerView.setVisibility(View.VISIBLE);
 
-        if (userInfo!=null){
+        if (userInfo != null) {
             String curen = TimeUtils.getCurrenTime();
             int finatime = Integer.valueOf(curen) - Integer.valueOf((userInfo.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
             img_head.setImageDrawable(userInfo.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
             tv_name.setText(userInfo.getUserName());
             tv_sex.setText(userInfo.getSex());
-            tv_age.setText(finatime+"岁");
+            tv_age.setText(finatime + "岁");
             tv_phone.setText(userInfo.getInfoDetail().getSjhm());
         }
         mPresenter.queryhealtPlan(planId);
@@ -208,7 +210,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
     //显示每次任务详情
     private void showTaskDetailView(HealthPlanTaskListBean item) {
-        Log.e(TAG, "显示详情----------" );
+        Log.e(TAG, "显示详情----------");
         layout_back.setVisibility(View.VISIBLE);
         ll_task_tetail.setVisibility(View.VISIBLE);
         planRecyclerView.setVisibility(View.GONE);
@@ -216,7 +218,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         tv_plan_time.setText(TimeUtils.getTime(item.getExec_time()));
 
 
-        mPresenter.queryTaskDetail(item.getPlan_id(),item.getTask_id(),item.getUser_id());
+        mPresenter.queryTaskDetail(item.getPlan_id(), item.getTask_id(), item.getUser_id());
 
     }
 
@@ -234,16 +236,19 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
     @Override
     public void queryhealtPlanSuccess(List<HealthPlanTaskListBean> taskListBeanList) {
-        tv_title.setText(taskListBeanList.get(0).getPlan_name());
-        planAdapter.setNewData(taskListBeanList);
+        default_view.setVisibility(taskListBeanList.size() == 0 ? View.VISIBLE : View.GONE);
+        if (taskListBeanList.size()>0){
+            tv_title.setText(taskListBeanList.get(0).getPlan_name());
+            planAdapter.setNewData(taskListBeanList);
+        }
     }
 
     @Override
     public void queryHealthPlanContentSuccess(PlanTaskDetail taskPlanDetailBean) {
-        this.planTaskDetail=taskPlanDetailBean;
+        this.planTaskDetail = taskPlanDetailBean;
         taskDetailAdapter.setNewData(taskPlanDetailBean.userPlanDetails);
-        if (footerview==null){
-            footerview= LayoutInflater.from(getContext()).inflate(R.layout.layout_plan_task_footer,null);
+        if (footerview == null) {
+            footerview = LayoutInflater.from(getContext()).inflate(R.layout.layout_plan_task_footer, null);
             initFooterViewClick(footerview);
             taskDetailAdapter.addFooterView(footerview);
         }
@@ -252,7 +257,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
     @Override
     public void queryHealthFail(String failMessage) {
-        Log.e("TAG",failMessage);
+        Log.e("TAG", failMessage);
         ToastUtil.toastShortMessage(failMessage);
     }
 
