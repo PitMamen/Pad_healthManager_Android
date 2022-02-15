@@ -168,6 +168,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     protected void assembleActions() {
         mInputMoreActionList.clear();
         InputMoreActionUnit actionUnit;
+        Log.e(TAG, "assembleActions: "+ chatType);
         switch (chatType) {
             /***
              * 健康管理
@@ -258,7 +259,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
                     };
                     actionUnit.setIconResId(R.drawable.icon_write);
                     actionUnit.setTitleId(R.string.write_conclusion);
-                    mInputMoreActionList.add(actionUnit);
+//                    mInputMoreActionList.add(actionUnit);
                 }
 
                 //结束看诊
@@ -271,7 +272,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
                     };
                     actionUnit.setIconResId(R.drawable.icon_end);
                     actionUnit.setTitleId(R.string.video_end_consult);
-                    mInputMoreActionList.add(actionUnit);
+//                    mInputMoreActionList.add(actionUnit);
                 }
 
                 break;

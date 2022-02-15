@@ -73,18 +73,18 @@ public class CustomVideoCallMessageController {
                 public void onSuccess(Object o, int what) {
                     super.onSuccess(o, what);
                     videoPatientStatusBean = (VideoPatientStatusBean) o;
-                    if (videoPatientStatusBean == null) {
-                        return;
-                    }
-                    if (videoPatientStatusBean.attendanceStatus.equals("4")) {
-                        tv_content.setText("视频看诊已结束");
-                    }
+//                    if (videoPatientStatusBean == null) {
+//                        return;
+//                    }
+//                    if (videoPatientStatusBean.attendanceStatus.equals("4")) {
+//                        tv_content.setText("视频看诊已结束");
+//                    }
 
                     if (ifClick) {
-                        if (videoPatientStatusBean.attendanceStatus.equals("4")) {
-                            tv_content.setText("视频看诊已结束");
-                            ToastUtils.show("视频看诊已结束");
-                        } else {
+//                        if (videoPatientStatusBean.attendanceStatus.equals("4")) {
+//                            tv_content.setText("视频看诊已结束");
+//                            ToastUtils.show("视频看诊已结束");
+//                        } else {
 
                             LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, Application.instance());
                             if (loginBean == null) {
@@ -102,7 +102,7 @@ public class CustomVideoCallMessageController {
                                     true, // 是否默认打开摄像头
                                     true, // 是否默认打开麦克风
                                     true); // 是否支持USB摄像头/视频采集盒
-                        }
+//                        }
                     }
                 }
 
@@ -112,6 +112,7 @@ public class CustomVideoCallMessageController {
                 }
             });
         } catch (Throwable throwable) {
+            Log.e(TAG, "视频异常: "+throwable.getMessage() );
             throwable.printStackTrace();
         }
     }

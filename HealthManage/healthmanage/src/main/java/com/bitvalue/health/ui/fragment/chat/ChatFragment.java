@@ -8,6 +8,7 @@ import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_PAPER;
 import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_QUESTION;
 import static com.bitvalue.health.util.Constants.FRAGMENT_QUICKREPLY;
 import static com.bitvalue.health.util.Constants.FRAGMENT_SEND_REMIND;
+import static com.bitvalue.health.util.Constants.PLAN_ID;
 import static com.bitvalue.health.util.Constants.SINGLECHAT;
 import static com.bitvalue.health.util.Constants.USER_IDS;
 import static com.tencent.imsdk.v2.V2TIMConversation.V2TIM_C2C;
@@ -119,11 +120,13 @@ public class ChatFragment extends BaseFragment {
 
     @Override
     public void initView(View view) {
-        Log.e(TAG, "chat activity initView ");
         Bundle bundle = getArguments();
         mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
         patientinfo = (NewLeaveBean.RowsDTO) bundle.getSerializable(Constants.USERINFO);
-        Log.e(TAG, "聊天初始化: "+patientinfo );
+        if (mChatInfo==null||patientinfo==null){
+            return;
+        }
+        planId = patientinfo.getUserId();
         if (mChatInfo.getType() == V2TIM_C2C) {
             if (mChatInfo.isShowShortCut) {
                 userIDList.clear();
@@ -288,86 +291,86 @@ public class ChatFragment extends BaseFragment {
         helper.customizeChatLayout(mChatLayout);
 
         //新增的自定义控件点击回调
-//        mChatLayout.setOnCustomClickListener(new InputLayout.OnCustomClickListener() {
+        mChatLayout.setOnCustomClickListener(new InputLayout.OnCustomClickListener() {
 //
 //            //健康计划
-//            @Override
-//            public void onHealthPlanClick() {
-//                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
-//                msgData.userIds = new ArrayList<>();
-//                msgData.userIds.add(mChatInfo.userId);//mChatInfo.getId()是健康管理群组聊天的groupId，userId才是每个页面需要的传参
-//                msgData.id = planId + "";//这里id设置为 planId
-////                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_DETAIL, msgData);  //切换至健康计划界面
-//            }
-//
-//            //健康评估
-//            @Override
-//            public void onHealthAnalyseClick() {
-//                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
-//                msgData.msgType = Constants.MSG_SINGLE;
-//                msgData.userIds = new ArrayList<>();
-//                msgData.userIds.add(mChatInfo.userId);
-//                msgData.id = planId + "";//这里id设置为 planId
-////                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_ANALYSE, msgData); //切换至健康评估界面
-//            }
-//
-//            //健康消息
-//            @Override
-//            public void onHealthMsgClick() {
-//                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
-//                msgData.msgType = Constants.MSG_SINGLE;
-//                msgData.userIds = new ArrayList<>();
-//                msgData.userIds.add(mChatInfo.userId);
-////                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG, msgData);//切换至健康消息界面
-//            }
-//
-//            //健康档案
-//            @Override
-//            public void onHealthFilesClick() {
-////                Intent intent = new Intent(homeActivity, HealthFilesActivity.class);
-////                intent.putExtra(Constants.USER_ID, mChatInfo.userId);
-////                homeActivity.startActivity(intent);
-//            }
+            @Override
+            public void onHealthPlanClick() {
+                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
+                msgData.userIds = new ArrayList<>();
+                msgData.userIds.add(mChatInfo.userId);//mChatInfo.getId()是健康管理群组聊天的groupId，userId才是每个页面需要的传参
+                msgData.id = planId + "";//这里id设置为 planId
+//                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_DETAIL, msgData);  //切换至健康计划界面
+            }
+
+            //健康评估
+            @Override
+            public void onHealthAnalyseClick() {
+                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
+                msgData.msgType = Constants.MSG_SINGLE;
+                msgData.userIds = new ArrayList<>();
+                msgData.userIds.add(mChatInfo.userId);
+                msgData.id = planId + "";//这里id设置为 planId
+//                homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_ANALYSE, msgData); //切换至健康评估界面
+            }
+
+            //健康消息
+            @Override
+            public void onHealthMsgClick() {
+                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
+                msgData.msgType = Constants.MSG_SINGLE;
+                msgData.userIds = new ArrayList<>();
+                msgData.userIds.add(mChatInfo.userId);
+//                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MSG, msgData);//切换至健康消息界面
+            }
+
+            //健康档案
+            @Override
+            public void onHealthFilesClick() {
+//                Intent intent = new Intent(homeActivity, HealthFilesActivity.class);
+//                intent.putExtra(Constants.USER_ID, mChatInfo.userId);
+//                homeActivity.startActivity(intent);
+            }
 //
 //
 //            //视频问诊
-//            @Override
-//            public void onVideoCommunicate() {
-//                CustomVideoCallMessage message = new CustomVideoCallMessage();
-//                message.title = "视频看诊";
-//                long currentTimeMillis = System.currentTimeMillis();
-//                String rooId = currentTimeMillis + "";
-//                message.msgDetailId = rooId.substring(rooId.length() - 7, rooId.length());
-////                message.userId = mIds;
-//                message.content = "点击接入视频看诊";
-//                message.timeStamp = currentTimeMillis;
-//                //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
-//                message.setType("CustomVideoCallMessage");
-//                message.userId = new ArrayList<>();
-//                message.userId.add(mChatInfo.getId());//传入userid
-//                message.setDescription("视频看诊");
-//                message.id = planId + "";//这里id设置为视频看诊的预约id
-//                MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
-//                mChatLayout.sendMessage(info, false);
-//            }
+            @Override
+            public void onVideoCommunicate() {
+                CustomVideoCallMessage message = new CustomVideoCallMessage();
+                message.title = "视频看诊";
+                long currentTimeMillis = System.currentTimeMillis();
+                String rooId = currentTimeMillis + "";
+                message.msgDetailId = rooId.substring(rooId.length() - 7, rooId.length());
+//                message.userId = mIds;
+                message.content = "点击接入视频看诊";
+                message.timeStamp = currentTimeMillis;
+                //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
+                message.setType("CustomVideoCallMessage");
+                message.userId = new ArrayList<>();
+                message.userId.add(mChatInfo.getId());//传入userid
+                message.setDescription("视频看诊");
+                message.id = planId + "";//这里id设置为视频看诊的预约id
+                MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
+                mChatLayout.sendMessage(info, false);
+            }
 //
 //            //书写病历
 //            @Override
-//            public void onWriteConsultConclusion() {
-//                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
-//                msgData.userIds = new ArrayList<>();
-//                msgData.userIds.add(mChatInfo.getId());
-//                msgData.id = planId + "";
-////                homeActivity.switchSecondFragment(Constants.FRAGMENT_WRITE_HEALTH, msgData);
-//            }
-//
-//            //    结束就诊
-//            @Override
-//            public void onEndVideoConsult() {
-//                // TODO: 2021/10/27 弹出对话框
-//
-//            }
-//        });
+            public void onWriteConsultConclusion() {
+                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
+                msgData.userIds = new ArrayList<>();
+                msgData.userIds.add(mChatInfo.getId());
+                msgData.id = planId + "";
+//                homeActivity.switchSecondFragment(Constants.FRAGMENT_WRITE_HEALTH, msgData);
+            }
+
+            //    结束就诊
+            @Override
+            public void onEndVideoConsult() {
+                // TODO: 2021/10/27 弹出对话框
+
+            }
+        });
     }
 
     private int getAtInfoType(List<V2TIMGroupAtInfo> atInfoList) {

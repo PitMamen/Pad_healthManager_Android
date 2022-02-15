@@ -156,9 +156,7 @@ public class NetEngine {
             newService.getVideoPatientStatus(messageData.id).subscribeOn(Schedulers.io()).subscribe(result -> {
                 if (!EmptyUtil.isEmpty(result)) {
                     if (result.getCode() == 0) {
-                        if (!EmptyUtil.isEmpty(result.getData())) {
                             callback.onSuccess(result.getData(), 1000);
-                        }
 
                     } else {
                         callback.onFailedLog(result.getMessage(), 1001);

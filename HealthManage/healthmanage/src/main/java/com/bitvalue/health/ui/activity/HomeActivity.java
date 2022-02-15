@@ -7,6 +7,7 @@ import static com.bitvalue.health.util.Constants.FRAGMENT_MORE_DATA;
 import static com.bitvalue.health.util.Constants.FRAGMENT_NEW_LYDISCHARGED_PATIENT;
 import static com.bitvalue.health.util.Constants.FRAGMENT_PLAN_LIST;
 import static com.bitvalue.health.util.Constants.LISTBEAN;
+import static com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI.CHAT_TYPE_VIDEO;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -408,7 +409,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 chatInfo.setType(V2TIMConversation.V2TIM_C2C);
                 chatInfo.setId(String.valueOf(child.getUserId()));
                 chatInfo.setChatName(child.getUserName());
-
+                chatInfo.chatType = CHAT_TYPE_VIDEO;
                 bundle.putSerializable(Constants.CHAT_INFO, chatInfo);
                 bundle.putSerializable(Constants.USERINFO, child);
                 chatFragment.setArguments(bundle);

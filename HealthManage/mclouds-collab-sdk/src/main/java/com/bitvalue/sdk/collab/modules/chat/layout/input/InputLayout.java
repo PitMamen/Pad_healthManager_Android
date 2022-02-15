@@ -789,7 +789,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
             mInputMoreFragment = new InputMoreFragment();
         }
 
-//        assembleActions();    //聊天界面 更多显示 暂时注释
+        assembleActions();    //聊天界面 更多显示 暂时注释
         mInputMoreFragment.setActions(mInputMoreActionList);
         hideSoftInput();
         mInputMoreView.setVisibility(View.VISIBLE);
