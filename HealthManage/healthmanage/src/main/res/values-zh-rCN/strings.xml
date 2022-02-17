@@ -282,6 +282,8 @@
     <string name="package_configuration">套餐配置</string>
     <string name="my_visitlog">我的看诊记录</string>
     <string name="person_imformation">个人信息</string>
+    <string name="video_visit">Video Visit</string>
+    <string name="click_to_access_the_video">点击接入视频看诊</string>
     <string name="writer_healthcase" tools:ignore="ExtraTranslation">病历书写</string>
 
 

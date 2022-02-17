@@ -337,23 +337,22 @@ public class ChatFragment extends BaseFragment {
             @Override
             public void onVideoCommunicate() {
                 CustomVideoCallMessage message = new CustomVideoCallMessage();
-                message.title = "视频看诊";
+                message.title = getString(R.string.video_visit);
                 long currentTimeMillis = System.currentTimeMillis();
                 String rooId = currentTimeMillis + "";
                 message.msgDetailId = rooId.substring(rooId.length() - 7, rooId.length());
 //                message.userId = mIds;
-                message.content = "点击接入视频看诊";
+                message.content = getString(R.string.click_to_access_the_video);
                 message.timeStamp = currentTimeMillis;
                 //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
                 message.setType("CustomVideoCallMessage");
                 message.userId = new ArrayList<>();
                 message.userId.add(mChatInfo.getId());//传入userid
-                message.setDescription("视频看诊");
+                message.setDescription(getString(R.string.video_visit));
                 message.id = planId + "";//这里id设置为视频看诊的预约id
                 MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
                 mChatLayout.sendMessage(info, false);
             }
-//
 //            //书写病历
 //            @Override
             public void onWriteConsultConclusion() {

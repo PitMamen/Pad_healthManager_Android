@@ -31,7 +31,6 @@
             <com.bitvalue.sdk.collab.component.UnreadCountTextView
                 android:gravity="center"
                 android:id="@+id/conversation_unread"
-                android:layout_marginTop="-3dp"
                 android:layout_marginLeft="-13dp"
                 android:layout_width="13dp"
                 android:layout_height="13dp"
