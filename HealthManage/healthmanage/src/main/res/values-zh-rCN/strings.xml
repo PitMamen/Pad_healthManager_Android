@@ -24,7 +24,7 @@
     <string name="set_in_blacklist">您已被被对方设置为黑名单</string>
     <string name="wait_agree_friend">等待好友审核同意</string>
     <string name="bga_pp_format_remain_image">+%1$d</string>
-
+    <string name="has_ended">已结束</string>
     <!-- 通用的 -->
     <string name="common_crash_hint">应用出了点小意外，正在重新启动</string>
 
@@ -281,7 +281,7 @@
     <string name="modify_health_management_plan">修改健康管理计划</string>
     <string name="package_configuration">套餐配置</string>
     <string name="my_visitlog">我的看诊记录</string>
-    <string name="person_imformation">个人信息</string>
+    <string name="person_imformation">个人设置</string>
     <string name="video_visit">Video Visit</string>
     <string name="click_to_access_the_video">点击接入视频看诊</string>
     <string name="writer_healthcase" tools:ignore="ExtraTranslation">病历书写</string>

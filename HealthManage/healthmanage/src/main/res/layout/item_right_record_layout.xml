@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_white_bg_"
+    >
+
+
+
+    <LinearLayout
+        android:layout_marginStart="@dimen/qb_px_5"
+        android:id="@+id/ll_times"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+
+
+        <TextView
+            android:id="@+id/tv_video"
+            android:text="视频咨询"
+            android:textSize="14.5sp"
+            android:textColor="#666666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/qb_px_5"
+            android:text="剩余"
+            android:textSize="14.5sp"
+            android:textColor="#666666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/tv_surplustimes"
+            android:layout_marginLeft="@dimen/qb_px_3"
+            android:text=" 1 "
+            android:textSize="14.5sp"
+            android:textColor="@color/main_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+
+        <TextView
+            android:text=" 次"
+            android:textSize="14.5sp"
+            android:textColor="#666666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+
+
+
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/qb_px_5"
+            android:text="共"
+            android:textSize="14.5sp"
+            android:textColor="#666666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_totaltimes"
+            android:layout_marginLeft="@dimen/qb_px_3"
+            android:text=" 2 "
+            android:textSize="14.5sp"
+            android:textColor="@color/orange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+        <TextView
+            android:layout_marginLeft="@dimen/qb_px_3"
+            android:text=" 次"
+            android:textSize="14.5sp"
+            android:textColor="#666666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/qb_px_8"
+        android:layout_below="@+id/ll_times"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_marginLeft="@dimen/qb_px_10"
+            android:text="服务权益: "
+            android:textColor="#666666"
+            android:textSize="14.5sp"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></TextView>
+
+
+
+        <TextView
+            android:id="@+id/tv_photo"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:text="图片咨询"
+            android:textSize="14.5sp"
+            android:textColor="#666666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/qb_px_5"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:text="剩余"
+            android:textSize="14.5sp"
+            android:textColor="#666666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/tv_surplus_photo_times"
+            android:layout_marginLeft="@dimen/qb_px_3"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:text=" 1 次"
+            android:textSize="14.5sp"
+            android:textColor="#666666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+
+
+        <TextView
+            android:layout_marginLeft="@dimen/qb_px_5"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:text="共"
+            android:textSize="14.5sp"
+            android:textColor="#666666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_total_photo_times"
+            android:layout_marginLeft="@dimen/qb_px_3"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:text=" 2 次"
+            android:textSize="14.5sp"
+            android:textColor="#666666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+    </LinearLayout>
+
+
+
+
+
+
+</RelativeLayout>

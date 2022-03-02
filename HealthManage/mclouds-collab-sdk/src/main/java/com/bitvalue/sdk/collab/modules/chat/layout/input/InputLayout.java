@@ -86,7 +86,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     private OnCustomClickListener onCustomClickListener;
     private List<String> userIDs = new ArrayList<>();
     private boolean isMass = false;
-
+    private boolean isVisibleMore;
 
     public InputLayout(Context context) {
         super(context);
@@ -627,9 +627,11 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
                     } else {
                         mInputMoreView.setVisibility(View.VISIBLE);
                     }
+                    mInputMoreView.setVisibility(isVisibleMore?VISIBLE:GONE);
                     //以上是zanhanding添加的代码，用于fix有时需要两次点击加号按钮才能呼出富文本选择布局的问题
                 } else {
                     showInputMoreLayout();//显示“更多”消息发送布局
+                    mInputMoreView.setVisibility(isVisibleMore?VISIBLE:GONE);
                     mCurrentState = STATE_ACTION_INPUT;
                     mAudioInputSwitchButton.setImageResource(R.drawable.action_audio_selector);
                     mEmojiInputButton.setImageResource(R.drawable.action_face_selector);
@@ -640,7 +642,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         } else if (view.getId() == R.id.send_btn) {
             if (mSendEnable) {
                 if (mMessageHandler != null) {
-                    if (mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_GROUP ) {    //&& !atUserInfoMap.isEmpty()
+                    if (mChatLayout.getChatInfo().getType() == V2TIMConversation.V2TIM_GROUP) {    //&& !atUserInfoMap.isEmpty()
                         //发送时通过获取输入框匹配上@的昵称list，去从map中获取ID list。
                         List<String> atUserList = updateAtUserList(mTextInput.getMentionList(true));
                         if (atUserList == null || atUserList.isEmpty()) {
@@ -699,6 +701,16 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         mTextInput.clearFocus();
         mInputMoreView.setVisibility(View.GONE);
     }
+
+
+
+
+    public void setGoneInputMore(boolean isvisible) {
+        isVisibleMore = isvisible;
+        Log.e(TAG, "setGoneInputMore: "+isVisibleMore );
+
+    }
+
 
     private void showFaceViewGroup() {
         TUIKitLog.i(TAG, "showFaceViewGroup");

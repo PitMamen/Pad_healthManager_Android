@@ -184,6 +184,7 @@ public class UnRegisterAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             tv_department.setText(bean.getKsmc());
             tv_zhuanbing.setText(bean.getBqmc());
             tv_bingqu.setText(bean.getBqmc());
+            time.setText(bean.getCysj());
             String curen = TimeUtils.getCurrenTime();
             int finatime = Integer.valueOf(curen) - Integer.valueOf((bean.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
             tv_age.setText(finatime+"岁");

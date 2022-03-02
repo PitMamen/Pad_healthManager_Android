@@ -86,6 +86,7 @@ public class AllPatientAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO, Ba
         holder.setText(R.id.tv_chat_type,!EmptyUtil.isEmpty(videoClientsResultBean.getUserId())?"已注册":"未注册");
         holder.setText(R.id.tv_name, videoClientsResultBean.getUserName());
         holder.setText(R.id.tv_patient_sex, videoClientsResultBean.getSex());
+        holder.setText(R.id.tv_type_one_pa, videoClientsResultBean.getDiagnosis());
         String curen = TimeUtils.getCurrenTime();
         int finatime = Integer.valueOf(curen) - Integer.valueOf((videoClientsResultBean.getAge().substring(0, 4)));
         holder.setText(R.id.tv_patient_age, finatime + "岁");

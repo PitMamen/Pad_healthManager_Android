@@ -1,6 +1,7 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
 import static com.bitvalue.health.util.Constants.FRAGMENT_DETAIL;
+import static com.bitvalue.health.util.Constants.USER_ID;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
+import com.bitvalue.health.api.responsebean.PatientBaseInfoBean;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
@@ -32,6 +34,7 @@ import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.hjq.toast.ToastUtils;
 
+import java.util.EventListener;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,6 +43,7 @@ import butterknife.OnClick;
 /**
  * @author created by bitvalue
  * @data : 01/14
+ * 患者详情界面
  */
 public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter> implements VisitPlanDetailContract.View {
 
@@ -76,6 +80,8 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
 
     @BindView(R.id.tv_heigth)
     TextView tv_heigth;
+    @BindView(R.id.tv_weight)
+    TextView tv_weight;
 
     @BindView(R.id.tv_specialdisease)
     TextView tv_specialdisease;
@@ -90,6 +96,7 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
     private NewLeaveBean.RowsDTO itemPosition;
     private ImageListDisplayAdapter displayAdapter;
     private HomeActivity homeActivity;
+    private int userID;
 
     @Override
     protected VisitPlanDetailPresenter createPresenter() {
@@ -114,8 +121,8 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
             if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0)
                 homeActivity.getSupportFragmentManager().popBackStack();
         });
-        Bundle bundle = getArguments();
-        itemPosition = (NewLeaveBean.RowsDTO) bundle.getSerializable(FRAGMENT_DETAIL);
+        itemPosition = (NewLeaveBean.RowsDTO) getArguments().getSerializable(FRAGMENT_DETAIL);
+        userID = getArguments().getInt(USER_ID);
         if (itemPosition != null) {
             iv_head.setImageDrawable(itemPosition.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
             tv_sendMessage.setBackground(EmptyUtil.isEmpty(itemPosition.getUserId()) ? homeActivity.getDrawable(R.drawable.shape_bg_gray_) : homeActivity.getDrawable(R.drawable.shape_bg_blue_dark));
@@ -137,29 +144,35 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
             tv_address.setText(itemPosition.getInfoDetail().getGzdwdz());
             tv_heigth.setText(itemPosition.getSex().equals("女") ? "162cm" : "175cm");
 
+            //根据id 查询患者的详情
+        } else if (!EmptyUtil.isEmpty(userID)) {
+            mPresenter.getPatientBaseInfo(userID);
         }
     }
 
     @Override
     public void initData() {
         super.initData();
-        if (!EmptyUtil.isEmpty(itemPosition)) {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(homeActivity);
+        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        list_visitlod.setLayoutManager(layoutManager);
+        displayAdapter = new ImageListDisplayAdapter(R.layout.item_imagevisitlod_layout, null);
+        list_visitlod.setAdapter(displayAdapter);
+        UserLocalVisitBean bean = new UserLocalVisitBean();
+        if (itemPosition != null) {
             if (!EmptyUtil.isEmpty(itemPosition.getUserId())) {
-                showLoading();
-                LinearLayoutManager layoutManager = new LinearLayoutManager(homeActivity);
-                layoutManager.setOrientation(RecyclerView.HORIZONTAL);
-                list_visitlod.setLayoutManager(layoutManager);
-                displayAdapter = new ImageListDisplayAdapter(R.layout.item_imagevisitlod_layout, null);
-                Log.e(TAG, "name: " + itemPosition.getUserName() + " userid: " + itemPosition.getUserId());
-                UserLocalVisitBean bean = new UserLocalVisitBean();
                 bean.userId = itemPosition.getUserId();
-                mPresenter.qryUserLocalVisit(bean);
-                list_visitlod.setAdapter(displayAdapter);
             } else {
-//                ll_image_default.setVisibility(View.VISIBLE);
+                ToastUtils.show("患者未注册!");
+                return;
             }
-
+        } else {
+            bean.userId = String.valueOf(userID);
         }
+        showLoading();
+        mPresenter.qryUserLocalVisit(bean);
+
+
     }
 
 
@@ -193,29 +206,84 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
 
             //更多数据
             case R.id.tv_more_data:
-                if (!EmptyUtil.isEmpty(itemPosition))
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_MORE_DATA, itemPosition);
+                if (EmptyUtil.isEmpty(itemPosition)){
+                    NewLeaveBean.RowsDTO createItem = new NewLeaveBean.RowsDTO();
+                    createItem.setUserId(String.valueOf(userID));
+                    homeActivity.switchSecondFragment(Constants.FRAGMENT_MORE_DATA, createItem);
+                }else {
+                    homeActivity.switchSecondFragment(Constants.FRAGMENT_MORE_DATA, itemPosition);
+
+                }
                 break;
         }
     }
 
 
+    /**
+     * 获取患者上传资料成功回调
+     * @param listBean
+     */
     @Override
     public void qryUserVisitSuccess(List<String> listBean) {
         homeActivity.runOnUiThread(() -> {
+            hideDialog();
             if (listBean != null && listBean.size() > 0) {
-                hideDialog();
                 displayAdapter.setNewData(listBean);
             }
         });
     }
 
+    /**
+     * 获取患者上传资料失败回调
+     * @param
+     */
     @Override
     public void qryUserVisitFail(String failMessage) {
         homeActivity.runOnUiThread(() -> {
             hideDialog();
-            Log.e(TAG, "qryUserVisitFail: " + failMessage);
+//            Log.e(TAG, "qryUserVisitFail: " + failMessage);
 //           ToastUtils.show(failMessage);
+        });
+    }
+
+
+    /**
+     * 根据Userid 查询患者更多信息 成功回调
+     *
+     * @param patientBaseInfoBean
+     */
+    @Override
+    public void getPatientBaseInfoSuccess(PatientBaseInfoBean patientBaseInfoBean) {
+        homeActivity.runOnUiThread(() -> {
+            if (patientBaseInfoBean != null) {
+                iv_head.setImageDrawable(patientBaseInfoBean.getBaseInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+                tv_name.setText(patientBaseInfoBean.getBaseInfo().getUserName());
+                tv_sex.setText(patientBaseInfoBean.getBaseInfo().getUserSex());
+                tv_depatment.setText("-");
+                tv_inpatient_area.setText("-");
+                tv_diseasename.setText("-");
+                String curen = TimeUtils.getCurrenTime();
+                int finatime = Integer.valueOf(curen) - Integer.valueOf((patientBaseInfoBean.getBaseInfo().getBirthday().substring(0, 4)));  //后台给的是出生日期 需要前端换算
+                tv_age.setText(finatime + "岁");
+                tv_phone.setText(patientBaseInfoBean.getExternalInfo().getPhone());
+                tv_address.setText(patientBaseInfoBean.getExternalInfo().getAddress());
+                tv_heigth.setText(String.valueOf(patientBaseInfoBean.getExternalInfo().getHeight()));
+                tv_weight.setText(String.valueOf(patientBaseInfoBean.getExternalInfo().getWeight()));
+            }
+        });
+
+    }
+
+    /**
+     * 根据Userid 查询患者更多信息 失败回调
+     *
+     * @param messageFail
+     */
+    @Override
+    public void getPatientBaseInfoFail(String messageFail) {
+        homeActivity.runOnUiThread(() -> {
+//            hideDialog();
+            ToastUtils.show("获取详情失败:" + messageFail);
         });
     }
 }

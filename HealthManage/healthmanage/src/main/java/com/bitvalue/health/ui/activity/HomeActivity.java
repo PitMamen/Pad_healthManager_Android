@@ -3,10 +3,12 @@ package com.bitvalue.health.ui.activity;
 
 import static com.bitvalue.health.util.Constants.EVENT_MES_TYPE_CLOUDCLINC;
 import static com.bitvalue.health.util.Constants.FRAGMENT_DETAIL;
+import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY;
+import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY_BYDOC;
 import static com.bitvalue.health.util.Constants.FRAGMENT_MORE_DATA;
-import static com.bitvalue.health.util.Constants.FRAGMENT_NEW_LYDISCHARGED_PATIENT;
 import static com.bitvalue.health.util.Constants.FRAGMENT_PLAN_LIST;
-import static com.bitvalue.health.util.Constants.LISTBEAN;
+import static com.bitvalue.health.util.Constants.TASKDETAIL;
+import static com.bitvalue.health.util.Constants.USER_ID;
 import static com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI.CHAT_TYPE_VIDEO;
 
 import android.os.Bundle;
@@ -23,36 +25,36 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bitvalue.health.Application;
-import com.bitvalue.health.api.eventbusbean.MainRefreshObj;
 import com.bitvalue.health.api.eventbusbean.MsgRemindObj;
 import com.bitvalue.health.api.eventbusbean.VideoRefreshObj;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
-import com.bitvalue.health.api.responsebean.PlanDetailResult;
 import com.bitvalue.health.api.responsebean.PlanListBean;
+import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.api.responsebean.TaskPlanDetailBean;
 import com.bitvalue.health.api.responsebean.message.AddVideoObject;
-import com.bitvalue.health.api.responsebean.message.GetMissionObj;
 import com.bitvalue.health.base.BaseActivity;
 import com.bitvalue.health.callback.OnTouchListener;
 import com.bitvalue.health.contract.homecontract.HomeContract;
 import com.bitvalue.health.presenter.homepersenter.HomePersenter;
 import com.bitvalue.health.ui.fragment.chat.ChatFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.ConsultingServiceFragment;
+import com.bitvalue.health.ui.fragment.docfriend.NeedDealWithFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddArticleFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddRemindFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddVideoFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.ArticleDetailFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.FollowUpPlanFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.InterestsUseApplyByDocFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.InterestsUseApplyFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.MoreDataFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.NewDischargedFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.PatientDetailFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.PatientReportFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.HealthHistoryPreFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.WriteHealthFragment;
-import com.bitvalue.health.ui.fragment.docfriend.DocFriendsFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.HealthAnalyseDisplayFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.HealthAnalyseFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.HealthMessageFragment;
@@ -71,8 +73,9 @@ import com.bitvalue.health.ui.fragment.setting.NewHealthPlanFragmentModify;
 import com.bitvalue.health.ui.fragment.setting.PersonalDataFragment;
 import com.bitvalue.health.ui.fragment.setting.SettingsFragment;
 import com.bitvalue.health.ui.fragment.workbench.HealthPlanTaskDetailFragment;
-import com.bitvalue.health.ui.fragment.workbench.NeedDealtWithFragment;
+import com.bitvalue.health.ui.fragment.workbench.VisitPlanFragment;
 import com.bitvalue.health.ui.fragment.workbench.SendMessageFragment;
+import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
@@ -190,8 +193,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     private SettingsFragment settingsFragment;
     private PatientReportFragment patientReportFragment;
     private ConsultingServiceFragment consultingServiceFragment;
-    private DocFriendsFragment docFriendsFragment;
-    private NeedDealtWithFragment workbenchFragment;
+    private NeedDealWithFragment needDealWithFragment;
+    private VisitPlanFragment workbenchFragment;
     private ScheduleFragment scheduleFragment;
 
 
@@ -218,8 +221,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             return;
         }
         frameLayout_full.setVisibility(View.GONE);
-//        EventBus.getDefault().post(new MainRefreshObj()); // 通知患者报道界面获取数据 请求接口
         initFragments(chat_index);  //默认首页工作台界面
+        layout_group.setVisibility(loginBean.getAccount().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示咨询模块
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig);
     }
 
@@ -250,11 +253,11 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         patientReportFragment = PatientReportFragment.getInstance(false);
         settingsFragment = SettingsFragment.getInstance(false);
         consultingServiceFragment = ConsultingServiceFragment.getInstance(false);
-        docFriendsFragment = DocFriendsFragment.getInstance(false);
-        workbenchFragment = NeedDealtWithFragment.getInstance(false);
+        needDealWithFragment = NeedDealWithFragment.getInstance(false);
+        workbenchFragment = VisitPlanFragment.getInstance(false);
         scheduleFragment = ScheduleFragment.getInstance(false);
 
-        fragmentArrays = new Fragment[]{patientReportFragment, settingsFragment, consultingServiceFragment, docFriendsFragment, workbenchFragment, scheduleFragment};
+        fragmentArrays = new Fragment[]{patientReportFragment, settingsFragment, consultingServiceFragment, needDealWithFragment, workbenchFragment, scheduleFragment};
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.layout_fragment, fragmentArrays[0]);
         transaction.add(R.id.layout_fragment, fragmentArrays[1]);
@@ -607,7 +610,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 NewLeaveBean.RowsDTO userInfo = (NewLeaveBean.RowsDTO) object;
                 SendMessageFragment sendMessageFragment = new SendMessageFragment();
                 Bundle bundle1 = new Bundle();
-                bundle1.putSerializable(Constants.USERINFO,userInfo);
+                bundle1.putSerializable(Constants.USERINFO, userInfo);
                 sendMessageFragment.setArguments(bundle1);
                 mapFragments.put(Constants.FRAGMENT_SEND_MESSAGE, sendMessageFragment);
                 break;
@@ -681,15 +684,23 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
             //患者详情界面
             case Constants.FRAGMENT_DETAIL:
-                NewLeaveBean.RowsDTO patientitem = (NewLeaveBean.RowsDTO) object;
+
                 PatientDetailFragment patientDetailFragment = new PatientDetailFragment();
                 Bundle bundle_detail = new Bundle();
-                bundle_detail.putSerializable(FRAGMENT_DETAIL, (Serializable) patientitem);
+                if (object instanceof Integer) {
+                    Log.e(TAG, "!!!!!!!!!!!!!!!! ");
+                    int userID = (int) object;
+                    bundle_detail.putInt(USER_ID, userID);
+                } else if (object instanceof NewLeaveBean.RowsDTO) {
+                    Log.e(TAG, "----------------- ");
+                    NewLeaveBean.RowsDTO patientitem = (NewLeaveBean.RowsDTO) object;
+                    bundle_detail.putSerializable(FRAGMENT_DETAIL, (Serializable) patientitem);
+                }
                 patientDetailFragment.setArguments(bundle_detail);
                 mapFragments.put(FRAGMENT_DETAIL, patientDetailFragment);
                 break;
 
-                //患者详情界面的更多数据界面
+            //患者详情界面的更多数据界面
             case FRAGMENT_MORE_DATA:
                 NewLeaveBean.RowsDTO patientitemmoredata = (NewLeaveBean.RowsDTO) object;
                 MoreDataFragment moredataFragment = new MoreDataFragment();
@@ -698,6 +709,27 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 moredataFragment.setArguments(bundle_detail_moredata);
                 mapFragments.put(FRAGMENT_MORE_DATA, moredataFragment);
                 break;
+
+            //权益使用申请界面(个案师)
+            case FRAGMENT_INTERESTSUSER_APPLY:
+                TaskDeatailBean interestuse = (TaskDeatailBean) object;
+                InterestsUseApplyFragment InterestsUseApplyFragment = new InterestsUseApplyFragment();
+                Bundle bundle_interestuse = new Bundle();
+                bundle_interestuse.putSerializable(TASKDETAIL, (Serializable) interestuse);
+                InterestsUseApplyFragment.setArguments(bundle_interestuse);
+                mapFragments.put(FRAGMENT_INTERESTSUSER_APPLY, InterestsUseApplyFragment);
+                break;
+
+            //权益使用申请界面(医师)
+            case FRAGMENT_INTERESTSUSER_APPLY_BYDOC:
+                TaskDeatailBean interestuse_ = (TaskDeatailBean) object;
+                InterestsUseApplyByDocFragment InterestsUseApplyFragment_bydoc = new InterestsUseApplyByDocFragment();
+                Bundle bundle_interestuse_bydoc = new Bundle();
+                bundle_interestuse_bydoc.putSerializable(TASKDETAIL, (Serializable) interestuse_);
+                InterestsUseApplyFragment_bydoc.setArguments(bundle_interestuse_bydoc);
+                mapFragments.put(FRAGMENT_INTERESTSUSER_APPLY_BYDOC, InterestsUseApplyFragment_bydoc);
+                break;
+
 
             //套餐详情界面
 //            case Constants.FRAGMENT_PLAN_TASK_DETAIL:
@@ -788,7 +820,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 break;
 
 
-
             //            随访计划
             case R.id.layout_workbench:
                 //这里不能让一直连续点 做个限制
@@ -800,8 +831,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 frameLayout_full.setVisibility(View.GONE);
                 afterTabSelect(4);
                 break;
-
-
 
 
             //个人设置按钮 点击事件
@@ -831,7 +860,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 tv_new_count_video.setText("0");
                 break;
 
-            //医生好友按钮点击事件
+            //待办按钮点击事件
             case R.id.layout_send:
 //                EventBus.getDefault().post(new VideoRefreshObj());
                 if (tabPosition != 3) {

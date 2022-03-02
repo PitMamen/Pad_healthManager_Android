@@ -14,7 +14,29 @@
         android:layout_alignParentBottom="true"
         android:background="@color/divider" />
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:layout_marginBottom="@dimen/qb_px_10">
+
+        <TextView
+            android:id="@+id/tv_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="@dimen/qb_px_10"
+            android:background="@drawable/shape_bg_blue_dark"
+            android:paddingHorizontal="@dimen/qb_px_30"
+            android:paddingVertical="@dimen/qb_px_5"
+            android:text="退出登录"
+            android:textColor="@color/white"
+            android:textSize="@dimen/qb_px_10" />
+    </RelativeLayout>
+
     <ScrollView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -344,25 +366,7 @@
 
 
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/qb_px_10"
-                android:layout_marginBottom="@dimen/qb_px_10">
 
-                <TextView
-                    android:id="@+id/tv_logout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginRight="@dimen/qb_px_10"
-                    android:background="@drawable/shape_bg_blue_dark"
-                    android:paddingHorizontal="@dimen/qb_px_30"
-                    android:paddingVertical="@dimen/qb_px_5"
-                    android:text="退出登录"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/qb_px_10" />
-            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

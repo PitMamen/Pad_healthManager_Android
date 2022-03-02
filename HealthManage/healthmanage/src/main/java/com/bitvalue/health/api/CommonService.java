@@ -2,12 +2,15 @@ package com.bitvalue.health.api;
 
 
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
+import com.bitvalue.health.api.requestbean.DocListBean;
+import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
 import com.bitvalue.health.api.requestbean.GetHistoryApi;
 import com.bitvalue.health.api.requestbean.LoginReqBean;
 import com.bitvalue.health.api.requestbean.PersonalDataBean;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.requestbean.ReportStatusBean;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
+import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
 import com.bitvalue.health.api.requestbean.SendUserRemind;
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
@@ -18,14 +21,18 @@ import com.bitvalue.health.api.responsebean.GoodListBean;
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
 import com.bitvalue.health.api.responsebean.InpatientBean;
 import com.bitvalue.health.api.responsebean.LoginResBean;
+import com.bitvalue.health.api.responsebean.MyRightBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
+import com.bitvalue.health.api.responsebean.PatientBaseInfoBean;
 import com.bitvalue.health.api.responsebean.PatientResultBean;
 import com.bitvalue.health.api.responsebean.PlanDetailResult;
 import com.bitvalue.health.api.responsebean.PlanListBean;
 import com.bitvalue.health.api.responsebean.PlanTaskDetail;
+import com.bitvalue.health.api.responsebean.QueryRightsRecordBean;
 import com.bitvalue.health.api.responsebean.SaveAnalyseApi;
 import com.bitvalue.health.api.responsebean.SaveCaseApi;
 import com.bitvalue.health.api.responsebean.SearchArticleResult;
+import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.api.responsebean.TaskPlanDetailBean;
 import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
@@ -149,8 +156,7 @@ public interface CommonService {
      * 按科室查询套餐接口
      */
     @GET("health-api/health/patient/queryGoodsList")
-    Observable<ApiResult<List<GoodListBean>>> queryGoodList(@Query("departmentId") int departmentId,@Query("goodsType") String goodType);
-
+    Observable<ApiResult<List<GoodListBean>>> queryGoodList(@Query("departmentId") int departmentId, @Query("goodsType") String goodType);
 
 
     /***
@@ -284,4 +290,63 @@ public interface CommonService {
     Observable<ApiResult<NewLeaveBean>> getAllNewLeaveHospitolPatients(@Body RequestNewLeaveBean leaveBean);
 
 
+    /***
+     * 权益使用记录
+     */
+//    @GET("health-api/patient/queryRightsUserRecord")
+//    Observable<ApiResult<QueryRightsRecordBean>> queryRightsUserRecord(@Query("pageNo") int pageNo, @Query("pageSize") int pageSize, @Query("rightsId") int rightId, @Query("userId") String userId);
+
+
+    /***
+     * 权益使用记录
+     */
+    @GET("health-api/patient/queryRightsUserRecord")
+    Observable<ApiResult<QueryRightsRecordBean>> queryRightsUserRecord(@Query("pageNo") int pageNo, @Query("pageSize") int pageSize, @Query("userId") String userId,@Query("rightsId") int rightsId);
+
+
+//    /**
+//     * 我的权益
+//     */
+//    @GET("health-api/patient/queryMyRights")
+//    Observable<ApiResult<List<MyRightBean>>> queryMyRights(@Query("goodsId") int goodsId, @Query("id") int id, @Query("userId") String userId );
+
+
+    /**
+     * 我的权益
+     */
+    @GET("health-api/patient/queryMyRights")
+    Observable<ApiResult<List<MyRightBean>>> queryMyRights(@Query("userId") String userId,@Query("id") String id);
+
+    /**
+     * 个案管理师 完成申请处理
+     */
+    @POST("health-api/patient/finishMidRequest")
+    Observable<ApiResult<FinshMidRequestBean>> finishMidRequest(@Body FinshMidRequestBean finshMidRequestBean);
+
+
+    /***
+     * 查询待办
+     */
+    @GET("health-api/health/patient/getUserTask")
+    Observable<ApiResult<List<TaskDeatailBean>>> getUserTask(@Query("execFlag") int execFlag, @Query("taskType") int taskType, @Query("userId") String docUserId);
+
+
+    /**
+     * 医师结束问诊 扣除权益接口
+     */
+    @POST("health-api/patient/saveRightsUseRecord")
+    Observable<ApiResult<SaveRightsUseBean>> saveRightsRecord(@Body SaveRightsUseBean saveRightsUseBean);
+
+
+    /**
+     * 根据科室ID查询 该科室下的所有医师
+     */
+    @GET("account-api/businessManagement/getDoctorList")
+    Observable<ApiResult<List<DocListBean>>> getDoctorList(@Query("departmentId") int  departmentId);
+
+    /**
+     *根据患者 ID  查询更多和基本信息
+     */
+     @GET("account-api/userInfo/getBaseInfo")
+     Observable<ApiResult<PatientBaseInfoBean>> getPatientBaseInfo(@Query("userId") int  userId);
 }

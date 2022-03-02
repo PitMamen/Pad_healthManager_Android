@@ -24,7 +24,6 @@ public class MyToDoListModel extends BaseModel implements MyToDoListContact.MyTo
                 if (!EmptyUtil.isEmpty(listApiResult)) {
                     if (listApiResult.getCode() == 0) {
                         NewLeaveBean newLeaveBeanList = listApiResult.getData();
-                        Log.e(TAG, "qryPatientList: " + newLeaveBeanList);
                         if (!EmptyUtil.isEmpty(listApiResult.getData().getRows())){
                             callback.onSuccess(listApiResult.getData().getRows(),1000);
                         }else {

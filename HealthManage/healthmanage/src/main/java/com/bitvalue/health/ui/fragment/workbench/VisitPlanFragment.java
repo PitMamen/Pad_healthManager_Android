@@ -4,7 +4,6 @@ import static com.bitvalue.health.util.DataUtil.isNumeric;
 
 import android.content.Context;
 import android.content.Intent;
-import android.icu.lang.UScript;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,22 +12,16 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
-import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.BaseFragment;
-import com.bitvalue.health.callback.OnItemClickCallback;
 import com.bitvalue.health.callback.PhoneFollowupCliclistener;
 import com.bitvalue.health.contract.mytodolistcontact.MyToDoListContact;
 import com.bitvalue.health.presenter.mytodolistpersenter.MyToDoListPersenter;
@@ -40,7 +33,6 @@ import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.health.util.layout.XLinearLayoutManager;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hjq.toast.ToastUtils;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -59,7 +51,7 @@ import butterknife.BindView;
  * <p>
  * 随访计划Fragment
  */
-public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> implements MyToDoListContact.MyToDoListView, PhoneFollowupCliclistener {
+public class VisitPlanFragment extends BaseFragment<MyToDoListPersenter> implements MyToDoListContact.MyToDoListView, PhoneFollowupCliclistener {
     @BindView(R.id.tv_title)
     TextView tv_title;
 
@@ -100,8 +92,8 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
 
 
     //初始化当前Fragment的实例
-    public static NeedDealtWithFragment getInstance(boolean is_need_toast) {
-        NeedDealtWithFragment workbenchFragment = new NeedDealtWithFragment();
+    public static VisitPlanFragment getInstance(boolean is_need_toast) {
+        VisitPlanFragment workbenchFragment = new VisitPlanFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("is_need_toast", is_need_toast);
         workbenchFragment.setArguments(bundle);
@@ -291,7 +283,7 @@ public class NeedDealtWithFragment extends BaseFragment<MyToDoListPersenter> imp
 
 
     private void requestData(String name) {
-        showLoading();
+//        showLoading();
         allocatedPatientRequest.userName = name;
         if (!EmptyUtil.isEmpty(name)) {
             allocatedPatientRequest.pageNo = searchPageNo;

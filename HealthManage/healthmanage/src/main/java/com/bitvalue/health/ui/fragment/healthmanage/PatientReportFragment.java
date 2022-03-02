@@ -79,8 +79,8 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
 
     @BindView(R.id.sp_bq)
     Spinner spinnew_inpatient;
-    @BindView(R.id.sp_text)
-    TextView sp_text;
+//    @BindView(R.id.sp_text)
+//    TextView sp_text;
 
     @BindView(R.id.et_search)
     EditText et_search;
@@ -179,7 +179,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
 
 
     /**
-     * 接收来住Homeactivity消息 请求接口 获取病区病种
+     * 接收来自随访分配界面 请求接口 刷新待分配和已分配列表
      *
      * @param mainRefreshObj
      */
@@ -205,7 +205,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
         LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, Application.instance());
         if (null != loginBean) {
             int departmentID = loginBean.getAccount().user.departmentId;
-            mPresenter.getInpartientList(String.valueOf(departmentID));
+            mPresenter.getInpartientList(String.valueOf(departmentID));//请求获取病区接口
         }
         initallocatedList();
         initUnregisterPatient();
@@ -248,6 +248,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
                 // TODO: 2021/12/8 加载下一页
+                Log.e(TAG, "onLoadMore111: " + pageNo + " currentPage: " + currentPage);
                 if (currentPage == pageNo) {
                     pageNo = 1;
                     Log.e(TAG, "无更多数据");
@@ -264,6 +265,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
             //下拉刷新
             @Override
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
+                Log.e(TAG, "onLoadMore222: " + pageNo);
                 if (pageNo > 1) {
                     pageNo--;
                 } else {
@@ -286,7 +288,8 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.e(TAG, "onItemSelected: " + position);
-                sp_text.setText(inpatientAreaList[position]);
+//                sp_text.setText(inpatientAreaList[position]);
+                spinnew_inpatient.setSelection(position);
             }
 
             @Override
@@ -414,6 +417,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
         if (!EmptyUtil.isEmpty(name)) {
             mPresenter.qryByNameAllocatedPatienList(allocatedPatientRequest);  //请求 待分配  已注册的患者
         } else {
+            Log.e(TAG, "请求页: " + allocatedPatientRequest.pageNo);
             mPresenter.qryAllocatedPatienList(allocatedPatientRequest);  //请求 待分配  已注册的患者
         }
     }
@@ -519,10 +523,16 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     @Override
     public void qryAllocatedPatienSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList) {
         homeActivity.runOnUiThread(() -> {
-            Log.e(TAG, "qryAllocatedPatienSuccess: "+infoDetailDTOList.size() );
-            default_view.setVisibility(infoDetailDTOList.size() == 0 ? View.VISIBLE : View.GONE);
-            if (infoDetailDTOList.size() == 0) {
+            if (pageNo > 1 && infoDetailDTOList.size() == 0) {
+                ToastUtils.show("无更多可分配的患者");
                 return;
+            }
+
+            if (infoDetailDTOList.size() == 0) {
+                default_view.setVisibility(View.VISIBLE);
+                return;
+            } else {
+                default_view.setVisibility(View.GONE);
             }
             rowsDTOList = infoDetailDTOList;
             allocatedPatientAdapter.updateList(rowsDTOList);

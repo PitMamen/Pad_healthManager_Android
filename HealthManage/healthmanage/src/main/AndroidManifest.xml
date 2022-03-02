@@ -78,7 +78,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/SplashTheme"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
 
 
         <activity

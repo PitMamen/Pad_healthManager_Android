@@ -41,6 +41,7 @@ import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.MPopupWindow;
 import com.bitvalue.health.util.customview.TypeGravity;
+import com.bitvalue.health.util.customview.UseEquityDialog;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.hjq.http.EasyHttp;
@@ -171,7 +172,6 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                 tv_keshi.setText(selectDepartmentName.length() >= 8 ? selectDepartmentName.substring(0, 7) : selectDepartmentName);
                 tv_zhuabing.setText("请选专病");
                 int departmentID = map.get(departmentList.get(position));
-                Log.e(TAG, "科室ID: " + departmentID);
                 getDiseaseList(departmentID);
                 getMyPlans(departmentID);
 
@@ -254,15 +254,20 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
             public void onSucceed(ApiResult<List<DepartmentResponeBean>> result) {
                 super.onSucceed(result);
                 if (!EmptyUtil.isEmpty(result)) {
-                    if (!EmptyUtil.isEmpty(result.getData()) && result.getData().size() > 0) {
-                        for (int i = 0; i < result.getData().size(); i++) {
-                            departmentList.add(result.getData().get(i).getDepartmentName());
-                            map.put(result.getData().get(i).getDepartmentName(), result.getData().get(i).getDepartmentId());
+                    if (result.getCode()==0){
+                        if (!EmptyUtil.isEmpty(result.getData()) && result.getData().size() > 0) {
+                            for (int i = 0; i < result.getData().size(); i++) {
+                                departmentList.add(result.getData().get(i).getDepartmentName());
+                                map.put(result.getData().get(i).getDepartmentName(), result.getData().get(i).getDepartmentId());
+                            }
+                            spinnerAdapter = new ArrayAdapter<>(homeActivity, android.R.layout.simple_spinner_item, departmentList);
+                            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinner_keshi.setAdapter(spinnerAdapter);
                         }
-                        spinnerAdapter = new ArrayAdapter<>(homeActivity, android.R.layout.simple_spinner_item, departmentList);
-                        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner_keshi.setAdapter(spinnerAdapter);
+                    }else {
+                         ToastUtils.show("获取科室列表失败:"+result.getMessage());
                     }
+
                 }
             }
 
@@ -284,7 +289,6 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
             @Override
             public void onSucceed(ApiResult<List<DiseaseListBean>> result) {
                 super.onSucceed(result);
-                Log.e(TAG, "onSucceed: " + result.getData());
                 if (!EmptyUtil.isEmpty(result)) {
                     if (!EmptyUtil.isEmpty(result.getData()) && result.getData().size() > 0) {
                         zhuanbinglist = new String[result.getData().size()];
@@ -466,7 +470,6 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     @Override
     public void onItemClick(Object object, boolean isCheck) {
         selectPlanBean = (GoodListBean) object;
-        Log.e(TAG, "选中的planName: " + selectPlanBean.getGoodsName());
         if (selectPlanBean != null) {
             if (rl_select_planl.getVisibility() == View.GONE) {
                 rl_select_planl.setVisibility(View.VISIBLE);

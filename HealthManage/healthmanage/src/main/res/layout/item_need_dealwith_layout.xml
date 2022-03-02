@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_plans"
+    android:elevation="3dp"
+    android:translationZ="3dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/divider" />
+
+    <RelativeLayout
+        android:id="@+id/layout_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/qb_px_10"
+        android:paddingVertical="@dimen/qb_px_8">
+
+        <!--    http://img.duoziwang.com/2021/03/1623076080632524.jpg -->
+        <ImageView
+            android:id="@+id/img_head"
+            android:layout_width="@dimen/qb_px_33"
+            android:layout_height="@dimen/qb_px_33"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_head_img"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_boll"
+            android:layout_width="@dimen/qb_px_9"
+            android:layout_height="@dimen/qb_px_9"
+            android:layout_marginLeft="@dimen/qb_px_21"
+            android:src="@drawable/shape_boll_red"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_40"
+            android:layout_marginTop="@dimen/qb_px_3"
+            android:text="王秋"
+            android:textColor="@color/text_black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/img_head"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/qb_px_7"
+            android:layout_marginTop="@dimen/qb_px_7"
+            android:text="2021-11-24"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@id/img_head"
+            app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+        <TextView
+            android:id="@+id/tv_patient_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_8"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_toRightOf="@+id/tv_name"
+            android:text="男"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="@dimen/qb_px_8" />
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="@dimen/qb_px_1"
+            android:layout_height="@dimen/qb_px_7"
+            android:layout_marginLeft="@dimen/qb_px_5"
+            android:layout_marginTop="@dimen/qb_px_7"
+            android:layout_toRightOf="@+id/tv_patient_sex"
+            android:background="@color/text_desc_dark"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_patient_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/qb_px_5"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_toRightOf="@+id/view_line"
+            android:text="30岁"
+            android:textColor="@color/text_desc_dark"
+            android:textSize="@dimen/qb_px_8" />
+
+
+        <TextView
+            android:id="@+id/tv_equity_use"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/qb_px_15"
+            android:layout_below="@id/tv_name"
+            android:layout_marginLeft="@dimen/qb_px_40"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:background="@drawable/shape_video_solid"
+            android:gravity="center"
+            android:paddingLeft="@dimen/qb_px_8"
+            android:paddingRight="@dimen/qb_px_8"
+            android:text="权益使用申请"
+            android:textColor="@color/home_blue"
+            android:textSize="12sp"></TextView>
+
+
+        <TextView
+            android:id="@+id/tv_video_visit"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/qb_px_15"
+            android:layout_below="@id/tv_name"
+            android:layout_marginLeft="@dimen/qb_px_10"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_toRightOf="@+id/tv_equity_use"
+            android:background="@drawable/shape_video_visit"
+            android:gravity="center"
+            android:paddingLeft="@dimen/qb_px_8"
+            android:paddingRight="@dimen/qb_px_8"
+            android:text="视频问诊"
+            android:textColor="@color/text_qingse"
+            android:textSize="12sp"></TextView>
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

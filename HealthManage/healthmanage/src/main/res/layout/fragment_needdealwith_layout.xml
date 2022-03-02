@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/white"
+    >
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <RelativeLayout
+            android:id="@+id/rl_needdeal"
+            android:layout_width="240px"
+            android:layout_height="78px"
+            android:layout_marginStart="@dimen/qb_px_10"
+            android:layout_marginTop="@dimen/qb_px_11"
+            android:background="@drawable/needdealwith_select">
+
+
+            <TextView
+                android:id="@+id/tv_need_deal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="待办"
+                android:textColor="@color/white"
+                android:textSize="@dimen/qb_px_10"></TextView>
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_already_dealwith"
+            android:layout_width="240px"
+            android:layout_height="78px"
+            android:layout_marginStart="@dimen/qb_px_5"
+            android:layout_marginTop="@dimen/qb_px_11"
+            android:layout_toRightOf="@+id/rl_needdeal"
+            android:background="@drawable/shape_needdealwith_unselect">
+
+
+            <TextView
+                android:id="@+id/tv_already_deal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="已办"
+                android:textColor="@color/black"
+                android:textSize="@dimen/qb_px_10"></TextView>
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+    <View
+        android:background="#E6E6E6"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"></View>
+
+
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/rl_allcontent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+
+
+            <LinearLayout
+                android:id="@+id/ll_search"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/qb_px_25"
+                android:layout_below="@+id/rl_title"
+                android:layout_marginStart="@dimen/qb_px_13"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:layout_marginEnd="@dimen/qb_px_20"
+                android:background="@drawable/shape_item_select_patie"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:id="@+id/im_search_patient"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/qb_px_10"
+                    android:src="@mipmap/icon_sousu"></ImageView>
+
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:hint="搜索患者姓名"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:paddingHorizontal="@dimen/qb_px_6"
+                    android:paddingVertical="@dimen/qb_px_6"
+                    android:textColor="@color/text_main"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+    <View
+        android:visibility="gone"
+        android:id="@+id/ll_view"
+        android:background="#E6E6E6"
+        android:layout_marginTop="@dimen/qb_px_1"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"></View>
+
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/rl_default_view"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_default"
+            android:background="@mipmap/no_data"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></ImageView>
+
+        <TextView
+            android:textSize="@dimen/qb_px_12"
+            android:textColor="@color/bg_gray_black"
+            android:layout_marginTop="@dimen/qb_px_8"
+            android:text="暂无数据"
+            android:layout_below="@+id/iv_default"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+
+    </RelativeLayout>
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_needdeal_patient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!--    待办患者-->
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/rl_status_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ll_view"
+            app:srlEnablePreviewInEditMode="false">
+
+            <com.bitvalue.health.util.customview.WrapRecyclerView
+                android:id="@+id/list_newly_discharged_patient"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
+        <!--    搜索出的待办患者-->
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/layout_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ll_view"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:visibility="gone"
+            app:srlEnablePreviewInEditMode="false">
+
+            <com.bitvalue.health.util.customview.WrapRecyclerView
+                android:id="@+id/search_allpatient"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
+
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_already_deal"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <!--    已办-->
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/rl_unregister_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ll_view"
+            app:srlEnablePreviewInEditMode="false">
+
+            <com.bitvalue.health.util.customview.WrapRecyclerView
+                android:id="@+id/list_unregister"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
+        <!--    搜索出的已办患者-->
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/layout_search_unregister"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ll_view"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:visibility="gone"
+            app:srlEnablePreviewInEditMode="false">
+
+            <com.bitvalue.health.util.customview.WrapRecyclerView
+                android:id="@+id/unregister_search_allpatient"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" />
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>

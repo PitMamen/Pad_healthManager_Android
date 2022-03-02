@@ -236,7 +236,6 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
     @Override
     public void qryMedicalPatientsSuccess(List<NewLeaveBean.RowsDTO> itinfoDetailDTOList) {
         getActivity().runOnUiThread(() -> {
-            Log.e(TAG, "更新UI-----");
             hideDialog();
             tempPatientList = itinfoDetailDTOList;
             patientList = tempPatientList;
@@ -254,7 +253,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
      */
     @Override
     public void qryMedicalPatientsFail(String failMessage) {
-
+          getActivity().runOnUiThread(() -> hideDialog());
     }
 
 

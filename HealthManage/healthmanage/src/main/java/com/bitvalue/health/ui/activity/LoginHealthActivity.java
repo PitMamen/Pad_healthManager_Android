@@ -118,8 +118,7 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
     //用户登录成功之后的回调
     @Override
     public void loginSuccess(Object object) {
-
-        hideDialog();
+    runOnUiThread(() -> hideDialog());
         LoginResBean resBean = (LoginResBean) object;
         EasyConfig.getInstance().addHeader("Authorization", resBean.getToken()); //这里也要给EasyHttp添加Token，其他地方有用到EasyHttp请求
         SharedPreManager.putObject(Constants.KYE_USER_BEAN, resBean);
@@ -127,14 +126,16 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
         SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, Application.instance());
         startActivity(new Intent(LoginHealthActivity.this, HomeActivity.class));
         finish();
-        Log.e(TAG, "loginSuccess: " + resBean.getJwt() + " dd:" + resBean.getAccount().user.toString());
 
     }
 
     //用户登录失败之后的回调
     @Override
     public void loginFail(String failMessage) {
-        showToast(failMessage);
-        hideDialog();
+        runOnUiThread(() -> {
+            showToast(failMessage);
+            hideDialog();
+        });
+
     }
 }

@@ -116,11 +116,14 @@
     <color name="main_blue_">#1772E9</color>
     <color name="home_blue">#0088F4</color>
     <color name="home_blue_dark">#006DC3</color>
+    <color name="home_blue_video">#D9EEFF</color>
     <color name="main_blue_little">#398CCC</color>
     <color name="main_blue_li">#EBF3FF</color>
     <color name="text_main">#333333</color>
     <color name="green_c7">#26CBC7</color>
     <color name="text_black">#1A1A1A</color>
+    <color name="text_qingse">#37940B</color>
+    <color name="text_video_bg">#E9F8E2</color>
     <color name="text_gray">#666666</color>
     <color name="bg_gray_table">#F2F2F2</color>
     <color name="text_desc">#CCCCCC</color>

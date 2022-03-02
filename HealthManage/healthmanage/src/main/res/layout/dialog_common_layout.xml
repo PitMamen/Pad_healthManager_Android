@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_white_bg_"
+    >
+
+
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:text="权益申请处理"
+        android:textSize="15sp"
+        android:layout_marginTop="@dimen/qb_px_12"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/text_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TextView>
+
+    <View
+        android:id="@+id/ll_view"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="@dimen/qb_px_8"
+        android:layout_below="@+id/tv_dialog_title"
+        android:background="#E6E6E6"></View>
+
+
+    <LinearLayout
+        android:layout_below="@+id/ll_view"
+        android:layout_marginTop="@dimen/qb_px_4"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="权益类型: "
+                android:textSize="14sp"
+                android:textColor="@color/black_666666"
+                android:layout_marginTop="@dimen/qb_px_8"
+                android:layout_marginStart="@dimen/qb_px_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+
+
+            <TextView
+                android:id="@+id/tv_visit_type"
+                android:text="视频问诊"
+                android:textSize="14sp"
+                android:textColor="@color/black_666666"
+                android:layout_marginTop="@dimen/qb_px_8"
+                android:layout_marginStart="@dimen/qb_px_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="就诊人: "
+                android:textSize="14sp"
+                android:textColor="@color/black_666666"
+                android:layout_marginTop="@dimen/qb_px_8"
+                android:layout_marginStart="@dimen/qb_px_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+
+
+            <TextView
+                android:id="@+id/tv_patientname"
+                android:text="李三"
+                android:textSize="14sp"
+                android:textColor="@color/black_666666"
+                android:layout_marginTop="@dimen/qb_px_8"
+                android:layout_marginStart="@dimen/qb_px_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="就诊科室: "
+                android:textSize="14sp"
+                android:textColor="@color/black_666666"
+                android:layout_marginTop="@dimen/qb_px_8"
+                android:layout_marginStart="@dimen/qb_px_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+
+
+            <TextView
+                android:id="@+id/tv_visit_depatment"
+                android:text="骨科"
+                android:textSize="14sp"
+                android:textColor="@color/black_666666"
+                android:layout_marginTop="@dimen/qb_px_8"
+                android:layout_marginStart="@dimen/qb_px_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="就诊医生: "
+                android:textSize="14sp"
+                android:textColor="@color/black_666666"
+                android:layout_marginTop="@dimen/qb_px_8"
+                android:layout_marginStart="@dimen/qb_px_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+
+
+
+            <LinearLayout
+                android:id="@+id/ll_sp"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/qb_px_25"
+                android:background="@drawable/shape_item_select_patie"
+                android:orientation="horizontal">
+
+
+                <Spinner
+                    android:tooltipText="sss"
+                    android:id="@+id/sp_doclist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:spinnerMode="dropdown"></Spinner>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/qb_px_3"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="设置开始沟通时间: "
+                android:textSize="14sp"
+                android:textColor="@color/black_666666"
+                android:layout_marginTop="@dimen/qb_px_8"
+                android:layout_marginStart="@dimen/qb_px_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+            <LinearLayout
+                android:id="@+id/ll_selecttime"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/qb_px_25"
+                android:background="@drawable/shape_item_select_patie"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_select_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingHorizontal="@dimen/qb_px_2"
+                    android:text="选择时间"
+                    android:textSize="12sp"
+                    android:textColor="@color/black">
+
+                </TextView>
+
+                <ImageView
+                    android:id="@+id/sp_time_select"
+                    android:src="@mipmap/time_"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:spinnerMode="dropdown"></ImageView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/qb_px_3"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="持续时间: "
+                android:textSize="14sp"
+                android:textColor="@color/black_666666"
+                android:layout_marginTop="@dimen/qb_px_8"
+                android:layout_marginStart="@dimen/qb_px_14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/qb_px_25"
+                android:background="@drawable/shape_item_select_patie"
+                android:orientation="horizontal">
+
+
+                <Spinner
+                    android:id="@+id/sp_continuedtime_select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:spinnerMode="dropdown"></Spinner>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+            android:gravity="center_horizontal|center_vertical"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/qb_px_50">
+
+
+
+            <RelativeLayout
+                android:id="@+id/rl_confrm"
+                android:layout_width="@dimen/qb_px_60"
+                android:layout_height="37dp"
+                android:layout_below="@+id/list_technological_process"
+                android:layout_marginStart="@dimen/qb_px_5"
+                android:layout_marginEnd="@dimen/qb_px_10"
+                android:background="@drawable/shape_comfirm_sele">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="确认"
+                    android:textColor="@color/white"
+                    android:textSize="15sp">
+
+                </TextView>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:id="@+id/rl_cancel"
+                android:layout_width="@dimen/qb_px_60"
+                android:layout_height="37dp"
+                android:layout_below="@+id/list_technological_process"
+                android:layout_marginStart="@dimen/qb_px_5"
+                android:layout_marginEnd="@dimen/qb_px_10"
+                android:background="@drawable/shape_cancel_">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="取消"
+                    android:textColor="#666666"
+                    android:textSize="15sp">
+
+                </TextView>
+
+            </RelativeLayout>
+
+
+
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+
+</RelativeLayout>

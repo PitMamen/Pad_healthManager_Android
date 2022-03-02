@@ -22,6 +22,7 @@ public class TimeUtils {
     public static final SimpleDateFormat YY_MM_DD_FORMAT_4 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static final SimpleDateFormat YY_MM_DD_FORMAT_5 = new SimpleDateFormat("yyyy");
     public static final SimpleDateFormat YY_MM_DD_FORMAT_7 = new SimpleDateFormat("MM-dd HH:mm");
+    public static final SimpleDateFormat YY_MM_DD_FORMAT_8 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     @SuppressLint("NewApi")
 //    public static final SimpleDateFormat YY_MM_DD_FORMAT_5 = new SimpleDateFormat("YYYYMMddhhmmss");
     public static final SimpleDateFormat YY_MM_DD_FORMAT_6 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -66,6 +67,15 @@ public class TimeUtils {
         return getTime(timeInMillis, YY_MM_DD_FORMAT_2);
     }
 
+    public static String getTime_(long timeInMillis_) {
+        return getTime(timeInMillis_, YY_MM_DD_FORMAT_3);
+    }
+
+    public static String getTime_tosecond(long timeInMillis_) {
+        return getTime(timeInMillis_, YY_MM_DD_FORMAT_4);
+    }
+
+
     /**
      * get current time in milliseconds
      *
@@ -78,6 +88,10 @@ public class TimeUtils {
 
     public static String getCurrenTime() {
         return YY_MM_DD_FORMAT_5.format(new Date());
+    }
+
+    public static String getCurrenTime_Second() {
+        return YY_MM_DD_FORMAT_8.format(new Date());
     }
 
     public static String getCurrenTimeYMDHMS() {

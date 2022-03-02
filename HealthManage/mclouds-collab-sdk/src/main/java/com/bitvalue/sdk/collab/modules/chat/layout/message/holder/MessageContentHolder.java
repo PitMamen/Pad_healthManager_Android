@@ -174,13 +174,13 @@ public abstract class MessageContentHolder extends MessageEmptyHolder {
             leftUserIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onItemLongClickListener.onUserIconClick(view, position, msg);
+                    onItemLongClickListener.onUserIconClick(view, position, msg,true);
                 }
             });
             rightUserIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onItemLongClickListener.onUserIconClick(view, position, msg);
+                    onItemLongClickListener.onUserIconClick(view, position, msg,false);
                 }
             });
         }

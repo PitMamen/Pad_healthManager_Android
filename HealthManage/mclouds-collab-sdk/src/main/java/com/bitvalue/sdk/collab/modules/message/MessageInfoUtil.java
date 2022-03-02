@@ -498,7 +498,6 @@ public class MessageInfoUtil {
             for (int i = 0; i < modifyList.size(); i++) {
                 V2TIMGroupChangeInfo modifyInfo = modifyList.get(i);
                 int modifyType = modifyInfo.getType();
-                Log.e(TAG, "修改类型---: "+modifyType );
                 if (modifyType == V2TIMGroupChangeInfo.V2TIM_GROUP_INFO_CHANGE_TYPE_NAME) {
                     msgInfo.setMsgType(MessageInfo.MSG_TYPE_GROUP_MODIFY_NAME);
                     message = message + context.getString(R.string.modify_group_name_is) + "\"" + modifyInfo.getValue() + "\"";

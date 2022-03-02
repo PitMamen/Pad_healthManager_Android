@@ -25,6 +25,7 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
     private ImageView mLeftIcon;
     private ImageView mRightIcon;
     private RelativeLayout mTitleLayout;
+    private TextView tv_endVisit;
 
 
     public TitleBarLayout(Context context) {
@@ -45,6 +46,7 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
     private void init() {
         inflate(getContext(), R.layout.title_bar_layout, this);
         mTitleLayout = findViewById(R.id.page_title_layout);
+        tv_endVisit = findViewById(R.id.tv_end_visit);
         mLeftGroup = findViewById(R.id.page_title_left_group);
         mRightGroup = findViewById(R.id.page_title_right_group);
         mLeftTitle = findViewById(R.id.page_title_left_text);
@@ -126,5 +128,11 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
     @Override
     public TextView getRightTitle() {
         return mRightTitle;
+    }
+
+
+    public TextView getEndVisitText() {
+
+        return tv_endVisit;
     }
 }

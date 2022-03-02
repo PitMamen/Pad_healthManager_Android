@@ -84,7 +84,7 @@ public class PersonalDataFragment extends BaseFragment<PersonalDataPersenter> im
 
     @Override
     public void initData() {
-        mPresenter.getPersonalData();
+//        mPresenter.getPersonalData();
     }
 
     @Override

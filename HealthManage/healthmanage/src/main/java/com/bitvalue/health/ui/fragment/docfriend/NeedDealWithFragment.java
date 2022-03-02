@@ -1,0 +1,405 @@
+package com.bitvalue.health.ui.fragment.docfriend;
+
+import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY;
+import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY_BYDOC;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.bitvalue.health.api.eventbusbean.MainRefreshObj;
+import com.bitvalue.health.api.eventbusbean.NotifyactionObj;
+import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
+import com.bitvalue.health.api.responsebean.LoginBean;
+import com.bitvalue.health.api.responsebean.TaskDeatailBean;
+import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
+import com.bitvalue.health.base.BaseFragment;
+import com.bitvalue.health.callback.OnRightClickCallBack;
+import com.bitvalue.health.contract.doctorfriendscontract.NeedDealWithContract;
+import com.bitvalue.health.presenter.docfriendpersenter.DocFrienPersenter;
+import com.bitvalue.health.ui.activity.HomeActivity;
+import com.bitvalue.health.ui.adapter.AlreadyDealithAdapter;
+import com.bitvalue.health.ui.adapter.NeedDealithQuickAdapter;
+import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.DensityUtil;
+import com.bitvalue.health.util.MUtils;
+import com.bitvalue.health.util.SharedPreManager;
+import com.bitvalue.health.util.chatUtil.CustomVideoCallMessageController;
+import com.bitvalue.health.util.customview.WrapRecyclerView;
+import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.helper.CustomVideoCallMessage;
+import com.hjq.toast.ToastUtils;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+
+/**
+ * @author created by bitvalue
+ * @data : 10/27
+ * <p>
+ * 待办界面
+ */
+public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implements NeedDealWithContract.NeedDealWithView, OnRightClickCallBack {
+
+
+    @BindView(R.id.rl_needdeal)
+    RelativeLayout rl_needdealwith;
+
+    @BindView(R.id.rl_already_dealwith)
+    RelativeLayout rl_already_deal;
+
+    @BindView(R.id.tv_need_deal)
+    TextView tv_needdeal_with;  //待办
+
+    @BindView(R.id.tv_already_deal)
+    TextView tv_already_deal;  //已办
+
+    @BindView(R.id.rl_default_view)
+    RelativeLayout rl_default_layout;
+
+
+    @BindView(R.id.rl_status_refresh)
+    SmartRefreshLayout smartall_RefreshLayout; //所有的上下拉刷新
+
+    @BindView(R.id.list_newly_discharged_patient)
+    WrapRecyclerView list_allneeddealwith;  //所有的待办列表
+
+
+    @BindView(R.id.layout_search_result)
+    SmartRefreshLayout smartsearch_RefreshLayout; //搜索出来的上下拉刷新
+
+    @BindView(R.id.search_allpatient)
+    WrapRecyclerView list_search_needdealwith;  //搜索出来的待办列表
+
+
+    /**
+     * 已办
+     */
+    @BindView(R.id.rl_unregister_refresh)
+    SmartRefreshLayout already_RefreshLayout; //所有的上下拉刷新
+
+    @BindView(R.id.list_unregister)
+    WrapRecyclerView list_alreadyPatient;
+
+    @BindView(R.id.layout_search_unregister)
+    SmartRefreshLayout search_already_RefreshLayout;
+    @BindView(R.id.unregister_search_allpatient)
+    WrapRecyclerView search_alreadyPatient;
+
+    @BindView(R.id.ll_needdeal_patient)
+    LinearLayout ll_needDealWithlayoout;
+    @BindView(R.id.ll_already_deal)
+    LinearLayout ll_already_layout;
+
+
+    private HomeActivity homeActivity;
+
+    private List<TaskDeatailBean> NeedDealWithList = new ArrayList<>();
+    private List<TaskDeatailBean> AlradDealWithList = new ArrayList<>();
+    private NeedDealithQuickAdapter needDealWithQuickAdapter;
+    private AlreadyDealithAdapter AlreadyDealithAdapter;
+    private LoginBean loginBean;
+    private boolean isNeedbuttonClick = true;
+
+    @Override
+    protected DocFrienPersenter createPresenter() {
+        return new DocFrienPersenter();
+    }
+
+    @Override
+    protected int provideContentViewId() {
+        return R.layout.fragment_needdealwith_layout;
+    }
+
+    //初始化当前Fragment的实例
+    public static NeedDealWithFragment getInstance(boolean is_need_toast) {
+        NeedDealWithFragment contactsFragment = new NeedDealWithFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("is_need_toast", is_need_toast);
+        contactsFragment.setArguments(bundle);
+        return contactsFragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        homeActivity = (HomeActivity) context;
+    }
+
+    //初始化控件 和 Adapter
+    @Override
+    public void initView(View rootView) {
+        super.initView(rootView);
+        initListView();
+        EventBus.getDefault().register(this);
+        loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
+
+    }
+
+
+    //获取数据
+    @Override
+    public void initData() {
+        super.initData();
+    }
+
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            getNeedDealWithData();
+            getAlradydata();
+        }
+
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    private void getNeedDealWithData() {
+        mPresenter.getMyTaskDetail(0, 9, String.valueOf(loginBean.getUser().user.userId));
+    }
+
+
+    private void getAlradydata() {
+        mPresenter.getMyAlreadyDealTaskDetail(1, 9, String.valueOf(loginBean.getUser().user.userId));
+    }
+
+
+    @OnClick({R.id.rl_needdeal, R.id.rl_already_dealwith})
+    public void OnClick(View view) {
+        switch (view.getId()) {
+            //待办
+            case R.id.rl_needdeal:
+                isNeedbuttonClick = true;
+                tv_needdeal_with.setTextColor(homeActivity.getColor(R.color.white));
+                rl_needdealwith.setBackground(homeActivity.getDrawable(R.drawable.needdealwith_select));
+
+                tv_already_deal.setTextColor(homeActivity.getColor(R.color.black));
+                rl_already_deal.setBackground(homeActivity.getDrawable(R.drawable.shape_needdealwith_unselect));
+                ll_already_layout.setVisibility(View.GONE);
+                ll_needDealWithlayoout.setVisibility(View.VISIBLE);
+
+                if (needDealWithQuickAdapter != null) {
+                    rl_default_layout.setVisibility(NeedDealWithList != null && NeedDealWithList.size() > 0 ? View.GONE : View.VISIBLE);
+                    if (NeedDealWithList != null) {
+                        needDealWithQuickAdapter.setNewData(NeedDealWithList);
+                    }
+                }
+                break;
+
+            //已办
+            case R.id.rl_already_dealwith:
+                isNeedbuttonClick = false;
+                tv_already_deal.setTextColor(homeActivity.getColor(R.color.white));
+                rl_already_deal.setBackground(homeActivity.getDrawable(R.drawable.needdealwith_select));
+
+                tv_needdeal_with.setTextColor(homeActivity.getColor(R.color.black));
+                rl_needdealwith.setBackground(homeActivity.getDrawable(R.drawable.shape_needdealwith_unselect));
+
+                ll_already_layout.setVisibility(View.VISIBLE);
+                ll_needDealWithlayoout.setVisibility(View.GONE);
+
+                if (AlreadyDealithAdapter != null) {
+                    rl_default_layout.setVisibility(AlradDealWithList != null && AlradDealWithList.size() > 0 ? View.GONE : View.VISIBLE);
+                    if (AlradDealWithList != null) {
+                        AlreadyDealithAdapter.setNewData(AlradDealWithList);
+                    }
+                }
+                break;
+        }
+    }
+
+
+    //初始化listView 及设置 Adapter
+    private void initListView() {
+        list_allneeddealwith.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getActivity())));
+        list_allneeddealwith.addItemDecoration(MUtils.spaceDivider(
+                DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
+        needDealWithQuickAdapter = new NeedDealithQuickAdapter(R.layout.item_need_dealwith_layout, NeedDealWithList, this);
+        needDealWithQuickAdapter.setOnItemClickListener((adapter, view, position) -> {
+            needDealWithQuickAdapter.setPosition(position);
+        });
+        list_allneeddealwith.setAdapter(needDealWithQuickAdapter);
+
+
+        list_alreadyPatient.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getActivity())));
+        list_alreadyPatient.addItemDecoration(MUtils.spaceDivider(
+                DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
+        AlreadyDealithAdapter = new AlreadyDealithAdapter(R.layout.item_need_dealwith_layout, AlradDealWithList, this);
+        AlreadyDealithAdapter.setOnItemClickListener((adapter, view, position) -> {
+
+
+        });
+
+        list_alreadyPatient.setAdapter(AlreadyDealithAdapter);
+    }
+
+
+    private void hideShowList() {
+        if (isNeedbuttonClick) {
+            ll_needDealWithlayoout.setVisibility(View.VISIBLE);
+            ll_already_layout.setVisibility(View.GONE);
+        } else {
+            ll_needDealWithlayoout.setVisibility(View.GONE);
+            ll_already_layout.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    /**
+     * 查询我的任务 成功回调
+     *
+     * @param taskDeatailBeanList
+     */
+    @Override
+    public void getMyTaskDetailSuccess(List<TaskDeatailBean> taskDeatailBeanList) {
+        homeActivity.runOnUiThread(() -> {
+            hideShowList();
+            NeedDealWithList = taskDeatailBeanList;
+            needDealWithQuickAdapter.setNewData(NeedDealWithList);
+            if (NeedDealWithList != null && NeedDealWithList.size() > 0) {
+                rl_default_layout.setVisibility(View.GONE);
+            } else {
+                rl_default_layout.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+
+    /**
+     * 查询我的任务 失败回调
+     *
+     * @param failMessage
+     */
+    @Override
+    public void getMyTaskDetailFail(String failMessage) {
+        homeActivity.runOnUiThread(() -> ToastUtils.show(failMessage));
+    }
+
+
+    /**
+     * 查询已办 任务 成功回调
+     *
+     * @param taskDeatailBeanList
+     */
+    @Override
+    public void getMyAlreadyDealTaskDetailSuccess(List<TaskDeatailBean> taskDeatailBeanList) {
+        homeActivity.runOnUiThread(() -> {
+            hideShowList();
+            AlradDealWithList = taskDeatailBeanList;
+            AlreadyDealithAdapter.setNewData(AlradDealWithList);
+            if (AlradDealWithList != null && AlradDealWithList.size() > 0) {
+                rl_default_layout.setVisibility(View.GONE);
+            } else {
+                rl_default_layout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    /**
+     * 查询已办 任务 失败回调
+     *
+     * @param failMessage
+     */
+    @Override
+    public void getMyAlreadyDealTaskDetailFail(String failMessage) {
+        homeActivity.runOnUiThread(() -> ToastUtils.show(failMessage));
+    }
+
+
+    /**
+     * 点击权益申请 跳转至 权益申请界面
+     *
+     * @param taskDeatailBean
+     */
+    @Override
+    public void OnItemClick(TaskDeatailBean taskDeatailBean) {
+        // TODO: 2022/2/22 这里要区分 是个案管理师登录的还是医生登录的
+        if (loginBean != null) {
+            homeActivity.switchSecondFragment(loginBean.getAccount().roleName.equals("casemanager") ? FRAGMENT_INTERESTSUSER_APPLY : FRAGMENT_INTERESTSUSER_APPLY_BYDOC, taskDeatailBean);  //个案师
+        }
+    }
+
+
+    /**
+     * 点击视频问诊 进入视频聊天界面
+     *
+     * @param taskDeatailBean
+     */
+    @Override
+    public void OnIemVideoVisitClick(TaskDeatailBean taskDeatailBean) {
+//        CustomVideoCallMessage message = new CustomVideoCallMessage();
+//        message.title = getString(R.string.video_visit);
+//        long currentTimeMillis = System.currentTimeMillis();
+//        String rooId = currentTimeMillis + "";
+////        message.msgDetailId = rooId.substring(rooId.length() - 7, rooId.length());
+//        message.msgDetailId = taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "";
+//        message.content = getString(R.string.click_to_access_the_video);
+//        message.timeStamp = currentTimeMillis;
+//        //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
+//        message.setType("CustomVideoCallMessage");
+//        message.userId = new ArrayList<>();
+//        message.userId.add(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));//传入userid
+//        message.setDescription(getString(R.string.video_visit));
+//        message.id = String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId());//这里id设置为视频看诊的预约id
+//        CustomVideoCallMessageController.getPatientAppointmentById(message, true);
+    }
+
+    @Override
+    public void OnItemClick(int position) {
+        if (needDealWithQuickAdapter != null) {
+            needDealWithQuickAdapter.setPosition(position);
+            needDealWithQuickAdapter.notifyDataSetChanged();
+        }
+    }
+
+
+    /**
+     * 更新待办数据 重新请求接口
+     *
+     * @param notifyactionObj
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateNeedDelaWith(NotifyactionObj notifyactionObj) {
+        Log.e(TAG, "更新待办处理----");
+        getNeedDealWithData();
+    }
+
+
+    /**
+     * 更新已办数据 重新请求接口
+     *
+     * @param notifyactionObj
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateAlradyData(NotifycationAlardyObj notifyactionObj) {
+        getNeedDealWithData();
+//        getAlradydata();
+    }
+
+
+}

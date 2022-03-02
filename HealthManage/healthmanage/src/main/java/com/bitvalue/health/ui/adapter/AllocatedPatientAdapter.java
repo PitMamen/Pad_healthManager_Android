@@ -186,13 +186,14 @@ public class AllocatedPatientAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         public void bindData(NewLeaveBean.RowsDTO bean) {
-            Log.e(TAG, "患者详情: "+bean.toString() );
             tv_name.setText(bean.getUserName());
             tv_sex.setText(bean.getSex());
             tv_disa.setText(bean.getCyzd());
             tv_department.setText(bean.getKsmc());
             tv_zhuanbing.setText(bean.getBqmc());
             tv_bingqu.setText(bean.getBqmc());
+            time.setText(bean.getCysj());   //出院时间
+//            time.setText(TimeUtils.formatTime(bean.getCysj()));   //出院时间
             String curen = TimeUtils.getCurrenTime();
             int finatime = Integer.valueOf(curen) - Integer.valueOf((bean.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
             tv_age.setText(finatime+"岁");

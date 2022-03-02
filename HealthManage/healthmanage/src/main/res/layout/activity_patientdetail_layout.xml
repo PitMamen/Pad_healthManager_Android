@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/qb_px_46"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
 
 
         <RelativeLayout
@@ -35,14 +35,22 @@
             android:textSize="18sp"></TextView>
 
 
-
     </RelativeLayout>
+
+
+    <View
+        android:id="@+id/ll_view"
+        android:layout_below="@+id/rl_title"
+        android:background="#E6E6E6"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"></View>
+
 
     <RelativeLayout
         android:id="@+id/rl_icon"
         android:layout_width="match_parent"
         android:layout_height="@dimen/qb_px_60"
-        android:layout_below="@+id/rl_title"
+        android:layout_below="@+id/ll_view"
         android:background="@color/white">
 
 
@@ -66,7 +74,7 @@
                 android:id="@+id/tv_patient_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="刘晓明"
+                android:text=" -- "
                 android:textColor="@color/text_black"
                 android:textSize="16sp"></TextView>
 
@@ -75,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/qb_px_15"
-                android:text="男"
+                android:text="-"
                 android:textSize="13sp"></TextView>
 
 
@@ -84,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/qb_px_15"
-                android:text="25岁"
+                android:text="--"
                 android:textSize="13sp"></TextView>
 
 
@@ -102,11 +110,11 @@
 
 
             <ImageView
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@mipmap/icon_phone"></ImageView>
+                android:src="@mipmap/icon_phone"
+                android:visibility="gone"></ImageView>
 
 
             <TextView
@@ -115,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/qb_px_8"
-                android:text="135****4802"
+                android:text="-----------"
                 android:textSize="13sp"></TextView>
 
 
@@ -133,21 +141,21 @@
 
 
             <ImageView
-                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:src="@mipmap/icon_weizhi"></ImageView>
+                android:src="@mipmap/icon_weizhi"
+                android:visibility="gone"></ImageView>
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/tv_patient_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/qb_px_8"
                 android:text="长沙市岳麓区学士街道岳麓科技产业园"
-                android:textSize="13sp"></TextView>
+                android:textSize="13sp"
+                android:visibility="gone"></TextView>
 
 
         </LinearLayout>
@@ -567,23 +575,19 @@
         </TextView>
 
 
-
         <TextView
             android:id="@+id/tv_more_data"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_marginStart="@dimen/qb_px_15"
             android:layout_marginTop="@dimen/qb_px_1"
+            android:layout_marginEnd="@dimen/qb_px_20"
             android:text="更多资料"
             android:textColor="@color/home_blue"
-            android:layout_marginEnd="@dimen/qb_px_20"
             android:textSize="15sp">
 
         </TextView>
-
-
-
 
 
         <com.bitvalue.health.util.customview.WrapRecyclerView

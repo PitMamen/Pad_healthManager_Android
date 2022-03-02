@@ -88,12 +88,11 @@ public class SplashActivity extends BaseActivity {
                 .take(4)
                 .subscribe(aLong -> {
                             tv_jump.setText("跳过 " + (3 - aLong));
-                            Log.d("interval", aLong + "");
+                            tv_jump.setOnClickListener(v -> jumpActivity());
 
                         },
                         MLog::e, () -> {
                             tv_jump.setVisibility(View.GONE);//倒计时到0隐藏字体
-                            Log.d("interval", "Action0");
                             jumpActivity();
                         });
     }

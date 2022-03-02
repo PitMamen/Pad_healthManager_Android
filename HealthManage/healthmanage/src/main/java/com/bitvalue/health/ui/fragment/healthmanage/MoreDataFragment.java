@@ -37,6 +37,7 @@ import butterknife.BindView;
 /**
  * @author created by bitvalue
  * @data : 02/11
+ * 患者更多数据界面
  */
 public class MoreDataFragment extends BaseFragment<MoreDataDetailPresenter> implements MoreDataDetailContract.View {
     @BindView(R.id.list_moredata)
@@ -90,7 +91,6 @@ public class MoreDataFragment extends BaseFragment<MoreDataDetailPresenter> impl
                 LinearLayoutManager layoutManager = new LinearLayoutManager(homeActivity);
                 totalRecyclerView.setLayoutManager(layoutManager);
                 moreDataAdapter = new MoreDataAdapter(R.layout.item_moredada_layout, null);
-                Log.e(TAG, "name: " + itemPosition.getUserName() + " userid: " + itemPosition.getUserId());
                 UserLocalVisitBean bean = new UserLocalVisitBean();
                 bean.userId = itemPosition.getUserId();
                 mPresenter.qryUserLocalVisit(bean);

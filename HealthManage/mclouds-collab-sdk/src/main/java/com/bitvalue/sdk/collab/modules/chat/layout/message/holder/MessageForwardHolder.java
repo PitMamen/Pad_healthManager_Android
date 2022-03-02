@@ -48,7 +48,7 @@ public class MessageForwardHolder extends MessageContentHolder{
         mForwardMsgLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onItemLongClickListener.onUserIconClick(view, position, msg);
+                onItemLongClickListener.onUserIconClick(view, position, msg,false);
             }
         });
 

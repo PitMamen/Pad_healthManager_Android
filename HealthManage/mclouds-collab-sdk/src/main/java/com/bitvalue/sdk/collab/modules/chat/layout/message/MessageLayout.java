@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -298,9 +299,9 @@ public class MessageLayout extends MessageLayoutUI {
             }
 
             @Override
-            public void onUserIconClick(View view, int position, MessageInfo info) {
+            public void onUserIconClick(View view, int position, MessageInfo info,boolean isLeftIconClick) {
                 if (mOnItemLongClickListener != null) {
-                    mOnItemLongClickListener.onUserIconClick(view, position, info);
+                    mOnItemLongClickListener.onUserIconClick(view, position, info,isLeftIconClick);
                 }
             }
         });
@@ -318,7 +319,7 @@ public class MessageLayout extends MessageLayoutUI {
     public interface OnItemLongClickListener {
         void onMessageLongClick(View view, int position, MessageInfo messageInfo);
 
-        void onUserIconClick(View view, int position, MessageInfo messageInfo);
+        void onUserIconClick(View view, int position, MessageInfo messageInfo,boolean isLeftIconClick);
     }
 
     public interface OnPopActionClickListener {

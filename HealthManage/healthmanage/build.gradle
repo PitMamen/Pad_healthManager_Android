@@ -63,8 +63,8 @@ android {
             // 测试服务器的主机地址
 //            buildConfigField('String', 'HOST_URL', '"http://192.168.0.114"')//晓峰192.168.0.248
 //            buildConfigField('String', 'HOST_URL', '"http://192.168.1.112"')//江南
-            buildConfigField('String', 'HOST_URL', '"http://192.168.1.122"')//测试环境
-//            buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
+//            buildConfigField('String', 'HOST_URL', '"http://192.168.1.122"')//测试环境
+            buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
 //            buildConfigField('String', 'HOST_URL', '"http://218.77.104.74:8008"')//演示环境
 //            buildConfigField('String', 'HOST_URL', '"http://happy-mao01.imwork.net:39596/"')//演示环境
 

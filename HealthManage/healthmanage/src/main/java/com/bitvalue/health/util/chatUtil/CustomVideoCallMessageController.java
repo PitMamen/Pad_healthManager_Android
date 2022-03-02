@@ -66,7 +66,7 @@ public class CustomVideoCallMessageController {
      * @param data
      * @param ifClick
      */
-    private static void getPatientAppointmentById(CustomVideoCallMessage data, boolean ifClick) {
+    public static void getPatientAppointmentById(CustomVideoCallMessage data, boolean ifClick) {
         try {
             NetEngine.getInstance().getDataDetail(data, new CallBackAdapter() {
                 @Override

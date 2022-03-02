@@ -1,5 +1,7 @@
 package com.bitvalue.sdk.collab.modules.conversation;
 
+import static com.bitvalue.sdk.collab.modules.message.MessageInfo.MSG_TYPE_GROUP_MODIFY_NAME;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
@@ -60,7 +62,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
     /**
      * 加载会话信息
      *
-     * @param nextSeq 分页拉取的游标，第一次默认取传 0，后续分页拉传上一次分页拉取成功回调里的 nextSeq
+     * @param nextSeq  分页拉取的游标，第一次默认取传 0，后续分页拉传上一次分页拉取成功回调里的 nextSeq
      * @param callBack 拉取会话的回调
      */
     public void loadConversation(long nextSeq, final ILoadConversationCallback callBack) {
@@ -119,7 +121,9 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
             TUIKitLog.v(TAG, "refreshConversation v2TIMConversation " + v2TIMConversation.toString());
             ConversationInfo conversationInfo = TIMConversation2ConversationInfo(v2TIMConversation);
             if (conversationInfo != null && !V2TIMManager.GROUP_TYPE_AVCHATROOM.equals(v2TIMConversation.getGroupType())) {
-                infos.add(conversationInfo);
+                if (conversationInfo.getLastMessage().getMsgType()!=262&&conversationInfo.getLastMessage().getMsgType()!=263){
+                    infos.add(conversationInfo);
+                }
             }
         }
         if (infos.size() == 0) {
@@ -152,7 +156,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
     }
 
     public void updateTotalUnreadMessageCount(long totalUnreadCount) {
-        mUnreadTotal = (int)totalUnreadCount;
+        mUnreadTotal = (int) totalUnreadCount;
         updateUnreadTotal(mUnreadTotal);
     }
 
@@ -197,7 +201,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         }
 
         int atInfoType = getAtInfoType(conversation);
-        switch (atInfoType){
+        switch (atInfoType) {
             case V2TIMGroupAtInfo.TIM_AT_ME:
                 info.setAtInfoText(TUIKit.getAppContext().getString(R.string.ui_at_me));
                 break;
@@ -212,8 +216,6 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
                 break;
 
         }
-
-
 
 
         info.setTitle(conversation.getShowName());
@@ -247,38 +249,38 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         return info;
     }
 
-    private int getAtInfoType(V2TIMConversation conversation){
+    private int getAtInfoType(V2TIMConversation conversation) {
         int atInfoType = 0;
         boolean atMe = false;
         boolean atAll = false;
 
         List<V2TIMGroupAtInfo> atInfoList = conversation.getGroupAtInfoList();
 
-        if (atInfoList == null || atInfoList.isEmpty()){
+        if (atInfoList == null || atInfoList.isEmpty()) {
             return V2TIMGroupAtInfo.TIM_AT_UNKNOWN;
         }
 
-        for(V2TIMGroupAtInfo atInfo : atInfoList){
-            if (atInfo.getAtType() == V2TIMGroupAtInfo.TIM_AT_ME){
+        for (V2TIMGroupAtInfo atInfo : atInfoList) {
+            if (atInfo.getAtType() == V2TIMGroupAtInfo.TIM_AT_ME) {
                 atMe = true;
                 continue;
             }
-            if (atInfo.getAtType() == V2TIMGroupAtInfo.TIM_AT_ALL){
+            if (atInfo.getAtType() == V2TIMGroupAtInfo.TIM_AT_ALL) {
                 atAll = true;
                 continue;
             }
-            if (atInfo.getAtType() == V2TIMGroupAtInfo.TIM_AT_ALL_AT_ME){
+            if (atInfo.getAtType() == V2TIMGroupAtInfo.TIM_AT_ALL_AT_ME) {
                 atMe = true;
                 atAll = true;
                 continue;
             }
         }
 
-        if (atAll && atMe){
+        if (atAll && atMe) {
             atInfoType = V2TIMGroupAtInfo.TIM_AT_ALL_AT_ME;
-        } else if (atAll){
+        } else if (atAll) {
             atInfoType = V2TIMGroupAtInfo.TIM_AT_ALL;
-        } else if (atMe){
+        } else if (atMe) {
             atInfoType = V2TIMGroupAtInfo.TIM_AT_ME;
         } else {
             atInfoType = V2TIMGroupAtInfo.TIM_AT_UNKNOWN;
@@ -286,6 +288,7 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
 
         return atInfoType;
     }
+
     private void fillConversationUrlForGroup(final V2TIMConversation conversation, final ConversationInfo info) {
         if (TextUtils.isEmpty(conversation.getFaceUrl())) {
             final String savedIcon = getGroupConversationAvatar(conversation.getConversationID());
@@ -338,27 +341,27 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
         TUIKitLog.i(TAG, "setConversationTop" + "|conversation:" + conversation);
         final boolean setTop = !conversation.isTop();
 
-            V2TIMManager.getConversationManager().pinConversation(conversation.getConversationId(), setTop, new V2TIMCallback() {
-                @Override
-                public void onSuccess() {
-                    conversation.setTop(setTop);
-                    mProvider.setDataSource(sortConversations(mProvider.getDataSource()));
-                }
+        V2TIMManager.getConversationManager().pinConversation(conversation.getConversationId(), setTop, new V2TIMCallback() {
+            @Override
+            public void onSuccess() {
+                conversation.setTop(setTop);
+                mProvider.setDataSource(sortConversations(mProvider.getDataSource()));
+            }
 
-                @Override
-                public void onError(int code, String desc) {
-                    TUIKitLog.e(TAG, "setConversationTop code:" + code + "|desc:" + desc);
-                    if (callBack != null) {
-                        callBack.onError("setConversationTop", code, desc);
-                    }
+            @Override
+            public void onError(int code, String desc) {
+                TUIKitLog.e(TAG, "setConversationTop code:" + code + "|desc:" + desc);
+                if (callBack != null) {
+                    callBack.onError("setConversationTop", code, desc);
                 }
-            });
+            }
+        });
     }
 
     /**
      * 会话置顶操作
      *
-     * @param id   会话ID
+     * @param id    会话ID
      * @param isTop 是否置顶
      */
     public void setConversationTop(String id, final boolean isTop, final IUIKitCallBack callBack) {
@@ -530,11 +533,11 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
             }
         }
 
-        if(topConversations != null && topConversations.size() > 1) {
+        if (topConversations != null && topConversations.size() > 1) {
             Collections.sort(topConversations); // 置顶会话列表页也需要按照最后一条时间排序，由新到旧，如果旧会话收到新消息，会排序到前面
         }
         conversationInfos.addAll(topConversations);
-        if(normalConversations != null && normalConversations.size() > 1) {
+        if (normalConversations != null && normalConversations.size() > 1) {
             Collections.sort(normalConversations); // 正常会话也是按照最后一条消息时间排序，由新到旧
         }
         conversationInfos.addAll(normalConversations);

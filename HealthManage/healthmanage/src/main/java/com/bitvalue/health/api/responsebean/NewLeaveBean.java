@@ -66,6 +66,7 @@ public class NewLeaveBean implements Serializable {
     }
 
     public static class RowsDTO implements Serializable {
+        public TaskDeatailBean taskDeatailBean;
         private String age;
         private String cardNo;
         private String cardType;
@@ -95,14 +96,14 @@ public class NewLeaveBean implements Serializable {
         public String planId;  //自定义添加的planId，后台没有
         private String taskId;  //自定义添加的taskId，后台没有
         private String sendPlanType;// 自定义添加的发送消息时判断发送类型 ：Evaluate健康评估  Remind健康提醒
+        public String rightsName = "视频咨询";//权益类型(图文咨询 视频问诊，，，这个字段是自己定义的)
 
-
-
+        public boolean isConsultation = false;//区分是 问诊还是咨询
 
 
         //add
         public boolean isShowCheck = true;
-        public boolean isChecked =false;
+        public boolean isChecked = false;
         public boolean hasNewMessage = false;
         public int newMsgNum = 0;
 
@@ -145,19 +146,21 @@ public class NewLeaveBean implements Serializable {
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof RowsDTO) {
-                RowsDTO user=(RowsDTO) obj;
-                if (this.userId==null){
+                RowsDTO user = (RowsDTO) obj;
+                if (this.userId == null) {
                     return true;
                 }
                 if (this.userId.equals(user.userId)) {
                     return true;
-                }else {
+                } else {
                     return false;
                 }
-            }else {
+            } else {
                 return false;
             }
         }
+
+
 
         public String getSendPlanType() {
             return sendPlanType;
@@ -430,7 +433,7 @@ public class NewLeaveBean implements Serializable {
             this.userName = userName;
         }
 
-        public static class PlanInfoDetailDTO implements Serializable{
+        public static class PlanInfoDetailDTO implements Serializable {
             private String id;
             private String userId;
             private String goodsId;
@@ -595,7 +598,6 @@ public class NewLeaveBean implements Serializable {
         }
 
 
-
         public static class InfoDetailDTO implements Serializable {
             private String csd;
             private String csrq;
@@ -673,7 +675,7 @@ public class NewLeaveBean implements Serializable {
                         ", xbmc='" + xbmc + '\'' +
                         ", xgbz=" + xgbz +
                         ", xm='" + xm + '\'' +
-                        ",gzdwdz'"+gzdwdz+'\''+
+                        ",gzdwdz'" + gzdwdz + '\'' +
                         ", yljgdm='" + yljgdm + '\'' +
                         ", ywscsj='" + ywscsj + '\'' +
                         ", yydah='" + yydah + '\'' +

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <corners
+        android:bottomLeftRadius="@dimen/qb_px_6"
+        android:bottomRightRadius="@dimen/qb_px_6"
+        android:topLeftRadius="@dimen/qb_px_6"
+        android:topRightRadius="@dimen/qb_px_6" />
+
+
+    <stroke
+        android:width="@dimen/qb_px_1"
+        android:color="@color/white" />
+    <!-- 背景色 -->
+    <solid android:color="@color/white" />
+
+
+
+</shape>
+

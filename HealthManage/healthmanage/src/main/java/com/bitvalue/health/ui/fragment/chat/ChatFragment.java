@@ -23,52 +23,47 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bitvalue.health.Application;
-import com.bitvalue.health.api.ApiResult;
-import com.bitvalue.health.api.eventbusbean.VideoRefreshObj;
-import com.bitvalue.health.api.requestbean.ReportStatusApi;
-import com.bitvalue.health.api.requestbean.ReportStatusBean;
+import com.bitvalue.health.api.eventbusbean.MainRefreshObj;
+import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
+import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
+import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.SaveCaseApi;
-import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
+import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
-import com.bitvalue.health.contract.chattract.Chatcontract;
-import com.bitvalue.health.presenter.chatpersenter.ChatPersenter;
-import com.bitvalue.health.ui.activity.HealthFilesActivity;
+import com.bitvalue.health.contract.healthmanagercontract.InterestsUseApplyByDocContract;
+import com.bitvalue.health.presenter.healthmanager.InterestsUseApplyByDocPresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
+import com.bitvalue.health.util.SharedPreManager;
+import com.bitvalue.health.util.TimeUtils;
+import com.bitvalue.health.util.chatUtil.CustomVideoCallMessageController;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
-import com.bitvalue.sdk.collab.component.AudioPlayer;
 import com.bitvalue.sdk.collab.component.TitleBarLayout;
 import com.bitvalue.sdk.collab.helper.ChatLayoutHelper;
 import com.bitvalue.sdk.collab.helper.CustomMessage;
 import com.bitvalue.sdk.collab.helper.CustomVideoCallMessage;
-import com.bitvalue.sdk.collab.modules.chat.base.AbsChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
-import com.bitvalue.sdk.collab.modules.chat.base.ChatManagerKit;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.ChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayout;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.MessageLayout;
 import com.bitvalue.sdk.collab.modules.forward.ForwardSelectActivity;
-import com.bitvalue.sdk.collab.modules.forward.base.ConversationBean;
 import com.bitvalue.sdk.collab.modules.group.info.GroupInfo;
 import com.bitvalue.sdk.collab.modules.group.info.StartGroupMemberSelectActivity;
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.TUIKitConstants;
-import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.gson.Gson;
-import com.hjq.http.EasyHttp;
-import com.hjq.http.listener.HttpCallback;
+import com.hjq.toast.ToastUtils;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
 import com.tencent.imsdk.v2.V2TIMManager;
-import com.tencent.imsdk.v2.V2TIMMergerElem;
 import com.tencent.imsdk.v2.V2TIMMessage;
 import com.tencent.imsdk.v2.V2TIMValueCallback;
-import com.tencent.liteav.meeting.model.MeetingEndEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -84,7 +79,7 @@ import okhttp3.Call;
 /***
  * 聊天界面
  */
-public class ChatFragment extends BaseFragment {
+public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> implements InterestsUseApplyByDocContract.View {
 
     @BindView(R.id.chat_layout)
     ChatLayout mChatLayout;  // 从布局文件中获取聊天面板组件
@@ -99,7 +94,8 @@ public class ChatFragment extends BaseFragment {
     private String planId;
     private ArrayList<String> userIDList = new ArrayList<>();
     private String userID;
-
+    private TaskDeatailBean taskDeatailBean;
+    private boolean isVideoRights; //是否是视频问诊
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -108,8 +104,8 @@ public class ChatFragment extends BaseFragment {
     }
 
     @Override
-    protected BasePresenter createPresenter() {
-        return null;
+    protected InterestsUseApplyByDocPresenter createPresenter() {
+        return new InterestsUseApplyByDocPresenter();
     }
 
     @Override
@@ -123,9 +119,11 @@ public class ChatFragment extends BaseFragment {
         Bundle bundle = getArguments();
         mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
         patientinfo = (NewLeaveBean.RowsDTO) bundle.getSerializable(Constants.USERINFO);
-        if (mChatInfo==null||patientinfo==null){
+        if (mChatInfo == null || patientinfo == null) {
             return;
         }
+        taskDeatailBean = patientinfo.taskDeatailBean;
+
         planId = patientinfo.getUserId();
         if (mChatInfo.getType() == V2TIM_C2C) {
             if (mChatInfo.isShowShortCut) {
@@ -140,13 +138,20 @@ public class ChatFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         //单聊组件的默认UI和交互初始化
         mChatLayout.initDefault();
+
         /*
          * 需要聊天的基本信息
          */
         mChatLayout.setChatInfo(mChatInfo);
         mChatInfo.setChatName(mChatInfo.getChatName());
+
         //获取单聊面板的标题栏
         mTitleBar = mChatLayout.getTitleBar();
+        if (patientinfo.isConsultation) {
+            mTitleBar.getEndVisitText().setVisibility(VISIBLE);
+        }
+
+
         mTitleBar.getLeftGroup().setVisibility(VISIBLE);//bug 381，隐藏返回键
         mTitleBar.getRightIcon().setVisibility(GONE);//沒有好友详情页面，隐藏
         mChatLayout.getInputLayout().ll_shortCutlayout.setVisibility(mChatInfo.isShowShortCut ? VISIBLE : GONE); //底部快捷回复布局
@@ -157,8 +162,8 @@ public class ChatFragment extends BaseFragment {
         mTitleBar.setOnLeftClickListener(v -> {
             if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 homeActivity.getSupportFragmentManager().popBackStack();
-        }
-    });
+            }
+        });
         mChatLayout.setForwardSelectActivityListener((mode, msgIds) -> {
             mForwardMode = mode;
             mForwardSelectMsgInfos = msgIds;
@@ -175,39 +180,73 @@ public class ChatFragment extends BaseFragment {
                 mChatLayout.getMessageLayout().showItemPopMenu(position - 1, messageInfo, view);
             }
 
+            /**
+             * 点击左边头像 进入详情界面
+             * @param view
+             * @param position
+             * @param messageInfo
+             * @param isLeftIconClick
+             */
             @Override
-            public void onUserIconClick(View view, int position, MessageInfo messageInfo) {
-                if (null == messageInfo) {
-                    return;
+            public void onUserIconClick(View view, int position, MessageInfo messageInfo, boolean isLeftIconClick) {
+                if (isLeftIconClick) {
+                    homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, Integer.valueOf(patientinfo.getUserId()));
                 }
             }
         });
 
+
+        //结束问诊
+        mTitleBar.getEndVisitText().setOnClickListener(v -> {
+
+            DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定结束问诊吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
+                @Override
+                public void onPositive() {
+                    LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
+                    SaveRightsUseBean saveRightsUseBean = new SaveRightsUseBean();
+                    saveRightsUseBean.deptName = loginBean.getUser().user.departmentName;
+                    saveRightsUseBean.execDept = String.valueOf(loginBean.getUser().user.departmentId); //这里传科室代码
+                    saveRightsUseBean.execFlag = 1;
+                    saveRightsUseBean.execUser = String.valueOf(loginBean.getUser().user.userId);
+                    saveRightsUseBean.statusDescribe = "结束问诊";
+                    saveRightsUseBean.execTime = TimeUtils.getTime_tosecond(taskDeatailBean.getExecTime());
+                    saveRightsUseBean.id = taskDeatailBean.getTaskDetail().getId();
+                    saveRightsUseBean.rightsId = taskDeatailBean.getTaskDetail().getRightsId();
+                    saveRightsUseBean.rightsName = taskDeatailBean.getTaskDetail().getRightsName();
+                    saveRightsUseBean.rightsType = taskDeatailBean.getTaskDetail().getRightsType();
+                    saveRightsUseBean.tradeId = taskDeatailBean.getTaskDetail().getTradeId();
+                    saveRightsUseBean.userId = taskDeatailBean.getTaskDetail().getUserId();
+                    saveRightsUseBean.taskId = String.valueOf(taskDeatailBean.getId());
+                    mPresenter.saveRightsUseRecord(saveRightsUseBean);   //请求接口 结束问诊
+                }
+
+                @Override
+                public void onNegative() {
+
+                }
+            });
+
+
+
+
+        });
+
+
         mChatLayout.getInputLayout().tv_sendremind.setOnClickListener(v -> {
-            homeActivity.switchSecondFragment(FRAGMENT_SEND_REMIND,"");
+            homeActivity.switchSecondFragment(FRAGMENT_SEND_REMIND, "");
         });
 
         mChatLayout.getInputLayout().tv_sendquestion.setOnClickListener(v -> {
 
-            homeActivity.switchSecondFragment(FRAGMENT_ADD_QUESTION,"");
+            homeActivity.switchSecondFragment(FRAGMENT_ADD_QUESTION, "");
 
-//            Intent intent = new Intent(this, SendArtQueActivity.class);
-//            intent.putExtra(CHAT_TYPE, SINGLECHAT);
-//            intent.putExtra(DATA_TYPE, "发送问卷");
-//            intent.putStringArrayListExtra(USER_IDS, userIDList);
-//            startActivity(intent);
         });
 
         mChatLayout.getInputLayout().tv_sendarticle.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, SendArtQueActivity.class);
-//            intent.putStringArrayListExtra(USER_IDS, userIDList);
-//            intent.putExtra(DATA_TYPE, "发送文章");
-//            intent.putExtra(CHAT_TYPE, SINGLECHAT);
-//            startActivity(intent);
-            homeActivity.switchSecondFragment(FRAGMENT_ADD_PAPER,"");
+            homeActivity.switchSecondFragment(FRAGMENT_ADD_PAPER, "");
         });
         mChatLayout.getInputLayout().tv_sendshortcut.setOnClickListener(v -> {
-            homeActivity.switchSecondFragment(FRAGMENT_QUICKREPLY,"");
+            homeActivity.switchSecondFragment(FRAGMENT_QUICKREPLY, "");
         });
 
 
@@ -292,7 +331,7 @@ public class ChatFragment extends BaseFragment {
 
         //新增的自定义控件点击回调
         mChatLayout.setOnCustomClickListener(new InputLayout.OnCustomClickListener() {
-//
+            //
 //            //健康计划
             @Override
             public void onHealthPlanClick() {
@@ -331,7 +370,8 @@ public class ChatFragment extends BaseFragment {
 //                intent.putExtra(Constants.USER_ID, mChatInfo.userId);
 //                homeActivity.startActivity(intent);
             }
-//
+
+            //
 //
 //            //视频问诊
             @Override
@@ -352,8 +392,12 @@ public class ChatFragment extends BaseFragment {
                 message.id = planId + "";//这里id设置为视频看诊的预约id
                 MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(message), message.description, null);
                 mChatLayout.sendMessage(info, false);
+                CustomVideoCallMessageController.getPatientAppointmentById(message, true);
+
+
             }
-//            //书写病历
+
+            //            //书写病历
 //            @Override
             public void onWriteConsultConclusion() {
                 ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
@@ -370,6 +414,8 @@ public class ChatFragment extends BaseFragment {
 
             }
         });
+
+        mChatLayout.getInputLayout().setGoneInputMore(patientinfo.rightsName.equals("视频咨询"));  //如果是图文咨询的 聊天界面点击更多不显示视频问诊控件
     }
 
     private int getAtInfoType(List<V2TIMGroupAtInfo> atInfoList) {
@@ -467,6 +513,14 @@ public class ChatFragment extends BaseFragment {
 
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventGetTaskn(MainRefreshObj bean) {
+        Log.e(TAG, "接收待办实体---" + bean);
+//        taskDeatailBean = bean;
+    }
+
+
     /**
      * 处理订阅消息
      *
@@ -489,6 +543,37 @@ public class ChatFragment extends BaseFragment {
     }
 
 
+    /**
+     * 结束问诊成功回调
+     *
+     * @param bean
+     */
+    @Override
+    public void saveRightsUseRecordSuccess(SaveRightsUseBean bean) {
+        homeActivity.runOnUiThread(() -> {
+            EventBus.getDefault().post(new NotifycationAlardyObj()); //通知更新最新数据
+            EventBus.getDefault().post(new RefreshDataViewObj());  //通知医生端界面 更新 已结束 字样和 隐藏开始问诊控件
+            if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                homeActivity.getSupportFragmentManager().popBackStack();
+            }
+        });
+    }
+
+    /**
+     * 结束问诊失败回调
+     *
+     * @param
+     */
+
+    @Override
+    public void saveRightsUseRecordFail(String failMessage) {
+        homeActivity.runOnUiThread(() -> {
+            Log.e(TAG, "saveRightsUseRecordFail: " + failMessage);
+            ToastUtils.show(failMessage);
+        });
+    }
+
+
     public static class NewMsgData implements Serializable {
         public ArrayList<String> userIds;
         public String msgType;
@@ -499,7 +584,6 @@ public class ChatFragment extends BaseFragment {
 
         public SaveCaseApi saveCaseApi;
     }
-
 
 
 }

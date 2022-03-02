@@ -264,7 +264,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
             stopUVCCameraCapture();
             mUVCCameraCapturer.destroy();
         }
-        EventBus.getDefault().post(new MeetingEndEvent());
+//        EventBus.getDefault().post(new MeetingEndEvent());
     }
 
     private void createMeeting() {

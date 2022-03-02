@@ -1,5 +1,7 @@
 package com.bitvalue.health.model.homemodel;
 
+import android.util.Log;
+
 import com.bitvalue.health.api.requestbean.LoginReqBean;
 import com.bitvalue.health.api.responsebean.LoginResBean;
 import com.bitvalue.health.base.model.BaseModel;
@@ -27,6 +29,8 @@ public class LoginModel extends BaseModel implements LoginContract.loginModel {
                 }
             }
 
+        },error->{
+            callback.onFailedLog("登录失败!"+error.getMessage(),1001);
         });
     }
 }

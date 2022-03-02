@@ -8,8 +8,8 @@ public class Constants {
     public static final String ROOM_ID = "room_id";
     public static final String USER_ID = "user_id";
     public static final String NEED_TOAST = "need_toast";
-    public static final String HOST_URL = "http://192.168.1.122/";
-//    public static final String HOST_URL = "http://hmg.mclouds.org.cn";
+//    public static final String HOST_URL = "http://192.168.1.122/";
+    public static final String HOST_URL = "http://hmg.mclouds.org.cn";
     public static int screenWidth, screenHeight;
     public static final String KEY_REMEMBER_PSD = "key_remember_psd";
     public static final String KEY_TOKEN = "Authorization";
@@ -47,6 +47,9 @@ public class Constants {
     public static final String FRAGMENT_PLAN_LIST = "fragment_plan_list";
     public static final String FRAGMENT_DETAIL = "patient_detail";
     public static final String FRAGMENT_SEND_MESSAGE = "send_message";
+    public static final String FRAGMENT_INTERESTSUSER_APPLY = "interestsuser_apply";
+    public static final String FRAGMENT_INTERESTSUSER_APPLY_BYDOC = "interestsuser_apply_by_doc";
+    public static final String TASKDETAIL = "task_detail";
 
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";

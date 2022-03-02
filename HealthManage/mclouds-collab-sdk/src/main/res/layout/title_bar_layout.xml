@@ -45,7 +45,25 @@
         android:textSize="16.3sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/tv_end_visit"
+        android:text="结束问诊"
+        android:visibility="gone"
+        android:textColor="@color/black"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/qb_px_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </TextView>
+
+
+
+
+
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/page_title_right_group"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

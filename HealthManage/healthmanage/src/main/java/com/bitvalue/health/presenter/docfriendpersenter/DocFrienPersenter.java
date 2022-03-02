@@ -1,53 +1,64 @@
 package com.bitvalue.health.presenter.docfriendpersenter;
 
+import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
-import com.bitvalue.health.contract.doctorfriendscontract.DoctorFriendsContract;
-import com.bitvalue.health.model.docfriendmodel.DoctorFriendsModel;
-import com.bitvalue.health.util.EmptyUtil;
-import com.tencent.imsdk.v2.V2TIMConversationResult;
-import com.tencent.imsdk.v2.V2TIMMessage;
+import com.bitvalue.health.contract.doctorfriendscontract.NeedDealWithContract;
+import com.bitvalue.health.model.docfriendmodel.NeedDealWithModel;
+
+import java.util.List;
 
 /**
  * @author created by bitvalue
  * @data : 10/28
  */
-public class DocFrienPersenter extends BasePresenter<DoctorFriendsContract.DoctorFriendsView, DoctorFriendsContract.DoctorFriendsModel> implements DoctorFriendsContract.DoctorFriendsPersent {
+public class DocFrienPersenter extends BasePresenter<NeedDealWithContract.NeedDealWithView, NeedDealWithContract.NeedDealWithModel> implements NeedDealWithContract.NeedDealWithPersent {
     @Override
-    protected DoctorFriendsContract.DoctorFriendsModel createModule() {
-        return new DoctorFriendsModel();
+    protected NeedDealWithContract.NeedDealWithModel createModule() {
+        return new NeedDealWithModel();
     }
 
     @Override
-    public void getConversationList(long nextSeq, int count) {
-        mModel.getConversationList(nextSeq, count, new CallBackAdapter() {
+    public void getMyTaskDetail(int execFlag, int taskType, String docUserId) {
+        mModel.getMyTaskDetail(execFlag, taskType, docUserId, new CallBackAdapter() {
             @Override
-            public void loginV2TIMSuccess(V2TIMConversationResult v2TIMConversationResult) {
-                super.loginV2TIMSuccess(v2TIMConversationResult);
-                if (isViewAttach() && null != v2TIMConversationResult)
-                    getView().getConversationSuccess(v2TIMConversationResult);
+            public void onSuccess(Object o, int what) {
+                super.onSuccess(o, what);
+                if (isViewAttach()) {
+                    getView().getMyTaskDetailSuccess((List<TaskDeatailBean>) o);
+                }
             }
 
 
             @Override
-            public void loginV2TIMFail(int code, String desc) {
-                super.loginV2TIMFail(code, desc);
-                if (isViewAttach())
-                    getView().getConversationfail(code, desc);
+            public void onFailedLog(String str, int what) {
+                super.onFailedLog(str, what);
+                if (isViewAttach()) {
+                    getView().getMyTaskDetailFail(str);
+                }
             }
         });
+
     }
 
     @Override
-    public void listennerIMNewMessage() {
-        mModel.listenerIMNewMessage(new CallBackAdapter() {
+    public void getMyAlreadyDealTaskDetail(int execFlag, int taskType, String docUserId) {
+        mModel.getMyAlreadyDealTaskDetail(execFlag, taskType, docUserId, new CallBackAdapter() {
             @Override
-            public void IMgetNewMessage(V2TIMMessage v2TIMMessage) {
-                super.IMgetNewMessage(v2TIMMessage);
-                if (isViewAttach())
-                    if (!EmptyUtil.isEmpty(v2TIMMessage)) {
-                        getView().onNewMessage(v2TIMMessage);
-                    }
+            public void onSuccess(Object o, int what) {
+                super.onSuccess(o, what);
+                if (isViewAttach()) {
+                    getView().getMyAlreadyDealTaskDetailSuccess((List<TaskDeatailBean>) o);
+                }
+            }
+
+
+            @Override
+            public void onFailedLog(String str, int what) {
+                super.onFailedLog(str, what);
+                if (isViewAttach()) {
+                    getView().getMyAlreadyDealTaskDetailFail(str);
+                }
             }
         });
     }
