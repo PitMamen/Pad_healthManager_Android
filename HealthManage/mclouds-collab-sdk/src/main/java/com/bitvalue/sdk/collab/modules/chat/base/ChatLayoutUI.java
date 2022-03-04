@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ public abstract class ChatLayoutUI extends LinearLayout implements IChatLayout {
     private LinearLayout mForwardLayout;
     private Button mForwardButton;
     private Button mDeleteButton;
+    private FrameLayout flayout_tipmessage;
 
     public ChatLayoutUI(Context context) {
         super(context);
@@ -54,6 +56,7 @@ public abstract class ChatLayoutUI extends LinearLayout implements IChatLayout {
         inflate(getContext(), R.layout.chat_layout, this);
 
         mTitleBar = findViewById(R.id.chat_title_bar);
+        flayout_tipmessage = findViewById(R.id.framelayout_tipmessage);
         mMessageLayout = findViewById(R.id.chat_message_layout);
         mInputLayout = findViewById(R.id.chat_input_layout);
         mInputLayout.setChatLayout(this);
@@ -84,6 +87,14 @@ public abstract class ChatLayoutUI extends LinearLayout implements IChatLayout {
     public Button getDeleteButton() {
         return mDeleteButton;
     }
+
+
+    public FrameLayout getFlayout_tipmessage(){
+        return flayout_tipmessage;
+    }
+
+
+
 
     @Override
     public InputLayout getInputLayout() {

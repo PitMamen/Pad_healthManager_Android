@@ -95,7 +95,6 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     private ArrayList<String> userIDList = new ArrayList<>();
     private String userID;
     private TaskDeatailBean taskDeatailBean;
-    private boolean isVideoRights; //是否是视频问诊
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -147,9 +146,8 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
         //获取单聊面板的标题栏
         mTitleBar = mChatLayout.getTitleBar();
-        if (patientinfo.isConsultation) {
-            mTitleBar.getEndVisitText().setVisibility(VISIBLE);
-        }
+        mTitleBar.getEndVisitText().setVisibility(patientinfo.isConsultation ? VISIBLE : GONE); //如果是 问诊 顶部显示 “结束问诊” 字样 反之不显示
+        mChatLayout.getFlayout_tipmessage().setVisibility(patientinfo.isConsultation ? VISIBLE : GONE);  //如果是 问诊 顶部显示 “您已进入...” 字样  反之不显示
 
 
         mTitleBar.getLeftGroup().setVisibility(VISIBLE);//bug 381，隐藏返回键
@@ -185,7 +183,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
              * @param view
              * @param position
              * @param messageInfo
-             * @param isLeftIconClick
+             * @param isLeftIconClick  点击对方的头像
              */
             @Override
             public void onUserIconClick(View view, int position, MessageInfo messageInfo, boolean isLeftIconClick) {
@@ -199,16 +197,17 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         //结束问诊
         mTitleBar.getEndVisitText().setOnClickListener(v -> {
 
-            DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定结束问诊吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
+            DataUtil.showNormalDialog(homeActivity, getString(R.string.reminder), getString(R.string.endtheconsultation), getString(R.string.confirm), getString(R.string.cancel), new DataUtil.OnNormalDialogClicker() {
                 @Override
                 public void onPositive() {
                     LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
                     SaveRightsUseBean saveRightsUseBean = new SaveRightsUseBean();
+                    assert loginBean != null;
                     saveRightsUseBean.deptName = loginBean.getUser().user.departmentName;
                     saveRightsUseBean.execDept = String.valueOf(loginBean.getUser().user.departmentId); //这里传科室代码
                     saveRightsUseBean.execFlag = 1;
                     saveRightsUseBean.execUser = String.valueOf(loginBean.getUser().user.userId);
-                    saveRightsUseBean.statusDescribe = "结束问诊";
+                    saveRightsUseBean.statusDescribe = getString(R.string.end_consultation);
                     saveRightsUseBean.execTime = TimeUtils.getTime_tosecond(taskDeatailBean.getExecTime());
                     saveRightsUseBean.id = taskDeatailBean.getTaskDetail().getId();
                     saveRightsUseBean.rightsId = taskDeatailBean.getTaskDetail().getRightsId();
@@ -225,8 +224,6 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
                 }
             });
-
-
 
 
         });
@@ -398,7 +395,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             }
 
             //            //书写病历
-//            @Override
+            @Override
             public void onWriteConsultConclusion() {
                 ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
                 msgData.userIds = new ArrayList<>();

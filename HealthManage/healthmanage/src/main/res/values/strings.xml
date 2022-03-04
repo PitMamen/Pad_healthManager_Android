@@ -87,6 +87,9 @@
     <string name="common_web_call_phone_allow">拨打</string>
     <string name="common_web_call_phone_reject">取消</string>
     <string name="has_ended">已结束</string>
+    <string name="end_consultation">结束问诊</string>
+    <string name="reminder">温馨提示</string>
+    <string name="endtheconsultation">确定结束问诊吗?</string>
 
     <!-- 网络请求 -->
     <string name="http_loading">加载中&#8230;</string>

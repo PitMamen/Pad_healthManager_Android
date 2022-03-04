@@ -163,7 +163,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
                 NewLeaveBean.RowsDTO item = new NewLeaveBean.RowsDTO();
                 item.setUserId(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
                 item.setUserName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
-                item.isConsultation = true;
+                item.isConsultation = true;   //问诊
                 item.taskDeatailBean = taskDeatailBean;
                 item.rightsName = taskDeatailBean.getTaskDetail().getRightsName();
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, item);

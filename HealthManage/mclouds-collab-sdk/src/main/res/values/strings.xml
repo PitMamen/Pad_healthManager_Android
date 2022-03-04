@@ -263,6 +263,7 @@
     <string name="nick_name">昵称: </string>
     <string name="include_group_id">包含群 ID: </string>
     <string name="include_group_member">包含群成员: </string>
+    <string name="you_has_entered">您已进入中南大学湘雅二医院互联网医院平台就诊室</string>
 
 <!--    <string name="pic">Images</string>-->
 <!--    <string name="photo">Take Photo</string>-->

@@ -10,6 +10,62 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/qb_px_25" />
 
+
+
+
+
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/framelayout_tipmessage"
+        android:layout_below="@+id/chat_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:background="@color/white"
+            android:layout_marginEnd="@dimen/qb_px_50"
+            android:layout_marginStart="@dimen/qb_px_50"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/tv_message"
+                android:src="@drawable/shape_boll_green"
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5">
+
+
+            </ImageView>
+
+
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:textSize="8sp"
+                android:paddingHorizontal="@dimen/qb_px_3"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:text="@string/you_has_entered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+        </RelativeLayout>
+
+
+    </FrameLayout>
+
+
+
+
+
+
+
+
+
     <View
         android:id="@+id/view_line"
         android:layout_below="@+id/chat_title_bar"
@@ -36,8 +92,8 @@
         android:id="@+id/chat_message_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/chat_notice_layout"
         android:layout_above="@id/chat_at_text_view"
+        android:layout_below="@+id/chat_notice_layout"
         android:baselineAligned="false"
         android:clickable="false"
         android:descendantFocusability="blocksDescendants" />

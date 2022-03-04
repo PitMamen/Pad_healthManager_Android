@@ -1,5 +1,6 @@
 package com.bitvalue.sdk.collab.modules.chat.interfaces;
 
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.bitvalue.sdk.collab.base.ILayout;
@@ -18,6 +19,12 @@ import com.bitvalue.sdk.collab.modules.message.MessageInfo;
  * 每个区域提供了多样的方法以供定制使用。
  */
 public interface IChatLayout extends ILayout {
+    /**
+     * 获取 “您已进入中南大学湘雅二医院互联网医院平台就诊室” 提示布局信息
+     */
+
+    FrameLayout getFlayout_tipmessage();
+
 
     /**
      * 获取聊天窗口 Input 区域 Layout
