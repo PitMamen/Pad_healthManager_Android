@@ -141,25 +141,38 @@
             android:background="@drawable/shape_spinner_">
 
 
-            <TextView
-                android:id="@+id/sp_text"
-                android:textSize="10sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:paddingHorizontal="@dimen/qb_px_5"
-                android:text="请选科室"
-                android:textColor="#999999">
-
-            </TextView>
-
-            <Spinner
-                android:id="@+id/sp_keshi"
+            <com.bitvalue.health.util.customview.spinner.EditSpinner
+                android:id="@+id/ed_spinner_select"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:spinnerMode="dropdown"></Spinner>
+                android:layout_height="match_parent"
+                >
+
+            </com.bitvalue.health.util.customview.spinner.EditSpinner>
+
+
+
+
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/sp_text"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:paddingHorizontal="@dimen/qb_px_5"-->
+<!--                android:text="请选科室"-->
+<!--                android:textColor="#999999"-->
+<!--                android:textSize="10sp">-->
+
+<!--            </TextView>-->
+
+<!--            <Spinner-->
+<!--                android:id="@+id/sp_keshi"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:spinnerMode="dropdown"></Spinner>-->
 
         </LinearLayout>
 
@@ -175,7 +188,7 @@
 
             <TextView
                 android:id="@+id/sp_text_zhuanb"
-                android:textSize="10sp"
+                android:textSize="9sp"
                 android:paddingHorizontal="@dimen/qb_px_5"
                 android:layout_gravity="center_vertical"
                 android:text="请选专病"

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -58,7 +59,10 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
     SmartRefreshLayout mRefreshLayout;
 
     @BindView(R.id.list_daily)
-     WrapRecyclerView list_normal;
+    WrapRecyclerView list_normal;
+
+    @BindView(R.id.layout_back)
+    LinearLayout back;
 
     private HomeActivity homeActivity;
     private QuestionAdapter mAdapter;
@@ -68,7 +72,7 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
 
     private int pageSize = 10;
     private int start = 1;
-    private String keyWord="";
+    private String keyWord = "";
 
 
     @Override
@@ -77,8 +81,7 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
 
         tv_title.setText(getString(R.string.questionnaire_selection));
         homeActivity = (HomeActivity) getActivity();
-
-
+        back.setVisibility(View.VISIBLE);
         initList();
         initSearchButton();
     }
@@ -138,8 +141,8 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
     }
 
 
-    private void sendQuestion(QuestionResultBean.ListDTO bean){
-        Log.e(TAG, "发送问卷---------" );
+    private void sendQuestion(QuestionResultBean.ListDTO bean) {
+        Log.e(TAG, "发送问卷---------");
         CustomWenJuanMessage questionMessage = new CustomWenJuanMessage();
         questionMessage.name = bean.name;
         questionMessage.url = bean.questUrl;
@@ -183,10 +186,9 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
     }
 
 
-
     //请求接口获取问卷调查
-    private void getQuestions(){
-        mPresenter.qryQuestByKeyWord(pageSize,start,keyWord);
+    private void getQuestions() {
+        mPresenter.qryQuestByKeyWord(pageSize, start, keyWord);
     }
 
 

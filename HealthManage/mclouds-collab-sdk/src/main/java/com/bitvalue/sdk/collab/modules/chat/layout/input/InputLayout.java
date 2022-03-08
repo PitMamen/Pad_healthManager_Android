@@ -87,7 +87,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     private List<String> userIDs = new ArrayList<>();
     private boolean isMass = false;
     private boolean isVisibleMore;
-
+    private boolean isPictrueConsulting = false;  //图文咨询和视频咨询标识
     public InputLayout(Context context) {
         super(context);
     }
@@ -627,11 +627,11 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
                     } else {
                         mInputMoreView.setVisibility(View.VISIBLE);
                     }
-                    mInputMoreView.setVisibility(isVisibleMore?VISIBLE:GONE);
+                    mInputMoreView.setVisibility(isVisibleMore ? VISIBLE : GONE);
                     //以上是zanhanding添加的代码，用于fix有时需要两次点击加号按钮才能呼出富文本选择布局的问题
                 } else {
                     showInputMoreLayout();//显示“更多”消息发送布局
-                    mInputMoreView.setVisibility(isVisibleMore?VISIBLE:GONE);
+                    mInputMoreView.setVisibility(isVisibleMore ? VISIBLE : GONE);
                     mCurrentState = STATE_ACTION_INPUT;
                     mAudioInputSwitchButton.setImageResource(R.drawable.action_audio_selector);
                     mEmojiInputButton.setImageResource(R.drawable.action_face_selector);
@@ -703,11 +703,18 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     }
 
 
-
-
     public void setGoneInputMore(boolean isvisible) {
         isVisibleMore = isvisible;
-        Log.e(TAG, "setGoneInputMore: "+isVisibleMore );
+        Log.e(TAG, "setGoneInputMore: " + isVisibleMore);
+    }
+
+
+    public void hideMoreShowSendbutton(boolean isPicConsulting) {
+        isPictrueConsulting = isPicConsulting;
+        if (!isPicConsulting) {
+            mMoreInputButton.setVisibility(GONE);
+            mSendTextButton.setVisibility(VISIBLE);
+        }
 
     }
 
@@ -844,6 +851,8 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
         }
     }
 
+
+
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         mInputContent = s.toString();
@@ -858,6 +867,10 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     public void afterTextChanged(Editable s) {
         if (TextUtils.isEmpty(s.toString().trim())) {
             mSendEnable = false;
+            if (!isPictrueConsulting){
+                showSendTextButton(View.VISIBLE);
+                return;
+            }
             showSendTextButton(View.GONE);
             showMoreInputButton(View.VISIBLE);
         } else {

@@ -1,6 +1,7 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,6 +44,7 @@ import com.bitvalue.health.util.customview.MPopupWindow;
 import com.bitvalue.health.util.customview.TypeGravity;
 import com.bitvalue.health.util.customview.UseEquityDialog;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
+import com.bitvalue.health.util.customview.spinner.EditSpinner;
 import com.bitvalue.healthmanage.R;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
@@ -75,10 +77,10 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     @BindView(R.id.tv_sortby_time)
     TextView tv_sortby_time;
 
-    @BindView(R.id.sp_keshi)
-    Spinner spinner_keshi;
-    @BindView(R.id.sp_text)
-    TextView tv_keshi;
+//    @BindView(R.id.sp_keshi)
+//    Spinner spinner_keshi;
+//    @BindView(R.id.sp_text)
+//    TextView tv_keshi;
 
 
     @BindView(R.id.sp_zhuanbing)
@@ -103,6 +105,10 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     RecyclerView list_plans;
     @BindView(R.id.rl_default_view)
     RelativeLayout default_view;
+
+    @BindView(R.id.ed_spinner_select)
+    EditSpinner spinner2;
+
 
     private List<GoodListBean> planListBeans = new ArrayList<>();
     private AlreadySelectPatientAdapter adapter_selectPatient;
@@ -136,7 +142,6 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
         return R.layout.fragment_followup_plan_layout;
     }
 
-
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
@@ -146,6 +151,9 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homeActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         selectList.setLayoutManager(linearLayoutManager);
+        spinner2.setRightImageResource(R.mipmap.down_shixin);
+        spinner2.setHint("请选科室");
+//        spinner2.setTextColor(R.color.text_desc_dark);
         initSpinnerDepartment();
         initSpinnerSpecial();
 //        list_plans.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, this.getResources().getDimension(R.dimen.qb_px_4)), false));
@@ -156,6 +164,17 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
         adapter_selectPatient.setOnItemDeleteClickLisenler(this);
         selectList.setAdapter(adapter_selectPatient);
 
+//        spinner2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.e("EditSpinner", "item " + position + " click");
+//                tv_zhuabing.setText("请选专病");
+//                int departmentID = map.get(departmentList.get(position));
+//                getDiseaseList(departmentID);
+//                getMyPlans(departmentID);
+//            }
+//        });
+
     }
 
 
@@ -165,23 +184,23 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     private void initSpinnerDepartment() {
 
         //将adapter 加入到spinner中
-        spinner_keshi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectDepartmentName = departmentList.get(position);
-                tv_keshi.setText(selectDepartmentName.length() >= 8 ? selectDepartmentName.substring(0, 7) : selectDepartmentName);
-                tv_zhuabing.setText("请选专病");
-                int departmentID = map.get(departmentList.get(position));
-                getDiseaseList(departmentID);
-                getMyPlans(departmentID);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        spinner_keshi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String selectDepartmentName = departmentList.get(position);
+//                tv_keshi.setText(selectDepartmentName.length() >= 8 ? selectDepartmentName.substring(0, 7) : selectDepartmentName);
+//                tv_zhuabing.setText("请选专病");
+//                int departmentID = map.get(departmentList.get(position));
+//                getDiseaseList(departmentID);
+//                getMyPlans(departmentID);
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
     }
 
@@ -260,9 +279,19 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                                 departmentList.add(result.getData().get(i).getDepartmentName());
                                 map.put(result.getData().get(i).getDepartmentName(), result.getData().get(i).getDepartmentId());
                             }
-                            spinnerAdapter = new ArrayAdapter<>(homeActivity, android.R.layout.simple_spinner_item, departmentList);
-                            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinner_keshi.setAdapter(spinnerAdapter);
+
+                            spinner2.setItemData(departmentList);
+                            spinner2.setOnItemClickListener((parent, view, position, id) -> {
+                                tv_zhuabing.setText("请选专病");
+                                int departmentID = map.get(departmentList.get(position));
+                                getDiseaseList(departmentID);
+                                getMyPlans(departmentID);
+                            });
+
+
+//                            spinnerAdapter = new ArrayAdapter<>(homeActivity, android.R.layout.simple_spinner_item, departmentList);
+//                            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                            spinner_keshi.setAdapter(spinnerAdapter);
                         }
                     }else {
                          ToastUtils.show("获取科室列表失败:"+result.getMessage());

@@ -100,11 +100,11 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
         iv_endConsultationButton.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮
         tv_end_consultation.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮
         start_consultation.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.INVISIBLE : View.VISIBLE); //如果是已办 则不显示开始问诊按钮
-        tv_visitNameByDoc.setText(loginBean.getUser().userName); //执行人  (医生自己)
+        tv_visitNameByDoc.setText(loginBean.getUser().user.userName); //执行人  (医生自己)
         tv_department.setText(taskDeatailBean.getTaskDetail().getDeptName()); //科室名称
         tv_start_time.setText(TimeUtils.getTime_tosecond(taskDeatailBean.getTaskDetail().getExecTime())); //执行时间
         tv_patientName.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName()); //就诊人
-        tv_continue_time.setText(taskDeatailBean.getTaskDetail().getRemark());  //持续时间
+        tv_continue_time.setText(taskDeatailBean.getTaskDetail().getRemark()+"分钟");  //持续时间
         tv_applyType.setText(taskDeatailBean.getTaskDetail().getRightsName());  //权益申请类型 (图文咨询,视频咨询)
 
     }

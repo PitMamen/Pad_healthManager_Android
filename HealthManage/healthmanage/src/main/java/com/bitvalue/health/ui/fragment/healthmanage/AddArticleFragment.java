@@ -68,6 +68,9 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
     @BindView(R.id.rl_status_refresh)
     SmartRefreshLayout mRefreshLayout;
 
+    @BindView(R.id.layout_back)
+    LinearLayout back;
+
     private HomeActivity homeActivity;
 
 
@@ -100,6 +103,7 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
     @Override
     public void initView(View rootView) {
         tv_title.setText(getString(R.string.article_select));
+        back.setVisibility(View.VISIBLE);
 //        getMissionObj = (GetMissionObj) getArguments().getSerializable(Constants.GET_MISSION_OBJ);
 
         initSearchButton();

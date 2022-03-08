@@ -412,7 +412,8 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             }
         });
 
-        mChatLayout.getInputLayout().setGoneInputMore(patientinfo.rightsName.equals("视频咨询"));  //如果是图文咨询的 聊天界面点击更多不显示视频问诊控件
+         mChatLayout.getInputLayout().setGoneInputMore(patientinfo.rightsName.equals("视频咨询"));  //如果是图文咨询的 聊天界面点击更多不显示视频问诊控件
+         mChatLayout.getInputLayout().hideMoreShowSendbutton(patientinfo.rightsName.equals("视频咨询"));//如果是图文咨询 进入聊天界面 输入界面右端不显示加号按钮  直接显示发送字样
     }
 
     private int getAtInfoType(List<V2TIMGroupAtInfo> atInfoList) {
