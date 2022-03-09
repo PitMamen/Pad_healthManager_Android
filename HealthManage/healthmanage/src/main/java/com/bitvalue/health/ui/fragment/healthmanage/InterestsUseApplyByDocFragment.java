@@ -124,6 +124,11 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
             case R.id.iv_icon:
             case R.id.tv_end_consultation:
 
+                if (tv_end_consultation.getText().toString().equals(homeActivity.getString(R.string.has_ended))){
+                    ToastUtils.show("已结束问诊!无需再次结束");
+                    return;
+                }
+
                 DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定结束问诊吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                     @Override
                     public void onPositive() {

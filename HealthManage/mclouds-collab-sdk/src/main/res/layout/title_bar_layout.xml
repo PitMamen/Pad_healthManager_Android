@@ -49,7 +49,7 @@
         android:id="@+id/tv_end_visit"
         android:text="结束问诊"
         android:visibility="gone"
-        android:textColor="@color/black"
+        android:textColor="@color/btn_negative_hover"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/qb_px_10"

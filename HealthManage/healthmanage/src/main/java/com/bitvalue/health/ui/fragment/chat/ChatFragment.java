@@ -526,7 +526,6 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventHandler(MessageInfo message) {//不用区分类型，全部直接转换成json发送消息出去
-        Log.e(TAG, "接收消息111");
         mChatLayout.sendMessage(message, false);
 
     }

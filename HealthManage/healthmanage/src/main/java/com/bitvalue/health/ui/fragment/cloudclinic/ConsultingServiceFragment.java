@@ -185,10 +185,8 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
                 tv_wait.setBackgroundResource(R.drawable.shape_bg_white_solid_1);
                 if (allPatientAdapter != null) {
                     if (tempPatientList.size() == patientList.size()) {
-                        Log.e(TAG, "11111111111111");
                         allPatientAdapter.setNewData(tempPatientList);
                     } else {
-                        Log.e(TAG, "00000000000000");
                         requestNewLeaveBean.setPageNo(pageNo);
                         requestNewLeaveBean.setPageSize(pageSize);
                         mPresenter.qryMedicalPatients(requestNewLeaveBean);

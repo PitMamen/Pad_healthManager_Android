@@ -39,6 +39,7 @@ public class DocPersonalModel extends BaseModel implements PersonalDataContract.
     public void logout(Callback callback) {
         mApi.logout().subscribeOn(Schedulers.io()).subscribe(r -> {
             if (!EmptyUtil.isEmpty(r)) {
+                Log.e(TAG, "logout: "+r.toString() );
                 if (r.getCode() == 0) {
                     callback.onSuccess("logout success", 1000);
                 } else {

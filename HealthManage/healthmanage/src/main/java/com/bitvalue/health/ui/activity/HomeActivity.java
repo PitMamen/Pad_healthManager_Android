@@ -112,6 +112,9 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     @BindView(R.id.layout_group)
     RelativeLayout layout_group;
 
+    @BindView(R.id.ll_patient_report)
+    LinearLayout ll_patient_report;
+
     @BindView(R.id.layout_workbench)
     RelativeLayout layout_workbench;
 
@@ -181,12 +184,12 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     FrameLayout frameLayout_second;
 
 
-    private static final int chat_index = 0;
-    private static final int settings = 1;
-    private static final int video_index = 2;
-    private static final int doc_index = 3;
-    private static final int work_bench = 4;
-    private static final int calendar = 5;
+    private static final int PATIENT_REPORT = 0;
+    private static final int SETTINGS = 1;
+    private static final int CONSULTING_SERVICE = 2;
+    private static final int NEEDDEAL_WITH = 3;
+    private static final int FOLLOWUP_PLAN = 4;
+    private static final int CALENDAR = 5;
     private int tabPosition = -1;
     private Fragment[] fragmentArrays;
     private Map<String, Fragment> mapFragments = new HashMap<>();
@@ -221,8 +224,9 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             return;
         }
         frameLayout_full.setVisibility(View.GONE);
-        initFragments(chat_index);  //默认首页工作台界面
         layout_group.setVisibility(loginBean.getAccount().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示咨询模块
+        ll_patient_report.setVisibility(loginBean.getAccount().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示患者报道模块
+        initFragments(loginBean.getAccount().roleName.equals("casemanager") ?PATIENT_REPORT:FOLLOWUP_PLAN);  //如果是个案师账号默认首页工作台界面 否则默认随访计划首页
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig);
     }
 
@@ -285,7 +289,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
         //如果点击的当前Fragment还没加入集合中 则添加
         if (!fragmentArrays[index].isAdded()) {
-            if (index != calendar) {
+            if (index != CALENDAR) {
                 supportFragmentManager.beginTransaction().add(R.id.layout_fragment, fragmentArrays[index]);
             } else {
                 supportFragmentManager.beginTransaction().add(R.id.framelaout_workbench, fragmentArrays[index]);
@@ -307,14 +311,14 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         switch (index) {
 
             //随访计划
-            case work_bench:
+            case FOLLOWUP_PLAN:
                 iv_wkbench.setImageResource(R.mipmap.tab_icon_jh);
                 tv_wkbench.setTextColor(getResources().getColor(R.color.white));
                 layout_workbench.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
 
             //日程
-            case calendar:
+            case CALENDAR:
                 iv_calendar.setImageResource(R.drawable.tab_icon_cy);
                 tv_calender.setTextColor(getResources().getColor(R.color.white));
                 layout_calender.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
@@ -322,28 +326,28 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
 
 //            患者报道
-            case chat_index:
+            case PATIENT_REPORT:
                 img_person.setImageResource(R.mipmap.tab_icon_ct);
                 tv_person.setTextColor(getResources().getColor(R.color.white));
                 layout_person.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
 
 //                咨询
-            case video_index:
+            case CONSULTING_SERVICE:
                 img_group.setImageResource(R.mipmap.tab_icon_zx);
                 tv_group.setTextColor(getResources().getColor(R.color.white));
                 layout_group.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
 
 //                医生好友
-            case doc_index:
+            case NEEDDEAL_WITH:
                 img_send.setImageResource(R.drawable.tab_icon_gr);
                 tv_send.setTextColor(getResources().getColor(R.color.white));
                 layout_send.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
                 break;
 
             //     设置
-            case settings:
+            case SETTINGS:
                 img_settings.setImageResource(R.drawable.tab_icon_set);
                 tv_settings.setTextColor(getResources().getColor(R.color.white));
                 layout_settings.setBackgroundColor(getResources().getColor(R.color.home_blue_dark));
@@ -796,64 +800,64 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
 //                日程点击事件
             case R.id.layout_calendar:
-                if (tabPosition != 5) {
+                if (tabPosition != CALENDAR) {
                     backAllThirdAct();
                 } else {
                     return;
                 }
                 frameLayout_full.setVisibility(View.VISIBLE);
-                afterTabSelect(5);
+                afterTabSelect(CALENDAR);
                 break;
 
 
             //患者报道按钮点击事件
             case R.id.layout_person:
                 //这里不能让一直连续点 做个限制
-                if (tabPosition != 0) {
+                if (tabPosition != PATIENT_REPORT) {
                     backAllThirdAct();
                 } else {
                     return;
                 }
                 frameLayout_full.setVisibility(View.GONE);
                 switchSecondFragment(FRAGMENT_PLAN_LIST, "");
-                afterTabSelect(0);
+                afterTabSelect(PATIENT_REPORT);
                 break;
 
 
             //            随访计划
             case R.id.layout_workbench:
                 //这里不能让一直连续点 做个限制
-                if (tabPosition != 4) {
+                if (tabPosition != FOLLOWUP_PLAN) {
                     backAllThirdAct();
                 } else {
                     return;
                 }
                 frameLayout_full.setVisibility(View.GONE);
-                afterTabSelect(4);
+                afterTabSelect(FOLLOWUP_PLAN);
                 break;
 
 
             //个人设置按钮 点击事件
             case R.id.layout_settings:
-                if (tabPosition != 1) {
+                if (tabPosition != SETTINGS) {
                     backAllThirdAct();
                 } else {
                     return;
                 }
                 frameLayout_full.setVisibility(View.GONE);
-                afterTabSelect(1);
+                afterTabSelect(SETTINGS);
                 break;
 
             //咨询按钮点击事件
             case R.id.layout_group:
-                if (tabPosition != 2) {
+                if (tabPosition != CONSULTING_SERVICE) {
                     backAllThirdAct();
                 } else {   //add
                     return;
                 }
                 frameLayout_full.setVisibility(View.GONE);
                 EventBus.getDefault().post(new VideoRefreshObj());
-                afterTabSelect(2);
+                afterTabSelect(CONSULTING_SERVICE);
 
                 //点击之后隐藏红点
                 layout_pot_video.setVisibility(View.GONE);
@@ -863,13 +867,13 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             //待办按钮点击事件
             case R.id.layout_send:
 //                EventBus.getDefault().post(new VideoRefreshObj());
-                if (tabPosition != 3) {
+                if (tabPosition != NEEDDEAL_WITH) {
                     backAllThirdAct();
                 } else {
                     return;
                 }
                 frameLayout_full.setVisibility(View.GONE);
-                afterTabSelect(3);
+                afterTabSelect(NEEDDEAL_WITH);
                 break;
 
 

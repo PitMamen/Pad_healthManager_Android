@@ -32,8 +32,8 @@
                 android:gravity="center"
                 android:id="@+id/conversation_unread"
                 android:layout_marginLeft="-13dp"
-                android:layout_width="13dp"
-                android:layout_height="13dp"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
                 android:textStyle="bold"
                 android:textColor="#fff"
                 android:textSize="12sp" />

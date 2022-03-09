@@ -3,6 +3,8 @@ package com.tencent.liteav.debug;
 
 import android.util.Base64;
 
+import com.huawei.multimedia.liteav.audiokit.utils.Constant;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,7 +96,7 @@ public class GenerateTestUserSig {
      * You can view your `SDKAppID` after creating an application in the [TRTC console](https://console.cloud.tencent.com/rav).
      * `SDKAppID` uniquely identifies a Tencent Cloud account.
      */
-    public static final int SDKAPPID = 1400547247;
+    public static final int SDKAPPID = 1400613243;    //1400613243  1400547247
 
     /**
      * 签名过期时间，建议不要设置的过短
@@ -133,7 +135,8 @@ public class GenerateTestUserSig {
      * Note: this method is for testing only. Before commercial launch, please migrate the UserSig calculation code and key to your backend server to prevent key disclosure and traffic stealing.
      * Reference: https://cloud.tencent.com/document/product/647/17275#Server
      */
-    public static final String SECRETKEY = "ecaa6c9a3ffa3c93837f0fedf36ff93af28631a82c921027d1323ccf6f1e3616";
+//    public static final String SECRETKEY = "ecaa6c9a3ffa3c93837f0fedf36ff93af28631a82c921027d1323ccf6f1e3616";
+    public static final String SECRETKEY = "d5cc92aa7fff819bc2dcaba19eead249267cde45432a84a3882202f971f91f32";
 
     /**
      * 计算 UserSig 签名

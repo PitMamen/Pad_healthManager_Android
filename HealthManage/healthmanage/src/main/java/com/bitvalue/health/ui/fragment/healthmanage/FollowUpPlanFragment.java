@@ -154,7 +154,7 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
         spinner2.setRightImageResource(R.mipmap.down_shixin);
         spinner2.setHint("请选科室");
 //        spinner2.setTextColor(R.color.text_desc_dark);
-        initSpinnerDepartment();
+//        initSpinnerDepartment();
         initSpinnerSpecial();
 //        list_plans.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, this.getResources().getDimension(R.dimen.qb_px_4)), false));
         plansAdapter = new PlansAdapter(R.layout.item_plan_list, planListBeans);
@@ -364,6 +364,9 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                 hideDialog();
                 //分配计划成功后 通知待分配界面 获取最新数据
                 if (result.getCode() == 0) {
+                    selectPlanBean = null;
+                    selectPatientList.clear();
+                    adapter_selectPatient.setNewData(selectPatientList);
                     EventBus.getDefault().post(new MainRefreshObj());
                     ToastUtils.show("分配随访计划成功!");
                 } else {

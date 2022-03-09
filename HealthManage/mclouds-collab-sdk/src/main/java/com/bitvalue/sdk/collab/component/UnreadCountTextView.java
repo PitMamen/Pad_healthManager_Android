@@ -85,7 +85,7 @@ public class UnreadCountTextView extends AppCompatTextView {
         super.onDraw(canvas);
         //画矩形
         canvas.setDrawFilter(paintFlagsDrawFilter);
-        roundRectF.set(0, 0, roundWidth, height);
+        roundRectF.set(0, 0, roundWidth*0.8f, height*0.8f);
         canvas.drawRoundRect(roundRectF, height / 2, height / 2, roundRectPaint);
         //画字
         Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();

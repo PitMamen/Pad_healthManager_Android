@@ -3,7 +3,7 @@ package com.bitvalue.health.util;
 public class Constants {
 
     //公司的  腾讯IM SDKAppID和秘钥
-    public static final int IM_APPId = 1400613243; //1400613243  测试IM         1400547247  线上IM
+    public static final int IM_APPId = 1400613243;  //1400613243   1400547247
     public static final String IM_PRIVATE_KEY = "ecaa6c9a3ffa3c93837f0fedf36ff93af28631a82c921027d1323ccf6f1e3616";
     public static final String ROOM_ID = "room_id";
     public static final String USER_ID = "user_id";
