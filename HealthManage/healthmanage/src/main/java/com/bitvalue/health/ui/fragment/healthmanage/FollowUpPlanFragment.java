@@ -95,8 +95,6 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     @BindView(R.id.hs_selectedlist)
     WrapRecyclerView selectList;
 
-    @BindView(R.id.rl_selectplan)
-    RelativeLayout rl_select_planl;
     @BindView(R.id.tv_pat_name)
     TextView tv_select_planname;
 
@@ -146,15 +144,13 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     public void initView(View rootView) {
         super.initView(rootView);
         EventBus.getDefault().register(this);
-        rl_select_planl.setVisibility(View.GONE);
+        tv_select_planname.setVisibility(View.GONE);
         list_plans.setLayoutManager(new LinearLayoutManager(homeActivity));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(homeActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         selectList.setLayoutManager(linearLayoutManager);
         spinner2.setRightImageResource(R.mipmap.down_shixin);
-        spinner2.setHint("请选科室");
-//        spinner2.setTextColor(R.color.text_desc_dark);
-//        initSpinnerDepartment();
+        spinner2.setHint(getString(R.string.please_select_department));
         initSpinnerSpecial();
 //        list_plans.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, this.getResources().getDimension(R.dimen.qb_px_4)), false));
         plansAdapter = new PlansAdapter(R.layout.item_plan_list, planListBeans);
@@ -164,45 +160,8 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
         adapter_selectPatient.setOnItemDeleteClickLisenler(this);
         selectList.setAdapter(adapter_selectPatient);
 
-//        spinner2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.e("EditSpinner", "item " + position + " click");
-//                tv_zhuabing.setText("请选专病");
-//                int departmentID = map.get(departmentList.get(position));
-//                getDiseaseList(departmentID);
-//                getMyPlans(departmentID);
-//            }
-//        });
-
     }
 
-
-    /**
-     * 初始化科室 Spinner
-     */
-    private void initSpinnerDepartment() {
-
-        //将adapter 加入到spinner中
-//        spinner_keshi.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                String selectDepartmentName = departmentList.get(position);
-//                tv_keshi.setText(selectDepartmentName.length() >= 8 ? selectDepartmentName.substring(0, 7) : selectDepartmentName);
-//                tv_zhuabing.setText("请选专病");
-//                int departmentID = map.get(departmentList.get(position));
-//                getDiseaseList(departmentID);
-//                getMyPlans(departmentID);
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-
-    }
 
 
     private void initSpinnerSpecial() {
@@ -282,16 +241,12 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
 
                             spinner2.setItemData(departmentList);
                             spinner2.setOnItemClickListener((parent, view, position, id) -> {
-                                tv_zhuabing.setText("请选专病");
+                                tv_zhuabing.setText(getString(R.string.please_select_specific_disease));
                                 int departmentID = map.get(departmentList.get(position));
                                 getDiseaseList(departmentID);
                                 getMyPlans(departmentID);
                             });
 
-
-//                            spinnerAdapter = new ArrayAdapter<>(homeActivity, android.R.layout.simple_spinner_item, departmentList);
-//                            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                            spinner_keshi.setAdapter(spinnerAdapter);
                         }
                     }else {
                          ToastUtils.show("获取科室列表失败:"+result.getMessage());
@@ -364,10 +319,13 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                 hideDialog();
                 //分配计划成功后 通知待分配界面 获取最新数据
                 if (result.getCode() == 0) {
-                    selectPlanBean = null;
-                    selectPatientList.clear();
-                    adapter_selectPatient.setNewData(selectPatientList);
                     EventBus.getDefault().post(new MainRefreshObj());
+                    selectPatientList.clear();   //清空已勾选的患者
+                    planListBeans.clear();  //清空已选中的套餐
+                    tv_select_planname.setText("");
+                    tv_select_planname.setVisibility(View.GONE);
+                    plansAdapter.setNewData(planListBeans);
+                    adapter_selectPatient.setNewData(selectPatientList);
                     ToastUtils.show("分配随访计划成功!");
                 } else {
                     ToastUtils.show(result.getMessage());
@@ -503,8 +461,8 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     public void onItemClick(Object object, boolean isCheck) {
         selectPlanBean = (GoodListBean) object;
         if (selectPlanBean != null) {
-            if (rl_select_planl.getVisibility() == View.GONE) {
-                rl_select_planl.setVisibility(View.VISIBLE);
+            if ( tv_select_planname.getVisibility()==View.GONE){
+                tv_select_planname.setVisibility(View.VISIBLE);
             }
             tv_select_planname.setText(selectPlanBean.getGoodsName());
         }

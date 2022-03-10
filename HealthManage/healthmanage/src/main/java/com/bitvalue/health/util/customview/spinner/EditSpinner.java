@@ -215,6 +215,7 @@ public class EditSpinner extends RelativeLayout implements View.OnClickListener,
                 showFilterData(key);
             }
         } else {
+            if (popupWindow!=null)
             popupWindow.dismiss();
         }
     }

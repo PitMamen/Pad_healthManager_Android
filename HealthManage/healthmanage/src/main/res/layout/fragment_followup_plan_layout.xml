@@ -90,16 +90,18 @@
             android:layout_height="wrap_content"></TextView>
 
 
-        <RelativeLayout
-            android:id="@+id/rl_selectplan"
-            android:background="@drawable/shape_select_patient_"
-            android:layout_marginTop="@dimen/qb_px_10"
-            android:layout_marginStart="@dimen/qb_px_5"
-            android:layout_width="wrap_content"
-            android:layout_height="24dp">
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/rl_selectplan"-->
+<!--            android:background="@drawable/shape_select_patient_"-->
+<!--            android:layout_marginTop="@dimen/qb_px_10"-->
+<!--            android:layout_marginStart="@dimen/qb_px_5"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="24dp">-->
 
             <TextView
                 android:id="@+id/tv_pat_name"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shape_select_patient_"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -108,7 +110,7 @@
                 android:textColor="#7AC756"
                 android:textSize="12sp"></TextView>
 
-        </RelativeLayout>
+<!--        </RelativeLayout>-->
 
 
 
