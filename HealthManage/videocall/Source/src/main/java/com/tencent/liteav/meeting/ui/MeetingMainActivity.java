@@ -780,6 +780,9 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
         if (mRemoteUserView != null) {
             mRemoteUserView.notifyDataSetChanged();
         }
+
+        exitMeetingConfirm();  //如果对方挂断 或者 离开房间 本地也需要退出房间 并退出界面
+        finish();
     }
 
 
@@ -1032,6 +1035,7 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
             mRemoteUserView.setRemoteUserListCallback(new RemoteUserListView.RemoteUserListCallback() {
                 @Override
                 public void onFinishClick() {
+                    Log.e(TAG, "对方已离开!!!!! " );
                     mRemoteUserView.setVisibility(View.GONE);
                     StateBarUtils.setDarkStatusBar(MeetingMainActivity.this);
                 }

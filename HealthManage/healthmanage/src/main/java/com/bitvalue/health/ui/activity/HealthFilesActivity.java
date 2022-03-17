@@ -3,6 +3,7 @@ package com.bitvalue.health.ui.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import com.bitvalue.health.base.BaseAdapter;
 import com.bitvalue.health.ui.adapter.HealthLogsAdapter;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
+import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
@@ -95,6 +97,7 @@ public class HealthFilesActivity extends AppActivity {
     private GetLogsApi getLogsApi;
     private int total;
     private String userId;
+    private String idcardNum;//身份证号码
     private PatientDataMoreApi.PatientDataMoreResponse patientDataMoreResponse;
 
     @Override
@@ -105,11 +108,12 @@ public class HealthFilesActivity extends AppActivity {
     @Override
     protected void initView() {
         userId = getIntent().getStringExtra(Constants.USER_ID);
+//        idcardNum = getIntent().getStringExtra(Constants.IDCARD_NUMBER);
+        Log.e("TAG", "患者ID: "+userId);
         getLogsApi = new GetLogsApi();
-        getLogsApi.hospitalCode = Constants.HOSPITAL_CODE;//目前就湘雅2一个医院，如果有多个医药后台暂时建议用逗号拼接
-        getLogsApi.month = "36";
-        getLogsApi.userId = userId;
-        getLogsApi.recordType = "all";
+        getLogsApi.timeHorizon = "48";
+        getLogsApi.userId = "249";
+//        getLogsApi.idNumber = "430202198802186610";
         initList(); //初始化各控件
         getPersonalData(); //加载患者详细数据
         getLogsData(); //加载患者的就诊记录
@@ -121,7 +125,7 @@ public class HealthFilesActivity extends AppActivity {
      */
     private void getPersonalData() {
         PatientDataMoreApi patientDataMoreApi = new PatientDataMoreApi();
-        patientDataMoreApi.userId = userId;
+        patientDataMoreApi.userId = 208+"";   //先写死做开发测试
         EasyHttp.get(this).api(patientDataMoreApi).request(new HttpCallback<ApiResult<PatientDataMoreApi.PatientDataMoreResponse>>(this) {
 
             @Override
@@ -141,16 +145,19 @@ public class HealthFilesActivity extends AppActivity {
                         return;
                     }
                     patientDataMoreResponse = result.getData();
-                    tv_name.setText(patientDataMoreResponse.userName);
-                    tv_sex.setText(patientDataMoreResponse.userSex);
-                    tv_age.setText(patientDataMoreResponse.userAge + "岁");
-                    tv_height.setText(patientDataMoreResponse.height + "cm");
-                    tv_weight.setText(patientDataMoreResponse.weight + "kg");
-                    tv_blood.setText(patientDataMoreResponse.bloodType);
+                    String curen = TimeUtils.getCurrenTime();
+                    int finatime = Integer.valueOf(curen) - Integer.valueOf((patientDataMoreResponse.getBaseInfo().getBirthdayX().substring(0, 4)));
+                    tv_name.setText(patientDataMoreResponse.getBaseInfo().getUserNameX());
+                    tv_sex.setText(patientDataMoreResponse.getBaseInfo().getUserSexX());
+                    tv_age.setText(finatime + "岁");
+                    tv_height.setText(patientDataMoreResponse.getExternalInfo().getHeight() + "cm");
+                    tv_weight.setText(patientDataMoreResponse.getExternalInfo().getWeight() + "kg");
+                    tv_blood.setText(patientDataMoreResponse.getExternalInfo().getBloodType());
+                    tv_file_id.setText(patientDataMoreResponse.getBaseInfo().getHealthRecordCode());
 
-                    tv_id_no.setText(DataUtil.desensitizedIdNumber(patientDataMoreResponse.identificationNo));
-                    tv_phone.setText(DataUtil.desensitizedPhoneNumber(patientDataMoreResponse.phone));
-                    tv_address.setText(patientDataMoreResponse.address);
+                    tv_id_no.setText(DataUtil.desensitizedIdNumber(patientDataMoreResponse.getBaseInfo().getIdentificationNoX()));
+                    tv_phone.setText(DataUtil.desensitizedPhoneNumber(patientDataMoreResponse.getExternalInfo().getPhone()));
+                    tv_address.setText(patientDataMoreResponse.getExternalInfo().getAddress());
                 } else {
                     ToastUtil.toastShortMessage(result.getMessage());
                 }
@@ -218,14 +225,11 @@ public class HealthFilesActivity extends AppActivity {
     private void initList() {
         //参考AddQuestionFragment分页已调通
         mAdapter = new HealthLogsAdapter(this);
-        mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(RecyclerView recyclerView, View itemView, int position) {
-                Intent intent = new Intent(HealthFilesActivity.this, MRDetailActivity.class);
-                intent.putExtra(Constants.DOC_ID, Uri.encode(logBeans.get(position).docId));
-                intent.putExtra(Constants.INDEX_NAME, logBeans.get(position).recordType);
-                HealthFilesActivity.this.startActivity(intent);
-            }
+        mAdapter.setOnItemClickListener((recyclerView, itemView, position) -> {
+            Intent intent = new Intent(HealthFilesActivity.this, MRDetailActivity.class);
+            intent.putExtra(Constants.DOC_ID, Uri.encode(logBeans.get(position).getDocId()));
+            intent.putExtra(Constants.INDEX_NAME, logBeans.get(position).getType());
+            HealthFilesActivity.this.startActivity(intent);
         });
         list_health_log.setAdapter(mAdapter);
     }
@@ -235,7 +239,7 @@ public class HealthFilesActivity extends AppActivity {
      * 网络请求 获取患者看诊记录
      */
     private void getLogsData() {
-        EasyHttp.get(this).api(getLogsApi).request(new HttpCallback<ApiResult<ArrayList<GetLogsApi.LogBean>>>(this) {
+        EasyHttp.post(this).api(getLogsApi).request(new HttpCallback<ApiResult<ArrayList<GetLogsApi.LogBean>>>(this) {
             @Override
             public void onStart(Call call) {
                 super.onStart(call);

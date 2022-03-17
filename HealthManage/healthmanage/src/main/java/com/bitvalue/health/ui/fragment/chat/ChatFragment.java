@@ -38,6 +38,7 @@ import com.bitvalue.health.presenter.healthmanager.InterestsUseApplyByDocPresent
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.chatUtil.CustomVideoCallMessageController;
@@ -95,6 +96,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     private ArrayList<String> userIDList = new ArrayList<>();
     private String userID;
     private TaskDeatailBean taskDeatailBean;
+    private LoginBean loginBean;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -116,6 +118,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     @Override
     public void initView(View view) {
         Bundle bundle = getArguments();
+        loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
         mChatInfo = (ChatInfo) bundle.getSerializable(Constants.CHAT_INFO);
         patientinfo = (NewLeaveBean.RowsDTO) bundle.getSerializable(Constants.USERINFO);
         if (mChatInfo == null || patientinfo == null) {
@@ -200,7 +203,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             DataUtil.showNormalDialog(homeActivity, getString(R.string.reminder), getString(R.string.endtheconsultation), getString(R.string.confirm), getString(R.string.cancel), new DataUtil.OnNormalDialogClicker() {
                 @Override
                 public void onPositive() {
-                    LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
+
                     SaveRightsUseBean saveRightsUseBean = new SaveRightsUseBean();
                     assert loginBean != null;
                     saveRightsUseBean.deptName = loginBean.getUser().user.departmentName;
@@ -376,9 +379,12 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                 CustomVideoCallMessage message = new CustomVideoCallMessage();
                 message.title = getString(R.string.video_visit);
                 long currentTimeMillis = System.currentTimeMillis();
-                String rooId = currentTimeMillis + "";
-                message.msgDetailId = rooId.substring(rooId.length() - 7, rooId.length());
-//                message.userId = mIds;
+                if (EmptyUtil.isEmpty(planId)) {
+                    ToastUtils.show("患者ID为空,不能进行视频通话!");
+                    return;
+                }
+                String rooId = loginBean.getUser().user.userId + planId;
+                message.msgDetailId = rooId;
                 message.content = getString(R.string.click_to_access_the_video);
                 message.timeStamp = currentTimeMillis;
                 //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
@@ -412,8 +418,8 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             }
         });
 
-         mChatLayout.getInputLayout().setGoneInputMore(patientinfo.rightsName.equals("视频咨询"));  //如果是图文咨询的 聊天界面点击更多不显示视频问诊控件
-         mChatLayout.getInputLayout().hideMoreShowSendbutton(patientinfo.rightsName.equals("视频咨询"));//如果是图文咨询 进入聊天界面 输入界面右端不显示加号按钮  直接显示发送字样
+        mChatLayout.getInputLayout().setGoneInputMore(patientinfo.rightsName.equals("视频咨询"));  //如果是图文咨询的 聊天界面点击更多不显示视频问诊控件
+        mChatLayout.getInputLayout().hideMoreShowSendbutton(patientinfo.rightsName.equals("视频咨询"));//如果是图文咨询 进入聊天界面 输入界面右端不显示加号按钮  直接显示发送字样
     }
 
     private int getAtInfoType(List<V2TIMGroupAtInfo> atInfoList) {
@@ -514,7 +520,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventGetTaskn(MainRefreshObj bean) {
-        Log.e(TAG, "接收待办实体---" + bean);
+//        Log.e(TAG, "接收待办实体---" + bean);
 //        taskDeatailBean = bean;
     }
 

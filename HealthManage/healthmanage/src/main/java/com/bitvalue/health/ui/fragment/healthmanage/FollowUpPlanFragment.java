@@ -27,6 +27,7 @@ import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.PlanListBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
+import com.bitvalue.health.callback.ItemClickLisenterCallback;
 import com.bitvalue.health.callback.OnItemClick;
 import com.bitvalue.health.callback.ViewCallback;
 import com.bitvalue.health.model.planmodel.DiseaseListApi;
@@ -163,7 +164,6 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     }
 
 
-
     private void initSpinnerSpecial() {
 
         //将adapter 加入到spinner中
@@ -232,7 +232,7 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
             public void onSucceed(ApiResult<List<DepartmentResponeBean>> result) {
                 super.onSucceed(result);
                 if (!EmptyUtil.isEmpty(result)) {
-                    if (result.getCode()==0){
+                    if (result.getCode() == 0) {
                         if (!EmptyUtil.isEmpty(result.getData()) && result.getData().size() > 0) {
                             for (int i = 0; i < result.getData().size(); i++) {
                                 departmentList.add(result.getData().get(i).getDepartmentName());
@@ -240,16 +240,26 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                             }
 
                             spinner2.setItemData(departmentList);
-                            spinner2.setOnItemClickListener((parent, view, position, id) -> {
+                            spinner2.setOnItemClickListener(name -> {
                                 tv_zhuabing.setText(getString(R.string.please_select_specific_disease));
-                                int departmentID = map.get(departmentList.get(position));
-                                getDiseaseList(departmentID);
-                                getMyPlans(departmentID);
+                                if (map != null && map.size() > 0) {
+                                    int departmentID = map.get(name);
+                                    Log.e(TAG, "选中ID: " + departmentID);
+                                    getDiseaseList(departmentID);
+                                    getMyPlans(departmentID);
+                                }
                             });
+//                            spinner2.setOnItemClickListener((parent, view, position, id) -> {
+//                                tv_zhuabing.setText(getString(R.string.please_select_specific_disease));
+//                                int departmentID = map.get(departmentList.get(position));
+//                                Log.e(TAG, "选中ID: "+departmentID );
+//                                getDiseaseList(departmentID);
+//                                getMyPlans(departmentID);
+//                            });
 
                         }
-                    }else {
-                         ToastUtils.show("获取科室列表失败:"+result.getMessage());
+                    } else {
+                        ToastUtils.show("获取科室列表失败:" + result.getMessage());
                     }
 
                 }
@@ -461,7 +471,7 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
     public void onItemClick(Object object, boolean isCheck) {
         selectPlanBean = (GoodListBean) object;
         if (selectPlanBean != null) {
-            if ( tv_select_planname.getVisibility()==View.GONE){
+            if (tv_select_planname.getVisibility() == View.GONE) {
                 tv_select_planname.setVisibility(View.VISIBLE);
             }
             tv_select_planname.setText(selectPlanBean.getGoodsName());

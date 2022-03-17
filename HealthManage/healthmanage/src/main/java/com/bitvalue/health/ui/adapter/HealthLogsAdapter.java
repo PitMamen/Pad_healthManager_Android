@@ -41,14 +41,14 @@ public class HealthLogsAdapter extends AppAdapter<GetLogsApi.LogBean> {
         @Override
         public void onBindView(int position) {
             logBean = getItem(position);
-            tv_time.setText(logBean.happenedTime.substring(0, 10));
-            tv_type.setText(logBean.recordType.equals("menzhen") ? "门诊" : "住院");
-            tv_type.setTextColor(logBean.recordType.equals("menzhen") ?
+            tv_time.setText(logBean.getSj().substring(0, 10));
+            tv_type.setText(logBean.getType().equals("menzhen") ? "门诊" : "住院");
+            tv_type.setTextColor(logBean.getType().equals("menzhen") ?
                     getContext().getResources().getColor(R.color.main_blue) : getContext().getResources().getColor(R.color.green));
-            tv_result.setText(logBean.departmentDiagnosis);
-            tv_hospital.setText(logBean.hospitalName);
-            tv_office.setText(logBean.hospitalDepartment);
-            tv_doctor.setText(logBean.doctorName);
+            tv_result.setText(logBean.getZdmc());
+            tv_hospital.setText(logBean.getHospitalName());
+            tv_office.setText(logBean.getKsmc());
+            tv_doctor.setText(logBean.getZzysxm());
         }
     }
 }

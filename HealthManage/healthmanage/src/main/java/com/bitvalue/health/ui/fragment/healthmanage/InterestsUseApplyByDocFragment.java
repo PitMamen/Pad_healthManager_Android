@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.bitvalue.health.api.eventbusbean.MainRefreshObj;
 import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;

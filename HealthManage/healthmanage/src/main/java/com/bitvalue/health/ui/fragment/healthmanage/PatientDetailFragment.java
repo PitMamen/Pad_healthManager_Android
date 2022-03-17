@@ -1,9 +1,11 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
 import static com.bitvalue.health.util.Constants.FRAGMENT_DETAIL;
+import static com.bitvalue.health.util.Constants.IDCARD_NUMBER;
 import static com.bitvalue.health.util.Constants.USER_ID;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.contract.healthmanagercontract.VisitPlanDetailContract;
 import com.bitvalue.health.presenter.healthmanager.VisitPlanDetailPresenter;
+import com.bitvalue.health.ui.activity.HealthFilesActivity;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.ImageListDisplayAdapter;
 import com.bitvalue.health.util.Constants;
@@ -92,11 +95,13 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
     LinearLayout ll_image_default;
     @BindView(R.id.iv_patient_icon)
     ImageView iv_head;
+    @BindView(R.id.tv_bingli_detail)
+    TextView tv_bingli_detail;
 
     private NewLeaveBean.RowsDTO itemPosition;
     private ImageListDisplayAdapter displayAdapter;
     private HomeActivity homeActivity;
-    private int userID;
+    private int userID=0;
 
     @Override
     protected VisitPlanDetailPresenter createPresenter() {
@@ -176,7 +181,7 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
     }
 
 
-    @OnClick({R.id.tv_sendmessage, R.id.tv_logout, R.id.tv_more_data})
+    @OnClick({R.id.tv_sendmessage, R.id.tv_logout, R.id.tv_more_data, R.id.tv_bingli_detail})
     public void OnClick(View view) {
         switch (view.getId()) {
             //发送消息
@@ -206,14 +211,25 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
 
             //更多数据
             case R.id.tv_more_data:
-                if (EmptyUtil.isEmpty(itemPosition)){
+                if (EmptyUtil.isEmpty(itemPosition)) {
                     NewLeaveBean.RowsDTO createItem = new NewLeaveBean.RowsDTO();
                     createItem.setUserId(String.valueOf(userID));
                     homeActivity.switchSecondFragment(Constants.FRAGMENT_MORE_DATA, createItem);
-                }else {
+                } else {
                     homeActivity.switchSecondFragment(Constants.FRAGMENT_MORE_DATA, itemPosition);
-
                 }
+                break;
+
+//               病历详情
+            case R.id.tv_bingli_detail:
+                Intent intent = new Intent(homeActivity, HealthFilesActivity.class);
+                if (userID!=0){
+                    intent.putExtra(USER_ID, userID);
+                }else {
+                    if (!EmptyUtil.isEmpty(itemPosition))
+                    intent.putExtra(USER_ID, itemPosition.getUserId());
+                }
+                homeActivity.startActivity(intent);
                 break;
         }
     }
@@ -221,6 +237,7 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
 
     /**
      * 获取患者上传资料成功回调
+     *
      * @param listBean
      */
     @Override
@@ -235,6 +252,7 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
 
     /**
      * 获取患者上传资料失败回调
+     *
      * @param
      */
     @Override

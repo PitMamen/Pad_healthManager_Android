@@ -3,13 +3,14 @@ package com.bitvalue.health.util;
 public class Constants {
 
     //公司的  腾讯IM SDKAppID和秘钥
-    public static final int IM_APPId = 1400613243;  //1400613243   1400547247
+    public static final int IM_APPId = 1400547247;  //1400613243   1400547247
     public static final String IM_PRIVATE_KEY = "ecaa6c9a3ffa3c93837f0fedf36ff93af28631a82c921027d1323ccf6f1e3616";
     public static final String ROOM_ID = "room_id";
     public static final String USER_ID = "user_id";
+    public static final String IDCARD_NUMBER = "idcard_number";
     public static final String NEED_TOAST = "need_toast";
-    public static final String HOST_URL = "http://192.168.1.122/";
-//    public static final String HOST_URL = "http://hmg.mclouds.org.cn";
+//    public static final String HOST_URL = "http://192.168.1.122/";
+    public static final String HOST_URL = "http://hmg.mclouds.org.cn";
     public static int screenWidth, screenHeight;
     public static final String KEY_REMEMBER_PSD = "key_remember_psd";
     public static final String KEY_TOKEN = "Authorization";

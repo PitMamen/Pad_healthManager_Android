@@ -245,15 +245,6 @@ public interface CommonService {
     Observable<ApiResult<NewLeaveBean>> qryPatientList(@Body RequestNewLeaveBean leaveBean);
 
 
-    /**
-     * 查看患者上传资料
-     *
-     * @param bean
-     * @return
-     */
-    @POST("health-api/health/doctor/qryUserLocalVisit")
-    Observable<ApiResult<List<TaskDetailBean>>> qryUserLocalVisit(@Body UserLocalVisitBean bean);
-
 
     /**
      * 所有患者、未注册患者、未分配患者
@@ -264,6 +255,17 @@ public interface CommonService {
 
     @POST("health-api/patient/qryPatientList")
     Observable<ApiResult<NewLeaveBean>> qryallAllocatedPatientList(@Body AllocatedPatientRequest leaveBean);
+
+
+
+    /**
+     * 查看患者上传资料
+     *
+     * @param bean
+     * @return
+     */
+    @POST("health-api/health/doctor/qryUserLocalVisit")
+    Observable<ApiResult<List<TaskDetailBean>>> qryUserLocalVisit(@Body UserLocalVisitBean bean);
 
 
     /**

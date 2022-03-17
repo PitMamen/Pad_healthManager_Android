@@ -1,6 +1,8 @@
 package com.bitvalue.health.ui.adapter;
 
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
 import com.bitvalue.health.api.responsebean.TaskInfoDTO;
@@ -54,18 +56,22 @@ public class HealthPlanPreviewListAdapter extends BaseQuickAdapter<HealthPlanTas
             if (TextUtils.isEmpty(task.getFormartPlanDescribe())){
                 task.setFormartPlanDescribe("暂无");
             }
+            Log.e(TAG, "计划类型: "+task.getPlanType()+"---------"+task.getFormartPlanDescribe() );
             switch (task.getPlanType()){
                 case TypeConstants.Knowledge:
-
+                    helper.getView(R.id.tv_knowledge).setVisibility(View.VISIBLE);
                     helper.setText(R.id.tv_knowledge,"文章阅读："+task.getFormartPlanDescribe());
                     break;
                 case TypeConstants.Quest:
+                    helper.getView(R.id.tv_question).setVisibility(View.VISIBLE);
                 helper.setText(R.id.tv_question,"问卷调查："+task.getFormartPlanDescribe());
                     break;
                 case TypeConstants.Check:
+                    helper.getView(R.id.tv_check).setVisibility(View.VISIBLE);
                     helper.setText(R.id.tv_check,"检查提醒："+task.getFormartPlanDescribe());
                     break;
                 case TypeConstants.Exam:
+                    helper.getView(R.id.tv_exam).setVisibility(View.VISIBLE);
                     helper.setText(R.id.tv_exam,"检验提醒："+task.getFormartPlanDescribe());
                     break;
 

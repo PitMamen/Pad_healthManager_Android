@@ -9,9 +9,9 @@
 
     <stroke
         android:width="@dimen/qb_px_1"
-        android:color="#CCCCCC" />
+        android:color="#398CF7" />
     <!-- 背景色 -->
-    <solid android:color="#CCCCCC" />
+    <solid android:color="#398CF7" />
 
 
 </shape>

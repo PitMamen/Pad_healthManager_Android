@@ -69,30 +69,36 @@ public class UnreadCountTextView extends AppCompatTextView {
         textSize = height - ScreenUtil.getPxByDp(4.4f);
         textPaint.setTextSize(textSize);
         //获取文本宽度
-        int textWidth = (int) textPaint.measureText(text);
-        //区分画圆的是圆形还是圆角矩形
-        if (text.length() > 1) {
-            roundWidth = textWidth + height - textWidth / text.length();
-        } else {
-            roundWidth = height;
+        if (text!=null){
+            int textWidth = (int) textPaint.measureText(text);
+            //区分画圆的是圆形还是圆角矩形
+            if (text.length() > 1) {
+                roundWidth = textWidth + height - textWidth / text.length();
+            } else {
+                roundWidth = height;
+            }
+            //重新测量控件
+            setMeasuredDimension(roundWidth, height);
         }
-        //重新测量控件
-        setMeasuredDimension(roundWidth, height);
+
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //画矩形
-        canvas.setDrawFilter(paintFlagsDrawFilter);
-        roundRectF.set(0, 0, roundWidth*0.8f, height*0.8f);
-        canvas.drawRoundRect(roundRectF, height / 2, height / 2, roundRectPaint);
-        //画字
-        Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
-        float top = fontMetrics.top;
-        float bottom = fontMetrics.bottom;
-        int baseLintY = (int) (roundRectF.centerY() - top / 2 - bottom / 2);
-        canvas.drawText(text, roundRectF.centerX(), baseLintY, textPaint);
+        if (null!=text){
+            canvas.setDrawFilter(paintFlagsDrawFilter);
+            roundRectF.set(0, 0, roundWidth*0.8f, height*0.8f);
+            canvas.drawRoundRect(roundRectF, height / 2, height / 2, roundRectPaint);
+            //画字
+            Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
+            float top = fontMetrics.top;
+            float bottom = fontMetrics.bottom;
+            int baseLintY = (int) (roundRectF.centerY() - top / 2 - bottom / 2);
+            canvas.drawText(text, roundRectF.centerX(), baseLintY, textPaint);
+        }
+
     }
 
     public void setText(String text) {

@@ -23,6 +23,7 @@ import android.widget.ListPopupWindow;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.bitvalue.health.callback.ItemClickLisenterCallback;
 import com.bitvalue.healthmanage.R;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class EditSpinner extends RelativeLayout implements View.OnClickListener,
     //    private Animation mAnimation;
 //    private Animation mResetAnimation;
     private AdapterView.OnItemClickListener mOnItemClickListener;
+    private ItemClickLisenterCallback callback;
     private int maxLine = 1;
 
     public EditSpinner(Context context, AttributeSet attrs) {
@@ -59,6 +61,11 @@ public class EditSpinner extends RelativeLayout implements View.OnClickListener,
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
     }
+
+    public void setOnItemClickListener(ItemClickLisenterCallback callback) {
+        this.callback = callback;
+    }
+
 
     public void setText(String text) {
         editText.setText(text);
@@ -183,14 +190,19 @@ public class EditSpinner extends RelativeLayout implements View.OnClickListener,
 
     @Override
     public final void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.e("TAG", "onItemClick11: "+((BaseEditSpinnerAdapter) parent.getAdapter()).getItemString(position) );
+//        Log.e("TAG", "onItemClick11: " + ((BaseEditSpinnerAdapter) parent.getAdapter()).getItemString(position));
         String selectString = ((BaseEditSpinnerAdapter) parent.getAdapter()).getItemString(position);
+        String departName = selectString;
         editText.setText(selectString.length() >= 9 ? selectString.substring(0, 8) : selectString);
         editText.setTextColor(getResources().getColor(R.color.text_desc_dark));
         mRightImageTopView.setClickable(false);
         popupWindow.dismiss();
-        if (mOnItemClickListener != null) {
-            mOnItemClickListener.onItemClick(parent, view, position, id);
+//        if (mOnItemClickListener != null) {
+//            mOnItemClickListener.onItemClick(parent, view, position, id);
+//        }
+
+        if (callback != null) {
+            callback.ItemClick(departName);
         }
     }
 
@@ -209,14 +221,14 @@ public class EditSpinner extends RelativeLayout implements View.OnClickListener,
         String key = s.toString();
         editText.setSelection(key.length());
         if (!TextUtils.isEmpty(key)) {
-            if (key.contains("(")||key.contains(")")||key.contains("（")||key.contains("）")){
-                Log.e("TAG", "含括号！！！！！" );
-            }else {
+            if (key.contains("(") || key.contains(")") || key.contains("（") || key.contains("）")) {
+                Log.e("TAG", "含括号！！！！！");
+            } else {
                 showFilterData(key);
             }
         } else {
-            if (popupWindow!=null)
-            popupWindow.dismiss();
+            if (popupWindow != null)
+                popupWindow.dismiss();
         }
     }
 
@@ -234,4 +246,6 @@ public class EditSpinner extends RelativeLayout implements View.OnClickListener,
         }
 
     }
+
+
 }

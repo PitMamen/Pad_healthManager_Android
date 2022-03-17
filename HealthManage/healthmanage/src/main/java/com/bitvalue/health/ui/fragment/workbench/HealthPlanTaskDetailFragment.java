@@ -203,7 +203,9 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
             tv_name.setText(userInfo.getUserName());
             tv_sex.setText(userInfo.getSex());
             tv_age.setText(finatime + "岁");
-            tv_phone.setText(userInfo.getInfoDetail().getSjhm());
+            if (null!=userInfo.getInfoDetail()){
+                tv_phone.setText(userInfo.getInfoDetail().getSjhm());
+            }
         }
         mPresenter.queryhealtPlan(planId);
     }

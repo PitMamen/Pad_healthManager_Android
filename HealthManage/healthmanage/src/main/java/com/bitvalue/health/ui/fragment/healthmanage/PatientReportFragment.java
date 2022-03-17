@@ -188,7 +188,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
         // TODO: 2022/1/11 request
         Log.e(TAG, "收到获取最新未分配界面--------- ");
         tempPaitentList.clear();
-        pageNo = 0;
+        pageNo = 1; //这里防止分配计划之前有下拉刷新动作 所以分配成功之后重置一下分页
         requestDistribution(et_search.getText().toString());
         requestDistribution("");
     }

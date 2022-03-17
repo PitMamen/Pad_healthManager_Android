@@ -117,7 +117,7 @@ public class MoreDataFragment extends BaseFragment<MoreDataDetailPresenter> impl
         homeActivity.runOnUiThread(() -> {
             hideDialog();
             default_view.setVisibility(View.VISIBLE);
-            ToastUtils.show(failMessage);
+//            ToastUtils.show(failMessage);
         });
     }
 }

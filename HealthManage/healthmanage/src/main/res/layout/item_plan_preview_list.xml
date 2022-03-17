@@ -78,22 +78,26 @@
                 android:layout_marginStart="@dimen/qb_px_15"
                 android:layout_height="match_parent">
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_question"
                     style="@style/textview_content"
                     android:text="问卷调查：暂无"
                     android:layout_marginTop="@dimen/qb_px_10"
                     />
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_knowledge"
                     style="@style/textview_content"
                     android:text="文章阅读：暂无"
                     android:layout_marginTop="@dimen/qb_px_10"/>
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_check"
                     style="@style/textview_content"
                     android:text="检查提醒：暂无"
                     android:layout_marginTop="@dimen/qb_px_10"/>
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/tv_exam"
                     style="@style/textview_content"
                     android:text="检验提醒：暂无"

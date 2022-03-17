@@ -160,6 +160,28 @@
 
         </LinearLayout>
 
+
+        <TextView
+            android:id="@+id/tv_bingli_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/qb_px_20"
+            android:background="@drawable/shape_biaoqian_select"
+            android:paddingHorizontal="@dimen/qb_px_4"
+            android:paddingVertical="@dimen/qb_px_4"
+            android:text="病历详情"
+            android:textColor="@color/home_blue"
+            android:textSize="12sp">
+
+        </TextView>
+
+
+
+
+
+
     </RelativeLayout>
 
 

@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.bitvalue.health.api.eventbusbean.MainRefreshObj;
 import com.bitvalue.health.api.eventbusbean.NotifyactionObj;
 import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.responsebean.LoginBean;
