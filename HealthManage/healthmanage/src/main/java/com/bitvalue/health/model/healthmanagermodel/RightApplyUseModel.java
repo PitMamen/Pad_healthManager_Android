@@ -22,7 +22,6 @@ public class RightApplyUseModel extends BaseModel implements RightApplyUseContra
     public void getMyRight(int goodsId, String id, String userId, Callback callback) {
         if (!EmptyUtil.isEmpty(userId)) {
             mApi.queryMyRights(userId,id).subscribeOn(Schedulers.io()).subscribe(result -> {
-                Log.e(TAG, "getMyRigh22: "+result.toString() );
                 if (!EmptyUtil.isEmpty(result)) {
                     if (result.getCode() == 0) {
                         List<MyRightBean> myRightBeanList = result.getData();
@@ -46,7 +45,6 @@ public class RightApplyUseModel extends BaseModel implements RightApplyUseContra
         if (!EmptyUtil.isEmpty(userId)) {
             mApi.queryRightsUserRecord(pageNo, pageSize, userId,rightsId).subscribeOn(Schedulers.io()).subscribe(result -> {
                 if (!EmptyUtil.isEmpty(result)) {
-                    Log.e(TAG, "queryRightsRecord: "+result.toString() );
                     if (result.getCode() == 0) {
                         if (!EmptyUtil.isEmpty(result.getData())) {
                             callback.onSuccess(result.getData(), 1000);

@@ -49,6 +49,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.scwang.smart.refresh.header.MaterialHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.liteav.debug.GenerateTestUserSig;
 
 /**
  * author : pxk
@@ -228,7 +229,7 @@ public final class Application extends android.app.Application {
 
 
     private void initTencentIM(Application application){
-        TUIKit.init(application, Constants.IM_APPId, new ConfigHelper().getConfigs(application));
+        TUIKit.init(application, GenerateTestUserSig.SDKAPPID, new ConfigHelper().getConfigs(application));
         registerCustomListeners();
     }
 

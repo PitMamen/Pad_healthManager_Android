@@ -2,6 +2,7 @@ package com.bitvalue.health.model.cloudclinicmodel;
 
 import android.util.Log;
 
+import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.model.BaseModel;
@@ -52,13 +53,13 @@ public class CloudClinicModel extends BaseModel implements CloudClinicContract.C
     }
 
     @Override
-    public void qryMedicalPatients(RequestNewLeaveBean requestNewLeaveBean, Callback callback) {
+    public void qryMedicalPatients(AllocatedPatientRequest requestNewLeaveBean, Callback callback) {
         if (null!=requestNewLeaveBean){
-            mApi.qryPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
+            mApi.qryallAllocatedPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
                 if (!EmptyUtil.isEmpty(listApiResult)) {
                     if (listApiResult.getCode() == 0) {
                         NewLeaveBean resultData = listApiResult.getData();
-                        Log.e(TAG, "qryPatientList: " + resultData);
+                        Log.e(TAG, "qryPatientList1111: " + resultData.getRows().size());
                         if (!EmptyUtil.isEmpty(listApiResult.getData().getRows())){
                             callback.onSuccess(listApiResult.getData().getRows(),1000);
                         }else {

@@ -1,5 +1,7 @@
 package com.bitvalue.health.presenter.healthmanager;
 
+import android.util.Log;
+
 import com.bitvalue.health.api.requestbean.DocListBean;
 import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
 import com.bitvalue.health.api.responsebean.MyRightBean;
@@ -92,24 +94,27 @@ public class RightApplyUsePresenter extends BasePresenter<RightApplyUseContract.
 
     @Override
     public void getDocList(int departId) {
-        mModel.getDocList(departId,new CallBackAdapter(){
-            @Override
-            public void onSuccess(Object o, int what) {
-                super.onSuccess(o, what);
-                if (isViewAttach()){
-                    getView().getDocListSuccess((List<DocListBean>) o);
+        if (mModel!=null){
+            mModel.getDocList(departId,new CallBackAdapter(){
+                @Override
+                public void onSuccess(Object o, int what) {
+                    super.onSuccess(o, what);
+                    if (isViewAttach()){
+                        getView().getDocListSuccess((List<DocListBean>) o);
+                    }
                 }
-            }
 
 
-            @Override
-            public void onFailedLog(String str, int what) {
-                super.onFailedLog(str, what);
-                if (isViewAttach()){
-                    getView().getDocListFail(str);
+                @Override
+                public void onFailedLog(String str, int what) {
+                    super.onFailedLog(str, what);
+                    if (isViewAttach()){
+                        getView().getDocListFail(str);
+                    }
                 }
-            }
-        });
+            });
+        }
+
 
     }
 }

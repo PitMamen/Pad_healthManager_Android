@@ -19,6 +19,7 @@ import com.bitvalue.sdk.collab.modules.chat.layout.message.MessageLayout;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 import com.hjq.toast.ToastUtils;
+import com.tencent.liteav.debug.GenerateTestUserSig;
 import com.tencent.liteav.meeting.ui.MeetingMainActivity;
 
 /***
@@ -97,7 +98,7 @@ public class CustomVideoCallMessageController {
                                     String.valueOf(loginBean.getUser().user.userId),
                                     loginBean.getUser().user.userName,
                                     loginBean.getUser().user.avatarUrl,
-                                    Constants.IM_APPId,
+                                    GenerateTestUserSig.SDKAPPID,
                                     loginBean.getUserSig(),
                                     true, // 是否默认打开摄像头
                                     true, // 是否默认打开麦克风

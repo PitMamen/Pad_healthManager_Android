@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.bitvalue.health.api.requestbean.GetHistoryApi;
+import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.SaveCaseApi;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.contract.cloudcliniccontract.WriterCaseHistoryContract;
@@ -19,6 +20,7 @@ import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.fragment.chat.ChatFragment;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
+import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.helper.CustomCaseHistoryMessage;
 import com.bitvalue.sdk.collab.utils.ToastUtil;

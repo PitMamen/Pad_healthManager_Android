@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.Application;
+import com.bitvalue.health.api.ApiResult;
+import com.bitvalue.health.api.eventbusbean.VisitPlanRefreshObj;
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.PlanDetailResult;
@@ -22,16 +24,23 @@ import com.bitvalue.health.api.responsebean.PlanTaskDetail;
 import com.bitvalue.health.api.responsebean.TaskPlanDetailBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.contract.healthmanagercontract.HealthPlanPreviewContract;
+import com.bitvalue.health.model.planmodel.EndUuserPlanApi;
 import com.bitvalue.health.presenter.healthmanager.HealthPlanPreviewPresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.HealthPlanPreviewListAdapter;
 import com.bitvalue.health.ui.adapter.HealthPlanTaskDetailAdapter;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.TypeConstants;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.HttpCallback;
+import com.hjq.toast.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -108,7 +117,6 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
             return;
         }
         planId = getArguments().getString(Constants.PLAN_ID);
-        Log.e(TAG, "planId: " + planId);
         userInfo = (NewLeaveBean.RowsDTO) getArguments().getSerializable(Constants.USERINFO);
         tv_gotoDetail.setOnClickListener(v -> {
             homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, userInfo);
@@ -142,38 +150,43 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         //结束计划
         Button tv_send_end = footerview.findViewById(R.id.tv_send_end);
 
-        tv_send_jkpg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (planTaskDetail == null || userInfo == null) {
-                    return;
-                }
-                userInfo.setSendPlanType(TypeConstants.Evaluate);
-                userInfo.setPlanId(planTaskDetail.planId + "");
-                userInfo.setTaskId(planTaskDetail.taskId);
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE, userInfo);
+        tv_send_jkpg.setOnClickListener(v -> {
+            if (planTaskDetail == null || userInfo == null) {
+                return;
             }
+            userInfo.setSendPlanType(TypeConstants.Evaluate);
+            userInfo.setPlanId(planTaskDetail.planId + "");
+            userInfo.setTaskId(planTaskDetail.taskId);
+            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE, userInfo);
         });
-        tv_send_jktx.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (planTaskDetail == null || userInfo == null) {
-                    return;
-                }
-                userInfo.setSendPlanType(TypeConstants.Remind);
-                userInfo.setPlanId(planTaskDetail.planId + "");
-                userInfo.setTaskId(planTaskDetail.taskId);
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE, userInfo);
+        tv_send_jktx.setOnClickListener(v -> {
+            if (planTaskDetail == null || userInfo == null) {
+                return;
             }
+            userInfo.setSendPlanType(TypeConstants.Remind);
+            userInfo.setPlanId(planTaskDetail.planId + "");
+            userInfo.setTaskId(planTaskDetail.taskId);
+            homeActivity.switchSecondFragment(Constants.FRAGMENT_SEND_MESSAGE, userInfo);
         });
-        tv_send_end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (planTaskDetail == null) {
-                    return;
+        tv_send_end.setOnClickListener(v -> {
+            //二期开发功能
+            EndUuserPlanApi endUuserPlanApi = new EndUuserPlanApi();
+            endUuserPlanApi.id = userInfo.id_plan;  //计划的id
+            EasyHttp.get(this).api(endUuserPlanApi).request(new HttpCallback<ApiResult<String>>(this){
+                @Override
+                public void onSucceed(ApiResult<String> result) {
+                    super.onSucceed(result);
+                    ToastUtils.show("操作成功!");
+                    EventBus.getDefault().post(new VisitPlanRefreshObj());
+                    Log.e(TAG, "onSucceed: "+result.toString() );
                 }
-                ToastUtil.toastShortMessage("正在开发");
-            }
+
+                @Override
+                public void onFail(Exception e) {
+                    super.onFail(e);
+                    Log.e(TAG, "Exception: "+e.getMessage() );
+                }
+            });
         });
     }
 
@@ -198,11 +211,16 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
         if (userInfo != null) {
             String curen = TimeUtils.getCurrenTime();
-            int finatime = Integer.valueOf(curen) - Integer.valueOf((userInfo.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
-            img_head.setImageDrawable(userInfo.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+            if (!EmptyUtil.isEmpty(userInfo.getAge())){
+                int finatime = Integer.valueOf(curen) - Integer.valueOf((userInfo.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
+                tv_age.setText(finatime + "岁");
+            }
+            if (!EmptyUtil.isEmpty(userInfo.getSex())){
+                img_head.setImageDrawable(userInfo.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+            }
+
             tv_name.setText(userInfo.getUserName());
             tv_sex.setText(userInfo.getSex());
-            tv_age.setText(finatime + "岁");
             if (null!=userInfo.getInfoDetail()){
                 tv_phone.setText(userInfo.getInfoDetail().getSjhm());
             }

@@ -2,6 +2,7 @@ package com.bitvalue.health.presenter.cloudclinicpersenter;
 
 import android.util.Log;
 
+import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
@@ -29,66 +30,73 @@ public class CloudClinicPersenter extends BasePresenter<CloudClinicContract.Clou
 
     @Override
     public void getConversationList(long nextSeq, int count) {
-        mModel.getConversationList(nextSeq, count, new CallBackAdapter() {
-            @Override
-            public void loginV2TIMSuccess(V2TIMConversationResult v2TIMConversationResult) {
-                super.loginV2TIMSuccess(v2TIMConversationResult);
-                Log.e(TAG, "loginV2TIMSuccess:CloudClinicPersenter" );
-                if (isViewAttach() && null != v2TIMConversationResult)
-                    getView().getConversationSuccess(v2TIMConversationResult);
-            }
+        if (mModel!=null){
+            mModel.getConversationList(nextSeq, count, new CallBackAdapter() {
+                @Override
+                public void loginV2TIMSuccess(V2TIMConversationResult v2TIMConversationResult) {
+                    super.loginV2TIMSuccess(v2TIMConversationResult);
+                    if (isViewAttach() && null != v2TIMConversationResult)
+                        getView().getConversationSuccess(v2TIMConversationResult);
+                }
 
 
-            @Override
-            public void loginV2TIMFail(int code, String desc) {
-                super.loginV2TIMFail(code, desc);
-                if (isViewAttach())
-                    getView().getConversationfail(code, desc);
-            }
-        });
+                @Override
+                public void loginV2TIMFail(int code, String desc) {
+                    super.loginV2TIMFail(code, desc);
+                    if (isViewAttach())
+                        getView().getConversationfail(code, desc);
+                }
+            });
+        }
+
     }
 
     @Override
     public void listennerIMNewMessage() {
-        Log.e(TAG, "listennerIMNewMessage: "+mModel );
-        mModel.listenerIMNewMessage(new CallBackAdapter() {
-            @Override
-            public void IMgetNewMessage(V2TIMMessage v2TIMMessage) {
-                super.IMgetNewMessage(v2TIMMessage);
-                if (isViewAttach())
-                    if (!EmptyUtil.isEmpty(v2TIMMessage)) {
-                        getView().onNewMessage(v2TIMMessage);
-                    }
-            }
-        });
+        if (mModel!=null){
+            mModel.listenerIMNewMessage(new CallBackAdapter() {
+                @Override
+                public void IMgetNewMessage(V2TIMMessage v2TIMMessage) {
+                    super.IMgetNewMessage(v2TIMMessage);
+                    if (isViewAttach())
+                        if (!EmptyUtil.isEmpty(v2TIMMessage)) {
+                            getView().onNewMessage(v2TIMMessage);
+                        }
+                }
+            });
+        }
+
     }
 
     @Override
-    public void qryMedicalPatients(RequestNewLeaveBean requestNewLeaveBean) {
-      mModel.qryMedicalPatients(requestNewLeaveBean,new CallBackAdapter(){
-          @Override
-          public void onSuccess(Object o, int what) {
-              super.onSuccess(o, what);
-              if (isViewAttach()){
-                  getView().qryMedicalPatientsSuccess((List<NewLeaveBean.RowsDTO>) o);
-              }
-          }
+    public void qryMedicalPatients(AllocatedPatientRequest requestNewLeaveBean) {
+        if (mModel!=null){
+            mModel.qryMedicalPatients(requestNewLeaveBean,new CallBackAdapter(){
+                @Override
+                public void onSuccess(Object o, int what) {
+                    super.onSuccess(o, what);
+                    if (isViewAttach()){
+                        getView().qryMedicalPatientsSuccess((List<NewLeaveBean.RowsDTO>) o);
+                    }
+                }
 
-          @Override
-          public void onFailedLog(String str, int what) {
-              super.onFailedLog(str, what);
-              if (isViewAttach())
-                  getView().qryMedicalPatientsFail(str);
+                @Override
+                public void onFailedLog(String str, int what) {
+                    super.onFailedLog(str, what);
+                    if (isViewAttach())
+                        getView().qryMedicalPatientsFail(str);
 
-          }
+                }
 
 
-          @Override
-          public void onError(String erromessge, int what) {
-              super.onError(erromessge, what);
-              if (isViewAttach())
-              getView().qryMedicalPatientsFail(erromessge);
-          }
-      });
+                @Override
+                public void onError(String erromessge, int what) {
+                    super.onError(erromessge, what);
+                    if (isViewAttach())
+                        getView().qryMedicalPatientsFail(erromessge);
+                }
+            });
+        }
+
     }
 }

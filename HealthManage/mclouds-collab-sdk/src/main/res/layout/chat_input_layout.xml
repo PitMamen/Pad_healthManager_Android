@@ -18,6 +18,24 @@
 
 
         <TextView
+            android:id="@+id/tv_datacollection"
+            android:layout_marginStart="@dimen/qb_px_15"
+            android:layout_gravity="center_vertical"
+            android:text="预诊收集"
+            android:gravity="center"
+            android:background="@drawable/shape_chat_remind"
+            android:textSize="10sp"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="@dimen/qb_px_20"
+            tools:ignore="RtlCompat">
+
+        </TextView>
+
+
+
+
+        <TextView
             android:id="@+id/tv_sendremind"
             android:layout_marginStart="@dimen/qb_px_15"
             android:layout_gravity="center_vertical"

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.api.eventbusbean.VideoRefreshObj;
+import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.BaseFragment;
@@ -27,12 +28,16 @@ import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.MUtils;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.modules.conversation.ConversationLayout;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 import com.tencent.imsdk.v2.V2TIMConversationResult;
 import com.tencent.imsdk.v2.V2TIMMessage;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +66,12 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
     @BindView(R.id.layout_pot)
     LinearLayout layout_pot;
 
+    @BindView(R.id.rl_status_refresh)
+    SmartRefreshLayout smartRefreshLayout;
+
     @BindView(R.id.contact_list)
     RecyclerView contact_list;
+
     @BindView(R.id.versationlist_layout)
     ConversationLayout conversationLayout;
 
@@ -70,9 +79,10 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
     private int newCount = 0;
     private HomeActivity homeActivity;
     private AllPatientAdapter allPatientAdapter;
-    private RequestNewLeaveBean requestNewLeaveBean = new RequestNewLeaveBean();
+    private AllocatedPatientRequest requestNewLeaveBean = new AllocatedPatientRequest();
     private int pageNo = 1;
-    private int pageSize = 30;
+    private final int pageSize = 20;
+    private int currentPage = 0;
     private List<NewLeaveBean.RowsDTO> patientList = new ArrayList<>();  //所有患者列表
     List<NewLeaveBean.RowsDTO> tempPatientList = new ArrayList<>();
     private boolean convasersionInited = false;
@@ -117,8 +127,12 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
         mPresenter.getConversationList(0, GET_CONVERSATION_COUNT);  // 获取聊天对话框
         mPresenter.listennerIMNewMessage();//监听IM新消息
 
-        contact_list.setVisibility(View.GONE);
+        smartRefreshLayout.setVisibility(View.GONE);
+        initAllPatientList();
+    }
 
+
+    private void initAllPatientList() {
         contact_list.setLayoutManager(new LinearLayoutManager(homeActivity));
         contact_list.addItemDecoration(MUtils.spaceDivider(
                 DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
@@ -127,6 +141,46 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
         allPatientAdapter.setOnItemClickListener((adapter, view, position) -> {
             homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, patientList.get(position));
         });
+
+        //        上下拉刷新 最外层的
+        smartRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+
+            //上拉刷新
+            @Override
+            public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
+                // TODO: 2021/12/8 加载下一页
+                Log.e(TAG, "onLoadMore222: " + pageNo + " currentPage: " + currentPage);
+                if (currentPage == pageNo) {
+                    pageNo = 1;
+                    Log.e(TAG, "无更多数据");
+                    smartRefreshLayout.finishLoadMore();
+                    smartRefreshLayout.finishRefresh();
+                    return;
+                }
+                pageNo++;
+                requestNewLeaveBean.pageNo = pageNo;
+                mPresenter.qryMedicalPatients(requestNewLeaveBean);
+                smartRefreshLayout.finishLoadMore();
+                smartRefreshLayout.finishRefresh();
+            }
+
+            //下拉刷新
+            @Override
+            public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
+                Log.e(TAG, "onLoadMore222: " + pageNo);
+                if (pageNo > 1) {
+                    pageNo--;
+                } else {
+                    smartRefreshLayout.finishRefresh();
+                    return;
+                }
+                requestNewLeaveBean.pageNo = pageNo;
+                mPresenter.qryMedicalPatients(requestNewLeaveBean);
+                smartRefreshLayout.finishRefresh();
+            }
+        });
+
+
     }
 
 
@@ -136,18 +190,18 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMessage(VideoRefreshObj mainRefreshObj) {
-        Log.e(TAG, "onEventMessage:-----" + mPresenter);
-        requestNewLeaveBean.setPageNo(pageNo);
-        requestNewLeaveBean.setPageSize(pageSize);
+        requestNewLeaveBean.pageNo = pageNo;
+        requestNewLeaveBean.pageSize = pageSize;
         mPresenter.qryMedicalPatients(requestNewLeaveBean);
         conversationLayout.initDefault();
         conversationLayout.getConversationList().setOnItemClickListener((view12, position, messageInfo) -> {
             NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
             info.setUserName(messageInfo.getTitle());
             info.setUserId(messageInfo.getId());
+            info.isShowCollection = false;  //咨询界面跳转过去  聊天界面底部不显示 预诊收集 按钮
             homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
         });
-        conversationLayout.setVisibility(contact_list.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        conversationLayout.setVisibility(smartRefreshLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
 
@@ -166,7 +220,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
 
                 newCount = 0;
                 layout_pot.setVisibility(View.GONE);
-                contact_list.setVisibility(View.GONE);
+                smartRefreshLayout.setVisibility(View.GONE);
                 conversationLayout.setVisibility(View.VISIBLE);
 //                EventBus.getDefault().post(new MsgRemindObj(EVENT_MES_TYPE_CLOUDCLINC, 0));
                 type = 0;
@@ -176,7 +230,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
 //                所有患者
             case R.id.tv_end:
                 convasersionInited = false;
-                contact_list.setVisibility(View.VISIBLE);
+                smartRefreshLayout.setVisibility(View.VISIBLE);
                 conversationLayout.setVisibility(View.GONE);
                 tv_end.setTextColor(homeActivity.getResources().getColor(R.color.white));
                 tv_end.setBackgroundResource(0);
@@ -187,8 +241,8 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
                     if (tempPatientList.size() == patientList.size()) {
                         allPatientAdapter.setNewData(tempPatientList);
                     } else {
-                        requestNewLeaveBean.setPageNo(pageNo);
-                        requestNewLeaveBean.setPageSize(pageSize);
+                        requestNewLeaveBean.pageNo = pageNo;
+                        requestNewLeaveBean.pageSize = pageSize;
                         mPresenter.qryMedicalPatients(requestNewLeaveBean);
                     }
 
@@ -251,7 +305,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
      */
     @Override
     public void qryMedicalPatientsFail(String failMessage) {
-          getActivity().runOnUiThread(() -> hideDialog());
+        getActivity().runOnUiThread(() -> hideDialog());
     }
 
 

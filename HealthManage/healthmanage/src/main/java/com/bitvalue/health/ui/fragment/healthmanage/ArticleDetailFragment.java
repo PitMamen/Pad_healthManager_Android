@@ -10,7 +10,9 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,8 @@ public class ArticleDetailFragment extends BaseFragment {
 
     @BindView(R.id.tv_title)
     TextView tv_title;
+    @BindView(R.id.layout_back)
+    LinearLayout back_layout;
 
     private HomeActivity homeActivity;
     private ArticleBean articleBean;
@@ -65,8 +69,9 @@ public class ArticleDetailFragment extends BaseFragment {
 
     @Override
     public void initView(View rootView) {
+        back_layout.setVisibility(View.VISIBLE);
         articleBean = (ArticleBean) getArguments().getSerializable(Constants.ARTICLE_DETAIL);
-        if (articleBean == null&&articleBean.previewUrl.isEmpty()) {
+        if (articleBean == null && articleBean.previewUrl.isEmpty()) {
             ToastUtil.toastShortMessage("文章数据错误");
             return;
         }

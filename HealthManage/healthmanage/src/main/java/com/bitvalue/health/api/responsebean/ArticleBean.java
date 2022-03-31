@@ -34,4 +34,31 @@ public class ArticleBean implements Serializable {
         this.articleId = articleId;
         this.title = title;
     }
+
+    @Override
+    public String toString() {
+        return "ArticleBean{" +
+                "articleId=" + articleId +
+                ", articleType='" + articleType + '\'' +
+                ", author='" + author + '\'' +
+                ", brief='" + brief + '\'' +
+                ", categoryId='" + categoryId + '\'' +
+                ", categoryName='" + categoryName + '\'' +
+                ", clickNum=" + clickNum +
+                ", content='" + content + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", extraData='" + extraData + '\'' +
+                ", isVisible=" + isVisible +
+                ", previewUrl='" + previewUrl + '\'' +
+                ", publishTime='" + publishTime + '\'' +
+                ", publisherName='" + publisherName + '\'' +
+                ", publisherUserId=" + publisherUserId +
+                ", source='" + source + '\'' +
+                ", templateId='" + templateId + '\'' +
+                ", title='" + title + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", MissionNo=" + MissionNo +
+                ", TaskNo=" + TaskNo +
+                '}';
+    }
 }

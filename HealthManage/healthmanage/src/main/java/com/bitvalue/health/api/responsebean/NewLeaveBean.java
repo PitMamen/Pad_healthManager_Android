@@ -93,12 +93,14 @@ public class NewLeaveBean implements Serializable {
         private String cysj;//出院时间
         private String ks;//科室代码
         private String ksmc; //科室名称
+        public String id_plan;//点击随访计划中某一个计划的 id,用于结束计划的
         public String planId;  //自定义添加的planId，后台没有
         private String taskId;  //自定义添加的taskId，后台没有
         private String sendPlanType;// 自定义添加的发送消息时判断发送类型 ：Evaluate健康评估  Remind健康提醒
         public String rightsName = "视频咨询";//权益类型(图文咨询 视频问诊，，，这个字段是自己定义的)
 
         public boolean isConsultation = false;//区分是 问诊还是咨询
+        public boolean isShowCollection = true;  //是否显示 预诊收集控件（默认显示,只有从咨询界面跳转进去的才不显示）
 
 
         //add

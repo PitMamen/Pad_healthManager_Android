@@ -45,6 +45,7 @@ import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.MUtils;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
+import com.bitvalue.health.util.customview.spinner.EditSpinner;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.blankj.utilcode.util.LogUtils;
@@ -78,15 +79,10 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     TextView tv_unregister_patient;  //未注册患者
 
     @BindView(R.id.sp_bq)
-    Spinner spinnew_inpatient;
-//    @BindView(R.id.sp_text)
-//    TextView sp_text;
+    EditSpinner spinnew_inpatient;
 
     @BindView(R.id.et_search)
     EditText et_search;
-
-    @BindView(R.id.ll_sp)
-    LinearLayout ll_spinner;
 
 
     @BindView(R.id.all_check)
@@ -131,7 +127,8 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     private boolean allCheck = false;
 
 
-    private String[] inpatientAreaList = null;  //病区 先写死
+    private List<String> inpatientAreaList = null;  //病区
+    private String selectedInpatientAreaName = "";//选中的病区名称
 
     private ArrayAdapter<String> spinnerAdapter;
     private List<NewLeaveBean.RowsDTO> tempPaitentList = new ArrayList<>();
@@ -186,7 +183,6 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(MainRefreshObj mainRefreshObj) {
         // TODO: 2022/1/11 request
-        Log.e(TAG, "收到获取最新未分配界面--------- ");
         tempPaitentList.clear();
         pageNo = 1; //这里防止分配计划之前有下拉刷新动作 所以分配成功之后重置一下分页
         requestDistribution(et_search.getText().toString());
@@ -223,7 +219,6 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     public void initData() {
         super.initData();
         requestDistribution("");
-        requestUnregister();
     }
 
 
@@ -232,7 +227,6 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
         super.onHiddenChanged(hidden);
         if (!hidden) {     //可见的时候 请求未注册 和  未分配患者
             requestDistribution("");
-            requestUnregister();
         }
     }
 
@@ -284,21 +278,26 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
 
     //初始化选择病区spinner控件
     private void initSpinnerCon() {
-        //将adapter 加入到spinner中
-        spinnew_inpatient.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.e(TAG, "onItemSelected: " + position);
-//                sp_text.setText(inpatientAreaList[position]);
-                spinnew_inpatient.setSelection(position);
-            }
+        spinnew_inpatient.setTextSize(12);
+        spinnew_inpatient.setRightImageResource(R.mipmap.down_shixin);
+        spinnew_inpatient.setHint(getString(R.string.please_select_inpatient_area));
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+        //测试数据
+        inpatientAreaList = new ArrayList<>();
+        inpatientAreaList.add("所有病区");  //这里要默认一个无 第一个 当点中 无 的时候 获取所有病区下的患者
+            inpatientAreaList.add("小儿麻痹症");
+            inpatientAreaList.add("精神科");
+            inpatientAreaList.add("普通外科");
+            inpatientAreaList.add("微创外科");
+            inpatientAreaList.add("老年病科");
+            inpatientAreaList.add("血液内科");
+            inpatientAreaList.add("儿科");
+            inpatientAreaList.add("骨科");
+        spinnew_inpatient.setItemData(inpatientAreaList);
+        spinnew_inpatient.setOnItemClickListener(name -> {
+            selectedInpatientAreaName = name.equals("所有病区")?"":name;
+            requestDistribution("");  //更新列表
         });
-
     }
 
 
@@ -410,25 +409,16 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
 
     //请求未分配患者
     private void requestDistribution(String name) {
+        allocatedPatientRequest.bqmc = selectedInpatientAreaName;   //病区名称
         allocatedPatientRequest.existsPlanFlag = "2";
-        allocatedPatientRequest.isRegister = "1";
         allocatedPatientRequest.pageNo = pageNo;
         allocatedPatientRequest.pageSize = pageSize;
         allocatedPatientRequest.userName = name;
         if (!EmptyUtil.isEmpty(name)) {
             mPresenter.qryByNameAllocatedPatienList(allocatedPatientRequest);  //请求 待分配  已注册的患者
         } else {
-            Log.e(TAG, "请求页: " + allocatedPatientRequest.pageNo);
             mPresenter.qryAllocatedPatienList(allocatedPatientRequest);  //请求 待分配  已注册的患者
         }
-    }
-
-    //请求未注册患者
-    private void requestUnregister() {
-        unregisterRequest.pageNo = pageNo;
-        unregisterRequest.pageSize = pageSize;
-        unregisterRequest.isRegister = "2";
-        mPresenter.qryUnregisterPatienList(unregisterRequest);  //请求所有未注册的患者
     }
 
 
@@ -525,7 +515,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     public void qryAllocatedPatienSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList) {
         homeActivity.runOnUiThread(() -> {
             if (pageNo > 1 && infoDetailDTOList.size() == 0) {
-                ToastUtils.show("无更多可分配的患者");
+//                ToastUtils.show("无更多可分配的患者");
                 return;
             }
 
@@ -548,7 +538,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     public void qryAllocatedPatienFail(String failMessage) {
         homeActivity.runOnUiThread(() -> {
             Log.e(TAG, "未分配查询失败-----" + failMessage);
-            ToastUtils.show(failMessage);
+//            ToastUtils.show(failMessage);
         });
     }
 
@@ -575,7 +565,6 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
      */
     @Override
     public void qryUnregisterFail(String messageFail) {
-        homeActivity.runOnUiThread(() -> ToastUtils.show(messageFail));
     }
 
 
@@ -612,7 +601,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
         homeActivity.runOnUiThread(() -> {
             currentPage = searchPageNo;
             Log.e(TAG, "qryByNameAllocatedPatienListFail: " + failMessage);
-            ToastUtils.show(failMessage);
+//            ToastUtils.show(failMessage);
         });
     }
 
@@ -623,15 +612,17 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
      */
     @Override
     public void getInpartientListSuccess(List<InpatientBean> beanList) {
-        if (beanList != null) {
-            inpatientAreaList = new String[beanList.size()];
+        if (beanList != null && beanList.size() > 0) {
+            inpatientAreaList = new ArrayList<>();
+            inpatientAreaList.add(getString(R.string.all_inpatient_area));  //这里要默认一个所有病区 第一个 当点中 所有病区 的时候 获取所有病区下的患者
             for (int i = 0; i < beanList.size(); i++) {
-                inpatientAreaList[i] = beanList.get(i).getInpatientAreaName();
+                inpatientAreaList.add(beanList.get(i).getInpatientAreaName());
             }
-            spinnerAdapter = new ArrayAdapter<>(homeActivity, android.R.layout.simple_spinner_dropdown_item, inpatientAreaList);
-            //设置下拉列表的风格,simple_spinner_dropdown_item是android系统自带的样式，等会自己定义改动
-            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);  //android.R.layout.simple_spinner_dropdown_item
-            spinnew_inpatient.setAdapter(spinnerAdapter);
+            spinnew_inpatient.setItemData(inpatientAreaList);
+            spinnew_inpatient.setOnItemClickListener(name -> {
+                selectedInpatientAreaName = name.equals(getString(R.string.all_inpatient_area)) ? "" : name;
+                requestDistribution(""); //更新数据
+            });
         }
     }
 

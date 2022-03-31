@@ -99,7 +99,7 @@
             <com.bitvalue.health.util.customview.WrapRecyclerView
                 android:id="@+id/list_search"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 tools:listCount="10"
                 tools:listitem="@layout/picker_item" />
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>

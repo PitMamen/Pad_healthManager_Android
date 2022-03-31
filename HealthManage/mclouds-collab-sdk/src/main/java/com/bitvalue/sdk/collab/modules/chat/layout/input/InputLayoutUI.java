@@ -74,13 +74,9 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
 
 
     /***
-     * 发送快捷消息      发送提醒       发送问卷        发送文章       快捷回复
+     * 发送快捷消息     预诊收集          发送提醒       发送问卷        发送文章       快捷回复
      */
-     public TextView tv_sendremind,tv_sendquestion,tv_sendarticle,tv_sendshortcut;
-
-
-
-
+    public TextView tv_datacollection, tv_sendremind, tv_sendquestion, tv_sendarticle, tv_sendshortcut;
 
 
     protected AppCompatActivity mActivity;
@@ -135,12 +131,12 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     }
 
 
-
     private void initViews() {
         mActivity = (AppCompatActivity) getContext();
         inflate(mActivity, R.layout.chat_input_layout, this);
 //        mShortcutArea = findViewById(R.id.shortcut_area);
         ll_shortCutlayout = findViewById(R.id.ll_shortcut);
+        tv_datacollection = findViewById(R.id.tv_datacollection);
         tv_sendremind = findViewById(R.id.tv_sendremind);
         tv_sendquestion = findViewById(R.id.tv_sendquestion);
         tv_sendarticle = findViewById(R.id.tv_sendarti);
@@ -168,7 +164,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     protected void assembleActions() {
         mInputMoreActionList.clear();
         InputMoreActionUnit actionUnit;
-        Log.e(TAG, "assembleActions: "+ chatType);
+        Log.e(TAG, "assembleActions: " + chatType);
         switch (chatType) {
             /***
              * 健康管理

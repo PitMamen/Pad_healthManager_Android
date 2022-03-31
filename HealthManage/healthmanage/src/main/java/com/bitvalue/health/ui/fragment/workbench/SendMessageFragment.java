@@ -29,6 +29,7 @@ import com.bitvalue.health.ui.adapter.HealthPlanPreviewListAdapter;
 import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.TypeConstants;
 import com.bitvalue.healthmanage.R;
@@ -76,6 +77,7 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
      */
     @Override
     public void initView(View rootView) {
+        back.setVisibility(View.VISIBLE);
         back.setOnClickListener(v -> {
             if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0)
                 homeActivity.getSupportFragmentManager().popBackStack();
@@ -100,12 +102,21 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
 
         if (userInfo!=null){
             String curen = TimeUtils.getCurrenTime();
-            int finatime = Integer.valueOf(curen) - Integer.valueOf((userInfo.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
-            img_head.setImageDrawable(userInfo.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+            if (!EmptyUtil.isEmpty(userInfo.getAge())){
+                int finatime = Integer.valueOf(curen) - Integer.valueOf((userInfo.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
+                tv_age.setText(finatime+"岁");
+            }
+            if (!EmptyUtil.isEmpty(userInfo.getSex())){
+                img_head.setImageDrawable(userInfo.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+            }
+
+            if (!EmptyUtil.isEmpty(userInfo.getInfoDetail())){
+                tv_phone.setText(userInfo.getInfoDetail().getSjhm());
+            }
+
             tv_name.setText(userInfo.getUserName());
             tv_sex.setText(userInfo.getSex());
-            tv_age.setText(finatime+"岁");
-            tv_phone.setText(userInfo.getInfoDetail().getSjhm());
+
             tv_gotoDetail.setOnClickListener(v -> {
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, userInfo);
             });

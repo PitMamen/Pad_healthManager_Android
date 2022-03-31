@@ -31,7 +31,6 @@ public interface InterestsUseApplyByDocContract {
 
     interface Presenter {
         void saveRightsUseRecord(SaveRightsUseBean bean);
-
     }
 
 

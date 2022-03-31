@@ -38,16 +38,15 @@
        </RelativeLayout>
 
 
-
-
        <RelativeLayout
+           android:visibility="gone"
            android:id="@+id/rl_unregister"
-           android:layout_toRightOf="@+id/rl_undistribution"
-           android:layout_marginTop="@dimen/qb_px_11"
-           android:layout_marginStart="@dimen/qb_px_10"
-           android:background="@drawable/shape_bg_item_unse"
            android:layout_width="@dimen/qb_px_60"
-           android:layout_height="@dimen/qb_px_25">
+           android:layout_height="@dimen/qb_px_25"
+           android:layout_marginStart="@dimen/qb_px_10"
+           android:layout_marginTop="@dimen/qb_px_11"
+           android:layout_toRightOf="@+id/rl_undistribution"
+           android:background="@drawable/shape_bg_item_unse">
 
 
            <TextView
@@ -86,30 +85,45 @@
 
             <LinearLayout
                 android:id="@+id/ll_sp"
-                android:layout_width="@dimen/qb_px_58"
+                android:layout_width="@dimen/qb_px_60"
                 android:layout_height="@dimen/qb_px_25"
                 android:layout_marginStart="@dimen/qb_px_10"
                 android:layout_marginTop="@dimen/qb_px_10"
                 android:background="@drawable/shape_item_select_patie"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/sp_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="请选择病区"
-                    android:textSize="12sp"
-                    android:textColor="#999999">
+<!--                <TextView-->
+<!--                    android:id="@+id/sp_text"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:text="请选择病区"-->
+<!--                    android:textSize="12sp"-->
+<!--                    android:textColor="#999999">-->
 
-                </TextView>
+<!--                </TextView>-->
 
-                <Spinner
+
+                <com.bitvalue.health.util.customview.spinner.EditSpinner
                     android:id="@+id/sp_bq"
+
+                    android:layout_gravity="center_vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:spinnerMode="dropdown"></Spinner>
+                    android:layout_centerVertical="true"
+                    >
+                </com.bitvalue.health.util.customview.spinner.EditSpinner>
+
+
+<!--                <Spinner-->
+<!--                    android:visibility="gone"-->
+<!--                    android:id="@+id/sp_bq"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:spinnerMode="dropdown"></Spinner>-->
+
 
 
             </LinearLayout>

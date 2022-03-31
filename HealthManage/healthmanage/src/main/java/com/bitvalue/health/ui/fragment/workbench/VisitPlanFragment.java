@@ -19,12 +19,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bitvalue.health.api.eventbusbean.VisitPlanRefreshObj;
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.callback.PhoneFollowupCliclistener;
-import com.bitvalue.health.contract.mytodolistcontact.MyToDoListContact;
-import com.bitvalue.health.presenter.mytodolistpersenter.MyToDoListPersenter;
+import com.bitvalue.health.contract.visitplancontact.VisitPlanContact;
+import com.bitvalue.health.presenter.visitplanpersenter.VisitPlanPersenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.HealthPlanListAdapter;
 import com.bitvalue.health.util.Constants;
@@ -32,12 +33,19 @@ import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.health.util.layout.XLinearLayoutManager;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.helper.CustomMessage;
+import com.bitvalue.sdk.collab.modules.message.MessageInfo;
+import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
+import com.google.gson.Gson;
 import com.hjq.toast.ToastUtils;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -51,7 +59,7 @@ import butterknife.BindView;
  * <p>
  * 随访计划Fragment
  */
-public class VisitPlanFragment extends BaseFragment<MyToDoListPersenter> implements MyToDoListContact.MyToDoListView, PhoneFollowupCliclistener {
+public class VisitPlanFragment extends BaseFragment<VisitPlanPersenter> implements VisitPlanContact.VisitPlanView, PhoneFollowupCliclistener {
     @BindView(R.id.tv_title)
     TextView tv_title;
 
@@ -87,7 +95,7 @@ public class VisitPlanFragment extends BaseFragment<MyToDoListPersenter> impleme
 
     private int cureentPage = 0;
     private int pageNo = 1;
-    private int pageSize = 100;
+    private final int pageSize = 30;
     private int searchPageNo = 1;
 
 
@@ -127,6 +135,7 @@ public class VisitPlanFragment extends BaseFragment<MyToDoListPersenter> impleme
         initList();
         initSearchButton();
         initSearchList();
+        EventBus.getDefault().register(this);
 
     }
 
@@ -180,7 +189,6 @@ public class VisitPlanFragment extends BaseFragment<MyToDoListPersenter> impleme
             }
         });
         healthPlanListAdapter.setOnPlanTaskItemClickListener((planId, rowsDTO) -> {
-            Log.e(TAG, "-------------------: ");
             rowsDTO.planId = planId;
             homeActivity.switchSecondFragment(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW, rowsDTO);
         });
@@ -301,8 +309,8 @@ public class VisitPlanFragment extends BaseFragment<MyToDoListPersenter> impleme
 
 
     @Override
-    protected MyToDoListPersenter createPresenter() {
-        return new MyToDoListPersenter();
+    protected VisitPlanPersenter createPresenter() {
+        return new VisitPlanPersenter();
     }
 
     @Override
@@ -313,13 +321,26 @@ public class VisitPlanFragment extends BaseFragment<MyToDoListPersenter> impleme
 
     @Override
     public void phoneNumberCallback(String phoneNumber) {
-        Log.e(TAG, "phoneNumberCallback: " + phoneNumber);
         if (isNumeric(phoneNumber)) {
             callPhone(phoneNumber);
         } else {
             ToastUtils.show("非法号码!");
         }
     }
+
+
+    /**
+     * 处理结束计划成功后 更新随访计划列表
+     *
+     * @param message
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventHandler(VisitPlanRefreshObj message) {//不用区分类型，全部直接转换成json发送消息出去
+        Log.e(TAG, "接收更新随访计划列表消息");
+        allocatedPatientRequest.pageNo = 1;
+        requestData("");
+    }
+
 
     public void callPhone(String phoneNum) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -334,6 +355,7 @@ public class VisitPlanFragment extends BaseFragment<MyToDoListPersenter> impleme
             //拿到所有患者 需要过滤一些没有userID的患者
             hideDialog();
             if (infoDetailDTOList != null) {
+                allDynamicList.clear();
                 allDynamicList = infoDetailDTOList;
                 default_view.setVisibility(infoDetailDTOList.size() == 0 ? View.VISIBLE : View.GONE);
             }
@@ -351,14 +373,13 @@ public class VisitPlanFragment extends BaseFragment<MyToDoListPersenter> impleme
     }
 
     @Override
-    public void qryPatientByNameSuccess(List<NewLeaveBean.RowsDTO> itinfoDetailDTOList) {
+    public void qryPatientByNameSuccess(List<NewLeaveBean.RowsDTO> initinfoDetailDTOList) {
         homeActivity.runOnUiThread(() -> {
             hideDialog();
             searchPatientList.clear();
-            searchPatientList.addAll(itinfoDetailDTOList);
+            searchPatientList.addAll(initinfoDetailDTOList);
             if (null == searchPatientList || searchPatientList.size() == 0) {
                 cureentPage = searchPageNo;
-//                ToastUtil.toastShortMessage("未查询到结果");
                 searchsmartRefreshLayout.setVisibility(View.GONE);
                 AllsmartRefreshLayout.setVisibility(View.VISIBLE);
             } else {
@@ -378,4 +399,10 @@ public class VisitPlanFragment extends BaseFragment<MyToDoListPersenter> impleme
         });
     }
 
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
 }

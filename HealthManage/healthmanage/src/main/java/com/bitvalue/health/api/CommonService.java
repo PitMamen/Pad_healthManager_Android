@@ -29,6 +29,7 @@ import com.bitvalue.health.api.responsebean.PlanDetailResult;
 import com.bitvalue.health.api.responsebean.PlanListBean;
 import com.bitvalue.health.api.responsebean.PlanTaskDetail;
 import com.bitvalue.health.api.responsebean.QueryRightsRecordBean;
+import com.bitvalue.health.api.responsebean.AnswerResultBean;
 import com.bitvalue.health.api.responsebean.SaveAnalyseApi;
 import com.bitvalue.health.api.responsebean.SaveCaseApi;
 import com.bitvalue.health.api.responsebean.SearchArticleResult;
@@ -42,7 +43,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -230,12 +230,8 @@ public interface CommonService {
     Observable<ApiResult<String>> logout();
 
 
-    /***
-     * 骨肿瘤接口
-     */
-
     /**
-     * 所有所有患者
+     * 所有所有患者（骨肿瘤接口   已弃用）
      *
      * @param leaveBean
      * @return
@@ -245,7 +241,6 @@ public interface CommonService {
     Observable<ApiResult<NewLeaveBean>> qryPatientList(@Body RequestNewLeaveBean leaveBean);
 
 
-
     /**
      * 所有患者、未注册患者、未分配患者
      *
@@ -253,9 +248,8 @@ public interface CommonService {
      * @return
      */
 
-    @POST("health-api/patient/qryPatientList")
+    @POST("health-api/patient/qryPatientListByReg")
     Observable<ApiResult<NewLeaveBean>> qryallAllocatedPatientList(@Body AllocatedPatientRequest leaveBean);
-
 
 
     /**
@@ -295,15 +289,8 @@ public interface CommonService {
     /***
      * 权益使用记录
      */
-//    @GET("health-api/patient/queryRightsUserRecord")
-//    Observable<ApiResult<QueryRightsRecordBean>> queryRightsUserRecord(@Query("pageNo") int pageNo, @Query("pageSize") int pageSize, @Query("rightsId") int rightId, @Query("userId") String userId);
-
-
-    /***
-     * 权益使用记录
-     */
     @GET("health-api/patient/queryRightsUserRecord")
-    Observable<ApiResult<QueryRightsRecordBean>> queryRightsUserRecord(@Query("pageNo") int pageNo, @Query("pageSize") int pageSize, @Query("userId") String userId,@Query("rightsId") int rightsId);
+    Observable<ApiResult<QueryRightsRecordBean>> queryRightsUserRecord(@Query("pageNo") int pageNo, @Query("pageSize") int pageSize, @Query("userId") String userId, @Query("rightsId") int rightsId);
 
 
 //    /**
@@ -317,7 +304,7 @@ public interface CommonService {
      * 我的权益
      */
     @GET("health-api/patient/queryMyRights")
-    Observable<ApiResult<List<MyRightBean>>> queryMyRights(@Query("userId") String userId,@Query("id") String id);
+    Observable<ApiResult<List<MyRightBean>>> queryMyRights(@Query("userId") String userId, @Query("id") String id);
 
     /**
      * 个案管理师 完成申请处理
@@ -344,11 +331,15 @@ public interface CommonService {
      * 根据科室ID查询 该科室下的所有医师
      */
     @GET("account-api/businessManagement/getDoctorList")
-    Observable<ApiResult<List<DocListBean>>> getDoctorList(@Query("departmentId") int  departmentId);
+    Observable<ApiResult<List<DocListBean>>> getDoctorList(@Query("departmentId") int departmentId);
 
     /**
-     *根据患者 ID  查询更多和基本信息
+     * 根据患者 ID  查询更多和基本信息
      */
-     @GET("account-api/userInfo/getBaseInfo")
-     Observable<ApiResult<PatientBaseInfoBean>> getPatientBaseInfo(@Query("userId") int  userId);
+    @GET("account-api/userInfo/getBaseInfo")
+    Observable<ApiResult<PatientBaseInfoBean>> getPatientBaseInfo(@Query("userId") int userId);
+
+
+
+
 }

@@ -1,12 +1,11 @@
-package com.bitvalue.health.presenter.mytodolistpersenter;
+package com.bitvalue.health.presenter.visitplanpersenter;
 
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
-import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
-import com.bitvalue.health.contract.mytodolistcontact.MyToDoListContact;
-import com.bitvalue.health.model.mytodolist.MyToDoListModel;
+import com.bitvalue.health.contract.visitplancontact.VisitPlanContact;
+import com.bitvalue.health.model.visitplanmodel.VisitPlanModel;
 
 import java.util.List;
 
@@ -14,10 +13,10 @@ import java.util.List;
  * @author created by bitvalue
  * @data :
  */
-public class MyToDoListPersenter extends BasePresenter<MyToDoListContact.MyToDoListView,MyToDoListContact.MyToDoListModel> implements MyToDoListContact.MyToDoListPersenter {
+public class VisitPlanPersenter extends BasePresenter<VisitPlanContact.VisitPlanView, VisitPlanContact.VisitPlanModel> implements VisitPlanContact.VisitPlanPersenter {
     @Override
-    protected MyToDoListContact.MyToDoListModel createModule() {
-        return new MyToDoListModel();
+    protected VisitPlanContact.VisitPlanModel createModule() {
+        return new VisitPlanModel();
     }
 
     @Override

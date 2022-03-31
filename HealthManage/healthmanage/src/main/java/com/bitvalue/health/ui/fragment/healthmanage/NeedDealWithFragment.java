@@ -1,4 +1,4 @@
-package com.bitvalue.health.ui.fragment.docfriend;
+package com.bitvalue.health.ui.fragment.healthmanage;
 
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY_BYDOC;
@@ -18,7 +18,6 @@ import com.bitvalue.health.api.eventbusbean.NotifyactionObj;
 import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
-import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.callback.OnRightClickCallBack;
 import com.bitvalue.health.contract.doctorfriendscontract.NeedDealWithContract;
@@ -30,10 +29,8 @@ import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.MUtils;
 import com.bitvalue.health.util.SharedPreManager;
-import com.bitvalue.health.util.chatUtil.CustomVideoCallMessageController;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
-import com.bitvalue.sdk.collab.helper.CustomVideoCallMessage;
 import com.hjq.toast.ToastUtils;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 
@@ -236,8 +233,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     //初始化listView 及设置 Adapter
     private void initListView() {
         list_allneeddealwith.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getActivity())));
-        list_allneeddealwith.addItemDecoration(MUtils.spaceDivider(
-                DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
+        list_allneeddealwith.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
         needDealWithQuickAdapter = new NeedDealithQuickAdapter(R.layout.item_need_dealwith_layout, NeedDealWithList, this);
         needDealWithQuickAdapter.setOnItemClickListener((adapter, view, position) -> {
             needDealWithQuickAdapter.setPosition(position);
@@ -246,8 +242,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
 
 
         list_alreadyPatient.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getActivity())));
-        list_alreadyPatient.addItemDecoration(MUtils.spaceDivider(
-                DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
+        list_alreadyPatient.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
         AlreadyDealithAdapter = new AlreadyDealithAdapter(R.layout.item_need_dealwith_layout, AlradDealWithList, this);
         AlreadyDealithAdapter.setOnItemClickListener((adapter, view, position) -> {
 
@@ -296,7 +291,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
      */
     @Override
     public void getMyTaskDetailFail(String failMessage) {
-        homeActivity.runOnUiThread(() -> ToastUtils.show(failMessage));
+        homeActivity.runOnUiThread(() -> ToastUtils.show("获取待办列表失败!"));
     }
 
 
@@ -326,7 +321,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
      */
     @Override
     public void getMyAlreadyDealTaskDetailFail(String failMessage) {
-        homeActivity.runOnUiThread(() -> ToastUtils.show(failMessage));
+        homeActivity.runOnUiThread(() -> ToastUtils.show("获取已办列表失败!"));
     }
 
 
@@ -339,6 +334,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     public void OnItemClick(TaskDeatailBean taskDeatailBean) {
         // TODO: 2022/2/22 这里要区分 是个案管理师登录的还是医生登录的
         if (loginBean != null) {
+//            Log.e(TAG, "科室名称: " + taskDeatailBean.getTaskDetail().getDeptName());
             homeActivity.switchSecondFragment(loginBean.getAccount().roleName.equals("casemanager") ? FRAGMENT_INTERESTSUSER_APPLY : FRAGMENT_INTERESTSUSER_APPLY_BYDOC, taskDeatailBean);  //个案师
         }
     }
@@ -397,7 +393,6 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateAlradyData(NotifycationAlardyObj notifyactionObj) {
         getNeedDealWithData();
-//        getAlradydata();
     }
 
 

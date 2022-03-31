@@ -43,7 +43,7 @@ public class DocPersonalModel extends BaseModel implements PersonalDataContract.
                 if (r.getCode() == 0) {
                     callback.onSuccess("logout success", 1000);
                 } else {
-                    callback.onFailedLog(r.getMessage(), 1001);
+                    callback.onFailedLog("退出失败,请重试", 1001);
                 }
             }
         }, error -> {

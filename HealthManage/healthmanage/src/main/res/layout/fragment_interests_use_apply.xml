@@ -360,28 +360,64 @@
             android:textColor="#666666"
             android:textSize="14sp"></TextView>
 
-        <RelativeLayout
-            android:id="@+id/rl_processing_complete"
-            android:layout_width="@dimen/qb_px_60"
-            android:layout_height="34dp"
-            android:layout_marginStart="@dimen/qb_px_200"
-            android:layout_marginEnd="@dimen/qb_px_10"
-            android:background="@drawable/shape_comfirm_sele">
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/rl_processing_complete"-->
+<!--            android:layout_width="@dimen/qb_px_60"-->
+<!--            android:layout_height="34dp"-->
+<!--            android:layout_marginStart="@dimen/qb_px_200"-->
+<!--            android:layout_marginEnd="@dimen/qb_px_10"-->
+<!--            android:background="@drawable/shape_comfirm_sele">-->
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_gochat"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="@dimen/qb_px_180"
+                android:background="@drawable/shape_comfirm_sele"
+                android:layout_width="@dimen/qb_px_60"
+                android:layout_height="34dp"
+                android:paddingVertical="@dimen/qb_px_5"
+                android:paddingHorizontal="@dimen/qb_px_8"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="进入聊天"
+                android:textColor="@color/white"
+                android:textSize="15sp">
+            </TextView>
+
+
 
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/qb_px_10"
+                android:id="@+id/tv_complete"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="@dimen/qb_px_20"
+                android:background="@drawable/shape_comfirm_sele"
+                android:layout_width="@dimen/qb_px_60"
+                android:layout_height="34dp"
+                android:paddingVertical="@dimen/qb_px_5"
+                android:paddingHorizontal="@dimen/qb_px_8"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="处理完成"
                 android:textColor="@color/white"
                 android:textSize="15sp">
-
             </TextView>
+        </LinearLayout>
 
 
-        </RelativeLayout>
+
+
+
+
+<!--        </RelativeLayout>-->
 
 
 

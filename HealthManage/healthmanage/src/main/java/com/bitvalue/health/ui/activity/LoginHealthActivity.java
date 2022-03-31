@@ -124,6 +124,7 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
         SharedPreManager.putObject(Constants.KYE_USER_BEAN, resBean);
         SharedPreManager.putString(Constants.KEY_TOKEN, resBean.getToken());
         SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, Application.instance());
+        Log.e(TAG, "loginSuccess: "+SharedPreManager.getString(Constants.KEY_TOKEN) );
         startActivity(new Intent(LoginHealthActivity.this, HomeActivity.class));
         finish();
 

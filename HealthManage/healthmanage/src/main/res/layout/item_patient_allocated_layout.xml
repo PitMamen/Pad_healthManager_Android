@@ -171,7 +171,7 @@
             android:layout_marginLeft="@dimen/qb_px_10"
             android:layout_marginTop="@dimen/qb_px_5"
             android:layout_toRightOf="@+id/tv_patient_name"
-            android:text="女"
+            android:text=""
             android:textColor="@color/text_desc_dark"
             android:textSize="12sp"
             app:layout_constraintLeft_toRightOf="@id/img_head"
@@ -195,7 +195,7 @@
             android:layout_marginLeft="@dimen/qb_px_15"
             android:layout_marginTop="@dimen/qb_px_5"
             android:layout_toRightOf="@+id/tv_patient_sex"
-            android:text="23岁"
+            android:text=""
             android:textColor="@color/text_desc_dark"
             android:textSize="12sp" />
 

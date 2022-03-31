@@ -7,6 +7,7 @@ import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY_BYDOC;
 import static com.bitvalue.health.util.Constants.FRAGMENT_MORE_DATA;
 import static com.bitvalue.health.util.Constants.FRAGMENT_PLAN_LIST;
+import static com.bitvalue.health.util.Constants.ROLE_TYPE;
 import static com.bitvalue.health.util.Constants.TASKDETAIL;
 import static com.bitvalue.health.util.Constants.USER_ID;
 import static com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI.CHAT_TYPE_VIDEO;
@@ -41,7 +42,7 @@ import com.bitvalue.health.contract.homecontract.HomeContract;
 import com.bitvalue.health.presenter.homepersenter.HomePersenter;
 import com.bitvalue.health.ui.fragment.chat.ChatFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.ConsultingServiceFragment;
-import com.bitvalue.health.ui.fragment.docfriend.NeedDealWithFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.NeedDealWithFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddArticleFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddRemindFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddVideoFragment;
@@ -75,7 +76,6 @@ import com.bitvalue.health.ui.fragment.setting.SettingsFragment;
 import com.bitvalue.health.ui.fragment.workbench.HealthPlanTaskDetailFragment;
 import com.bitvalue.health.ui.fragment.workbench.VisitPlanFragment;
 import com.bitvalue.health.ui.fragment.workbench.SendMessageFragment;
-import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
@@ -193,11 +193,11 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     private int tabPosition = -1;
     private Fragment[] fragmentArrays;
     private Map<String, Fragment> mapFragments = new HashMap<>();
-    private SettingsFragment settingsFragment;
-    private PatientReportFragment patientReportFragment;
-    private ConsultingServiceFragment consultingServiceFragment;
-    private NeedDealWithFragment needDealWithFragment;
-    private VisitPlanFragment workbenchFragment;
+    private SettingsFragment settingsFragment;  //  设置
+    private PatientReportFragment patientReportFragment; //患者报道
+    private ConsultingServiceFragment consultingServiceFragment; //咨询
+    private NeedDealWithFragment needDealWithFragment; //待办
+    private VisitPlanFragment workbenchFragment;   //随访计划
     private ScheduleFragment scheduleFragment;
 
 
@@ -223,10 +223,11 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             Log.e(TAG, "initView  loginBean is null ");
             return;
         }
+        Constants.ROLE_TYPE = loginBean.getAccount().roleName;
         frameLayout_full.setVisibility(View.GONE);
         layout_group.setVisibility(loginBean.getAccount().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示咨询模块
         ll_patient_report.setVisibility(loginBean.getAccount().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示患者报道模块
-        initFragments(loginBean.getAccount().roleName.equals("casemanager") ?PATIENT_REPORT:FOLLOWUP_PLAN);  //如果是个案师账号默认首页工作台界面 否则默认随访计划首页
+        initFragments(loginBean.getAccount().roleName.equals("casemanager") ? PATIENT_REPORT : FOLLOWUP_PLAN);  //如果是个案师账号默认首页工作台界面 否则默认随访计划首页
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig);
     }
 

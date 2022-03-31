@@ -101,7 +101,7 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
     private NewLeaveBean.RowsDTO itemPosition;
     private ImageListDisplayAdapter displayAdapter;
     private HomeActivity homeActivity;
-    private int userID=0;
+    private int userID = 0;
 
     @Override
     protected VisitPlanDetailPresenter createPresenter() {
@@ -129,7 +129,9 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
         itemPosition = (NewLeaveBean.RowsDTO) getArguments().getSerializable(FRAGMENT_DETAIL);
         userID = getArguments().getInt(USER_ID);
         if (itemPosition != null) {
-            iv_head.setImageDrawable(itemPosition.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+            if (!EmptyUtil.isEmpty(itemPosition.getSex())) {
+                iv_head.setImageDrawable(itemPosition.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+            }
             tv_sendMessage.setBackground(EmptyUtil.isEmpty(itemPosition.getUserId()) ? homeActivity.getDrawable(R.drawable.shape_bg_gray_) : homeActivity.getDrawable(R.drawable.shape_bg_blue_dark));
             tv_distributionplan.setBackground((EmptyUtil.isEmpty(itemPosition.getUserId()) || (itemPosition.getPlanInfo().size() == 0)) ? homeActivity.getDrawable(R.drawable.shape_bg_gray_) : homeActivity.getDrawable(R.drawable.shape_bg_blue_dark));
             tv_name.setText(itemPosition.getUserName());
@@ -139,15 +141,22 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
             tv_diseasename.setText(itemPosition.getCyzd());
             tv_specialdisease.setText(itemPosition.getBqmc());
             String curen = TimeUtils.getCurrenTime();
-            int finatime = Integer.valueOf(curen) - Integer.valueOf((itemPosition.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
-            tv_age.setText(finatime + "岁");
-            if (itemPosition.getInfoDetail().getSjhm().equals("******")) {
-                tv_phone.setText(itemPosition.getInfoDetail().getDhhm());
-            } else {
-                tv_phone.setText(itemPosition.getInfoDetail().getSjhm());
+            if (!EmptyUtil.isEmpty(itemPosition.getAge())) {
+                int finatime = Integer.valueOf(curen) - Integer.valueOf((itemPosition.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
+                tv_age.setText(finatime + "岁");
             }
-            tv_address.setText(itemPosition.getInfoDetail().getGzdwdz());
-            tv_heigth.setText(itemPosition.getSex().equals("女") ? "162cm" : "175cm");
+            if (itemPosition.getInfoDetail() != null && null != itemPosition.getInfoDetail().getSjhm()) {
+                if (itemPosition.getInfoDetail().getSjhm().equals("******")) {
+                    tv_phone.setText(itemPosition.getInfoDetail().getDhhm());
+                } else {
+                    tv_phone.setText(itemPosition.getInfoDetail().getSjhm());
+                }
+//                tv_address.setText(itemPosition.getInfoDetail().getGzdwdz());
+            } else {
+                tv_phone.setVisibility(View.GONE);
+            }
+            if (!EmptyUtil.isEmpty(itemPosition.getSex()))
+                tv_heigth.setText(itemPosition.getSex().equals("女") ? "162cm" : "175cm");
 
             //根据id 查询患者的详情
         } else if (!EmptyUtil.isEmpty(userID)) {
@@ -194,6 +203,7 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
                 NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
                 info.setUserName(itemPosition.getUserName());
                 info.setUserId(itemPosition.getUserId());
+                info.setKsmc(itemPosition.getKsmc());
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
                 break;
 
@@ -223,11 +233,11 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
 //               病历详情
             case R.id.tv_bingli_detail:
                 Intent intent = new Intent(homeActivity, HealthFilesActivity.class);
-                if (userID!=0){
+                if (userID == 0) {
+                    if (!EmptyUtil.isEmpty(itemPosition) && !EmptyUtil.isEmpty(itemPosition.getUserId()))
+                        intent.putExtra(USER_ID, Integer.valueOf(itemPosition.getUserId()));
+                } else {
                     intent.putExtra(USER_ID, userID);
-                }else {
-                    if (!EmptyUtil.isEmpty(itemPosition))
-                    intent.putExtra(USER_ID, itemPosition.getUserId());
                 }
                 homeActivity.startActivity(intent);
                 break;
@@ -259,8 +269,6 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
     public void qryUserVisitFail(String failMessage) {
         homeActivity.runOnUiThread(() -> {
             hideDialog();
-//            Log.e(TAG, "qryUserVisitFail: " + failMessage);
-//           ToastUtils.show(failMessage);
         });
     }
 
@@ -274,15 +282,19 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
     public void getPatientBaseInfoSuccess(PatientBaseInfoBean patientBaseInfoBean) {
         homeActivity.runOnUiThread(() -> {
             if (patientBaseInfoBean != null) {
-                iv_head.setImageDrawable(patientBaseInfoBean.getBaseInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+                if (!EmptyUtil.isEmpty(patientBaseInfoBean.getBaseInfo().getUserSex())) {
+                    iv_head.setImageDrawable(patientBaseInfoBean.getBaseInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+                }
                 tv_name.setText(patientBaseInfoBean.getBaseInfo().getUserName());
                 tv_sex.setText(patientBaseInfoBean.getBaseInfo().getUserSex());
                 tv_depatment.setText("-");
                 tv_inpatient_area.setText("-");
                 tv_diseasename.setText("-");
                 String curen = TimeUtils.getCurrenTime();
-                int finatime = Integer.valueOf(curen) - Integer.valueOf((patientBaseInfoBean.getBaseInfo().getBirthday().substring(0, 4)));  //后台给的是出生日期 需要前端换算
-                tv_age.setText(finatime + "岁");
+                if (!EmptyUtil.isEmpty(patientBaseInfoBean.getBaseInfo().getBirthday())) {
+                    int finatime = Integer.valueOf(curen) - Integer.valueOf((patientBaseInfoBean.getBaseInfo().getBirthday().substring(0, 4)));  //后台给的是出生日期 需要前端换算
+                    tv_age.setText(finatime + "岁");
+                }
                 tv_phone.setText(patientBaseInfoBean.getExternalInfo().getPhone());
                 tv_address.setText(patientBaseInfoBean.getExternalInfo().getAddress());
                 tv_heigth.setText(String.valueOf(patientBaseInfoBean.getExternalInfo().getHeight()));

@@ -1,7 +1,6 @@
-package com.bitvalue.health.contract.mytodolistcontact;
+package com.bitvalue.health.contract.visitplancontact;
 
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
-import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.model.IModel;
 import com.bitvalue.health.base.view.IView;
@@ -13,21 +12,21 @@ import java.util.List;
  * @author created by bitvalue
  * @data : 01/10
  */
-public interface MyToDoListContact {
-    public interface MyToDoListView extends IView {
+public interface VisitPlanContact {
+     interface VisitPlanView extends IView {
 
         // 查询所有患者 新接口
         void qryPatientListSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList);
 
         void qryPatientListFail(String messageFail);
 
-        void qryPatientByNameSuccess(List<NewLeaveBean.RowsDTO> itinfoDetailDTOList);
+        void qryPatientByNameSuccess(List<NewLeaveBean.RowsDTO> initinfoDetailDTOList);
         void qryPatientByNameFail(String failmessage);
 
     }
 
 
-    public interface MyToDoListModel extends IModel {
+     interface VisitPlanModel extends IModel {
 
         //获取所有患者列表
         void qryPatientList(AllocatedPatientRequest requestNewLeaveBean, Callback callback);
@@ -37,7 +36,7 @@ public interface MyToDoListContact {
     }
 
 
-    public interface MyToDoListPersenter {
+     interface VisitPlanPersenter {
 
 //        需要获取 所有患者列表
 

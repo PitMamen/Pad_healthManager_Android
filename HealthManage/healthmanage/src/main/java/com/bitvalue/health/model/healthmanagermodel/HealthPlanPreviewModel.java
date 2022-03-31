@@ -123,7 +123,7 @@ public class HealthPlanPreviewModel extends BaseModel implements HealthPlanPrevi
                         }
                     }
                 }, error -> {
-                    callback.onFailedLog("请求出现错误!"+error.getMessage(), 1001);
+                    callback.onFailedLog("请求出错!", 1001);
                 });
 
     }

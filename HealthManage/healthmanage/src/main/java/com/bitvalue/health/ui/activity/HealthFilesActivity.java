@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.requestbean.GetLogsApi;
 import com.bitvalue.health.api.requestbean.PatientDataMoreApi;
-import com.bitvalue.health.api.responsebean.message.GetMissionObj;
 import com.bitvalue.health.base.BaseAdapter;
 import com.bitvalue.health.ui.adapter.HealthLogsAdapter;
 import com.bitvalue.health.util.Constants;
@@ -93,12 +92,12 @@ public class HealthFilesActivity extends AppActivity {
 
     private HealthLogsAdapter mAdapter;
     private ArrayList<GetLogsApi.LogBean> logBeans = new ArrayList<>();
-    private GetMissionObj getMissionObj;
     private GetLogsApi getLogsApi;
     private int total;
     private String userId;
     private String idcardNum;//身份证号码
     private PatientDataMoreApi.PatientDataMoreResponse patientDataMoreResponse;
+    private final String defaultmouth = "48";
 
     @Override
     protected int getLayoutId() {
@@ -107,12 +106,11 @@ public class HealthFilesActivity extends AppActivity {
 
     @Override
     protected void initView() {
-        userId = getIntent().getStringExtra(Constants.USER_ID);
+        userId = String.valueOf(getIntent().getIntExtra(Constants.USER_ID,0));
 //        idcardNum = getIntent().getStringExtra(Constants.IDCARD_NUMBER);
-        Log.e("TAG", "患者ID: "+userId);
         getLogsApi = new GetLogsApi();
-        getLogsApi.timeHorizon = "48";
-        getLogsApi.userId = "249";
+        getLogsApi.timeHorizon = defaultmouth;
+        getLogsApi.userId = userId;  //249  调试参数
 //        getLogsApi.idNumber = "430202198802186610";
         initList(); //初始化各控件
         getPersonalData(); //加载患者详细数据
@@ -125,7 +123,7 @@ public class HealthFilesActivity extends AppActivity {
      */
     private void getPersonalData() {
         PatientDataMoreApi patientDataMoreApi = new PatientDataMoreApi();
-        patientDataMoreApi.userId = 208+"";   //先写死做开发测试
+        patientDataMoreApi.userId = userId;
         EasyHttp.get(this).api(patientDataMoreApi).request(new HttpCallback<ApiResult<PatientDataMoreApi.PatientDataMoreResponse>>(this) {
 
             @Override

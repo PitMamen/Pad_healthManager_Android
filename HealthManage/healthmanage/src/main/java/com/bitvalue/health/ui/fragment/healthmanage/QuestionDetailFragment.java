@@ -3,6 +3,7 @@ package com.bitvalue.health.ui.fragment.healthmanage;
 import android.content.Context;
 import android.net.http.SslError;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -10,7 +11,9 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +54,11 @@ public class QuestionDetailFragment extends BaseFragment {
     @BindView(R.id.progressBar1)
     ProgressBar progressBar;
 
+    @BindView(R.id.layout_back)
+    LinearLayout back_layout;
+
+
+
     private HomeActivity homeActivity;
     private QuestionResultBean.ListDTO questionBean;
     private String url;
@@ -77,8 +85,6 @@ public class QuestionDetailFragment extends BaseFragment {
             case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
-//                    http://192.168.1.122/s/8a755f7c24ad49c9a2be6e6f79c3ee60   //内网地址
-//                    http://218.77.104.74:8008/s/8a755f7c24ad49c9a2be6e6f79c3ee60"
                 }
                 break;
         }
@@ -93,6 +99,7 @@ public class QuestionDetailFragment extends BaseFragment {
 
     @Override
     public void initView(View rootView) {
+        back_layout.setVisibility(View.VISIBLE);
 
         questionBean = (QuestionResultBean.ListDTO) getArguments().getSerializable(Constants.QUESTION_DETAIL);
         //TODO 外网切内网
@@ -100,8 +107,8 @@ public class QuestionDetailFragment extends BaseFragment {
             ToastUtil.toastShortMessage("问卷数据错误");
             return;
         }
-//        url = questionBean.questUrl.replace("218.77.104.74:8008", "192.168.1.122");
         url = questionBean.questUrl;
+        Log.e(TAG, "问卷URL: "+url );
         initWebView();
 
         if (url.contains("?userId=")) {

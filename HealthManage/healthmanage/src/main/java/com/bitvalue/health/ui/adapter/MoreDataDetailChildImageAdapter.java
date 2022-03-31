@@ -4,11 +4,15 @@ import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
+import com.bitvalue.health.Application;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.component.picture.imageEngine.impl.GlideEngine;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -27,6 +31,7 @@ public class MoreDataDetailChildImageAdapter extends BaseQuickAdapter<String, Ba
             return;
         }
         ImageView imageView = holder.getView(R.id.iv_pic);
-        GlideEngine.loadImage(imageView,item);
+        Picasso.with(Application.instance()).load(item.trim()).into(imageView);
+//        GlideEngine.loadImage(imageView,item.trim());
     }
 }

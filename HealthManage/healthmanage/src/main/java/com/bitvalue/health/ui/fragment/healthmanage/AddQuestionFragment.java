@@ -70,6 +70,7 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
     private int total;
 //    private GetMissionObj getMissionObj;
 
+    private int cureentPage = 0;
     private int pageSize = 10;
     private int start = 1;
     private String keyWord = "";
@@ -153,32 +154,45 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
     }
 
     private void initList() {
-
         mAdapter = new QuestionAdapter(getActivity());
         mAdapter.setOnItemClickListener((recyclerView, itemView, position) -> {
-//            QuestionResultBean.ListDTO listDTO = questionBeans.get(position);
-//            if (null != getMissionObj) {
-//                listDTO.TaskNo = getMissionObj.getTaskNo();
-//                listDTO.MissionNo = getMissionObj.getMissionNo();
-//            }
             sendQuestion(questionBeans.get(position));
             homeActivity.getSupportFragmentManager().popBackStack();
         });
         list_normal.setAdapter(mAdapter);
-
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
+            //上拉
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
-                start = mAdapter.getCount() + 1;
+
+                // TODO: 2021/12/8 加载下一页
+                Log.e(TAG, "上拉 当前页: " + cureentPage + "   开始页: " + start);
+                if (cureentPage == start) {
+                    start = 1;
+                    Log.e(TAG, "无更多数据");
+                    mRefreshLayout.finishLoadMore();
+                    mRefreshLayout.finishRefresh();
+                    return;
+                }
+                start++;
                 getQuestions();
+                mRefreshLayout.finishLoadMore();
+                mRefreshLayout.finishRefresh();
 
             }
 
+            //下拉
             @Override
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
-                start = 1;
-                mAdapter.clearData();
+                Log.e(TAG, "下拉 当前页: " + cureentPage + "   开始页: " + start);
+                if (start > 1) {
+                    start--;
+                } else {
+                    mRefreshLayout.finishRefresh();
+                    return;
+                }
                 getQuestions();
+                mRefreshLayout.finishRefresh();
             }
         });
 
@@ -195,8 +209,6 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
     @Override
     public void initData() {
         //初始化
-        pageSize = 10;
-        start = 1;
         getQuestions();
     }
 
@@ -212,27 +224,26 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
 
     @Override
     public void qryQuestByKeyWordSuccess(QuestionResultBean questionResultBean) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (start == 1) {//下拉刷新,以及第一次加载
-                    questionBeans = questionResultBean.list;
-                    total = questionResultBean.total;
-                    mRefreshLayout.finishRefresh();
-                } else {//加载更多
-                    questionBeans.addAll(questionResultBean.list);
-                    mRefreshLayout.finishLoadMore();
-                    mAdapter.setLastPage(mAdapter.getItemCount() >= total);
-                    mRefreshLayout.setNoMoreData(mAdapter.isLastPage());
+        getActivity().runOnUiThread(() -> {
+            if (start == 1) {//下拉刷新,以及第一次加载
+                questionBeans = questionResultBean.list;
+                total = questionResultBean.total;
+                mRefreshLayout.finishRefresh();
+            } else {//加载更多
+                if (null != questionResultBean.list && questionResultBean.list.size() == 0) {
+                    cureentPage = start;
                 }
-                mAdapter.setData(questionBeans);
+                questionBeans.addAll(questionResultBean.list);
+                mRefreshLayout.finishRefresh();
+                mRefreshLayout.setNoMoreData(mAdapter.isLastPage());
             }
+            mAdapter.setData(questionBeans);
         });
 
     }
 
     @Override
     public void qryQuestByKeyWordFail(String faileMessage) {
-        getActivity().runOnUiThread(() -> ToastUtil.toastShortMessage(faileMessage));
+        getActivity().runOnUiThread(() -> ToastUtil.toastShortMessage("获取问卷列表失败!"));
     }
 }

@@ -1,13 +1,12 @@
-package com.bitvalue.health.model.mytodolist;
+package com.bitvalue.health.model.visitplanmodel;
 
 import android.util.Log;
 
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
-import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.model.BaseModel;
 import com.bitvalue.health.callback.Callback;
-import com.bitvalue.health.contract.mytodolistcontact.MyToDoListContact;
+import com.bitvalue.health.contract.visitplancontact.VisitPlanContact;
 import com.bitvalue.health.util.EmptyUtil;
 
 import io.reactivex.schedulers.Schedulers;
@@ -16,14 +15,13 @@ import io.reactivex.schedulers.Schedulers;
  * @author created by bitvalue
  * @data :
  */
-public class MyToDoListModel extends BaseModel implements MyToDoListContact.MyToDoListModel {
+public class VisitPlanModel extends BaseModel implements VisitPlanContact.VisitPlanModel {
     @Override
     public void qryPatientList(AllocatedPatientRequest requestNewLeaveBean, Callback callback) {
         if (null != requestNewLeaveBean) {
             mApi.qryallAllocatedPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
                 if (!EmptyUtil.isEmpty(listApiResult)) {
                     if (listApiResult.getCode() == 0) {
-                        NewLeaveBean newLeaveBeanList = listApiResult.getData();
                         if (!EmptyUtil.isEmpty(listApiResult.getData().getRows())){
                             callback.onSuccess(listApiResult.getData().getRows(),1000);
                         }else {

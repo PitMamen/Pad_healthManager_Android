@@ -127,9 +127,4 @@ public class SharedPreManager {
         putString(name, jsonStr);
     }
 
-    public static class Constant{
-        public static final String TOKEN = "Authorization";
-        public static final String USER_NAME = "userName";
-        public static final String USER_ID = "userId";
-    }
 }

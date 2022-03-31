@@ -77,7 +77,6 @@ public class MoreDataFragment extends BaseFragment<MoreDataDetailPresenter> impl
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
-        Log.e(TAG, "更多详情界面------------------");
         back.setVisibility(View.VISIBLE);
         tv_title.setText("更多详情");
         back.setOnClickListener(v -> {

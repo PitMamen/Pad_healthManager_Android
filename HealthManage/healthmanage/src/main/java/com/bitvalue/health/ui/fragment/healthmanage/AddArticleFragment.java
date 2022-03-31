@@ -79,7 +79,7 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
 
     private List<ArticleBean> dailyArticles = new ArrayList<>();
     private List<ArticleBean> searchArticles = new ArrayList<>();
-//    private GetMissionObj getMissionObj;
+    //    private GetMissionObj getMissionObj;
     private int UsefulArticleCount = 10;
 
     @OnClick({R.id.layout_back})
@@ -158,12 +158,6 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
             if (dailyArticles.size() == 0) {
                 return;
             }
-//            ArticleBean articleBean = dailyArticles.get(position);
-//            if (null != getMissionObj) {
-//                articleBean.TaskNo = getMissionObj.getTaskNo();
-//                articleBean.MissionNo = getMissionObj.getMissionNo();
-//            }
-//            EventBus.getDefault().post(articleBean);
             sendArticle(dailyArticles.get(position));
             homeActivity.getSupportFragmentManager().popBackStack();
         });
@@ -172,7 +166,7 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
         mRefreshLayout.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
-                Log.e(TAG, "11111111111111111 " );
+                Log.e(TAG, "11111111111111111 ");
             }
 
             @Override
@@ -204,7 +198,7 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
         layout_search_result.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
-                Log.e(TAG, "11111111111111111 " );
+                Log.e(TAG, "11111111111111111 ");
             }
 
             @Override
@@ -218,7 +212,7 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
 
     }
 
-    private void sendArticle(ArticleBean articleBean){
+    private void sendArticle(ArticleBean articleBean) {
         CustomCaseHistoryMessage message = new CustomCaseHistoryMessage();
         message.title = "文章内容";
         message.content = articleBean.title;
@@ -228,6 +222,7 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
         message.setDescription("文章");
         EventBus.getDefault().post(message);
     }
+
     //接口请求 加载文章列表
     private void getDailyArticles() {
         mPresenter.getUsefulArticle(UsefulArticleCount);
@@ -258,7 +253,11 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
     @Override
     public void getArticleSuccess(ArrayList<ArticleBean> articleBeanArrayList) {
         getActivity().runOnUiThread(() -> {
-            if (dailyArticles.size()==articleBeanArrayList.size()){
+//            for (int i = 0; i <articleBeanArrayList.size() ; i++) {
+//                Log.e(TAG, "文章详情: "+articleBeanArrayList.get(i).toString() );
+//            }
+
+            if (dailyArticles.size() == articleBeanArrayList.size()) {
                 ToastUtil.toastShortMessage("无更多数据");
             }
             dailyArticles.clear();
@@ -289,6 +288,6 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
 
     @Override
     public void getArticleFaile(String messageFail) {
-        getActivity().runOnUiThread(() -> ToastUtil.toastShortMessage(messageFail));
+        getActivity().runOnUiThread(() -> ToastUtil.toastShortMessage("获取文章列表失败!"));
     }
 }

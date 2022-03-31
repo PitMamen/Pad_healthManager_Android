@@ -23,7 +23,6 @@ public class MoreDataDetailModel extends BaseModel implements MoreDataDetailCont
     public void qryUserLocalVisit(UserLocalVisitBean visitBean, Callback callback) {
         mApi.qryUserLocalVisit(visitBean).subscribeOn(Schedulers.io()).subscribe(result -> {
             if (!EmptyUtil.isEmpty(result)) {
-                Log.e(TAG, "qryUserLocalVisit111: "+result.toString() );
                 if (result.getCode() == 0) {
                     if (!EmptyUtil.isEmpty(result.getData())) {
                         List<TaskDetailBean> listBean = result.getData();

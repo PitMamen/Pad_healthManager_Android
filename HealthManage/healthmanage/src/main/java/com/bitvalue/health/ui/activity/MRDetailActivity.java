@@ -1222,6 +1222,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
             mRecyclerViewAdapter_sysjy.notifyDataSetChanged();
             mRecyclerViewAdapter_yqjc.notifyDataSetChanged();
             mRecyclerViewAdapter_jcjy_timeline.notifyDataSetChanged();
+            dismissLoadDialog();
         } else {
             dismissLoadDialog();
             ll_timeline_zone_jcjy.setVisibility(View.GONE);

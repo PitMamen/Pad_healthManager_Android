@@ -22,7 +22,7 @@ public class NeedDealWithModel extends BaseModel implements NeedDealWithContract
     public void getMyTaskDetail(int execFlag, int taskType, String docUserId, Callback callback) {
         if (!EmptyUtil.isEmpty(docUserId)) {
             mApi.getUserTask(execFlag, taskType, docUserId).subscribeOn(Schedulers.io()).subscribe(result -> {
-                Log.e(TAG, "getMyTaskDetail: " + result.getData().toString());
+//                Log.e(TAG, "getMyTaskDetail: " + result.getData().toString());
                 if (!EmptyUtil.isEmpty(result)) {
                     if (result.getCode() == 0) {
                         if (!EmptyUtil.isEmpty(result.getData())) {
@@ -47,7 +47,6 @@ public class NeedDealWithModel extends BaseModel implements NeedDealWithContract
     public void getMyAlreadyDealTaskDetail(int execFlag, int taskType, String docUserId,Callback callback) {
         if (!EmptyUtil.isEmpty(docUserId)) {
             mApi.getUserTask(execFlag, taskType, docUserId).subscribeOn(Schedulers.io()).subscribe(result -> {
-                Log.e(TAG, "getMyTaskDetail: " + result.getData().toString());
                 if (!EmptyUtil.isEmpty(result)) {
                     if (result.getCode() == 0) {
                         if (!EmptyUtil.isEmpty(result.getData())) {

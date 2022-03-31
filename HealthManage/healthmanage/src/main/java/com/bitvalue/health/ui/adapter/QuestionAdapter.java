@@ -41,12 +41,7 @@ public class QuestionAdapter extends AppAdapter<QuestionResultBean.ListDTO> {
         public void onBindView(int position) {
             questionBean = getItem(position);
             tv_name.setText(questionBean.name);
-            tv_use_status.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Application.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL,getData().get(position));
-                }
-            });
+            tv_use_status.setOnClickListener(v -> Application.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL,getData().get(position)));
         }
     }
 }

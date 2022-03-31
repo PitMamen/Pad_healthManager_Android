@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/qb_px_15"
-                android:text="-"
+                android:text=""
                 android:textSize="13sp"></TextView>
 
 
@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/qb_px_15"
-                android:text="--"
+                android:text=""
                 android:textSize="13sp"></TextView>
 
 
@@ -123,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/qb_px_8"
-                android:text="-----------"
+                android:text="--"
                 android:textSize="13sp"></TextView>
 
 
@@ -153,7 +153,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/qb_px_8"
-                android:text="长沙市岳麓区学士街道岳麓科技产业园"
+                android:text="不详"
                 android:textSize="13sp"
                 android:visibility="gone"></TextView>
 
@@ -188,7 +188,7 @@
     <RelativeLayout
         android:id="@+id/disease_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/qb_px_160"
+        android:layout_height="@dimen/qb_px_120"
         android:layout_below="@+id/rl_icon"
         android:layout_marginTop="@dimen/qb_px_10"
         android:background="@color/white">
@@ -498,6 +498,7 @@
 
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/rl_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -571,7 +572,7 @@
             android:text="查看完整病历"
             android:textColor="@color/main_blue_"
             android:textSize="14sp"
-            android:visibility="invisible"></TextView>
+            android:visibility="gone"></TextView>
 
 
     </RelativeLayout>

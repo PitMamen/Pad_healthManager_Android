@@ -1,5 +1,6 @@
 package com.bitvalue.health.contract.cloudcliniccontract;
 
+import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
@@ -38,7 +39,7 @@ public class CloudClinicContract {
 
         void listenerIMNewMessage(Callback customback);
 
-        void qryMedicalPatients(RequestNewLeaveBean requestNewLeaveBean,Callback callback); //所有患者
+        void qryMedicalPatients(AllocatedPatientRequest requestNewLeaveBean, Callback callback); //所有患者
     }
 
 
@@ -47,7 +48,7 @@ public class CloudClinicContract {
 
         void listennerIMNewMessage();   //监听聊天新消息
 
-        void qryMedicalPatients(RequestNewLeaveBean requestNewLeaveBean); //云门诊就诊列表查询
+        void qryMedicalPatients(AllocatedPatientRequest requestNewLeaveBean); //云门诊就诊列表查询
     }
 
 

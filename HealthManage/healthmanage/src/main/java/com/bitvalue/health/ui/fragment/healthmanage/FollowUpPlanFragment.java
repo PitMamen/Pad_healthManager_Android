@@ -244,18 +244,10 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                                 tv_zhuabing.setText(getString(R.string.please_select_specific_disease));
                                 if (map != null && map.size() > 0) {
                                     int departmentID = map.get(name);
-                                    Log.e(TAG, "选中ID: " + departmentID);
                                     getDiseaseList(departmentID);
                                     getMyPlans(departmentID);
                                 }
                             });
-//                            spinner2.setOnItemClickListener((parent, view, position, id) -> {
-//                                tv_zhuabing.setText(getString(R.string.please_select_specific_disease));
-//                                int departmentID = map.get(departmentList.get(position));
-//                                Log.e(TAG, "选中ID: "+departmentID );
-//                                getDiseaseList(departmentID);
-//                                getMyPlans(departmentID);
-//                            });
 
                         }
                     } else {

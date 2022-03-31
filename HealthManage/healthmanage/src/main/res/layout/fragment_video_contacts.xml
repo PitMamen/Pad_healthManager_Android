@@ -79,16 +79,24 @@
         app:layout_constraintLeft_toLeftOf="parent" />
 
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/contact_list"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/rl_status_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_line" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/view_line"
+        app:srlEnablePreviewInEditMode="false">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/contact_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_line" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
 
     <com.bitvalue.sdk.collab.modules.conversation.ConversationLayout
         android:id="@+id/versationlist_layout"
-        android:layout_below="@+id/contact_list"
+        android:layout_below="@+id/rl_status_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

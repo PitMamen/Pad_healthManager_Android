@@ -57,6 +57,8 @@
     <string name="common_permission_goto">前往授权</string>
     <string name="please_select_department">请选科室</string>
     <string name="please_select_specific_disease">请选专病</string>
+    <string name="please_select_inpatient_area">请选病区</string>
+    <string name="all_inpatient_area">所有病区</string>
     <string name="common_permission_calendar">日历权限</string>
     <string name="common_permission_camera">相机权限</string>
     <string name="common_permission_contacts">通讯录权限</string>
@@ -89,6 +91,8 @@
     <string name="common_web_call_phone_title">当前号码 %s</string>
     <string name="common_web_call_phone_allow">拨打</string>
     <string name="common_web_call_phone_reject">取消</string>
+    <string name="pre_diagnosis_collection">预诊收集</string>
+    <string name="pre_diagnosis_data">预诊资料</string>
 
     <!-- 网络请求 -->
     <string name="http_loading">加载中&#8230;</string>

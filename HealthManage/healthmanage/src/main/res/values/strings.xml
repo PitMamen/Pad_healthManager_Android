@@ -42,6 +42,8 @@
     <string name="common_code_send">发送验证码</string>
     <string name="common_code_send_hint">验证码已发送，请注意查收</string>
     <string name="common_code_error_hint">验证码错误，请检查输入</string>
+    <string name="pre_diagnosis_collection">预诊收集</string>
+    <string name="pre_diagnosis_data">预诊资料</string>
 
     <string name="common_step_next">下一步</string>
     <string name="common_step_complete">完成</string>
@@ -238,6 +240,8 @@
     <string name="personal_data_address_hint">请选择</string>
     <string name="please_select_department">请选科室</string>
     <string name="please_select_specific_disease">请选专病</string>
+    <string name="please_select_inpatient_area">请选病区</string>
+    <string name="all_inpatient_area">所有病区</string>
 
     <string name="personal_data_phone">手机号码</string>
     <string name="personal_data_phone_hint">立即绑定</string>
@@ -270,8 +274,6 @@
     <string name="camera_image_error">目标地址错误</string>
 
 
-
-
     <string name="health_analyse">健康评估</string>
     <string name="health_analyse_mes">健康评估消息</string>
     <string name="health_mesage">健康消息</string>
@@ -300,8 +302,7 @@
     <string name="writer_healthcase" tools:ignore="ExtraTranslation">病历书写</string>
 
 
-
-<!--    add-->
+    <!--    add-->
 
     <string name="action_today">今天</string>
     <string name="action_day_view">日视图</string>

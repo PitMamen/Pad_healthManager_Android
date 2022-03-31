@@ -55,14 +55,20 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
     @Override
     protected void convert(@NotNull BaseViewHolder helper, @NotNull NewLeaveBean.RowsDTO sfjhBean) {
         String curen = TimeUtils.getCurrenTime();
-        int finatime = Integer.valueOf(curen) - Integer.valueOf((sfjhBean.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
+//        Log.e(TAG, "年龄: "+ sfjhBean.getAge()+"  性别："+sfjhBean.getSex());
+        if (!EmptyUtil.isEmpty(sfjhBean.getAge()) && sfjhBean.getAge().length() >= 5) {
+            int finatime = Integer.valueOf(curen) - Integer.valueOf((sfjhBean.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
+            helper.setText(R.id.tv_age, finatime + "岁");
+        }else {
+            helper.getView(R.id.view_line).setVisibility(View.INVISIBLE);
+        }
+        if (!EmptyUtil.isEmpty(sfjhBean.getSex())) {
+            helper.setImageDrawable(R.id.img_head, sfjhBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+        }
+        helper.addOnClickListener(R.id.img_head);
         helper.setText(R.id.tv_name, sfjhBean.getUserName())
-                .setText(R.id.tv_age, finatime + "岁")
                 .setText(R.id.tv_sex, sfjhBean.getSex())
-                .setText(R.id.tv_time, sfjhBean.getDiagDate())
-                .setImageDrawable(R.id.img_head, sfjhBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female))
-                .addOnClickListener(R.id.img_head);
-
+                .setText(R.id.tv_time, sfjhBean.getDiagDate());
 
 
         WrapRecyclerView childItemLRecycleView = helper.getView(R.id.plan_list);
@@ -73,8 +79,8 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
         childAdapter.setOnItemClickListener((adapter, view, position) -> {
 
             NewLeaveBean.RowsDTO.PlanInfoDetailDTO planInfo = (NewLeaveBean.RowsDTO.PlanInfoDetailDTO) adapter.getItem(position);
-
-            if (onPlanTaskItemClickListener!=null){
+            sfjhBean.id_plan = planInfo.getId();
+            if (onPlanTaskItemClickListener != null) {
                 onPlanTaskItemClickListener.onCkeckPlanItemClick(planInfo.getPlanId(), sfjhBean);
             }
         });
@@ -85,7 +91,7 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
 
     public interface OnPlanTaskItemClickListener {
 
-        void onCkeckPlanItemClick(String planId,NewLeaveBean.RowsDTO planInfoDetailDTO);
+        void onCkeckPlanItemClick(String planId, NewLeaveBean.RowsDTO planInfoDetailDTO);
     }
 
     public void setOnPlanTaskItemClickListener(OnPlanTaskItemClickListener listener) {

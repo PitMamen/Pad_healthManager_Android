@@ -19,6 +19,7 @@ import com.bitvalue.health.api.requestbean.DocListBean;
 import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.MyRightBean;
+import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.QueryRightsRecordBean;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.base.BaseFragment;
@@ -77,10 +78,14 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     LinearLayout ll_hasRightsData;
     @BindView(R.id.rl_default_view)
     RelativeLayout rl_default_view;
+    @BindView(R.id.rl_back)
+    RelativeLayout back;
 
 
-    @BindView(R.id.rl_processing_complete)
-    RelativeLayout btn_processing_complete; //处理完成按钮
+    @BindView(R.id.tv_complete)
+    TextView btn_processing_complete; //处理完成按钮
+    @BindView(R.id.tv_gochat)
+    TextView tv_goChat;
 
     @BindView(R.id.list_right_times)
     WrapRecyclerView list_righttimes;
@@ -119,6 +124,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
+        back.setVisibility(View.GONE);
         taskDeatailBean = (TaskDeatailBean) getArguments().getSerializable(TASKDETAIL);
         if (taskDeatailBean == null) {
             return;
@@ -141,11 +147,12 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
         queryRightsRecordAdapter = new QueryRightsRecordAdapter(R.layout.item_processing_flow_layout, useRecordList);
         list_technological_process.setAdapter(queryRightsRecordAdapter);
 
-        btn_processing_complete.setVisibility(taskDeatailBean.getExecFlag()==1?View.GONE:View.VISIBLE); //如果是已办 则不显示处理完成按钮
+        btn_processing_complete.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮
+        tv_goChat.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示进入聊天按钮
         iv_icon.setImageDrawable(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         tv_sex.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex());
         tv_name.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
-        tv_age.setText(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserAge()));
+        tv_age.setText(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserAge())+"岁");
         tv_phoneNumber.setText(taskDeatailBean.getTaskDetail().getUserInfo().getPhone());
 
         useEquityDialog = new UseEquityDialog(homeActivity);
@@ -153,7 +160,6 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
             useEquityDialog.setDepartment(taskDeatailBean.getTaskDetail().getDeptName()).setVisitName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName()).setVisitType(taskDeatailBean.getTaskDetail().getRightsName()).setOnclickListener(new UseEquityDialog.OnClickBottomListener() {
                 @Override
                 public void onPositiveClick() {
-                    Log.e(TAG, "请求接口---- ");
                     FinshMidRequestBean finshMidRequestBean = new FinshMidRequestBean();
                     String selectDoctor = useEquityDialog.getSelectDoc();
                     String selectContinueTime = useEquityDialog.getSelectContinueTime();
@@ -168,7 +174,11 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                     finshMidRequestBean.rightsId = taskDeatailBean.getTaskDetail().getRightsId();
                     finshMidRequestBean.rightsName = taskDeatailBean.getTaskDetail().getRightsName();
                     finshMidRequestBean.rightsType = taskDeatailBean.getTaskDetail().getRightsType();
-                    finshMidRequestBean.statusDescribe = "个案管理师已完成处理 分配给"+taskDeatailBean.getTaskDetail().getDeptName()+selectDoctor+"医生,开始时间:"+selectTakeTime+",持续时间:"+selectContinueTime+"分钟";  //描述 添加上科室和医生
+                    if (selectDoctor.contains("请选择医生")) {
+                        ToastUtils.show("请选择医生!");
+                        return;
+                    }
+                    finshMidRequestBean.statusDescribe = "个案管理师已完成处理 分配给" + taskDeatailBean.getTaskDetail().getDeptName() + selectDoctor + "医生,开始时间:" + selectTakeTime + ",持续时间:" + selectContinueTime + "分钟";  //描述 添加上科室和医生
                     finshMidRequestBean.taskId = String.valueOf(taskDeatailBean.getId());
                     finshMidRequestBean.userId = String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId());
                     finshMidRequestBean.tradeId = taskDeatailBean.getTaskDetail().getTradeId();
@@ -181,6 +191,16 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                     useEquityDialog.cancel();
                 }
             }).show();
+        });
+
+
+        tv_goChat.setOnClickListener(v -> {
+            // TODO: 2022/3/25 进入聊天界面
+            NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
+            info.setUserName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
+            info.setUserId(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+            info.setKsmc(taskDeatailBean.getTaskDetail().getDeptName());
+            homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
         });
 
     }
@@ -199,9 +219,6 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
     }
-
-
-
 
 
     /**
@@ -242,7 +259,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     @Override
     public void getMyRightFail(String faiMessage) {
         homeActivity.runOnUiThread(() -> {
-            ToastUtils.show(faiMessage);
+//            ToastUtils.show(faiMessage);
         });
     }
 
@@ -272,7 +289,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     @Override
     public void queryRightsRecordFail(String faiMessage) {
         homeActivity.runOnUiThread(() -> {
-            ToastUtils.show(faiMessage);
+//            ToastUtils.show(faiMessage);
         });
     }
 
@@ -289,6 +306,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                 useEquityDialog.cancel();
             }
             btn_processing_complete.setVisibility(View.GONE); //这里如果完成成功了 则隐藏 申请完成处理 按钮，不能让一直点
+            tv_goChat.setVisibility(View.GONE); //这里如果完成成功了 则隐藏 进入聊天 按钮，不能让一直点
             EventBus.getDefault().post(new NotifyactionObj());
             ToastUtils.show("处理成功!");
         });
@@ -314,9 +332,9 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     @Override
     public void getDocListSuccess(List<DocListBean> docListBeans) {
         if (useEquityDialog != null) {
-            if (docListBeans != null && docListBeans.size() > 0){
+            if (docListBeans != null && docListBeans.size() > 0) {
                 useEquityDialog.setDocList(docListBeans);
-            }else {
+            } else {
                 useEquityDialog.setDocList(null);
 
             }

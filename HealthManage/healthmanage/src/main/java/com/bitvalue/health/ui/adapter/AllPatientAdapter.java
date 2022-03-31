@@ -81,15 +81,26 @@ public class AllPatientAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO, Ba
 //                    .into(img_head);
 //        } else {
 //        }
-        img_head.setImageDrawable(videoClientsResultBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+        if (!EmptyUtil.isEmpty(videoClientsResultBean.getSex())){
+            img_head.setImageDrawable(videoClientsResultBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+        }else {
+            holder.setVisible(R.id.view_line,false);
+        }
+
+        if (!EmptyUtil.isEmpty(videoClientsResultBean.getAge())) {
+            String curen = TimeUtils.getCurrenTime();
+            int finatime = Integer.valueOf(curen) - Integer.valueOf((videoClientsResultBean.getAge().substring(0, 4)));
+            holder.setText(R.id.tv_patient_age, finatime + "岁");
+        }else {
+            holder.setVisible(R.id.view_line,false);
+        }
+
         holder.setTextColor(R.id.tv_chat_type,!EmptyUtil.isEmpty(videoClientsResultBean.getUserId())?mContext.getColor(R.color.main_blue):mContext.getColor(R.color.red));
         holder.setText(R.id.tv_chat_type,!EmptyUtil.isEmpty(videoClientsResultBean.getUserId())?"已注册":"未注册");
         holder.setText(R.id.tv_name, videoClientsResultBean.getUserName());
         holder.setText(R.id.tv_patient_sex, videoClientsResultBean.getSex());
         holder.setText(R.id.tv_type_one_pa, videoClientsResultBean.getDiagnosis());
-        String curen = TimeUtils.getCurrenTime();
-        int finatime = Integer.valueOf(curen) - Integer.valueOf((videoClientsResultBean.getAge().substring(0, 4)));
-        holder.setText(R.id.tv_patient_age, finatime + "岁");
+
 
         holder.setBackgroundColor(R.id.layout_item, videoClientsResultBean.isChecked ? mContext.getResources().getColor(R.color.bg_gray_light) : mContext.getResources().getColor(R.color.white));
 

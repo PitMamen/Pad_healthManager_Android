@@ -62,7 +62,7 @@
             android:layout_below="@+id/tv_name"
             android:layout_marginLeft="@dimen/qb_px_35"
             android:layout_marginTop="@dimen/qb_px_5"
-            android:text="女"
+            android:text=""
             android:textColor="@color/text_desc_dark"
             android:textSize="12sp"
             app:layout_constraintLeft_toRightOf="@id/img_head"
@@ -90,7 +90,7 @@
             android:layout_marginLeft="@dimen/qb_px_10"
             android:layout_marginTop="@dimen/qb_px_5"
             android:layout_toRightOf="@+id/tv_sex"
-            android:text="23岁"
+            android:text=""
             android:textColor="@color/text_desc_dark"
             android:textSize="12sp" />
 

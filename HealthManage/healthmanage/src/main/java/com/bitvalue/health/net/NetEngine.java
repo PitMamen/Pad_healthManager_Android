@@ -66,10 +66,12 @@ public class NetEngine {
     public OkHttpClient getOkHttpClient() {
         // 网络请求框架初始化
         return new OkHttpClient.Builder()
-                .connectTimeout(30*1000L, TimeUnit.MILLISECONDS)
-                .readTimeout(30*1000L, TimeUnit.MILLISECONDS)
+                .connectTimeout(30 * 1000L, TimeUnit.MILLISECONDS)
+                .readTimeout(30 * 1000L, TimeUnit.MILLISECONDS)
+                .addNetworkInterceptor(new NetInterceptor())
                 .addInterceptor(new LoggerInterceptor("OkHttp", true))
                 .addInterceptor(new ExceptionInterceptor())
+                .retryOnConnectionFailure(true)
                 //其他配置
                 .build();
     }
@@ -77,17 +79,16 @@ public class NetEngine {
 
     private OkHttpClient getCommonServiceClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.addNetworkInterceptor(new NetInterceptor());
         builder.addInterceptor(new LoggerInterceptor("OkHttp", true));
-        builder.addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request()
-                        .newBuilder()
-                        .addHeader("Authorization", SharedPreManager.getString(Constants.KEY_TOKEN))
-                        .build();
+        builder.retryOnConnectionFailure(false);
+        builder.addInterceptor(chain -> {
+            Request request = chain.request()
+                    .newBuilder()
+                    .addHeader("Authorization", SharedPreManager.getString(Constants.KEY_TOKEN))
+                    .build();
 
-                return chain.proceed(request);
-            }
+            return chain.proceed(request);
         });
         builder.connectTimeout(10, TimeUnit.SECONDS);
         builder.writeTimeout(10, TimeUnit.SECONDS);
@@ -156,7 +157,7 @@ public class NetEngine {
             newService.getVideoPatientStatus(messageData.id).subscribeOn(Schedulers.io()).subscribe(result -> {
                 if (!EmptyUtil.isEmpty(result)) {
                     if (result.getCode() == 0) {
-                            callback.onSuccess(result.getData(), 1000);
+                        callback.onSuccess(result.getData(), 1000);
 
                     } else {
                         callback.onFailedLog(result.getMessage(), 1001);

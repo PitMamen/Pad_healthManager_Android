@@ -178,12 +178,16 @@ public class NewLyDisCharPatienAdapter extends RecyclerView.Adapter<RecyclerView
             tv_name.setText(bean.getUserName());
             tv_sex.setText(bean.getSex());
             String curen = TimeUtils.getCurrenTime();
-            int finatime = Integer.valueOf(curen) - Integer.valueOf((bean.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
-            tv_age.setText(finatime+"岁");
-            Log.e(TAG, "userName: " + bean.getUserName() + "  useriD:" + bean.getUserId() + " isShow?" + bean.isShowCheck());
+            if(!EmptyUtil.isEmpty(bean.getAge())){
+                int finatime = Integer.valueOf(curen) - Integer.valueOf((bean.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
+                tv_age.setText(finatime+"岁");
+
+            }
             checkBox.setVisibility(bean.isShowCheck() ? View.VISIBLE : View.GONE);
             checkBox.setChecked(bean.isChecked());
-            im_head.setImageDrawable(bean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+            if (!EmptyUtil.isEmpty(bean.getSex())){
+                im_head.setImageDrawable(bean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+            }
 
         }
 

@@ -71,6 +71,11 @@ public class EditSpinner extends RelativeLayout implements View.OnClickListener,
         editText.setText(text);
     }
 
+    public void setTextSize(int size){
+        editText.setTextSize(size);
+    }
+
+
     public void setTextColor(int color) {
         editText.setTextColor(color);
     }

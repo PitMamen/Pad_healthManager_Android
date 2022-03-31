@@ -174,6 +174,8 @@ public class AllocatedPatientAdapter extends RecyclerView.Adapter<RecyclerView.V
         TextView tv_bingqu; //病区
         @BindView(R.id.tv_diagnosis)
         TextView tv_disa;//诊断
+        @BindView(R.id.view_line)
+        View view_line;
 
 
         @BindView(R.id.rl_pay_patient)
@@ -193,13 +195,20 @@ public class AllocatedPatientAdapter extends RecyclerView.Adapter<RecyclerView.V
             tv_zhuanbing.setText(bean.getBqmc());
             tv_bingqu.setText(bean.getBqmc());
             time.setText(bean.getCysj());   //出院时间
-//            time.setText(TimeUtils.formatTime(bean.getCysj()));   //出院时间
             String curen = TimeUtils.getCurrenTime();
+            if (!EmptyUtil.isEmpty(bean.getAge())){
             int finatime = Integer.valueOf(curen) - Integer.valueOf((bean.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
             tv_age.setText(finatime+"岁");
+            }else {
+                view_line.setVisibility(View.INVISIBLE);
+            }
             checkBox.setVisibility(bean.isShowCheck() ? View.VISIBLE : View.GONE);
             checkBox.setChecked(bean.isChecked());
+            if (!EmptyUtil.isEmpty(bean.getSex())){
             im_head.setImageDrawable(bean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+            }else {
+                view_line.setVisibility(View.INVISIBLE);
+            }
 
         }
     }
