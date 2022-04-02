@@ -109,6 +109,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     private LoginBean loginBean;
     private static final int pagestart = 1;
     public static final int pageSize = 10;
+    private int remindType = 0; //提醒类型 (0上线提醒,1结束问诊提醒)
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -438,12 +439,14 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         });
 
         mChatLayout.getInputLayout().tv_sendremind.setOnClickListener(v -> {
-            homeActivity.switchSecondFragment(FRAGMENT_SEND_REMIND, "");
+            remindType = 0;
+            sendSystemRemind();
+//            homeActivity.switchSecondFragment(FRAGMENT_SEND_REMIND, "");
         });
 
         mChatLayout.getInputLayout().tv_sendquestion.setOnClickListener(v -> {
 
-            homeActivity.switchSecondFragment(FRAGMENT_ADD_QUESTION, "");
+            homeActivity.switchSecondFragment(FRAGMENT_ADD_QUESTION, planId);
 
         });
 
@@ -483,8 +486,8 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                     saveRightsUseBean.userId = taskDeatailBean.getTaskDetail().getUserId();
                     saveRightsUseBean.taskId = String.valueOf(taskDeatailBean.getId());
                     mPresenter.saveRightsUseRecord(saveRightsUseBean);   //请求接口 结束问诊
-
-                    sendSystemRemind();
+                    remindType = 1;
+//                    sendSystemRemind();
                 }
 
                 @Override
@@ -496,14 +499,17 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     }
 
 
-    private void sendSystemRemind(){
+    private void sendSystemRemind() {
         SystemRemindObj systemRemindObj = new SystemRemindObj();
         systemRemindObj.remindType = "videoRemind";
         systemRemindObj.userId = planId;
         EasyHttp.post(homeActivity).api(systemRemindObj).request(new OnHttpListener<ApiResult<String>>() {
             @Override
             public void onSucceed(ApiResult<String> result) {
-                Log.e(TAG, "通知请求: "+result.getMessage() );
+                if (remindType==0){
+                    ToastUtils.show("发送提醒成功");
+                }
+//                Log.e(TAG, "通知请求: " + result.getMessage());
             }
 
             @Override

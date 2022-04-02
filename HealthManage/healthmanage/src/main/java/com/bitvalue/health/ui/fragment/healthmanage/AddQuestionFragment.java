@@ -1,5 +1,7 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
+import static com.bitvalue.health.util.Constants.USER_ID;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,6 +24,7 @@ import com.bitvalue.health.presenter.settingpresenter.AddQuestionPresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.QuestionAdapter;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.chatUtil.CustomCaseHistoryMessage;
 import com.bitvalue.health.util.chatUtil.CustomWenJuanMessage;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
@@ -74,15 +77,15 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
     private int pageSize = 10;
     private int start = 1;
     private String keyWord = "";
+    private String user_id;
 
 
     @Override
     public void initView(View view) {
-//        getMissionObj = (GetMissionObj) getArguments().getSerializable(Constants.GET_MISSION_OBJ);
-
         tv_title.setText(getString(R.string.questionnaire_selection));
         homeActivity = (HomeActivity) getActivity();
         back.setVisibility(View.VISIBLE);
+        user_id = getArguments().getString(USER_ID, "");
         initList();
         initSearchButton();
     }
@@ -146,7 +149,7 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
         Log.e(TAG, "发送问卷---------");
         CustomWenJuanMessage questionMessage = new CustomWenJuanMessage();
         questionMessage.name = bean.name;
-        questionMessage.url = bean.questUrl;
+        questionMessage.url = bean.questUrl + "?execTime=" + TimeUtils.getCurrenTimeYMDHMS() + "&userId="+user_id;     //这里url后面加 字段 用语隐藏 提交按钮  ?showsubmitbtn=hide
         questionMessage.id = bean.id;
         questionMessage.setType("CustomWenJuanMessage");
         questionMessage.setDescription("问卷");

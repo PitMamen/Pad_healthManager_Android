@@ -17,7 +17,6 @@ public class AddArticleModel extends BaseModel implements AddArticleContract.Mod
     @Override
     public void getUsefulArticle(int pageSize, int startPage, String deptCode, Callback callback) {
         mApi.getUsefullArticle(pageSize, startPage, deptCode).subscribeOn(Schedulers.io()).subscribe(result -> {
-            Log.e(TAG, "getUsefulArticle: "+result.toString() );
             if (!EmptyUtil.isEmpty(result)) {
                 if (result.getCode() == 0) {
                     if (!EmptyUtil.isEmpty(result.getData())) {

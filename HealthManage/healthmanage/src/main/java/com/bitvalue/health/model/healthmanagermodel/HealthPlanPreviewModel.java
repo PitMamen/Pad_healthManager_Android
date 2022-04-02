@@ -63,7 +63,6 @@ public class HealthPlanPreviewModel extends BaseModel implements HealthPlanPrevi
                                 List<HealthPlanTaskListBean> formartList = new ArrayList<>();
                                 for (int i = 0; i < list.size(); i++) {
                                     HealthPlanTaskListBean bean = list.get(i);
-
                                     HealthPlanTaskListBean formartBean = new HealthPlanTaskListBean();
                                     formartBean.setTask_describe("第" + (i + 1) + "次随访任务");
 
@@ -71,8 +70,9 @@ public class HealthPlanPreviewModel extends BaseModel implements HealthPlanPrevi
                                     formartBean.setPlan_id(bean.getPlan_id());
                                     formartBean.setPlan_name(bean.getPlan_name());
                                     formartBean.setTask_id(bean.getTask_id());
-                                    formartBean.setExec_time(bean.getExec_time());
-
+                                    if (bean.getExec_time()!=null){
+                                        formartBean.setExec_time(bean.getExec_time());
+                                    }
                                     List<TaskInfoDTO> formartTaskInfo = new ArrayList<>();
 
                                     boolean allTaskFinished = true;
@@ -99,14 +99,15 @@ public class HealthPlanPreviewModel extends BaseModel implements HealthPlanPrevi
                                     }
 
                                     //状态标识 0等待开启 1进行中 2已完成
-                                    long l = System.currentTimeMillis() - bean.getExec_time();
-                                    if (l < 0) {
-                                        //等待开启
-                                        formartBean.setExec_flag(0);
-                                    } else {
-                                        formartBean.setExec_flag(allTaskFinished ? 2 : 1);
+                                    if (bean.getExec_time()!=null){
+                                        long l = System.currentTimeMillis() - bean.getExec_time();
+                                        if (l < 0) {
+                                            //等待开启
+                                            formartBean.setExec_flag(0);
+                                        } else {
+                                            formartBean.setExec_flag(allTaskFinished ? 2 : 1);
+                                        }
                                     }
-
 
                                     formartBean.setFormartTaskInfo(formartTaskInfo);
                                     formartBean.setTaskInfo(bean.getTaskInfo());
@@ -123,6 +124,7 @@ public class HealthPlanPreviewModel extends BaseModel implements HealthPlanPrevi
                         }
                     }
                 }, error -> {
+                    Log.e(TAG, "queryhealtPlan: "+ error.getMessage() );
                     callback.onFailedLog("请求出错!", 1001);
                 });
 

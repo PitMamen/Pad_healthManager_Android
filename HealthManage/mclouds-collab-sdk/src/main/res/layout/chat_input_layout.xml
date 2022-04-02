@@ -39,7 +39,7 @@
             android:id="@+id/tv_sendremind"
             android:layout_marginStart="@dimen/qb_px_15"
             android:layout_gravity="center_vertical"
-            android:text="发送提醒"
+            android:text="上线提醒"
             android:gravity="center"
             android:background="@drawable/shape_chat_remind"
             android:textSize="10sp"

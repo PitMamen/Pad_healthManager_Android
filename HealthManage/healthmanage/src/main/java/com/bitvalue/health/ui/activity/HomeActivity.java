@@ -472,16 +472,11 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
             //添加问卷界面
             case Constants.FRAGMENT_ADD_QUESTION:
-//                GetMissionObj getMissionObj = (GetMissionObj) object;
-//                AddQuestionFragment addQuestionFragment;
-//                addQuestionFragment = new AddQuestionFragment();
-//                Bundle bundleQue = new Bundle();
-//                bundleQue.putSerializable(Constants.GET_MISSION_OBJ, getMissionObj);
-//                addQuestionFragment.setArguments(bundleQue);
-
 
                 AddQuestionFragment addQuestionFragment = new AddQuestionFragment();
-
+                Bundle addQuestionFragment_msgBundle = new Bundle();
+                addQuestionFragment_msgBundle.putString(USER_ID, (String) object);
+                addQuestionFragment.setArguments(addQuestionFragment_msgBundle);
                 mapFragments.put(Constants.FRAGMENT_ADD_QUESTION, addQuestionFragment);
                 break;
 

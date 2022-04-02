@@ -55,7 +55,6 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
     @Override
     protected void convert(@NotNull BaseViewHolder helper, @NotNull NewLeaveBean.RowsDTO sfjhBean) {
         String curen = TimeUtils.getCurrenTime();
-//        Log.e(TAG, "年龄: "+ sfjhBean.getAge()+"  性别："+sfjhBean.getSex());
         if (!EmptyUtil.isEmpty(sfjhBean.getAge()) && sfjhBean.getAge().length() >= 5) {
             int finatime = Integer.valueOf(curen) - Integer.valueOf((sfjhBean.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
             helper.setText(R.id.tv_age, finatime + "岁");
@@ -73,6 +72,11 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
 
         WrapRecyclerView childItemLRecycleView = helper.getView(R.id.plan_list);
         childItemLRecycleView.setLayoutManager(new LinearLayoutManager(Application.instance()));
+//        for (int i = 0; i < sfjhBean.getPlanInfo().size(); i++) {
+//            if (sfjhBean.getPlanInfo().get(i).getPlanId()==null){
+//                sfjhBean.getPlanInfo().remove(i);  //清除 无效的plan
+//            }
+//        }
         PlanItemChildAdapter childAdapter = new PlanItemChildAdapter(sfjhBean.getPlanInfo());
         childItemLRecycleView.setAdapter(childAdapter);
         childAdapter.setNewData(sfjhBean.getPlanInfo());

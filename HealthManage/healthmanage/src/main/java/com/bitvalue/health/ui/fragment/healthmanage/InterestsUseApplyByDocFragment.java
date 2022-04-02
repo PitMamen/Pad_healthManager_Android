@@ -156,7 +156,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
                         /**
                          * 提醒通知 调用接口
                          */
-                        sendSystemRemind();
+//                        sendSystemRemind();
                     }
 
                     @Override
@@ -231,6 +231,9 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
     private void refreshView() {
         tv_end_consultation.setText(homeActivity.getString(R.string.has_ended));
         start_consultation.setVisibility(View.INVISIBLE);
+        if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            homeActivity.getSupportFragmentManager().popBackStack();
+        }
     }
 
 
@@ -268,7 +271,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
     @Override
     public void saveRightsUseRecordFail(String failMessage) {
         homeActivity.runOnUiThread(() -> {
-            ToastUtils.show("结束问诊处理失败!");
+            ToastUtils.show(failMessage);
         });
     }
 }

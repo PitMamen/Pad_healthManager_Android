@@ -29,7 +29,7 @@ public class PlanItemChildAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO.
         if (item == null) {
             return;
         }
-        holder.setText(R.id.tv_plan_title, item.getPlanName());
+        holder.setText(R.id.tv_plan_title, item.getPlanName() != null ? item.getPlanName() : item.getGoodsName());
 //        holder.addOnClickListener(R.id.iv_send_msg).addOnClickListener(R.id.iv_check_plan);
 
     }

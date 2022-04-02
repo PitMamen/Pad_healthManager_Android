@@ -39,7 +39,7 @@ public class HealthPlanPreviewListAdapter extends BaseQuickAdapter<HealthPlanTas
 
 
          helper.setText(R.id.tv_plan_title,item.getTask_describe())
-                 .setText(R.id.tv_plan_time,TimeUtils.getTime(item.getExec_time()));
+                 .setText(R.id.tv_plan_time,item.getExec_time()!=null?TimeUtils.getTime(item.getExec_time()):"");
 
             //等待开启
             helper.setVisible(R.id.bl_tv_ddkq,item.getExec_flag() == 0);

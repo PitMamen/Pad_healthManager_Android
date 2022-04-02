@@ -21,12 +21,8 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
             mApi.saveRightsRecord(bean).subscribeOn(Schedulers.io()).subscribe(result -> {
                 if (!EmptyUtil.isEmpty(result)) {
                     if (result.getCode() == 0) {
-                        Log.e(TAG, "saveRightsUseRecord: "+result.getData() );
-                        SaveRightsUseBean saveRightsUseBean = result.getData();
-                        if (!EmptyUtil.isEmpty(saveRightsUseBean)) {
-                            callback.onSuccess(saveRightsUseBean, 1000);
-                        } else {
-                            callback.onSuccess("null", 1000);
+                        if (!EmptyUtil.isEmpty(result.getData())){
+                                callback.onSuccess(result.getData(), 1000);
                         }
                     } else {
                         callback.onFailedLog(result.getMessage(), 1001);

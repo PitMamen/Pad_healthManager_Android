@@ -406,7 +406,7 @@
                 android:paddingHorizontal="@dimen/qb_px_8"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="处理完成"
+                android:text="任务分派"
                 android:textColor="@color/white"
                 android:textSize="15sp">
             </TextView>

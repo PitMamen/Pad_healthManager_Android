@@ -172,7 +172,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
             //二期开发功能
             EndUuserPlanApi endUuserPlanApi = new EndUuserPlanApi();
             endUuserPlanApi.id = userInfo.id_plan;  //计划的id
-            EasyHttp.get(this).api(endUuserPlanApi).request(new HttpCallback<ApiResult<String>>(this){
+            EasyHttp.get(this).api(endUuserPlanApi).request(new HttpCallback<ApiResult<String>>(this) {
                 @Override
                 public void onSucceed(ApiResult<String> result) {
                     super.onSucceed(result);
@@ -181,13 +181,13 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
                         homeActivity.getSupportFragmentManager().popBackStack();
                     }
                     EventBus.getDefault().post(new VisitPlanRefreshObj());
-                    Log.e(TAG, "onSucceed: "+result.toString() );
+                    Log.e(TAG, "onSucceed: " + result.toString());
                 }
 
                 @Override
                 public void onFail(Exception e) {
                     super.onFail(e);
-                    Log.e(TAG, "Exception: "+e.getMessage() );
+                    Log.e(TAG, "Exception: " + e.getMessage());
                 }
             });
         });
@@ -214,19 +214,23 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
 
         if (userInfo != null) {
             String curen = TimeUtils.getCurrenTime();
-            if (!EmptyUtil.isEmpty(userInfo.getAge())){
+            if (!EmptyUtil.isEmpty(userInfo.getAge())) {
                 int finatime = Integer.valueOf(curen) - Integer.valueOf((userInfo.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
                 tv_age.setText(finatime + "岁");
             }
-            if (!EmptyUtil.isEmpty(userInfo.getSex())){
+            if (!EmptyUtil.isEmpty(userInfo.getSex())) {
                 img_head.setImageDrawable(userInfo.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
             }
 
             tv_name.setText(userInfo.getUserName());
             tv_sex.setText(userInfo.getSex());
-            if (null!=userInfo.getInfoDetail()){
+            if (null != userInfo.getInfoDetail()) {
                 tv_phone.setText(userInfo.getInfoDetail().getSjhm());
             }
+        }
+        if (planId == null) {
+            ToastUtils.show("套餐计划Id为空!");
+            return;
         }
         mPresenter.queryhealtPlan(planId);
     }
@@ -238,10 +242,10 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         ll_task_tetail.setVisibility(View.VISIBLE);
         planRecyclerView.setVisibility(View.GONE);
         tv_plan_title.setText(item.getTask_describe());
-        tv_plan_time.setText(TimeUtils.getTime(item.getExec_time()));
+        tv_plan_time.setText(item.getExec_time() != null ? TimeUtils.getTime(item.getExec_time()) : "");
 
-
-        mPresenter.queryTaskDetail(item.getPlan_id(), item.getTask_id(), item.getUser_id());
+        if (!EmptyUtil.isEmpty(item.getPlan_id()) && !EmptyUtil.isEmpty(item.getTask_id()) && !EmptyUtil.isEmpty(item.getUser_id()))
+            mPresenter.queryTaskDetail(item.getPlan_id(), item.getTask_id(), item.getUser_id());
 
     }
 
@@ -260,7 +264,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
     @Override
     public void queryhealtPlanSuccess(List<HealthPlanTaskListBean> taskListBeanList) {
         default_view.setVisibility(taskListBeanList.size() == 0 ? View.VISIBLE : View.GONE);
-        if (taskListBeanList.size()>0){
+        if (taskListBeanList.size() > 0) {
             tv_title.setText(taskListBeanList.get(0).getPlan_name());
             planAdapter.setNewData(taskListBeanList);
         }
