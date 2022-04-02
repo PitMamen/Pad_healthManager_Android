@@ -154,6 +154,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     @Override
     public void initData() {
         super.initData();
+        getNeedDealWithData();
     }
 
 
@@ -274,6 +275,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
         homeActivity.runOnUiThread(() -> {
             hideShowList();
             NeedDealWithList = taskDeatailBeanList;
+            homeActivity.showOrHideImageBoll(NeedDealWithList!=null&&taskDeatailBeanList.size() > 0);  //如果有待办任务 通知左侧状态栏 视图更新
             needDealWithQuickAdapter.setNewData(NeedDealWithList);
             if (NeedDealWithList != null && NeedDealWithList.size() > 0) {
                 rl_default_layout.setVisibility(View.GONE);

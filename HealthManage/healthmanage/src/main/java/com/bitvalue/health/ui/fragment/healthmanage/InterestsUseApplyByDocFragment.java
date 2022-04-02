@@ -11,9 +11,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
@@ -27,11 +29,15 @@ import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.healthmanage.R;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.OnHttpListener;
 import com.hjq.toast.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -103,7 +109,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
         tv_department.setText(taskDeatailBean.getTaskDetail().getDeptName()); //科室名称
         tv_start_time.setText(TimeUtils.getTime_tosecond(taskDeatailBean.getTaskDetail().getExecTime())); //执行时间
         tv_patientName.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName()); //就诊人
-        tv_continue_time.setText(taskDeatailBean.getTaskDetail().getRemark()+"分钟");  //持续时间
+        tv_continue_time.setText(taskDeatailBean.getTaskDetail().getRemark() + "分钟");  //持续时间
         tv_applyType.setText(taskDeatailBean.getTaskDetail().getRightsName());  //权益申请类型 (图文咨询,视频咨询)
 
     }
@@ -123,7 +129,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
             case R.id.iv_icon:
             case R.id.tv_end_consultation:
 
-                if (tv_end_consultation.getText().toString().equals(homeActivity.getString(R.string.has_ended))){
+                if (tv_end_consultation.getText().toString().equals(homeActivity.getString(R.string.has_ended))) {
                     ToastUtils.show("已结束问诊!无需再次结束");
                     return;
                 }
@@ -145,8 +151,12 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
                         saveRightsUseBean.tradeId = taskDeatailBean.getTaskDetail().getTradeId();
                         saveRightsUseBean.userId = taskDeatailBean.getTaskDetail().getUserId();
                         saveRightsUseBean.taskId = String.valueOf(taskDeatailBean.getId());
-                        mPresenter.saveRightsUseRecord(saveRightsUseBean);
                         Log.e(TAG, "结束问诊=== ");
+                        mPresenter.saveRightsUseRecord(saveRightsUseBean);
+                        /**
+                         * 提醒通知 调用接口
+                         */
+                        sendSystemRemind();
                     }
 
                     @Override
@@ -154,6 +164,8 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
 
                     }
                 });
+
+
                 break;
 
             //进入患者详情界面
@@ -164,6 +176,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
             //开始问诊 进入聊天界面
             case R.id.rl_start_consultation:
                 //创建一个患者
+                sendSystemRemind(); //提醒通知
                 NewLeaveBean.RowsDTO item = new NewLeaveBean.RowsDTO();
                 item.setUserId(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
                 item.setUserName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
@@ -175,6 +188,33 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
                 break;
 
         }
+    }
+
+
+    private void sendSystemRemind() {
+//        List<String> stringList = SharedPreManager.getStringList(homeActivity);
+//        if (stringList != null && stringList.size() > 0) {
+//            for (int i = 0; i < stringList.size(); i++) {
+//                if (String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()).equals(stringList.get(i))) {
+//                    return;
+//                }
+//            }
+//        }
+//        SharedPreManager.putStringList(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+        SystemRemindObj systemRemindObj = new SystemRemindObj();
+        systemRemindObj.remindType = "videoRemind";
+        systemRemindObj.userId = String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId());
+        EasyHttp.post(homeActivity).api(systemRemindObj).request(new OnHttpListener<ApiResult<String>>() {
+            @Override
+            public void onSucceed(ApiResult<String> result) {
+                Log.e(TAG, "通知请求: " + result.getMessage());
+            }
+
+            @Override
+            public void onFail(Exception e) {
+
+            }
+        });
     }
 
 

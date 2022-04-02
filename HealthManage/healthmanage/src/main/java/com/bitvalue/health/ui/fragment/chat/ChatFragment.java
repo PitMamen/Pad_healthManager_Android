@@ -28,6 +28,7 @@ import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.AnswerResultBean;
@@ -68,6 +69,7 @@ import com.bitvalue.sdk.collab.utils.TUIKitConstants;
 import com.google.gson.Gson;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
+import com.hjq.http.listener.OnHttpListener;
 import com.hjq.toast.ToastUtils;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMGroupAtInfo;
@@ -403,7 +405,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                                         AnswerResultBean.RecordsDTO questionBean = records.get(position);
                                         // TODO: 2022/3/26 点击 进入详情界面 预览   是个链接
                                         QuestionResultBean.ListDTO answerBean = new QuestionResultBean.ListDTO();
-                                        answerBean.questUrl = Constants.HOST_URL + "/r/" + questionBean.getProjectKey() + "?userId=" + questionBean.getId();  //自己拼接一个链接 跳转至答卷详情界面
+                                        answerBean.questUrl = Constants.HOST_URL + "/r/" + questionBean.getProjectKey() + "?userId=" + questionBean.getUserId();  //自己拼接一个链接 跳转至答卷详情界面
                                         homeActivity.switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL, answerBean);
                                     }).create();
                             alertDialog.show();
@@ -481,6 +483,8 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                     saveRightsUseBean.userId = taskDeatailBean.getTaskDetail().getUserId();
                     saveRightsUseBean.taskId = String.valueOf(taskDeatailBean.getId());
                     mPresenter.saveRightsUseRecord(saveRightsUseBean);   //请求接口 结束问诊
+
+                    sendSystemRemind();
                 }
 
                 @Override
@@ -488,6 +492,24 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
                 }
             });
+        });
+    }
+
+
+    private void sendSystemRemind(){
+        SystemRemindObj systemRemindObj = new SystemRemindObj();
+        systemRemindObj.remindType = "videoRemind";
+        systemRemindObj.userId = planId;
+        EasyHttp.post(homeActivity).api(systemRemindObj).request(new OnHttpListener<ApiResult<String>>() {
+            @Override
+            public void onSucceed(ApiResult<String> result) {
+                Log.e(TAG, "通知请求: "+result.getMessage() );
+            }
+
+            @Override
+            public void onFail(Exception e) {
+
+            }
         });
     }
 

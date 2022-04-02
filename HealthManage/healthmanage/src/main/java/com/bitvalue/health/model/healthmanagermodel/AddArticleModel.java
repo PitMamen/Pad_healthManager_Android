@@ -15,12 +15,13 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class AddArticleModel extends BaseModel implements AddArticleContract.Model {
     @Override
-    public void getUsefulArticle(int count, Callback callback) {
-        mApi.getUsefullArticle(count).subscribeOn(Schedulers.io()).subscribe(result -> {
+    public void getUsefulArticle(int pageSize, int startPage, String deptCode, Callback callback) {
+        mApi.getUsefullArticle(pageSize, startPage, deptCode).subscribeOn(Schedulers.io()).subscribe(result -> {
+            Log.e(TAG, "getUsefulArticle: "+result.toString() );
             if (!EmptyUtil.isEmpty(result)) {
                 if (result.getCode() == 0) {
                     if (!EmptyUtil.isEmpty(result.getData())) {
-                        callback.onSuccess(result.getData(), 1000);
+                        callback.onSuccess(result.getData().getList(), 1000);
                     } else {
                         //null
                         Log.e(TAG, "getUsefulArticle == null  ");
@@ -30,6 +31,7 @@ public class AddArticleModel extends BaseModel implements AddArticleContract.Mod
                 }
             }
         }, error -> {
+            Log.e(TAG, "getUsefulArticle: "+error.getMessage() );
             callback.onFailedLog(error.getMessage(), 1001);
         });
     }

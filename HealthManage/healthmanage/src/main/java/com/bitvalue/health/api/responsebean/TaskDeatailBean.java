@@ -120,26 +120,6 @@ public class TaskDeatailBean implements Serializable {
     }
 
     public static class TaskDetailDTO implements Serializable{
-
-        @Override
-        public String toString() {
-            return "TaskDetailDTO{" +
-                    "deptName='" + deptName + '\'' +
-                    ", rightsName='" + rightsName + '\'' +
-                    ", userInfo=" + userInfo +
-                    ", rightsType='" + rightsType + '\'' +
-                    ", rightsId=" + rightsId +
-                    ", statusDescribe='" + statusDescribe + '\'' +
-                    ", execTime=" + execTime +
-                    ", remark='" + remark + '\'' +
-                    ", execUser='" + execUser + '\'' +
-                    ", id=" + id +
-                    ", execFlag=" + execFlag +
-                    ", userId='" + userId + '\'' +
-                    ", tradeId='" + tradeId + '\'' +
-                    '}';
-        }
-
         private String deptName;
         private String rightsName;
         private UserInfoDTO userInfo;
@@ -356,6 +336,25 @@ public class TaskDeatailBean implements Serializable {
             public void setUserAge(int userAge) {
                 this.userAge = userAge;
             }
+        }
+
+        @Override
+        public String toString() {
+            return "TaskDetailDTO{" +
+                    "deptName='" + deptName + '\'' +
+                    ", rightsName='" + rightsName + '\'' +
+                    ", userInfo=" + userInfo +
+                    ", rightsType='" + rightsType + '\'' +
+                    ", rightsId=" + rightsId +
+                    ", statusDescribe='" + statusDescribe + '\'' +
+                    ", execTime=" + execTime +
+                    ", remark='" + remark + '\'' +
+                    ", execUser='" + execUser + '\'' +
+                    ", id=" + id +
+                    ", execFlag=" + execFlag +
+                    ", userId='" + userId + '\'' +
+                    ", tradeId='" + tradeId + '\'' +
+                    '}';
         }
     }
 

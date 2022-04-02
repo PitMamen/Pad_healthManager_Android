@@ -623,42 +623,6 @@
         </com.bitvalue.health.util.customview.WrapRecyclerView>
 
 
-        <LinearLayout
-            android:id="@+id/ll_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_patient_bq"
-            android:layout_marginTop="@dimen/qb_px_6"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="@dimen/qb_px_84"
-                android:layout_marginStart="@dimen/qb_px_16"
-                android:layout_weight="1"
-                android:src="@mipmap/iness_image">
-
-            </ImageView>
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="@dimen/qb_px_84"
-                android:layout_weight="1"
-                android:src="@mipmap/iness_image"></ImageView>
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="@dimen/qb_px_84"
-                android:layout_weight="1"
-                android:src="@mipmap/iness_image"></ImageView>
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="@dimen/qb_px_84"
-                android:layout_weight="1"
-                android:src="@mipmap/iness_image"></ImageView>
-        </LinearLayout>
 
 
         <TextView

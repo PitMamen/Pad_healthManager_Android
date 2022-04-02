@@ -79,8 +79,9 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
 
     private List<ArticleBean> dailyArticles = new ArrayList<>();
     private List<ArticleBean> searchArticles = new ArrayList<>();
-    //    private GetMissionObj getMissionObj;
-    private int UsefulArticleCount = 10;
+    private static final int pageSize = 10;
+    private int startPage = 1;
+    private int currentPage = 0;
 
     @OnClick({R.id.layout_back})
     public void onClick(View view) {
@@ -104,8 +105,6 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
     public void initView(View rootView) {
         tv_title.setText(getString(R.string.article_select));
         back.setVisibility(View.VISIBLE);
-//        getMissionObj = (GetMissionObj) getArguments().getSerializable(Constants.GET_MISSION_OBJ);
-
         initSearchButton();
         initDailyList();
         initSearchList();
@@ -167,13 +166,33 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
                 Log.e(TAG, "11111111111111111 ");
+                // TODO: 2021/12/8 加载下一页
+                Log.e(TAG, "onLoadMore111: " + startPage + " currentPage: " + currentPage);
+                if (currentPage == startPage) {
+                    startPage = 1;
+                    Log.e(TAG, "无更多数据");
+                    mRefreshLayout.finishLoadMore();
+                    mRefreshLayout.finishRefresh();
+                    return;
+                }
+                startPage++;
+                getDailyArticles();
+                mRefreshLayout.finishLoadMore();
+                mRefreshLayout.finishRefresh();
             }
 
             @Override
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
-                mPresenter.getUsefulArticle(UsefulArticleCount++);
-                UsefulArticleCount = 10;
-                refreshLayout.finishRefresh(500);
+                Log.e(TAG, "onLoadMore222: " + startPage);
+                if (startPage > 1) {
+                    startPage--;
+                } else {
+                    mRefreshLayout.finishRefresh();
+                    return;
+                }
+
+                getDailyArticles();
+                mRefreshLayout.finishRefresh();
             }
         });
 
@@ -204,8 +223,6 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
             @Override
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
                 Log.e(TAG, "onRefresh---------");
-                mPresenter.getUsefulArticle(UsefulArticleCount++);
-                UsefulArticleCount = 10;
                 refreshLayout.finishRefresh();
             }
         });
@@ -216,7 +233,7 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
         CustomCaseHistoryMessage message = new CustomCaseHistoryMessage();
         message.title = "文章内容";
         message.content = articleBean.title;
-        message.id = String.valueOf(articleBean.articleId);
+        message.id = articleBean.articleId;
         message.url = articleBean.previewUrl;
         message.setType("CustomArticleMessage");
         message.setDescription("文章");
@@ -225,7 +242,8 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
 
     //接口请求 加载文章列表
     private void getDailyArticles() {
-        mPresenter.getUsefulArticle(UsefulArticleCount);
+        showLoading();
+        mPresenter.getUsefulArticle(pageSize,startPage,Constants.DEPT_CODE);
     }
 
 
@@ -251,12 +269,12 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
     }
 
     @Override
-    public void getArticleSuccess(ArrayList<ArticleBean> articleBeanArrayList) {
+    public void getArticleSuccess(List<ArticleBean> articleBeanArrayList) {
         getActivity().runOnUiThread(() -> {
-//            for (int i = 0; i <articleBeanArrayList.size() ; i++) {
-//                Log.e(TAG, "文章详情: "+articleBeanArrayList.get(i).toString() );
-//            }
-
+            hideDialog();
+            if (startPage > 1 && articleBeanArrayList.size() == 0) {
+                return;
+            }
             if (dailyArticles.size() == articleBeanArrayList.size()) {
                 ToastUtil.toastShortMessage("无更多数据");
             }
@@ -288,6 +306,9 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
 
     @Override
     public void getArticleFaile(String messageFail) {
-        getActivity().runOnUiThread(() -> ToastUtil.toastShortMessage("获取文章列表失败!"));
+        getActivity().runOnUiThread(() -> {
+            hideDialog();
+            ToastUtil.toastShortMessage("获取文章列表失败!");
+        });
     }
 }

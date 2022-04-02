@@ -121,9 +121,12 @@ public class ConversationManagerKit implements MessageRevokedManager.MessageRevo
             TUIKitLog.v(TAG, "refreshConversation v2TIMConversation " + v2TIMConversation.toString());
             ConversationInfo conversationInfo = TIMConversation2ConversationInfo(v2TIMConversation);
             if (conversationInfo != null && !V2TIMManager.GROUP_TYPE_AVCHATROOM.equals(v2TIMConversation.getGroupType())) {
-                if (conversationInfo.getLastMessage().getMsgType()!=262&&conversationInfo.getLastMessage().getMsgType()!=263){
-                    infos.add(conversationInfo);
+                if (conversationInfo.getLastMessage()!=null){
+                    if (conversationInfo.getLastMessage().getMsgType()!=262&&conversationInfo.getLastMessage().getMsgType()!=263){
+                        infos.add(conversationInfo);
+                    }
                 }
+
             }
         }
         if (infos.size() == 0) {

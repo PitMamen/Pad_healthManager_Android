@@ -14,6 +14,7 @@ public class Constants {
     public static final String KEY_TOKEN = "Authorization";
     public static final String KYE_USER_BEAN = "kye_user_bean";
     public static  String ROLE_TYPE = "casemanager"; //默认角色是个案管理师
+    public static  String DEPT_CODE = "dept_code"; //科室代码
     public static final String KEY_PSD = "key_psd";
     public static final String KEY_ACCOUNT = "key_account";
     public static final String FRAGMENT_CHAT = "fragment_chat";

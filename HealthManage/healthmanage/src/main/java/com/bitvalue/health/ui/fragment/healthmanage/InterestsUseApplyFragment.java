@@ -14,9 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bitvalue.health.Application;
+import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.NotifyactionObj;
 import com.bitvalue.health.api.requestbean.DocListBean;
 import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
+import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.MyRightBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
@@ -34,6 +36,8 @@ import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.UseEquityDialog;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.OnHttpListener;
 import com.hjq.toast.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -184,6 +188,9 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                     finshMidRequestBean.tradeId = taskDeatailBean.getTaskDetail().getTradeId();
                     finshMidRequestBean.remark = selectContinueTime;
                     mPresenter.finishMidRequest(finshMidRequestBean);
+
+                     sendSystemRemind();
+
                 }
 
                 @Override
@@ -204,6 +211,36 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
         });
 
     }
+
+
+    private void sendSystemRemind(){
+//        List<String> stringList = SharedPreManager.getStringList(homeActivity);
+//        if (stringList != null && stringList.size() > 0) {
+//            for (int i = 0; i < stringList.size(); i++) {
+//                if (String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()).equals(stringList.get(i))) {
+//                    return;
+//                }
+//            }
+//        }
+//        SharedPreManager.putStringList(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+        SystemRemindObj systemRemindObj = new SystemRemindObj();
+        systemRemindObj.remindType = "videoRemind";
+        systemRemindObj.userId = String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId());
+        EasyHttp.post(homeActivity).api(systemRemindObj).request(new OnHttpListener<ApiResult<String>>() {
+            @Override
+            public void onSucceed(ApiResult<String> result) {
+                Log.e(TAG, "通知请求: "+result.getMessage() );
+            }
+
+            @Override
+            public void onFail(Exception e) {
+
+            }
+        });
+    }
+
+
+
 
 
     @Override

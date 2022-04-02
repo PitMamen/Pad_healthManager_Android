@@ -15,6 +15,7 @@ import com.bitvalue.health.api.requestbean.SendUserRemind;
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
+import com.bitvalue.health.api.responsebean.ArticleByDeptCodeBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
 import com.bitvalue.health.api.responsebean.DepartmentResponeBean;
 import com.bitvalue.health.api.responsebean.GoodListBean;
@@ -213,8 +214,8 @@ public interface CommonService {
     /***
      * 添加文章中获取文章数据
      */
-    @GET("health-api/health/patient/mostUsefulArticleWithNum")
-    Observable<ApiResult<ArrayList<ArticleBean>>> getUsefullArticle(@Query("articleNum") int num);
+    @GET("health-api/health/patient/allArticlesPage")
+    Observable<ApiResult<ArticleByDeptCodeBean>> getUsefullArticle(@Query("pageSize") int pageSize, @Query("start") int start, @Query("deptCode") String deptCode);
 
     /**
      * 根据关键字搜索文章
@@ -338,8 +339,6 @@ public interface CommonService {
      */
     @GET("account-api/userInfo/getBaseInfo")
     Observable<ApiResult<PatientBaseInfoBean>> getPatientBaseInfo(@Query("userId") int userId);
-
-
 
 
 }

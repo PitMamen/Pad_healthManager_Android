@@ -177,6 +177,9 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
                 public void onSucceed(ApiResult<String> result) {
                     super.onSucceed(result);
                     ToastUtils.show("操作成功!");
+                    if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                        homeActivity.getSupportFragmentManager().popBackStack();
+                    }
                     EventBus.getDefault().post(new VisitPlanRefreshObj());
                     Log.e(TAG, "onSucceed: "+result.toString() );
                 }

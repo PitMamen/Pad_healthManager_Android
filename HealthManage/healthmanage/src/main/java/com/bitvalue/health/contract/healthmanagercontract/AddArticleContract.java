@@ -7,6 +7,7 @@ import com.bitvalue.health.base.view.IView;
 import com.bitvalue.health.callback.Callback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author created by bitvalue
@@ -14,12 +15,12 @@ import java.util.ArrayList;
  */
 public interface AddArticleContract {
     interface Model extends IModel {
-        void getUsefulArticle(int count, Callback callback);  //获取文章
+        void getUsefulArticle(int pageSize,int startPage,String deptCode, Callback callback);  //获取文章
         void qryArticleByTitle(int pageSize,int start,String title,Callback callback);
     }
 
     interface View extends IView {
-        void getArticleSuccess(ArrayList<ArticleBean> articleBeanArrayList);
+        void getArticleSuccess(List<ArticleBean> articleBeanArrayList);
 
         void qryArticleByTitleSuccess(SearchArticleResult searchArticleResult);
 
@@ -29,7 +30,7 @@ public interface AddArticleContract {
 
     interface Presenter {
 
-        void getUsefulArticle(int count);  //获取文章
+        void getUsefulArticle(int pageSize,int startPage,String deptCode);  //获取所属科室下的文章
         void qryArticleByTitle(int pageSize,int start,String title); //根据查询标题获取文章
     }
 }

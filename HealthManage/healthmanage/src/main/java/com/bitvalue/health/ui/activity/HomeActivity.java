@@ -171,6 +171,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     TextView tv_calender;
     @BindView(R.id.tv_wkbench)
     TextView tv_wkbench;
+    @BindView(R.id.img_boll_red)
+    TextView img_boll_red;
 
 
     @BindView(R.id.layout_fragment_end)
@@ -224,6 +226,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             return;
         }
         Constants.ROLE_TYPE = loginBean.getAccount().roleName;
+        Constants.DEPT_CODE = loginBean.getAccount().user.departmentCode;
         frameLayout_full.setVisibility(View.GONE);
         layout_group.setVisibility(loginBean.getAccount().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示咨询模块
         ll_patient_report.setVisibility(loginBean.getAccount().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示患者报道模块
@@ -232,16 +235,23 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     }
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(MsgRemindObj msgRemindObj) {
-        if (msgRemindObj.type == EVENT_MES_TYPE_CLOUDCLINC) {
-            tv_new_count_video.setText(msgRemindObj.num > 99 ? (msgRemindObj.num + "+") : (msgRemindObj.num + ""));
-            layout_pot_video.setVisibility(msgRemindObj.num > 0 ? View.VISIBLE : View.GONE);
-        } else {
-            tv_new_count_health.setText(msgRemindObj.num > 99 ? (msgRemindObj.num + "+") : (msgRemindObj.num + ""));
-            layout_pot_health.setVisibility(msgRemindObj.num > 0 ? View.VISIBLE : View.GONE);
-        }
+
+
+    public void showOrHideImageBoll(boolean isShow) {
+        img_boll_red.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
+
+
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onEvent(MsgRemindObj msgRemindObj) {
+//        if (msgRemindObj.type == EVENT_MES_TYPE_CLOUDCLINC) {
+//            tv_new_count_video.setText(msgRemindObj.num > 99 ? (msgRemindObj.num + "+") : (msgRemindObj.num + ""));
+//            layout_pot_video.setVisibility(msgRemindObj.num > 0 ? View.VISIBLE : View.GONE);
+//        } else {
+//            tv_new_count_health.setText(msgRemindObj.num > 99 ? (msgRemindObj.num + "+") : (msgRemindObj.num + ""));
+//            layout_pot_health.setVisibility(msgRemindObj.num > 0 ? View.VISIBLE : View.GONE);
+//        }
+//    }
 
     @Override
     protected void onResume() {
@@ -693,11 +703,11 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 PatientDetailFragment patientDetailFragment = new PatientDetailFragment();
                 Bundle bundle_detail = new Bundle();
                 if (object instanceof Integer) {
-                    Log.e(TAG, "!!!!!!!!!!!!!!!! ");
+//                    Log.e(TAG, "pageSize!!!!!!!!!!!! ");
                     int userID = (int) object;
                     bundle_detail.putInt(USER_ID, userID);
                 } else if (object instanceof NewLeaveBean.RowsDTO) {
-                    Log.e(TAG, "----------------- ");
+//                    Log.e(TAG, "----------------- ");
                     NewLeaveBean.RowsDTO patientitem = (NewLeaveBean.RowsDTO) object;
                     bundle_detail.putSerializable(FRAGMENT_DETAIL, (Serializable) patientitem);
                 }
@@ -915,7 +925,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
     }
 
     @Override

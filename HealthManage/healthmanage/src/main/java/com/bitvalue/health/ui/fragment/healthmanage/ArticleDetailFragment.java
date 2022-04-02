@@ -1,8 +1,16 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.http.SslError;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -10,6 +18,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -18,17 +27,33 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.bitvalue.health.Application;
+import com.bitvalue.health.api.ApiResult;
+import com.bitvalue.health.api.requestbean.GetArticleByIdApi;
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.component.picture.imageEngine.impl.GlideEngine;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
+import com.blankj.utilcode.util.ImageUtils;
+import com.bumptech.glide.Glide;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.HttpCallback;
 import com.hjq.toast.ToastUtils;
+import com.squareup.picasso.Picasso;
+
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.zip.DeflaterInputStream;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.http.HTTP;
 
 /***
  * 文章预览界面  调用WeBView
@@ -37,15 +62,23 @@ public class ArticleDetailFragment extends BaseFragment {
 
     @BindView(R.id.tv_title)
     TextView tv_title;
+    @BindView(R.id.tv_keshi)
+    TextView tv_keshi;
+    @BindView(R.id.tv_bingzhong)
+    TextView tv_bingzhong;
+    @BindView(R.id.tv_zuozhe)
+    TextView tv_author;
+    @BindView(R.id.tv_time_create)
+    TextView tv_creatTime;
+    @BindView(R.id.tv_content_one)
+    TextView tv_content1;
+
     @BindView(R.id.layout_back)
     LinearLayout back_layout;
 
     private HomeActivity homeActivity;
     private ArticleBean articleBean;
-    private WebView webView;
-    private ProgressBar progressBar;
-    private String url;
-    private boolean is_loading_login_over;
+    private SecondHandler handler;
 
     @OnClick({R.id.layout_back})
     public void onClick(View view) {
@@ -53,13 +86,10 @@ public class ArticleDetailFragment extends BaseFragment {
             case R.id.layout_back:
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
-//                    http://192.168.1.122/s/8a755f7c24ad49c9a2be6e6f79c3ee60   //内网地址
-//                    http://218.77.104.74:8008/s/8a755f7c24ad49c9a2be6e6f79c3ee60"
                 }
                 break;
         }
     }
-
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -71,98 +101,86 @@ public class ArticleDetailFragment extends BaseFragment {
     public void initView(View rootView) {
         back_layout.setVisibility(View.VISIBLE);
         articleBean = (ArticleBean) getArguments().getSerializable(Constants.ARTICLE_DETAIL);
-        if (articleBean == null && articleBean.previewUrl.isEmpty()) {
+        if (articleBean == null && articleBean.articleId <= 0) {
             ToastUtil.toastShortMessage("文章数据错误");
             return;
         }
-        tv_title.setText(articleBean.title);
-        url = articleBean.previewUrl;
-        initWebView(rootView);
+        handler = new SecondHandler(this);
+        GetArticleByIdApi getArticleByIdApi = new GetArticleByIdApi();
+        getArticleByIdApi.id = articleBean.articleId;
+        EasyHttp.get(this).api(getArticleByIdApi).request(new HttpCallback<ApiResult<ArticleBean>>(this){
+            @Override
+            public void onSucceed(ApiResult<ArticleBean> result) {
+                super.onSucceed(result);
+                if (result.getCode()==0){
+                    if (!EmptyUtil.isEmpty(result.getData())){
+                        ArticleBean articleBean = result.getData();;
+                        tv_title.setText(articleBean.title);
+                        String title = articleBean.title;
+                        String htmlText1 = articleBean.content;
+                        String htmlText2 = articleBean.categoryName;
+                        String htmlText3 = articleBean.categoryName;
+                        tv_title.setText(title);
+                        tv_keshi.setText("所属科室:" + htmlText2);
+                        tv_bingzhong.setText("所属科室:" + htmlText3);
+                        tv_author.setText("作者:" + articleBean.author);
+                        tv_creatTime.setText("创建时间:" + articleBean.createTime);
+                        setActivityContent(htmlText1, handler);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
+
+
+
     }
 
-    private void initWebView(View view) {
-        progressBar = view.findViewById(R.id.progressBar1);
-        webView = view.findViewById(R.id.webView);
-        // 设置web模式
-        webView.clearCache(true);
-        webView.clearHistory();
-        webView.clearFormData();
-        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-//		webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
-        webView.getSettings().setSupportZoom(true);// 设定支持缩放
-        webView.getSettings().setUseWideViewPort(true);// 设定支持viewport
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setLoadWithOverviewMode(true);
-        webView.getSettings().setDisplayZoomControls(false);// 设置隐藏缩放按钮
-        webView.getSettings().setDomStorageEnabled(true);
 
-        /**
-         * 让webview支持h5 localStorage 本地存储
-         */
-        webView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
-        String appCachePath = Application.instance().getCacheDir().getAbsolutePath();
-        webView.getSettings().setAppCachePath(appCachePath);
-        webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setAppCacheEnabled(true);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
-        }
-
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                return super.shouldOverrideUrlLoading(view, request);//TODO 可能要修改
-
-            }
-
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-//                super.onReceivedSslError(view, handler, error);
-                handler.proceed();
-            }
-        });
-
-        webView.loadUrl(url);
-//        webView.loadDataWithBaseURL(null, articleBean.content, "text/html", "UTF-8", null);
-
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onShowCustomView(View view, CustomViewCallback callback) {
-                super.onShowCustomView(view, callback);
-            }
-
-            @Override
-            public void onHideCustomView() {
-                super.onHideCustomView();
-            }
-
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                super.onProgressChanged(view, newProgress);
-                progressBar.setProgress(newProgress);
-                // 判断当进度条为100时将其隐藏
-                if (progressBar.getProgress() == 100) {
-                    progressBar.setVisibility(View.GONE);
-                    is_loading_login_over = true;
+    private void setActivityContent(final String activityContent, Handler handler) {
+        new Thread(() -> {
+            Html.ImageGetter imageGetter = source -> {
+                Drawable drawable;
+                drawable = getImageNetwork(source);
+                if (drawable != null) {
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                } else if (drawable == null) {
+                    return null;
                 }
-            }
+                return drawable;
+            };
+            CharSequence charSequence = Html.fromHtml(activityContent.trim(), imageGetter, null);
+            Message ms = Message.obtain();
+            ms.what = 1;
+            ms.obj = charSequence;
+            handler.sendMessage(ms);
+        }).start();
+    }
 
-            @Override
-            public void onReceivedTitle(WebView view, String title) {
-                super.onReceivedTitle(view, title);
-                if (!title.isEmpty()) {
-//                    tv_title.setText(title);
-                }
-            }
-        });
+
+    public Drawable getImageNetwork(String imageUrl) {
+        URL myFileUrl = null;
+        Drawable drawable = null;
+        try {
+            myFileUrl = new URL(imageUrl);
+            HttpURLConnection conn = (HttpURLConnection) myFileUrl
+                    .openConnection();
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            // 在这一步最好先将图片进行压缩，避免消耗内存过多
+            Bitmap bitmap = BitmapFactory.decodeStream(is);
+            drawable = new BitmapDrawable(bitmap);
+            is.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return drawable;
     }
 
 
@@ -172,12 +190,49 @@ public class ArticleDetailFragment extends BaseFragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (handler != null)
+            handler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
     protected BasePresenter createPresenter() {
         return null;
     }
 
     @Override
     protected int provideContentViewId() {
-        return R.layout.fragment_question_detail;
+        return R.layout.fragment_article_detail_layout;
     }
+
+
+    private static class SecondHandler extends Handler {
+
+        private WeakReference<ArticleDetailFragment> mWeakReference;
+
+        public SecondHandler(ArticleDetailFragment secondActivity) {
+            mWeakReference = new WeakReference<>(secondActivity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            ArticleDetailFragment host = mWeakReference.get(); // 判断所在的 Activity 的引用是否被回收了
+            if (host != null) {
+                switch (msg.what) {
+                    case 1:
+                        CharSequence charSequence = (CharSequence) msg.obj;
+                        if (charSequence != null) {
+                            host.tv_content1.setText(charSequence);
+                            host.tv_content1.setMovementMethod(LinkMovementMethod.getInstance());
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+
 }

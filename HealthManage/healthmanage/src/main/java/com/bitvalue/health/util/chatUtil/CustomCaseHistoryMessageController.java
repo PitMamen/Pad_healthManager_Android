@@ -51,11 +51,11 @@ public class CustomCaseHistoryMessageController {
             /**
              * 如果集合大于一个 则跳转至列表界面  如果等于1 则直接跳转至webView 问卷详情界面
              */
-            if (!EmptyUtil.isEmpty(data.url)) {
+            if (!EmptyUtil.isEmpty(data.id)) {
                 //跳转至文章详情界面
-
                 ArticleBean articleBean = new ArticleBean();
                 articleBean.previewUrl = data.url;
+                articleBean.articleId = data.id;
                 appApplication.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL, articleBean);
 
             } else {

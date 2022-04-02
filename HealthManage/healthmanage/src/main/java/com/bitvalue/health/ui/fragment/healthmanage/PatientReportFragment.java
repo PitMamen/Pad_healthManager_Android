@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.JsonToken;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -49,6 +50,7 @@ import com.bitvalue.health.util.customview.spinner.EditSpinner;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.blankj.utilcode.util.LogUtils;
+import com.google.gson.Gson;
 import com.hjq.toast.ToastUtils;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
@@ -243,7 +245,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
             @Override
             public void onLoadMore(@NonNull @NotNull RefreshLayout refreshLayout) {
                 // TODO: 2021/12/8 加载下一页
-                Log.e(TAG, "onLoadMore111: " + pageNo + " currentPage: " + currentPage);
+                Log.e(TAG, "上拉: " + pageNo + " currentPage: " + currentPage);
                 if (currentPage == pageNo) {
                     pageNo = 1;
                     Log.e(TAG, "无更多数据");
@@ -260,7 +262,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
             //下拉刷新
             @Override
             public void onRefresh(@NonNull @NotNull RefreshLayout refreshLayout) {
-                Log.e(TAG, "onLoadMore222: " + pageNo);
+                Log.e(TAG, "下拉: " + pageNo);
                 if (pageNo > 1) {
                     pageNo--;
                 } else {
@@ -285,17 +287,18 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
         //测试数据
         inpatientAreaList = new ArrayList<>();
         inpatientAreaList.add("所有病区");  //这里要默认一个无 第一个 当点中 无 的时候 获取所有病区下的患者
-            inpatientAreaList.add("小儿麻痹症");
-            inpatientAreaList.add("精神科");
-            inpatientAreaList.add("普通外科");
-            inpatientAreaList.add("微创外科");
-            inpatientAreaList.add("老年病科");
-            inpatientAreaList.add("血液内科");
-            inpatientAreaList.add("儿科");
-            inpatientAreaList.add("骨科");
+        inpatientAreaList.add("小儿麻痹症");
+        inpatientAreaList.add("精神科");
+        inpatientAreaList.add("普通外科");
+        inpatientAreaList.add("微创外科");
+        inpatientAreaList.add("老年病科");
+        inpatientAreaList.add("血液内科");
+        inpatientAreaList.add("儿科");
+        inpatientAreaList.add("骨科");
+        inpatientAreaList.add("病区一");
         spinnew_inpatient.setItemData(inpatientAreaList);
         spinnew_inpatient.setOnItemClickListener(name -> {
-            selectedInpatientAreaName = name.equals("所有病区")?"":name;
+            selectedInpatientAreaName = name.equals("所有病区") ? "" : name;
             requestDistribution("");  //更新列表
         });
     }
@@ -514,8 +517,9 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     @Override
     public void qryAllocatedPatienSuccess(List<NewLeaveBean.RowsDTO> infoDetailDTOList) {
         homeActivity.runOnUiThread(() -> {
-            if (pageNo > 1 && infoDetailDTOList.size() == 0) {
-//                ToastUtils.show("无更多可分配的患者");
+//            Log.e(TAG, "qryAllocatedPatienSuccess: " + infoDetailDTOList.size());
+            if (pageNo > 1 && null != infoDetailDTOList && infoDetailDTOList.size() == 0) {
+                currentPage = pageNo;
                 return;
             }
 

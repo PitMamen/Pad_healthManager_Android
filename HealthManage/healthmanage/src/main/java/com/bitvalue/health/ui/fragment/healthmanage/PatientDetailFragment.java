@@ -91,8 +91,6 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
 
     @BindView(R.id.list_visitload)
     WrapRecyclerView list_visitlod;
-    @BindView(R.id.ll_image)
-    LinearLayout ll_image_default;
     @BindView(R.id.iv_patient_icon)
     ImageView iv_head;
     @BindView(R.id.tv_bingli_detail)

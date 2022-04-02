@@ -8,6 +8,7 @@ import com.bitvalue.health.contract.healthmanagercontract.AddArticleContract;
 import com.bitvalue.health.model.healthmanagermodel.AddArticleModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author created by bitvalue
@@ -20,13 +21,13 @@ public class AddArticlePresenter extends BasePresenter<AddArticleContract.View, 
     }
 
     @Override
-    public void getUsefulArticle(int count) {
-        mModel.getUsefulArticle(count, new CallBackAdapter() {
+    public void getUsefulArticle(int pageSize, int startPage, String deptCode) {
+        mModel.getUsefulArticle(pageSize, startPage, deptCode, new CallBackAdapter() {
             @Override
             public void onSuccess(Object o, int what) {
                 super.onSuccess(o, what);
                 if (isViewAttach()) {
-                    getView().getArticleSuccess((ArrayList<ArticleBean>) o);
+                    getView().getArticleSuccess((List<ArticleBean>) o);
                 }
             }
 

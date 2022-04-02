@@ -9,6 +9,8 @@ import com.bitvalue.health.callback.Callback;
 import com.bitvalue.health.contract.visitplancontact.VisitPlanContact;
 import com.bitvalue.health.util.EmptyUtil;
 
+import java.util.ArrayList;
+
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -22,11 +24,7 @@ public class VisitPlanModel extends BaseModel implements VisitPlanContact.VisitP
             mApi.qryallAllocatedPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
                 if (!EmptyUtil.isEmpty(listApiResult)) {
                     if (listApiResult.getCode() == 0) {
-                        if (!EmptyUtil.isEmpty(listApiResult.getData().getRows())){
-                            callback.onSuccess(listApiResult.getData().getRows(),1000);
-                        }else {
-                            callback.onFailedLog("无更多患者!",1001);
-                        }
+                        callback.onSuccess(listApiResult.getData().getRows(), 1000);
                     } else {
                         callback.onFailedLog(listApiResult.getMessage(), 1001);
                     }
@@ -49,10 +47,10 @@ public class VisitPlanModel extends BaseModel implements VisitPlanContact.VisitP
                     if (listApiResult.getCode() == 0) {
                         NewLeaveBean newLeaveBeanList = listApiResult.getData();
                         Log.e(TAG, "qryPatientList: " + newLeaveBeanList);
-                        if (!EmptyUtil.isEmpty(listApiResult.getData().getRows())){
-                            callback.onSuccess(listApiResult.getData().getRows(),1000);
-                        }else {
-                            callback.onFailedLog("无更多患者!",1001);
+                        if (!EmptyUtil.isEmpty(listApiResult.getData().getRows())) {
+                            callback.onSuccess(listApiResult.getData().getRows(), 1000);
+                        } else {
+                            callback.onFailedLog("无更多患者!", 1001);
                         }
                     } else {
                         callback.onFailedLog(listApiResult.getMessage(), 1001);

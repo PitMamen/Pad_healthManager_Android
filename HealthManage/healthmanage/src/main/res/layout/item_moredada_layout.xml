@@ -39,6 +39,18 @@
     </LinearLayout>
 
 
+    <TextView
+        android:id="@+id/tv_diagnosis"
+        android:visibility="gone"
+        android:text=""
+        android:textColor="@color/text_desc_dark"
+        android:textSize="@dimen/qb_px_8"
+        android:layout_marginStart="@dimen/qb_px_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></TextView>
+
+
+
 
 
     <com.bitvalue.health.util.customview.WrapRecyclerView

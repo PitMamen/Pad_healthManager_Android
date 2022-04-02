@@ -33,7 +33,6 @@ public class ImageListDisplayAdapter extends BaseQuickAdapter<String, BaseViewHo
        if (item==null){
            return;
        }
-        Log.e(TAG, "URL图片: "+item );
         ImageView imageView = holder.getView(R.id.iv_pic);
         Picasso.with(Application.instance()).load(item.trim()).into(imageView);
 //        GlideEngine.loadImage(imageView,item.trim());

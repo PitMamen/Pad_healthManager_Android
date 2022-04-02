@@ -9,7 +9,7 @@
         android:background="@drawable/shape_select_patient_"
         android:layout_marginTop="@dimen/qb_px_8"
         android:layout_marginStart="@dimen/qb_px_5"
-        android:layout_width="56dp"
+        android:layout_width="65dp"
         android:layout_height="24dp">
 
         <TextView
@@ -19,7 +19,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/qb_px_3"
             android:layout_marginEnd="@dimen/qb_px_5"
-            android:text="李江山"
+            android:text="李春天"
             android:textColor="#7AC756"
             android:textSize="12sp"></TextView>
 

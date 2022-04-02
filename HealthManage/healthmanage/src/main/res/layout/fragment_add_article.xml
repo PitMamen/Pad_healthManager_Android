@@ -54,7 +54,7 @@
 
         </RelativeLayout>
 
-        <!--常用问卷-->
+        <!--常用文章-->
         <LinearLayout
             android:id="@+id/layout_daily"
             android:layout_width="match_parent"

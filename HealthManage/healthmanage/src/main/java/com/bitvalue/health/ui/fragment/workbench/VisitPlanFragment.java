@@ -337,7 +337,8 @@ public class VisitPlanFragment extends BaseFragment<VisitPlanPersenter> implemen
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventHandler(VisitPlanRefreshObj message) {//不用区分类型，全部直接转换成json发送消息出去
         Log.e(TAG, "接收更新随访计划列表消息");
-        allocatedPatientRequest.pageNo = 1;
+        allDynamicList.clear();
+        pageNo = 1;
         requestData("");
     }
 
@@ -354,8 +355,11 @@ public class VisitPlanFragment extends BaseFragment<VisitPlanPersenter> implemen
         getActivity().runOnUiThread(() -> {
             //拿到所有患者 需要过滤一些没有userID的患者
             hideDialog();
+            if (pageNo > 1 && infoDetailDTOList != null && infoDetailDTOList.size() == 0) {
+                return;
+            }
+            allDynamicList.clear();
             if (infoDetailDTOList != null) {
-                allDynamicList.clear();
                 allDynamicList = infoDetailDTOList;
                 default_view.setVisibility(infoDetailDTOList.size() == 0 ? View.VISIBLE : View.GONE);
             }
@@ -368,7 +372,7 @@ public class VisitPlanFragment extends BaseFragment<VisitPlanPersenter> implemen
     public void qryPatientListFail(String messageFail) {
         getActivity().runOnUiThread(() -> {
             hideDialog();
-            ToastUtils.show(messageFail);
+//            ToastUtils.show(messageFail);
         });
     }
 
@@ -395,7 +399,7 @@ public class VisitPlanFragment extends BaseFragment<VisitPlanPersenter> implemen
     public void qryPatientByNameFail(String failmessage) {
         homeActivity.runOnUiThread(() -> {
             hideDialog();
-            ToastUtils.show(failmessage);
+//            ToastUtils.show(failmessage);
         });
     }
 

@@ -27,6 +27,9 @@ public class VisitPlanDetailModel extends BaseModel implements VisitPlanDetailCo
                 if (result.getCode() == 0) {
                     if (!EmptyUtil.isEmpty(result.getData())) {
                         List<TaskDetailBean> listBean = result.getData();
+                        for (int i = 0; i <listBean.size() ; i++) {
+                            Log.e(TAG, "qryUserLocalVisit: "+listBean.get(i).toString() );
+                        }
                         List<String> imagesDTOList = new ArrayList<>();
                         for (int i = 0; i < listBean.size(); i++) {
                             for (int j = 0; j < listBean.get(i).getHealthImages().size(); j++) {

@@ -11,7 +11,7 @@ public class CustomCaseHistoryMessage extends CustomMessage implements Serializa
     public String title;
     public String content;
     public String url;
-    public String id;
+    public int id;
     public Map<String,String> maparticleList;
     public List<WenzhangBean> beanList;
 
