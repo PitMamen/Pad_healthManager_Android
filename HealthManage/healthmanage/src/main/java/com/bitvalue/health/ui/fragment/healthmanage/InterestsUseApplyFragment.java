@@ -229,7 +229,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
         EasyHttp.post(homeActivity).api(systemRemindObj).request(new OnHttpListener<ApiResult<String>>() {
             @Override
             public void onSucceed(ApiResult<String> result) {
-                Log.e(TAG, "通知请求: "+result.getMessage() );
+//                Log.e(TAG, "通知请求: "+result.getMessage() );
             }
 
             @Override
