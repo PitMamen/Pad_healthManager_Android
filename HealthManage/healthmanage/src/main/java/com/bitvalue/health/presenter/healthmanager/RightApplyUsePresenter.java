@@ -93,7 +93,7 @@ public class RightApplyUsePresenter extends BasePresenter<RightApplyUseContract.
     }
 
     @Override
-    public void getDocList(int departId) {
+    public void getDocList(String departId) {
         if (mModel!=null){
             mModel.getDocList(departId,new CallBackAdapter(){
                 @Override

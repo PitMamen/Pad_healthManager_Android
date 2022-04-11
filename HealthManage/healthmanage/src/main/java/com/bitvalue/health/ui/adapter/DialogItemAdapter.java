@@ -51,13 +51,18 @@ public class DialogItemAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = inflater.inflate(R.layout.dialog_item, null);
-//            convertView.setLayoutParams(new ViewGroup.LayoutParams(200,200));
             holder.typeTextview = (TextView) convertView.findViewById(R.id.tv_content_name);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.typeTextview.setText(getItem(position).name);
+
+        if (getItem(position).name.contains("-")) {
+            String[] name = getItem(position).name.split("-");
+            holder.typeTextview.setText(name[1]);
+        }else {
+            holder.typeTextview.setText(getItem(position).name);
+        }
         return convertView;
     }
 

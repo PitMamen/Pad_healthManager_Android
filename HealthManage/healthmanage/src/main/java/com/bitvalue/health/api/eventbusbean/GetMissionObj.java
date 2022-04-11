@@ -1,4 +1,4 @@
-package com.bitvalue.health.api.responsebean.message;
+package com.bitvalue.health.api.eventbusbean;
 
 import java.io.Serializable;
 

@@ -26,20 +26,12 @@ import java.util.List;
 public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, BaseViewHolder> {
 
     private OnRightClickCallBack onRightClickCallBack;
-    private int currentPosition = -1;
 
     public NeedDealithQuickAdapter(@LayoutRes int layoutResId, @Nullable List<TaskDeatailBean> data, OnRightClickCallBack callBack) {
         super(layoutResId, data);
         this.onRightClickCallBack = callBack;
     }
 
-    public void setPosition(int position) {
-        this.currentPosition = position;
-    }
-
-    public int getCurrentPosition(){
-        return currentPosition;
-    }
 
 
     @Override

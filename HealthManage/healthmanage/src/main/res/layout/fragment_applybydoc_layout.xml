@@ -351,6 +351,20 @@
                 android:textSize="14.5sp"></TextView>
 
 
+            <TextView
+                android:id="@+id/tv_chat_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="问诊记录"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/home_blue"
+                android:layout_marginEnd="@dimen/qb_px_20"
+                android:textSize="15sp">
+
+            </TextView>
+
+
             <RelativeLayout
                 android:id="@+id/rl_start_consultation"
                 android:layout_width="@dimen/qb_px_60"
@@ -375,6 +389,15 @@
                 </TextView>
 
             </RelativeLayout>
+
+
+
+
+
+
+
+
+
 
 
 

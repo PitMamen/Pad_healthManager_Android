@@ -224,4 +224,14 @@ public class PersonalDataFragment extends BaseFragment<PersonalDataPersenter> im
     public void logoutAcountFail(String failMessage) {
               getActivity().runOnUiThread(() -> ToastUtil.toastShortMessage("退出登录失败,请重试!"));
     }
+
+    @Override
+    public void resetPasswordSuccess(String successMessage) {
+
+    }
+
+    @Override
+    public void resetPasswordFail(String failMessage) {
+
+    }
 }

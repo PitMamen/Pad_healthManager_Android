@@ -88,11 +88,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/btn_margin_left"
                     android:layout_toRightOf="@+id/icon_conversation"
-                    android:gravity="center|left"
                     android:ellipsize="end"
+                    android:gravity="center|left"
                     android:singleLine="true"
-                    android:textColor="@color/black_font_color"
                     android:text="@string/more_conversation_label"
+                    android:textColor="@color/black_font_color"
                     android:textSize="16.3sp" />
 
                 <ImageView
@@ -121,19 +121,20 @@
                 android:layout_height="wrap_content"
                 android:visibility="visible"
                 android:background="@drawable/shape_search">
+
                 <TextView
                     android:id="@+id/conversation_tip"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="20dp"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:text="@string/chat_record_reference"
                     android:textColor="@color/list_bottom_text_bg"
-                    android:textSize="12.86sp"
-                    android:text="@string/chat_record_reference" />
+                    android:textSize="12.86sp" />
                 <View
                     android:id="@+id/view_line_three"
                     android:layout_below="@+id/conversation_tip"

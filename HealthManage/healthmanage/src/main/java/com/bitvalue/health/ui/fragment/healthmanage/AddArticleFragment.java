@@ -1,7 +1,5 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
-import static com.hjq.http.EasyUtils.postDelayed;
-
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.SearchArticleResult;
-import com.bitvalue.health.api.responsebean.message.GetMissionObj;
-import com.bitvalue.health.base.BaseAdapter;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.contract.healthmanagercontract.AddArticleContract;
 import com.bitvalue.health.presenter.healthmanager.AddArticlePresenter;
@@ -275,9 +271,9 @@ public class AddArticleFragment extends BaseFragment<AddArticlePresenter> implem
             if (startPage > 1 && articleBeanArrayList.size() == 0) {
                 return;
             }
-            if (dailyArticles.size() == articleBeanArrayList.size()) {
-                ToastUtil.toastShortMessage("无更多数据");
-            }
+//            if (dailyArticles.size() == articleBeanArrayList.size()) {
+//                ToastUtil.toastShortMessage("无更多数据");
+//            }
             dailyArticles.clear();
             dailyArticles = articleBeanArrayList;
             mDailyAdapter.setData(dailyArticles);

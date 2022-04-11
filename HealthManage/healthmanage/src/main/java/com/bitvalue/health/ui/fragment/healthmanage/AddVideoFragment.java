@@ -6,13 +6,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.requestbean.GetVideosApi;
 import com.bitvalue.health.api.responsebean.VideoResultBean;
-import com.bitvalue.health.api.responsebean.message.AddVideoObject;
-import com.bitvalue.health.base.BaseAdapter;
+import com.bitvalue.health.api.eventbusbean.AddVideoObject;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;

@@ -10,6 +10,7 @@ import com.bitvalue.health.api.requestbean.PersonalDataBean;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.requestbean.ReportStatusBean;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
+import com.bitvalue.health.api.requestbean.ResetPasswordRequestBean;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
 import com.bitvalue.health.api.requestbean.SendUserRemind;
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
@@ -62,13 +63,6 @@ public interface CommonService {
      */
     @POST("/account-api/login")
     Observable<ApiResult<LoginResBean>> login(@Body LoginReqBean loginReqBean);
-
-
-    /**
-     * 云门诊就诊列表查询
-     */
-    @GET("/health-api/medical/doctor/qryMyMedicalPatients")
-    Observable<ApiResult<ArrayList<VideoClientsResultBean>>> getMyMedicalPatients(@Query("attendanceStatus") String attendanceStatus);
 
 
     /**
@@ -232,6 +226,13 @@ public interface CommonService {
 
 
     /**
+     * 修改密码
+     */
+    @POST("/account-api/accountInfo/resetAccountInfo")
+    Observable<ApiResult<String>> resetPassWord(@Body ResetPasswordRequestBean requestBean);
+
+
+    /**
      * 所有所有患者（骨肿瘤接口   已弃用）
      *
      * @param leaveBean
@@ -294,13 +295,6 @@ public interface CommonService {
     Observable<ApiResult<QueryRightsRecordBean>> queryRightsUserRecord(@Query("pageNo") int pageNo, @Query("pageSize") int pageSize, @Query("userId") String userId, @Query("rightsId") int rightsId);
 
 
-//    /**
-//     * 我的权益
-//     */
-//    @GET("health-api/patient/queryMyRights")
-//    Observable<ApiResult<List<MyRightBean>>> queryMyRights(@Query("goodsId") int goodsId, @Query("id") int id, @Query("userId") String userId );
-
-
     /**
      * 我的权益
      */
@@ -332,7 +326,7 @@ public interface CommonService {
      * 根据科室ID查询 该科室下的所有医师
      */
     @GET("account-api/businessManagement/getDoctorList")
-    Observable<ApiResult<List<DocListBean>>> getDoctorList(@Query("departmentId") int departmentId);
+    Observable<ApiResult<List<DocListBean>>> getDoctorList(@Query("departmentId") String departmentId);
 
     /**
      * 根据患者 ID  查询更多和基本信息

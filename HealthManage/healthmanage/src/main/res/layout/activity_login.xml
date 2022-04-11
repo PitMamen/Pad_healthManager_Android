@@ -163,6 +163,28 @@
                         android:text="记住密码"
                         android:textColor="@color/text_main"
                         android:textSize="@dimen/qb_px_12" />
+
+
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/tv_modify_pwd"
+                        android:layout_marginLeft="@dimen/qb_px_25"
+                        android:textColor="@color/main_blue"
+                        android:textSize="@dimen/qb_px_9"
+                        android:text="修改密码"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"></TextView>
+
+
+
+
+
+
+
+
+
+
+
                 </LinearLayout>
 
                 <TextView

@@ -9,6 +9,7 @@ import com.bitvalue.health.Application;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.EmptyUtil;
+import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKitImpl;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.MessageLayout;
@@ -45,41 +46,14 @@ public class CustomQuestionMessageController {
             /**
              * 如果集合大于一个 则跳转至列表界面  如果等于1 则直接跳转至webView 问卷详情界面
              */
-            if (!EmptyUtil.isEmpty(data.url)){
+            if (!EmptyUtil.isEmpty(data.url)) {
                 //跳转至问卷详情界面
                 QuestionResultBean.ListDTO listDTO = new QuestionResultBean.ListDTO();
-                listDTO.questUrl = data.url;
+                listDTO.questUrl = data.url + "?userId=" + data.userId + "&execTime=" + TimeUtils.getCurrenTimeYMDHMS() + "&showsubmitbtn=hide";
                 Application.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL, listDTO);
-
-//                Intent intent = new Intent();
-//                intent.setAction(ACTION_QUESTION_DETAIL);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                intent.putExtra(QUESTIONDETAIL, data.url);
-//                appApplication.startActivity(intent);
-            }else {
+            } else {
                 Log.e(TAG, "data.url = null!!!");
             }
-
-//            if (data.questionlistDTOS != null && data.questionlistDTOS.size() > 0) {
-//                if (data.questionlistDTOS.size() > 1) {
-//                    Intent intent = new Intent();
-//                    intent.setAction(ACTION_QUESTION);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable(QUESTIONLIST, (Serializable) data.questionlistDTOS);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    intent.putExtras(bundle);
-//                    appApplication.startActivity(intent);
-//                } else {
-//                    //跳转至问卷详情界面
-//                    Intent intent = new Intent();
-//                    intent.setAction(ACTION_QUESTION_DETAIL);
-//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    intent.putExtra(QUESTIONDETAIL, data.url);
-//                    appApplication.startActivity(intent);
-//                }
-//            } else {
-//                Log.e(TAG, "data.questionlistDTOS = null!!!");
-//            }
         });
         view.setOnLongClickListener(v -> {
             if (onItemLongClickListener != null) {

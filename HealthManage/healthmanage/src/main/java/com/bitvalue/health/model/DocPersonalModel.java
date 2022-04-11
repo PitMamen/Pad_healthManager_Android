@@ -3,6 +3,7 @@ package com.bitvalue.health.model;
 import android.util.Log;
 
 import com.bitvalue.health.api.requestbean.PersonalDataBean;
+import com.bitvalue.health.api.requestbean.ResetPasswordRequestBean;
 import com.bitvalue.health.base.model.BaseModel;
 import com.bitvalue.health.callback.Callback;
 import com.bitvalue.health.contract.settingcontract.PersonalDataContract;
@@ -18,7 +19,6 @@ public class DocPersonalModel extends BaseModel implements PersonalDataContract.
     @Override
     public void getPersonalData(Callback callback) {
         mApi.getDocPersonalDetail().subscribeOn(Schedulers.io()).subscribe(r -> {
-            Log.e(TAG, "getPersonalData: "+r.toString() );
             if (!EmptyUtil.isEmpty(r)) {
                 if (r.getCode() == 0) {
                     if (!EmptyUtil.isEmpty(r.getData())) {
@@ -29,9 +29,9 @@ public class DocPersonalModel extends BaseModel implements PersonalDataContract.
                     callback.onFailedLog(r.getMessage(), 1001);
                 }
             }
-        },error->{
-            Log.e(TAG, "getPersonalData: "+error.getMessage() );
-            callback.onFailedLog(error.getMessage(),1001);
+        }, error -> {
+            Log.e(TAG, "getPersonalData: " + error.getMessage());
+            callback.onFailedLog(error.getMessage(), 1001);
         });
     }
 
@@ -39,7 +39,7 @@ public class DocPersonalModel extends BaseModel implements PersonalDataContract.
     public void logout(Callback callback) {
         mApi.logout().subscribeOn(Schedulers.io()).subscribe(r -> {
             if (!EmptyUtil.isEmpty(r)) {
-                Log.e(TAG, "logout: "+r.toString() );
+                Log.e(TAG, "logout: " + r.toString());
                 if (r.getCode() == 0) {
                     callback.onSuccess("logout success", 1000);
                 } else {
@@ -50,5 +50,23 @@ public class DocPersonalModel extends BaseModel implements PersonalDataContract.
             callback.onFailedLog(error.getMessage(), 1001);
         });
 
+    }
+
+    @Override
+    public void resetPassword(ResetPasswordRequestBean requestBean, Callback callback) {
+        if (!EmptyUtil.isEmpty(requestBean)) {
+            mApi.resetPassWord(requestBean).subscribeOn(Schedulers.io()).subscribe(result -> {
+                if (!EmptyUtil.isEmpty(result)) {
+                    if (result.getCode() == 0) {
+                        Log.e(TAG, "resetPassword: " + result.toString());
+                        callback.onSuccess("success", 1000);
+                    } else {
+                        callback.onFailedLog(result.getMessage(), 1001);
+                    }
+                }
+            }, error -> {
+                callback.onFailedLog(error.getMessage(), 1001);
+            });
+        }
     }
 }

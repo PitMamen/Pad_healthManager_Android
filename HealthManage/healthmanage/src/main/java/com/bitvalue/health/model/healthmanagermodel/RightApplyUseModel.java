@@ -85,7 +85,7 @@ public class RightApplyUseModel extends BaseModel implements RightApplyUseContra
     }
 
     @Override
-    public void getDocList(int departId, Callback callback) {
+    public void getDocList(String departId, Callback callback) {
         mApi.getDoctorList(departId).subscribeOn(Schedulers.io()).subscribe(result -> {
             if (!EmptyUtil.isEmpty(result)) {
                 if (result.getCode() == 0) {

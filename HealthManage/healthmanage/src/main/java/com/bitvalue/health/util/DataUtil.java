@@ -444,4 +444,13 @@ public class DataUtil {
         }
         return noNullData;
     }
+
+
+
+    public static boolean isValidPhoneNumber(String phoneNumber) {
+        if ((phoneNumber != null) && (!phoneNumber.isEmpty())) {
+            return Pattern.matches("^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17[013678])|(18[0,5-9]))\\d{8}$", phoneNumber);
+        }
+        return false;
+    }
 }

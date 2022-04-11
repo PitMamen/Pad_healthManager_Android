@@ -2,6 +2,7 @@ package com.bitvalue.health.ui.fragment.healthmanage;
 
 import static com.bitvalue.health.util.Constants.USER_ID;
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -12,20 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
-import com.bitvalue.health.api.responsebean.ArticleBean;
-import com.bitvalue.health.api.responsebean.message.GetMissionObj;
-import com.bitvalue.health.base.BaseAdapter;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.contract.settingcontract.AddQuestionContract;
 import com.bitvalue.health.presenter.settingpresenter.AddQuestionPresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.QuestionAdapter;
-import com.bitvalue.health.util.Constants;
-import com.bitvalue.health.util.TimeUtils;
-import com.bitvalue.health.util.chatUtil.CustomCaseHistoryMessage;
 import com.bitvalue.health.util.chatUtil.CustomWenJuanMessage;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
@@ -71,7 +65,6 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
     private QuestionAdapter mAdapter;
     private List<QuestionResultBean.ListDTO> questionBeans = new ArrayList<>();
     private int total;
-//    private GetMissionObj getMissionObj;
 
     private int cureentPage = 0;
     private int pageSize = 10;
@@ -81,9 +74,14 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
 
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        homeActivity = (HomeActivity) getActivity();
+    }
+
+    @Override
     public void initView(View view) {
         tv_title.setText(getString(R.string.questionnaire_selection));
-        homeActivity = (HomeActivity) getActivity();
         back.setVisibility(View.VISIBLE);
         user_id = getArguments().getString(USER_ID, "");
         initList();
@@ -149,8 +147,9 @@ public class AddQuestionFragment extends BaseFragment<AddQuestionPresenter> impl
         Log.e(TAG, "发送问卷---------");
         CustomWenJuanMessage questionMessage = new CustomWenJuanMessage();
         questionMessage.name = bean.name;
-        questionMessage.url = bean.questUrl + "?execTime=" + TimeUtils.getCurrenTimeYMDHMS() + "&userId="+user_id;     //这里url后面加 字段 用语隐藏 提交按钮  ?showsubmitbtn=hide
+        questionMessage.url = bean.questUrl;     //这里url后面加 字段 用语隐藏 提交按钮  ?showsubmitbtn=hide
         questionMessage.id = bean.id;
+        questionMessage.userId = user_id;
         questionMessage.setType("CustomWenJuanMessage");
         questionMessage.setDescription("问卷");
         EventBus.getDefault().post(questionMessage);

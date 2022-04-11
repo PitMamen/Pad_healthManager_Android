@@ -10,7 +10,4 @@ public interface OnRightClickCallBack {
 
     void OnItemClick(TaskDeatailBean taskDeatailBean);
 
-    void OnIemVideoVisitClick(TaskDeatailBean taskDeatailBean);
-
-    void OnItemClick(int position);
 }

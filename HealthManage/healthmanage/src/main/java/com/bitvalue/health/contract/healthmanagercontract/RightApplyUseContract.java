@@ -42,7 +42,7 @@ public interface RightApplyUseContract {
 
         void finishMidRequest(FinshMidRequestBean finshMidRequestBean,Callback callback);
 
-        void getDocList(int departId,Callback callback);
+        void getDocList(String departId,Callback callback);
     }
 
     interface Presenter {
@@ -52,7 +52,7 @@ public interface RightApplyUseContract {
 
         void finishMidRequest(FinshMidRequestBean finshMidRequestBean);
 
-        void getDocList(int departId);
+        void getDocList(String departId);
 
     }
 

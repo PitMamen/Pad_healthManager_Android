@@ -24,6 +24,7 @@ public class FinshMidRequestBean implements Serializable {
     public String taskId;
     public String tradeId;
     public String userId;
+    public String execName;
 
 
 }

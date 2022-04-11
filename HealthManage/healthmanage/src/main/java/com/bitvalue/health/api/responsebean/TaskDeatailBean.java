@@ -133,6 +133,15 @@ public class TaskDeatailBean implements Serializable {
         private int execFlag;
         private String userId;
         private String tradeId;
+        private String execName;
+
+        public String getExecName() {
+            return execName;
+        }
+
+        public void setExecName(String execName) {
+            this.execName = execName;
+        }
 
         public String getDeptName() {
             return deptName;

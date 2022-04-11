@@ -3,7 +3,6 @@ package com.bitvalue.health.model.planmodel;
 import android.util.Log;
 
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
-import com.bitvalue.health.api.responsebean.ImageBean;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.base.model.BaseModel;
 import com.bitvalue.health.callback.Callback;

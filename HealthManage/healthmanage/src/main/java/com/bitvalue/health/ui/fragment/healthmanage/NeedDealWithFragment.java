@@ -4,6 +4,7 @@ import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY_BYDOC;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.bitvalue.health.util.MUtils;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.modules.search.SearchMoreMsgListActivity;
 import com.hjq.toast.ToastUtils;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 
@@ -71,33 +73,35 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     RelativeLayout rl_default_layout;
 
 
-    @BindView(R.id.rl_status_refresh)
-    SmartRefreshLayout smartall_RefreshLayout; //所有的上下拉刷新
+    @BindView(R.id.rl_needdeal_refresh)
+    SmartRefreshLayout rl_needdeal_refresh; //所有的上下拉刷新
 
     @BindView(R.id.list_newly_discharged_patient)
     WrapRecyclerView list_allneeddealwith;  //所有的待办列表
 
 
-    @BindView(R.id.layout_search_result)
-    SmartRefreshLayout smartsearch_RefreshLayout; //搜索出来的上下拉刷新
-
-    @BindView(R.id.search_allpatient)
-    WrapRecyclerView list_search_needdealwith;  //搜索出来的待办列表
+//    @BindView(R.id.layout_search_result)
+//    SmartRefreshLayout smartsearch_RefreshLayout; //搜索出来的上下拉刷新
+//
+//    @BindView(R.id.search_allpatient)
+//    WrapRecyclerView list_search_needdealwith;  //搜索出来的待办列表
 
 
     /**
      * 已办
      */
-    @BindView(R.id.rl_unregister_refresh)
+    @BindView(R.id.rl_already_refresh)
     SmartRefreshLayout already_RefreshLayout; //所有的上下拉刷新
-
-    @BindView(R.id.list_unregister)
+    @BindView(R.id.list_alreadylist)
     WrapRecyclerView list_alreadyPatient;
+
 
     @BindView(R.id.layout_search_unregister)
     SmartRefreshLayout search_already_RefreshLayout;
     @BindView(R.id.unregister_search_allpatient)
     WrapRecyclerView search_alreadyPatient;
+
+
 
     @BindView(R.id.ll_needdeal_patient)
     LinearLayout ll_needDealWithlayoout;
@@ -176,11 +180,12 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     }
 
 
+    //获取待办列表
     private void getNeedDealWithData() {
         mPresenter.getMyTaskDetail(0, 9, String.valueOf(loginBean.getUser().user.userId));
     }
 
-
+    //获取已办列表
     private void getAlradydata() {
         mPresenter.getMyAlreadyDealTaskDetail(1, 9, String.valueOf(loginBean.getUser().user.userId));
     }
@@ -236,20 +241,12 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
         list_allneeddealwith.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getActivity())));
         list_allneeddealwith.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
         needDealWithQuickAdapter = new NeedDealithQuickAdapter(R.layout.item_need_dealwith_layout, NeedDealWithList, this);
-        needDealWithQuickAdapter.setOnItemClickListener((adapter, view, position) -> {
-            needDealWithQuickAdapter.setPosition(position);
-        });
         list_allneeddealwith.setAdapter(needDealWithQuickAdapter);
 
 
         list_alreadyPatient.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getActivity())));
         list_alreadyPatient.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
         AlreadyDealithAdapter = new AlreadyDealithAdapter(R.layout.item_need_dealwith_layout, AlradDealWithList, this);
-        AlreadyDealithAdapter.setOnItemClickListener((adapter, view, position) -> {
-
-
-        });
-
         list_alreadyPatient.setAdapter(AlreadyDealithAdapter);
     }
 
@@ -275,7 +272,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
         homeActivity.runOnUiThread(() -> {
             hideShowList();
             NeedDealWithList = taskDeatailBeanList;
-            homeActivity.showOrHideImageBoll(NeedDealWithList!=null&&taskDeatailBeanList.size() > 0);  //如果有待办任务 通知左侧状态栏 视图更新
+            homeActivity.showOrHideImageBoll(NeedDealWithList != null && taskDeatailBeanList.size() > 0);  //如果有待办任务 通知左侧状态栏 视图更新
             needDealWithQuickAdapter.setNewData(NeedDealWithList);
             if (NeedDealWithList != null && NeedDealWithList.size() > 0) {
                 rl_default_layout.setVisibility(View.GONE);
@@ -336,41 +333,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     public void OnItemClick(TaskDeatailBean taskDeatailBean) {
         // TODO: 2022/2/22 这里要区分 是个案管理师登录的还是医生登录的
         if (loginBean != null) {
-//            Log.e(TAG, "科室名称: " + taskDeatailBean.getTaskDetail().getDeptName());
             homeActivity.switchSecondFragment(loginBean.getAccount().roleName.equals("casemanager") ? FRAGMENT_INTERESTSUSER_APPLY : FRAGMENT_INTERESTSUSER_APPLY_BYDOC, taskDeatailBean);  //个案师
-        }
-    }
-
-
-    /**
-     * 点击视频问诊 进入视频聊天界面
-     *
-     * @param taskDeatailBean
-     */
-    @Override
-    public void OnIemVideoVisitClick(TaskDeatailBean taskDeatailBean) {
-//        CustomVideoCallMessage message = new CustomVideoCallMessage();
-//        message.title = getString(R.string.video_visit);
-//        long currentTimeMillis = System.currentTimeMillis();
-//        String rooId = currentTimeMillis + "";
-////        message.msgDetailId = rooId.substring(rooId.length() - 7, rooId.length());
-//        message.msgDetailId = taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "";
-//        message.content = getString(R.string.click_to_access_the_video);
-//        message.timeStamp = currentTimeMillis;
-//        //这个属性区分消息类型 HelloChatController中onDraw方法去绘制布局
-//        message.setType("CustomVideoCallMessage");
-//        message.userId = new ArrayList<>();
-//        message.userId.add(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));//传入userid
-//        message.setDescription(getString(R.string.video_visit));
-//        message.id = String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId());//这里id设置为视频看诊的预约id
-//        CustomVideoCallMessageController.getPatientAppointmentById(message, true);
-    }
-
-    @Override
-    public void OnItemClick(int position) {
-        if (needDealWithQuickAdapter != null) {
-            needDealWithQuickAdapter.setPosition(position);
-            needDealWithQuickAdapter.notifyDataSetChanged();
         }
     }
 

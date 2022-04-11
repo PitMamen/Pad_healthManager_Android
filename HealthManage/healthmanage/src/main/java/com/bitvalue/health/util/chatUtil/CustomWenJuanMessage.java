@@ -10,6 +10,7 @@ public class CustomWenJuanMessage extends CustomMessage implements Serializable 
     public String url;
     public String name;
     public String id;
+    public String userId;
     public List<QuestionResultBean.ListDTO> questionlistDTOS;
 
 

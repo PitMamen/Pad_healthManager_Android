@@ -101,6 +101,7 @@ public class NewLeaveBean implements Serializable {
 
         public boolean isConsultation = false;//区分是 问诊还是咨询
         public boolean isShowCollection = true;  //是否显示 预诊收集控件（默认显示,只有从咨询界面跳转进去的才不显示）
+        public boolean isShowSendRemind = true;  //是否显示 发送提醒控件（默认显示,只有从咨询界面跳转进去的才不显示）
 
 
         //add

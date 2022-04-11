@@ -1,13 +1,11 @@
 package com.bitvalue.health.ui.activity;
 
 
-import static com.bitvalue.health.util.Constants.EVENT_MES_TYPE_CLOUDCLINC;
 import static com.bitvalue.health.util.Constants.FRAGMENT_DETAIL;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY_BYDOC;
 import static com.bitvalue.health.util.Constants.FRAGMENT_MORE_DATA;
 import static com.bitvalue.health.util.Constants.FRAGMENT_PLAN_LIST;
-import static com.bitvalue.health.util.Constants.ROLE_TYPE;
 import static com.bitvalue.health.util.Constants.TASKDETAIL;
 import static com.bitvalue.health.util.Constants.USER_ID;
 import static com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI.CHAT_TYPE_VIDEO;
@@ -26,7 +24,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bitvalue.health.Application;
-import com.bitvalue.health.api.eventbusbean.MsgRemindObj;
 import com.bitvalue.health.api.eventbusbean.VideoRefreshObj;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
@@ -35,12 +32,13 @@ import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.PlanListBean;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.api.responsebean.TaskPlanDetailBean;
-import com.bitvalue.health.api.responsebean.message.AddVideoObject;
+import com.bitvalue.health.api.eventbusbean.AddVideoObject;
 import com.bitvalue.health.base.BaseActivity;
 import com.bitvalue.health.callback.OnTouchListener;
 import com.bitvalue.health.contract.homecontract.HomeContract;
 import com.bitvalue.health.presenter.homepersenter.HomePersenter;
 import com.bitvalue.health.ui.fragment.chat.ChatFragment;
+import com.bitvalue.health.ui.fragment.chat.ChatRecordFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.ConsultingServiceFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.NeedDealWithFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddArticleFragment;
@@ -85,8 +83,6 @@ import com.hjq.http.listener.OnHttpListener;
 import com.tencent.imsdk.v2.V2TIMConversation;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -233,8 +229,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         initFragments(loginBean.getAccount().roleName.equals("casemanager") ? PATIENT_REPORT : FOLLOWUP_PLAN);  //如果是个案师账号默认首页工作台界面 否则默认随访计划首页
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig);
     }
-
-
 
 
     public void showOrHideImageBoll(boolean isShow) {
@@ -433,6 +427,24 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 chatFragment.setArguments(bundle);
                 mapFragments.put(Constants.FRAGMENT_CHAT, chatFragment);
                 break;
+
+
+            //聊天记录界面
+            case Constants.FRAGMENT_RECORD_CHAT:
+                NewLeaveBean.RowsDTO child_record = (NewLeaveBean.RowsDTO) object;
+                ChatRecordFragment chatrecordFragment = new ChatRecordFragment();
+                Bundle bundle_chatrecord = new Bundle();
+                ChatInfo chatInfo_record = new ChatInfo();
+                chatInfo_record.setType(V2TIMConversation.V2TIM_C2C);
+                chatInfo_record.setId(String.valueOf(child_record.getUserId()));
+                chatInfo_record.setChatName(child_record.getUserName());
+                chatInfo_record.chatType = CHAT_TYPE_VIDEO;
+                chatInfo_record.isShowShortCut = false;
+                bundle_chatrecord.putSerializable(Constants.CHAT_INFO, chatInfo_record);
+                chatrecordFragment.setArguments(bundle_chatrecord);
+                mapFragments.put(Constants.FRAGMENT_RECORD_CHAT, chatrecordFragment);
+            break;
+
 
             //套餐配置
             case Constants.FRAGMENT_HEALTH_PLAN:

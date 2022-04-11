@@ -30,7 +30,10 @@ import com.bitvalue.health.presenter.healthmanager.RightApplyUsePresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.QueryRightsRecordAdapter;
 import com.bitvalue.health.ui.adapter.RightUseTimeRecordAdapter;
+import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.DataUtil;
+import com.bitvalue.health.util.GsonUtils;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.UseEquityDialog;
@@ -90,6 +93,11 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     TextView btn_processing_complete; //处理完成按钮
     @BindView(R.id.tv_gochat)
     TextView tv_goChat;
+    @BindView(R.id.tv_data_review)
+    TextView tv_data_review;  //资料审核
+    @BindView(R.id.tv_reset)
+    TextView tv_reset;//重新设置
+
 
     @BindView(R.id.list_right_times)
     WrapRecyclerView list_righttimes;
@@ -107,6 +115,8 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     private RightUseTimeRecordAdapter rightUseTimeRecordAdapter;
     private QueryRightsRecordAdapter queryRightsRecordAdapter;
     private UseEquityDialog useEquityDialog;
+    private int useRecordId;
+    private boolean flashRecordRigth = false;
 
 
     @Override
@@ -130,7 +140,8 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
         super.initView(rootView);
         back.setVisibility(View.GONE);
         taskDeatailBean = (TaskDeatailBean) getArguments().getSerializable(TASKDETAIL);
-        if (taskDeatailBean == null) {
+        if (taskDeatailBean == null || taskDeatailBean.getTaskDetail() == null || taskDeatailBean.getTaskDetail().getUserInfo() == null) {
+            Log.e(TAG, "taskDeatailBean.getTaskDetail() == null");
             return;
         }
 
@@ -156,14 +167,37 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
         iv_icon.setImageDrawable(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         tv_sex.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex());
         tv_name.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
-        tv_age.setText(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserAge())+"岁");
+        tv_age.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
         tv_phoneNumber.setText(taskDeatailBean.getTaskDetail().getUserInfo().getPhone());
 
         useEquityDialog = new UseEquityDialog(homeActivity);
         btn_processing_complete.setOnClickListener(v -> {
-            useEquityDialog.setDepartment(taskDeatailBean.getTaskDetail().getDeptName()).setVisitName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName()).setVisitType(taskDeatailBean.getTaskDetail().getRightsName()).setOnclickListener(new UseEquityDialog.OnClickBottomListener() {
-                @Override
-                public void onPositiveClick() {
+            showDialog(loginBean, false);
+        });
+
+        tv_goChat.setOnClickListener(v -> {
+            // TODO: 2022/3/25 进入聊天界面
+            NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
+            info.setUserName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
+            info.setUserId(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+            info.setKsmc(taskDeatailBean.getTaskDetail().getDeptName());
+            info.isShowSendRemind = false;  //进入咨询 不需要显示底部 发送提醒 按钮
+            homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
+        });
+
+        //重新设置
+        tv_reset.setOnClickListener(v -> {
+            showDialog(loginBean, true);  //重新设置 需要携带ID
+        });
+    }
+
+
+    private void showDialog(LoginBean loginBean, boolean carryuseRecordId) {
+        useEquityDialog.setDepartment(taskDeatailBean.getTaskDetail().getDeptName()).setVisitName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName()).setVisitType(taskDeatailBean.getTaskDetail().getRightsName()).setOnclickListener(new UseEquityDialog.OnClickBottomListener() {
+            @Override
+            public void onPositiveClick() {
+                //防止连续点击
+                if (!ClickUtils.isFastClick()) {
                     FinshMidRequestBean finshMidRequestBean = new FinshMidRequestBean();
                     String selectDoctor = useEquityDialog.getSelectDoc();
                     String selectContinueTime = useEquityDialog.getSelectContinueTime();
@@ -178,6 +212,11 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                     finshMidRequestBean.rightsId = taskDeatailBean.getTaskDetail().getRightsId();
                     finshMidRequestBean.rightsName = taskDeatailBean.getTaskDetail().getRightsName();
                     finshMidRequestBean.rightsType = taskDeatailBean.getTaskDetail().getRightsType();
+                    finshMidRequestBean.execName = selectDoctor;
+                    flashRecordRigth = carryuseRecordId;
+                    if (carryuseRecordId) {
+                        finshMidRequestBean.id = useRecordId;
+                    }
                     if (selectDoctor.contains("请选择医生")) {
                         ToastUtils.show("请选择医生!");
                         return;
@@ -188,48 +227,33 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                     finshMidRequestBean.tradeId = taskDeatailBean.getTaskDetail().getTradeId();
                     finshMidRequestBean.remark = selectContinueTime;
                     mPresenter.finishMidRequest(finshMidRequestBean);
-
-                     sendSystemRemind();
-
+                    String jsonString = GsonUtils.ModelToJson(finshMidRequestBean);
+                    Log.e(TAG, "jsonString1111: " + jsonString);
+                    sendSystemRemind(jsonString);
+                } else {
+                    Log.e(TAG, "重复点击!!!");
                 }
 
-                @Override
-                public void onNegtiveClick() {
-                    useEquityDialog.cancel();
-                }
-            }).show();
-        });
+            }
 
-
-        tv_goChat.setOnClickListener(v -> {
-            // TODO: 2022/3/25 进入聊天界面
-            NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
-            info.setUserName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
-            info.setUserId(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
-            info.setKsmc(taskDeatailBean.getTaskDetail().getDeptName());
-            homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
-        });
-
+            @Override
+            public void onNegtiveClick() {
+                useEquityDialog.cancel();
+            }
+        }).show();
     }
 
 
-    private void sendSystemRemind(){
-//        List<String> stringList = SharedPreManager.getStringList(homeActivity);
-//        if (stringList != null && stringList.size() > 0) {
-//            for (int i = 0; i < stringList.size(); i++) {
-//                if (String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()).equals(stringList.get(i))) {
-//                    return;
-//                }
-//            }
-//        }
-//        SharedPreManager.putStringList(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+    private void sendSystemRemind(String infoDetailJsonString) {
         SystemRemindObj systemRemindObj = new SystemRemindObj();
         systemRemindObj.remindType = "videoRemind";
+        systemRemindObj.eventType = 4;
+        systemRemindObj.infoDetail = infoDetailJsonString;
         systemRemindObj.userId = String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId());
         EasyHttp.post(homeActivity).api(systemRemindObj).request(new OnHttpListener<ApiResult<String>>() {
             @Override
             public void onSucceed(ApiResult<String> result) {
-//                Log.e(TAG, "通知请求: "+result.getMessage() );
+                Log.e(TAG, "通知请求: " + result.getMessage());
             }
 
             @Override
@@ -240,15 +264,18 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     }
 
 
-
-
-
     @Override
     public void initData() {
         super.initData();
         mPresenter.getMyRight(0, String.valueOf(taskDeatailBean.getTaskDetail().getRightsId()), String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));  //调试 userID用219  其他参数不传
-        mPresenter.queryRightsRecord(1, 1000, taskDeatailBean.getTaskDetail().getRightsId(), String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+//        mPresenter.queryRightsRecord(1, 1000, taskDeatailBean.getTaskDetail().getRightsId(), String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+        getRightsRecord();
 
+    }
+
+
+    private void getRightsRecord() {
+        mPresenter.queryRightsRecord(1, 1000, taskDeatailBean.getTaskDetail().getRightsId(), String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
     }
 
 
@@ -271,7 +298,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                 rl_default_view.setVisibility(View.GONE);
                 rightBeanList = myRightBeanList;
                 MyRightBean myRightBean = rightBeanList.get(0);
-                mPresenter.getDocList(Integer.valueOf(myRightBean.getBelong())); //请求获取医生
+                mPresenter.getDocList(myRightBean.getBelong()); //请求获取医生
                 tv_tcmc.setText(myRightBean.getGoodsName());
                 tv_serName.setText(myRightBean.getGoodsSpec());
                 tv_validTime.setText(TimeUtils.getTime_(myRightBean.getEndTime()));
@@ -310,6 +337,10 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
         homeActivity.runOnUiThread(() -> {
             if (queryRightsRecordBean != null && queryRightsRecordBean.getRows().size() > 0) {
                 useRecordList = queryRightsRecordBean.getRows();
+                if (useRecordList != null && useRecordList.size() > 0 && taskDeatailBean.getExecFlag() == 1 && useRecordList.get(0).getExecFlag() == 2) {
+                    useRecordId = useRecordList.get(0).getId();
+                    tv_reset.setVisibility(View.VISIBLE);
+                }
                 queryRightsRecordAdapter.setNewData(useRecordList);
             } else {
 //                ll_hasRightsData.setVisibility(View.GONE);
@@ -342,9 +373,13 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
             if (useEquityDialog != null) {
                 useEquityDialog.cancel();
             }
+            if (flashRecordRigth) {   //如果是个案师重新设置的  设置提交成功后 需要更新一下权益记录列表 但不需要更新待办列表
+                getRightsRecord();
+            }else {
+                EventBus.getDefault().post(new NotifyactionObj());
+            }
             btn_processing_complete.setVisibility(View.GONE); //这里如果完成成功了 则隐藏 申请完成处理 按钮，不能让一直点
             tv_goChat.setVisibility(View.GONE); //这里如果完成成功了 则隐藏 进入聊天 按钮，不能让一直点
-            EventBus.getDefault().post(new NotifyactionObj());
             ToastUtils.show("处理成功!");
         });
 

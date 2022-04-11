@@ -4,16 +4,44 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_title"
+
+
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/qb_px_50"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/qb_px_15"
-        android:text=" "
-        android:textColor="@color/text_black"
-        android:textSize="@dimen/qb_px_12"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/img_reset_back"
+            android:paddingHorizontal="@dimen/qb_px_5"
+            android:layout_marginStart="@dimen/qb_px_15"
+            android:layout_gravity="center_vertical"
+            android:layout_width="@dimen/qb_px_15"
+            android:layout_height="@dimen/qb_px_20"
+            android:scaleType="fitCenter"
+            android:src="@drawable/nav_icon_back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/qb_px_50"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/qb_px_15"
+            android:text="个案管理师003 "
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/qb_px_12"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+
+
+
+
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/qb_px_1"
@@ -21,41 +49,44 @@
         android:background="@color/divider" />
 
     <LinearLayout
+        android:id="@+id/ll_taps"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/qb_px_15">
+        android:paddingHorizontal="@dimen/qb_px_15"
+        android:visibility="visible">
 
         <RelativeLayout
-            android:id="@+id/layout_personal_data"
+            android:id="@+id/layout_fix_pwd"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/qb_px_40">
+            android:layout_height="@dimen/qb_px_40"
+            android:visibility="visible">
 
             <ImageView
-                android:id="@+id/img_rtc_personal_data"
-                android:layout_width="@dimen/qb_px_20"
-                android:layout_height="@dimen/qb_px_20"
+                android:id="@+id/img_log"
+                android:layout_width="@dimen/qb_px_15"
+                android:layout_height="@dimen/qb_px_15"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/icon_set_tx" />
+                android:src="@drawable/modify_pwd" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/qb_px_7"
-                android:layout_toRightOf="@id/img_rtc_personal_data"
-                android:text="退出登录"
+                android:layout_toRightOf="@id/img_log"
+                android:text="修改密码"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/qb_px_10" />
 
             <ImageView
-                android:visibility="invisible"
                 android:layout_width="@dimen/qb_px_4"
                 android:layout_height="@dimen/qb_px_7"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/icon_you" />
+                android:src="@drawable/icon_you"
+                android:visibility="gone" />
 
             <View
                 android:layout_width="match_parent"
@@ -64,20 +95,19 @@
                 android:background="@color/divider" />
         </RelativeLayout>
 
-
         <RelativeLayout
-            android:visibility="visible"
             android:id="@+id/layout_plans"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/qb_px_40">
+            android:layout_height="@dimen/qb_px_40"
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/img_plan"
-                android:layout_width="@dimen/qb_px_20"
-                android:layout_height="@dimen/qb_px_20"
+                android:layout_width="@dimen/qb_px_15"
+                android:layout_height="@dimen/qb_px_15"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/icon_set_tc" />
+                android:src="@drawable/role_type" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -98,93 +128,18 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/qb_px_15"
                 android:text="个案管理师"
-                android:textSize="@dimen/qb_px_8"
                 android:textColor="@color/main_blue"
+                android:textSize="@dimen/qb_px_8"
                 android:textStyle="bold" />
 
 
             <ImageView
-                android:visibility="invisible"
                 android:layout_width="@dimen/qb_px_4"
                 android:layout_height="@dimen/qb_px_7"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/icon_you" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/qb_px_1"
-                android:layout_alignParentBottom="true"
-                android:background="@color/divider" />
-        </RelativeLayout>
-
-<!--        <RelativeLayout-->
-<!--            android:id="@+id/layout_logout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="@dimen/qb_px_40">-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/img_logout"-->
-<!--                android:layout_width="@dimen/qb_px_14"-->
-<!--                android:layout_height="@dimen/qb_px_14"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:scaleType="centerCrop"-->
-<!--                android:src="@drawable/icon_set" />-->
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:layout_marginLeft="@dimen/qb_px_7"-->
-<!--                android:layout_toRightOf="@id/img_logout"-->
-<!--                android:text="退出登录"-->
-<!--                android:textColor="@color/text_black"-->
-<!--                android:textSize="@dimen/qb_px_10" />-->
-
-<!--            <ImageView-->
-<!--                android:layout_width="@dimen/qb_px_4"-->
-<!--                android:layout_height="@dimen/qb_px_7"-->
-<!--                android:layout_alignParentRight="true"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:src="@drawable/icon_you" />-->
-
-<!--            <View-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="@dimen/qb_px_1"-->
-<!--                android:layout_alignParentBottom="true"-->
-<!--                android:background="@color/divider" />-->
-<!--        </RelativeLayout>-->
-
-        <RelativeLayout
-            android:visibility="gone"
-            android:id="@+id/layout_rtc"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/qb_px_40">
-
-            <ImageView
-                android:id="@+id/img_rtc"
-                android:layout_width="@dimen/qb_px_14"
-                android:layout_height="@dimen/qb_px_14"
-                android:layout_centerVertical="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/icon_set" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/qb_px_7"
-                android:layout_toRightOf="@id/img_rtc"
-                android:text="视频通话"
-                android:textColor="@color/text_black"
-                android:textSize="@dimen/qb_px_10" />
-
-            <ImageView
-                android:layout_width="@dimen/qb_px_4"
-                android:layout_height="@dimen/qb_px_7"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/icon_you" />
+                android:src="@drawable/icon_you"
+                android:visibility="invisible" />
 
             <View
                 android:layout_width="match_parent"
@@ -194,26 +149,25 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="gone"
-            android:id="@+id/layout_log"
+            android:id="@+id/layout_personal_data"
             android:layout_width="match_parent"
             android:layout_height="@dimen/qb_px_40">
 
             <ImageView
-                android:id="@+id/img_log"
-                android:layout_width="@dimen/qb_px_20"
-                android:layout_height="@dimen/qb_px_20"
+                android:id="@+id/img_rtc_personal_data"
+                android:layout_width="@dimen/qb_px_15"
+                android:layout_height="@dimen/qb_px_15"
                 android:layout_centerVertical="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/icon_set_jl" />
+                android:src="@drawable/logout" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/qb_px_7"
-                android:layout_toRightOf="@id/img_log"
-                android:text="我的看诊记录"
+                android:layout_toRightOf="@id/img_rtc_personal_data"
+                android:text="退出登录"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/qb_px_10" />
 
@@ -222,13 +176,230 @@
                 android:layout_height="@dimen/qb_px_7"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/icon_you" />
+                android:src="@drawable/icon_you"
+                android:visibility="invisible" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/qb_px_1"
                 android:layout_alignParentBottom="true"
                 android:background="@color/divider" />
+
+
         </RelativeLayout>
+
+
     </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_moddify_pwd_content"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/qb_px_15">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_15"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="账        号:"></TextView>
+
+            <TextView
+                android:id="@+id/tv_acount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_gray"
+                android:maxLength="20"
+                android:paddingHorizontal="@dimen/qb_px_6"
+                android:paddingVertical="@dimen/qb_px_6"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/qb_px_8" />
+
+        </LinearLayout>
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_15"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="用户姓名:"></TextView>
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_gray"
+                android:maxLength="20"
+                android:paddingHorizontal="@dimen/qb_px_6"
+                android:paddingVertical="@dimen/qb_px_6"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/qb_px_8" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_15"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="手机号码:"></TextView>
+
+            <EditText
+                android:id="@+id/et_phone_numb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_gray"
+                android:maxLength="20"
+                android:inputType="number"
+                android:paddingHorizontal="@dimen/qb_px_6"
+                android:paddingVertical="@dimen/qb_px_6"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/qb_px_8" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_15"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="输入旧密码:"></TextView>
+
+            <EditText
+                android:id="@+id/et_input_old_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_gray"
+                android:maxLength="20"
+                android:inputType="textPassword"
+                android:paddingHorizontal="@dimen/qb_px_6"
+                android:paddingVertical="@dimen/qb_px_6"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/qb_px_8" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_15"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="输入新密码:"></TextView>
+
+            <EditText
+                android:id="@+id/input_new_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_gray"
+                android:maxLength="20"
+                android:inputType="textPassword"
+                android:paddingHorizontal="@dimen/qb_px_6"
+                android:paddingVertical="@dimen/qb_px_6"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/qb_px_8" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_15"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="确认新密码:"></TextView>
+
+            <EditText
+                android:id="@+id/comfirm_new_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:background="@drawable/shape_bg_gray"
+                android:maxLength="20"
+                android:inputType="textPassword"
+                android:paddingHorizontal="@dimen/qb_px_6"
+                android:paddingVertical="@dimen/qb_px_6"
+                android:textColor="@color/text_main"
+                android:textSize="@dimen/qb_px_8" />
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/tv_commit"
+            android:layout_marginTop="@dimen/qb_px_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/qb_px_10"
+            android:background="@drawable/shape_bg_blue_dark"
+            android:paddingHorizontal="@dimen/qb_px_30"
+            android:paddingVertical="@dimen/qb_px_5"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="@dimen/qb_px_10" />
+
+
+
+
+    </LinearLayout>
+
+
 </LinearLayout>

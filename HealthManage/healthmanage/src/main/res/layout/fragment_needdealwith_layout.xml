@@ -181,7 +181,7 @@
 
         <!--    待办患者-->
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            android:id="@+id/rl_status_refresh"
+            android:id="@+id/rl_needdeal_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/ll_view"
@@ -194,22 +194,22 @@
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 
-        <!--    搜索出的待办患者-->
-        <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            android:id="@+id/layout_search_result"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/ll_view"
-            android:layout_marginTop="@dimen/qb_px_10"
-            android:visibility="gone"
-            app:srlEnablePreviewInEditMode="false">
+<!--        &lt;!&ndash;    搜索出的待办患者&ndash;&gt;-->
+<!--        <com.scwang.smart.refresh.layout.SmartRefreshLayout-->
+<!--            android:id="@+id/layout_search_result"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_below="@+id/ll_view"-->
+<!--            android:layout_marginTop="@dimen/qb_px_10"-->
+<!--            android:visibility="gone"-->
+<!--            app:srlEnablePreviewInEditMode="false">-->
 
-            <com.bitvalue.health.util.customview.WrapRecyclerView
-                android:id="@+id/search_allpatient"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible" />
-        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+<!--            <com.bitvalue.health.util.customview.WrapRecyclerView-->
+<!--                android:id="@+id/search_allpatient"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:visibility="visible" />-->
+<!--        </com.scwang.smart.refresh.layout.SmartRefreshLayout>-->
 
 
 
@@ -228,14 +228,14 @@
 
         <!--    已办-->
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
-            android:id="@+id/rl_unregister_refresh"
+            android:id="@+id/rl_already_refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/ll_view"
             app:srlEnablePreviewInEditMode="false">
 
             <com.bitvalue.health.util.customview.WrapRecyclerView
-                android:id="@+id/list_unregister"
+                android:id="@+id/list_alreadylist"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </com.scwang.smart.refresh.layout.SmartRefreshLayout>

@@ -1,6 +1,7 @@
 package com.bitvalue.health.presenter;
 
 import com.bitvalue.health.api.requestbean.PersonalDataBean;
+import com.bitvalue.health.api.requestbean.ResetPasswordRequestBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
 import com.bitvalue.health.contract.settingcontract.PersonalDataContract;
@@ -18,51 +19,80 @@ public class PersonalDataPersenter extends BasePresenter<PersonalDataContract.Pe
 
     @Override
     public void getPersonalData() {
-        mModel.getPersonalData(new CallBackAdapter() {
-            @Override
-            public void onSuccess(Object o, int what) {
-                super.onSuccess(o, what);
-                if (isViewAttach()) {
-                    getView().getPersonalDocDataSuccess((PersonalDataBean) o);
+        if (mModel!=null){
+            mModel.getPersonalData(new CallBackAdapter() {
+                @Override
+                public void onSuccess(Object o, int what) {
+                    super.onSuccess(o, what);
+                    if (isViewAttach()) {
+                        getView().getPersonalDocDataSuccess((PersonalDataBean) o);
+                    }
+
                 }
 
-            }
 
-
-            @Override
-            public void onFailedLog(String str, int what) {
-                super.onFailedLog(str, what);
-                if (isViewAttach()) {
-                    getView().getPersonalDocDataFail(str);
+                @Override
+                public void onFailedLog(String str, int what) {
+                    super.onFailedLog(str, what);
+                    if (isViewAttach()) {
+                        getView().getPersonalDocDataFail(str);
+                    }
                 }
-            }
-        });
+            });
+        }
+
 
 
     }
 
     @Override
     public void logoutAcount() {
-        mModel.logout(new CallBackAdapter() {
-            @Override
-            public void onSuccess(Object o, int what) {
-                super.onSuccess(o, what);
-                if (isViewAttach()) {
-                    getView().logoutAcountSuccess();
-                }
-            }
-
-
-            @Override
-            public void onFailedLog(String str, int what) {
-                super.onFailedLog(str, what);
-                if (isViewAttach()) {
-                    getView().logoutAcountFail(str);
+        if (mModel!=null){
+            mModel.logout(new CallBackAdapter() {
+                @Override
+                public void onSuccess(Object o, int what) {
+                    super.onSuccess(o, what);
+                    if (isViewAttach()) {
+                        getView().logoutAcountSuccess();
+                    }
                 }
 
 
-            }
-        });
+                @Override
+                public void onFailedLog(String str, int what) {
+                    super.onFailedLog(str, what);
+                    if (isViewAttach()) {
+                        getView().logoutAcountFail(str);
+                    }
+
+
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public void resetPassword(ResetPasswordRequestBean requestBean) {
+        if (mModel!=null){
+            mModel.resetPassword(requestBean,new CallBackAdapter(){
+                @Override
+                public void onSuccess(Object o, int what) {
+                    super.onSuccess(o, what);
+                    if (isViewAttach()) {
+                        getView().resetPasswordSuccess((String) o);
+                    }
+                }
+
+                @Override
+                public void onFailedLog(String str, int what) {
+                    super.onFailedLog(str, what);
+                    if (isViewAttach()) {
+                        getView().resetPasswordFail(str);
+                    }
+                }
+            });
+        }
     }
 
 

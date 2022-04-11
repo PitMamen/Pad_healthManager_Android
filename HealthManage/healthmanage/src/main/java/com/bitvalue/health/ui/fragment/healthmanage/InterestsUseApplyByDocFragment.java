@@ -26,6 +26,8 @@ import com.bitvalue.health.presenter.healthmanager.InterestsUseApplyByDocPresent
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
+import com.bitvalue.health.util.EmptyUtil;
+import com.bitvalue.health.util.GsonUtils;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.healthmanage.R;
@@ -70,6 +72,8 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
     TextView tv_clickGotoDeatail;
     @BindView(R.id.rl_start_consultation)
     RelativeLayout start_consultation;
+    @BindView(R.id.tv_chat_record)
+    TextView tv_chat_record; //问诊记录
 
 
     private HomeActivity homeActivity;
@@ -98,13 +102,14 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
         super.initView(rootView);
         EventBus.getDefault().register(this);
         taskDeatailBean = (TaskDeatailBean) getArguments().getSerializable(TASKDETAIL);
-        if (taskDeatailBean == null) {
+        if (taskDeatailBean == null || taskDeatailBean.getTaskDetail() == null || taskDeatailBean.getTaskDetail().getUserInfo() == null) {
             return;
         }
         loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
         iv_endConsultationButton.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮
         tv_end_consultation.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮
         start_consultation.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.INVISIBLE : View.VISIBLE); //如果是已办 则不显示开始问诊按钮
+        tv_chat_record.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.VISIBLE : View.GONE); //如果是已办 则显示问诊记录按钮
         tv_visitNameByDoc.setText(loginBean.getUser().user.userName); //执行人  (医生自己)
         tv_department.setText(taskDeatailBean.getTaskDetail().getDeptName()); //科室名称
         tv_start_time.setText(TimeUtils.getTime_tosecond(taskDeatailBean.getTaskDetail().getExecTime())); //执行时间
@@ -115,7 +120,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
     }
 
 
-    @OnClick({R.id.iv_icon, R.id.tv_end_consultation, R.id.tv_clickgotodetail, R.id.rl_start_consultation, R.id.rl_back})
+    @OnClick({R.id.iv_icon, R.id.tv_end_consultation, R.id.tv_clickgotodetail, R.id.rl_start_consultation, R.id.rl_back, R.id.tv_chat_record})
     public void onClick(View view) {
         switch (view.getId()) {
             //返回界面
@@ -156,7 +161,14 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
                         /**
                          * 提醒通知 调用接口
                          */
-//                        sendSystemRemind();
+                        if (EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail())) {
+                            Log.e(TAG, "结束问诊 taskDeatailBean.getTaskDetail == null");
+                            return;
+                        }
+                        TaskDeatailBean.TaskDetailDTO taskDetail = taskDeatailBean.getTaskDetail();
+                        String jsonString = GsonUtils.ModelToJson(taskDetail);
+                        Log.e(TAG, "结束问诊2222: " + jsonString);
+                        sendSystemRemind(jsonString);
                     }
 
                     @Override
@@ -176,7 +188,6 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
             //开始问诊 进入聊天界面
             case R.id.rl_start_consultation:
                 //创建一个患者
-                sendSystemRemind(); //提醒通知
                 NewLeaveBean.RowsDTO item = new NewLeaveBean.RowsDTO();
                 item.setUserId(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
                 item.setUserName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
@@ -187,22 +198,23 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, item);
                 break;
 
+            //问诊记录
+            case R.id.tv_chat_record:
+                NewLeaveBean.RowsDTO item_recordchat = new NewLeaveBean.RowsDTO();
+                item_recordchat.setUserId(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+                item_recordchat.setUserName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_RECORD_CHAT, item_recordchat);
+                break;
+
         }
     }
 
 
-    private void sendSystemRemind() {
-//        List<String> stringList = SharedPreManager.getStringList(homeActivity);
-//        if (stringList != null && stringList.size() > 0) {
-//            for (int i = 0; i < stringList.size(); i++) {
-//                if (String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()).equals(stringList.get(i))) {
-//                    return;
-//                }
-//            }
-//        }
-//        SharedPreManager.putStringList(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+    private void sendSystemRemind(String jsonString) {
         SystemRemindObj systemRemindObj = new SystemRemindObj();
         systemRemindObj.remindType = "videoRemind";
+        systemRemindObj.eventType = 6;//6  结束问诊
+        systemRemindObj.infoDetail = jsonString;
         systemRemindObj.userId = String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId());
         EasyHttp.post(homeActivity).api(systemRemindObj).request(new OnHttpListener<ApiResult<String>>() {
             @Override

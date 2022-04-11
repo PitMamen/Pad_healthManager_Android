@@ -199,6 +199,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
             info.setUserName(messageInfo.getTitle());
             info.setUserId(messageInfo.getId());
             info.isShowCollection = false;  //咨询界面跳转过去  聊天界面底部不显示 预诊收集 按钮
+            info.isShowSendRemind = false;
             homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
         });
         conversationLayout.setVisibility(smartRefreshLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);

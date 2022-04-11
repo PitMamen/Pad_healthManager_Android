@@ -7,8 +7,8 @@ public class Constants {
     public static final String USER_ID = "user_id";
     public static final String IDCARD_NUMBER = "idcard_number";
     public static final String NEED_TOAST = "need_toast";
-//    public static final String HOST_URL = "http://manager.mclouds.org.cn:8008";    //http://192.168.1.122/
-    public static final String HOST_URL = "http://hmg.mclouds.org.cn";
+    public static final String HOST_URL = "http://manager.mclouds.org.cn:8008";    //http://192.168.1.122/
+//    public static final String HOST_URL = "http://hmg.mclouds.org.cn";
     public static int screenWidth, screenHeight;
     public static final String KEY_REMEMBER_PSD = "key_remember_psd";
     public static final String KEY_TOKEN = "Authorization";
@@ -18,6 +18,7 @@ public class Constants {
     public static final String KEY_PSD = "key_psd";
     public static final String KEY_ACCOUNT = "key_account";
     public static final String FRAGMENT_CHAT = "fragment_chat";
+    public static final String FRAGMENT_RECORD_CHAT = "chat_record_fragment";
     public static final String KEY_IM_AUTO_LOGIN = "key_im_auto_login";
     public static final String FRAGMENT_HEALTH_PLAN = "fragment_health_plan";
     public static final String FRAGMENT_HEALTH_NEW = "fragment_health_new";

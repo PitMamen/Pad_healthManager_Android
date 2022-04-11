@@ -9,11 +9,13 @@ import com.hjq.http.config.IRequestApi;
  */
 public class SystemRemindObj implements IRequestApi {
 
-   public String userId;
-   public String remindType;
+    public String userId;
+    public String remindType;
+    public int eventType;   //4  个案管理师完成处理    5  医生开始问诊    6医生结束问诊
+    public String infoDetail;
 
     @Override
     public String getApi() {
-        return Constants.API_HEALTH+"/sys/sysRemind";
+        return Constants.API_HEALTH + "/sys/sysRemind";
     }
 }

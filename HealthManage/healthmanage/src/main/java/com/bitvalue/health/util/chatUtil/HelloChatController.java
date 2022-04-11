@@ -1,10 +1,13 @@
 package com.bitvalue.health.util.chatUtil;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.RequiresApi;
 
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKit;
@@ -121,6 +124,7 @@ public class HelloChatController implements TUIChatControllerListener {
          * @param parent 自定义消息显示的父View，需要把创建的自定义消息view添加到parent里
          * @param info   消息的具体信息
          */
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onDraw(ICustomMessageViewGroup parent, MessageInfo info, int position) {
             // 获取到自定义消息的json数据
@@ -187,6 +191,7 @@ public class HelloChatController implements TUIChatControllerListener {
                         }
                         break;
 
+                    case "CustomYuWenZhenMessage":
                     case "CustomWenJuanMessage":
                         CustomWenJuanMessage customWenJuanMessage = new Gson().fromJson(dataJson, CustomWenJuanMessage.class);
                         if (customWenJuanMessage != null) {

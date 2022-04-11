@@ -46,6 +46,7 @@ import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.EmptyUtil;
+import com.bitvalue.health.util.GsonUtils;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.chatUtil.CustomVideoCallMessageController;
@@ -98,7 +99,6 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     private TitleBarLayout mTitleBar;
     private ChatInfo mChatInfo;
     private NewLeaveBean.RowsDTO patientinfo;
-    private List<MessageInfo> mForwardSelectMsgInfos = null;
     private int mForwardMode;
 
     private static final String TAG = ChatFragment.class.getSimpleName();
@@ -109,7 +109,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     private LoginBean loginBean;
     private static final int pagestart = 1;
     public static final int pageSize = 10;
-    private int remindType = 0; //提醒类型 (0上线提醒,1结束问诊提醒)
+    private int eventType = 5; //5  开始问诊  6 结束问诊
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -137,7 +137,6 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         if (mChatInfo == null || patientinfo == null) {
             return;
         }
-        Log.e(TAG, "科室名称: " + patientinfo.getKsmc());
         taskDeatailBean = patientinfo.taskDeatailBean;
         planId = patientinfo.getUserId();
         if (mChatInfo.getType() == V2TIM_C2C) {
@@ -158,10 +157,9 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         initChatLayout();  //聊天界面窗口
         leftIconClickLisentener();  //聊天界面 左方头像点击事件
         EndVisit(); //结束问诊
-        initbootomTipButton(patientinfo.getKsmc(), patientinfo.isShowCollection); //底部 发送提醒、问卷、问诊等按钮
+        initbootomTipButton(patientinfo.getKsmc(), patientinfo.isShowCollection,patientinfo.isShowSendRemind); //底部 发送提醒、问卷、问诊等按钮
         initChatlayoutHelper();  //通过api设置ChatLayout各种属性的样例
         customControlListener(); //聊天界面底部更多中的 控件按钮
-
 
     }
 
@@ -354,7 +352,8 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                                         questionMessage.name = questionBean.name;
                                         questionMessage.url = questionBean.questUrl;
                                         questionMessage.id = questionBean.id;
-                                        questionMessage.setType("CustomWenJuanMessage");
+                                        questionMessage.userId = planId;
+                                        questionMessage.setType("CustomYuWenZhenMessage");
                                         questionMessage.setDescription("问卷");
                                         MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(questionMessage), questionMessage.description, null);
                                         mChatLayout.sendMessage(info, false);   //发送点中的问卷
@@ -430,18 +429,24 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     /**
      * 聊天面板 底部5个小控件
      */
-    private void initbootomTipButton(String deptName, boolean isShowdataCollection) {
+    private void initbootomTipButton(String deptName, boolean isShowdataCollection,boolean isShowSendRemind) {
         mChatLayout.getInputLayout().tv_datacollection.setText(loginBean.getAccount().roleName.equals("casemanager") ? getString(R.string.pre_diagnosis_collection) : getString(R.string.pre_diagnosis_data));
         mChatLayout.getInputLayout().tv_datacollection.setVisibility(isShowdataCollection ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示预诊收集信息控件
+        mChatLayout.getInputLayout().tv_sendremind.setVisibility(isShowSendRemind ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示 预诊收集信息 和 上线提醒控件
         mChatLayout.getInputLayout().tv_datacollection.setOnClickListener(v -> {
 //            String deptName_pro = deptName.length() >= 2 ? deptName.substring(0, deptName.length() - 1) : deptName;
             getQuestionListByKeyWord(deptName, loginBean.getAccount().roleName);   //点击获取问卷列表(根据科室名称模糊查询)
         });
 
         mChatLayout.getInputLayout().tv_sendremind.setOnClickListener(v -> {
-            remindType = 0;
-            sendSystemRemind();
-//            homeActivity.switchSecondFragment(FRAGMENT_SEND_REMIND, "");
+            if (EmptyUtil.isEmpty(taskDeatailBean)||EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail())) {
+                Log.e(TAG, "医生发送提醒 taskDeatailBean.getTaskDetail() == null");
+                return;
+            }
+            ToastUtils.show("操作成功!");
+            eventType = 5;
+            String jsonString = GsonUtils.ModelToJson(taskDeatailBean.getTaskDetail());
+            sendSystemRemind(jsonString);
         });
 
         mChatLayout.getInputLayout().tv_sendquestion.setOnClickListener(v -> {
@@ -486,8 +491,13 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                     saveRightsUseBean.userId = taskDeatailBean.getTaskDetail().getUserId();
                     saveRightsUseBean.taskId = String.valueOf(taskDeatailBean.getId());
                     mPresenter.saveRightsUseRecord(saveRightsUseBean);   //请求接口 结束问诊
-                    remindType = 1;
-//                    sendSystemRemind();
+                    if (EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail())) {
+                        Log.e(TAG, "聊天结束问诊 taskDeatailBean.getTaskDetail() == null");
+                        return;
+                    }
+                    eventType = 6;
+                    String jsonString = GsonUtils.ModelToJson(taskDeatailBean.getTaskDetail());
+                    sendSystemRemind(jsonString);
                 }
 
                 @Override
@@ -499,16 +509,15 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     }
 
 
-    private void sendSystemRemind() {
+    private void sendSystemRemind(String jsonString) {
         SystemRemindObj systemRemindObj = new SystemRemindObj();
         systemRemindObj.remindType = "videoRemind";
         systemRemindObj.userId = planId;
+        systemRemindObj.eventType = eventType;
+        systemRemindObj.infoDetail = jsonString;
         EasyHttp.post(homeActivity).api(systemRemindObj).request(new OnHttpListener<ApiResult<String>>() {
             @Override
             public void onSucceed(ApiResult<String> result) {
-                if (remindType==0){
-                    ToastUtils.show("发送提醒成功");
-                }
 //                Log.e(TAG, "通知请求: " + result.getMessage());
             }
 
@@ -673,8 +682,6 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
         mChatLayout.setForwardSelectActivityListener((mode, msgIds) -> {
             mForwardMode = mode;
-            mForwardSelectMsgInfos = msgIds;
-
             Intent intent = new Intent(Application.instance(), ForwardSelectActivity.class);
             intent.putExtra(ForwardSelectActivity.FORWARD_MODE, mode);
             startActivityForResult(intent, TUIKitConstants.FORWARD_SELECT_ACTIVTY_CODE);

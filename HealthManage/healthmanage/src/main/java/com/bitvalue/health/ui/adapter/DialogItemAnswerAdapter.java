@@ -53,7 +53,12 @@ public class DialogItemAnswerAdapter extends BaseAdapter {
         } else {
             holder = (DialogItemAnswerAdapter.ViewHolder) convertView.getTag();
         }
-        holder.typeTextview.setText(getItem(position).getName());
+        if (getItem(position).getName().contains("-")) {
+            String[] name = getItem(position).getName().split("-");
+            holder.typeTextview.setText(name[1]);
+        }else {
+            holder.typeTextview.setText(getItem(position).getName());
+        }
         holder.tv_bestnewModify.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
         return convertView;
     }
