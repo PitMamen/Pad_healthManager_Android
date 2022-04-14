@@ -10,4 +10,5 @@ public class UserLocalVisitBean implements Serializable {
     public String userId;
     public String visitType;
     public String DailyRecord;
+    public String contentId;
 }

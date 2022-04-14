@@ -4,6 +4,7 @@ import static com.bitvalue.health.util.Constants.FRAGMENT_DETAIL;
 import static com.bitvalue.health.util.Constants.IDCARD_NUMBER;
 import static com.bitvalue.health.util.Constants.USER_ID;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.hjq.toast.ToastUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.EventListener;
 import java.util.List;
@@ -168,7 +170,7 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
         LinearLayoutManager layoutManager = new LinearLayoutManager(homeActivity);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         list_visitlod.setLayoutManager(layoutManager);
-        displayAdapter = new ImageListDisplayAdapter(R.layout.item_imagevisitlod_layout, null);
+        displayAdapter = new ImageListDisplayAdapter(R.layout.item_imagevisitlod_layout, null,homeActivity);
         list_visitlod.setAdapter(displayAdapter);
         UserLocalVisitBean bean = new UserLocalVisitBean();
         if (itemPosition != null) {
@@ -314,4 +316,5 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
             ToastUtils.show("获取详情失败:" + messageFail);
         });
     }
+
 }

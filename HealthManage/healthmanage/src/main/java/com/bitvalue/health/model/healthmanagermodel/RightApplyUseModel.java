@@ -23,6 +23,7 @@ public class RightApplyUseModel extends BaseModel implements RightApplyUseContra
         if (!EmptyUtil.isEmpty(userId)) {
             mApi.queryMyRights(userId,id).subscribeOn(Schedulers.io()).subscribe(result -> {
                 if (!EmptyUtil.isEmpty(result)) {
+                    Log.e(TAG, "getMyRight: "+result.toString() );
                     if (result.getCode() == 0) {
                         List<MyRightBean> myRightBeanList = result.getData();
                         if (!EmptyUtil.isEmpty(myRightBeanList)) {

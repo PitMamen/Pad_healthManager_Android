@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.NotifyactionObj;
+import com.bitvalue.health.api.eventbusbean.RefreshViewUseApply;
 import com.bitvalue.health.api.requestbean.DocListBean;
 import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
 import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
@@ -39,6 +40,7 @@ import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.UseEquityDialog;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.OnHttpListener;
 import com.hjq.toast.ToastUtils;
@@ -51,6 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author created by bitvalue
@@ -117,7 +120,9 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     private UseEquityDialog useEquityDialog;
     private int useRecordId;
     private boolean flashRecordRigth = false;
-
+    private LoginBean loginBean;
+    private boolean isCompleteAudited = false;
+    private String rigthDepatCode; //权益中科室代码
 
     @Override
     protected RightApplyUsePresenter createPresenter() {
@@ -127,6 +132,13 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     @Override
     protected int provideContentViewId() {
         return R.layout.fragment_interests_use_apply;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -139,56 +151,68 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     public void initView(View rootView) {
         super.initView(rootView);
         back.setVisibility(View.GONE);
+        EventBus.getDefault().register(this);
         taskDeatailBean = (TaskDeatailBean) getArguments().getSerializable(TASKDETAIL);
         if (taskDeatailBean == null || taskDeatailBean.getTaskDetail() == null || taskDeatailBean.getTaskDetail().getUserInfo() == null) {
             Log.e(TAG, "taskDeatailBean.getTaskDetail() == null");
             return;
         }
+        loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
 
-        /**
-         * 点击查看详情
-         */
-        tv_detail.setOnClickListener(v -> {
-            homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, taskDeatailBean.getTaskDetail().getUserInfo().getUserId());
-        });
-
-        LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
-        list_righttimes.setLayoutManager(new LinearLayoutManager(homeActivity));
-        rightUseTimeRecordAdapter = new RightUseTimeRecordAdapter(R.layout.item_right_record_layout, userGoodsAttrs);
-        list_righttimes.setAdapter(rightUseTimeRecordAdapter);
+        initrightUseTimeRecord();
+        initRightsRecord();
+        initCompView();
+    }
 
 
-        list_technological_process.setLayoutManager(new LinearLayoutManager(homeActivity));
-        queryRightsRecordAdapter = new QueryRightsRecordAdapter(R.layout.item_processing_flow_layout, useRecordList);
-        list_technological_process.setAdapter(queryRightsRecordAdapter);
+    @OnClick({R.id.tv_complete, R.id.tv_gochat, R.id.tv_data_review, R.id.tv_reset, R.id.tv_gotodetail})
+    public void onClickButtonLisenner(View view) {
+        switch (view.getId()) {
+            //任务分配
+            case R.id.tv_complete:
+                //这里要做一下区分 如果是 重症科室的  需要先完成资料审核才能进行 任务分派
+                if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)) {
+                    if (isCompleteAudited) {
+                        showDialog(loginBean, false);
+                    } else {
+                        ToastUtils.show("请先审核资料!");
+                    }
+                    return;
+                }
+                showDialog(loginBean, false);
+                break;
+            //进入聊天
+            case R.id.tv_gochat:
+                tv_goChat.setOnClickListener(v -> {
+                    // TODO: 2022/3/25 进入聊天界面
+                    NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
+                    info.setUserName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
+                    info.setUserId(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+                    info.setKsmc(taskDeatailBean.getTaskDetail().getDeptName());
+                    info.isShowSendRemind = false;  //进入咨询 不需要显示底部 发送提醒 按钮
+                    homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
+                });
+                break;
+            //资料审核
+            case R.id.tv_data_review:
+                homeActivity.switchSecondFragment(Constants.DATA_REVIEW, taskDeatailBean);
+                break;
 
-        btn_processing_complete.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮
-        tv_goChat.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示进入聊天按钮
-        iv_icon.setImageDrawable(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
-        tv_sex.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex());
-        tv_name.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
-        tv_age.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
-        tv_phoneNumber.setText(taskDeatailBean.getTaskDetail().getUserInfo().getPhone());
+            //重新设置
+            case R.id.tv_reset:
+                //重新设置
+                tv_reset.setOnClickListener(v -> {
+                    showDialog(loginBean, true);  //重新设置 需要携带ID
+                });
+                break;
+            //进入详情
+            case R.id.tv_gotodetail:
+                tv_detail.setOnClickListener(v -> {
+                    homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, taskDeatailBean.getTaskDetail().getUserInfo().getUserId());
+                });
+                break;
+        }
 
-        useEquityDialog = new UseEquityDialog(homeActivity);
-        btn_processing_complete.setOnClickListener(v -> {
-            showDialog(loginBean, false);
-        });
-
-        tv_goChat.setOnClickListener(v -> {
-            // TODO: 2022/3/25 进入聊天界面
-            NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
-            info.setUserName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
-            info.setUserId(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
-            info.setKsmc(taskDeatailBean.getTaskDetail().getDeptName());
-            info.isShowSendRemind = false;  //进入咨询 不需要显示底部 发送提醒 按钮
-            homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
-        });
-
-        //重新设置
-        tv_reset.setOnClickListener(v -> {
-            showDialog(loginBean, true);  //重新设置 需要携带ID
-        });
     }
 
 
@@ -203,9 +227,11 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                     String selectContinueTime = useEquityDialog.getSelectContinueTime();
                     String selectTakeTime = useEquityDialog.getSelectTakeTime() + ":00";
                     int docUserId = useEquityDialog.getDocUserId();
-                    finshMidRequestBean.deptName = loginBean.getUser().user.departmentName;
+//                    finshMidRequestBean.deptName = loginBean.getUser().user.departmentName;
+//                    finshMidRequestBean.execDept = loginBean.getUser().user.departmentCode; //这里传科室代码
+                    finshMidRequestBean.execDept = rigthDepatCode; //这里传权益中的科室代码
+                    finshMidRequestBean.deptName = taskDeatailBean.getTaskDetail().getDeptName(); //这里传 该权益所属科室名称 之前是传个案师所在的科室
                     finshMidRequestBean.lastTime = Integer.valueOf(selectContinueTime);
-                    finshMidRequestBean.execDept = loginBean.getUser().user.departmentCode; //这里传科室代码
                     finshMidRequestBean.execFlag = 2;
                     finshMidRequestBean.execTime = selectTakeTime;
                     finshMidRequestBean.execUser = String.valueOf(docUserId);    //这里要传医生ID
@@ -244,6 +270,38 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     }
 
 
+    private void initCompView() {
+//        taskDeatailBean.getTaskDetail().setRightsType(Constants.RIGTH_TYPE);
+        btn_processing_complete.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮shape_cancel_
+        btn_processing_complete.setBackground(taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) ? homeActivity.getDrawable(R.drawable.shape_cancel_) : homeActivity.getDrawable(R.drawable.shape_comfirm_sele)); //@drawable/shape_cancel_
+        tv_goChat.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.INVISIBLE : View.VISIBLE); //如果是已办 则不显示进入聊天按钮
+        iv_icon.setImageDrawable(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+        tv_sex.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex());
+        tv_name.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
+        tv_data_review.setVisibility(taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) ? View.VISIBLE : View.INVISIBLE); //如果是重症科，显示资料审核
+//        tv_data_review.setVisibility(taskDeatailBean.getTaskDetail().getDeptName().equalsIgnoreCase("重症医学科") ? View.VISIBLE : View.INVISIBLE); //如果是重症科，显示资料审核
+        tv_age.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
+        tv_phoneNumber.setText(taskDeatailBean.getTaskDetail().getUserInfo().getPhone());
+        useEquityDialog = new UseEquityDialog(homeActivity);
+    }
+
+
+    //权益使用记录
+    private void initrightUseTimeRecord() {
+        list_righttimes.setLayoutManager(new LinearLayoutManager(homeActivity));
+        rightUseTimeRecordAdapter = new RightUseTimeRecordAdapter(R.layout.item_right_record_layout, userGoodsAttrs);
+        list_righttimes.setAdapter(rightUseTimeRecordAdapter);
+    }
+
+    //权益流转列表
+    private void initRightsRecord() {
+        list_technological_process.setLayoutManager(new LinearLayoutManager(homeActivity));
+        queryRightsRecordAdapter = new QueryRightsRecordAdapter(R.layout.item_processing_flow_layout, useRecordList);
+        list_technological_process.setAdapter(queryRightsRecordAdapter);
+    }
+
+
+    //发送消息提醒
     private void sendSystemRemind(String infoDetailJsonString) {
         SystemRemindObj systemRemindObj = new SystemRemindObj();
         systemRemindObj.remindType = "videoRemind";
@@ -264,11 +322,23 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     }
 
 
+    /**
+     * 审核通过 更新 任务分派按钮 视图 可允许点击 及 变更背景
+     *
+     * @param updateView
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventHandler(RefreshViewUseApply updateView) {//不用区分类型，全部直接转换成json发送消息出去
+        isCompleteAudited = true;
+        taskDeatailBean.isShowBottomBuntton = false;   //已经审核过了  重新再点进去界面 不需再显示下面的 按钮
+        btn_processing_complete.setBackground(homeActivity.getDrawable(R.drawable.shape_button_select));
+    }
+
+
     @Override
     public void initData() {
         super.initData();
         mPresenter.getMyRight(0, String.valueOf(taskDeatailBean.getTaskDetail().getRightsId()), String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));  //调试 userID用219  其他参数不传
-//        mPresenter.queryRightsRecord(1, 1000, taskDeatailBean.getTaskDetail().getRightsId(), String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
         getRightsRecord();
 
     }
@@ -298,6 +368,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                 rl_default_view.setVisibility(View.GONE);
                 rightBeanList = myRightBeanList;
                 MyRightBean myRightBean = rightBeanList.get(0);
+                rigthDepatCode = myRightBean.getBelong();
                 mPresenter.getDocList(myRightBean.getBelong()); //请求获取医生
                 tv_tcmc.setText(myRightBean.getGoodsName());
                 tv_serName.setText(myRightBean.getGoodsSpec());
@@ -375,11 +446,17 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
             }
             if (flashRecordRigth) {   //如果是个案师重新设置的  设置提交成功后 需要更新一下权益记录列表 但不需要更新待办列表
                 getRightsRecord();
-            }else {
+            } else {
                 EventBus.getDefault().post(new NotifyactionObj());
             }
-            btn_processing_complete.setVisibility(View.GONE); //这里如果完成成功了 则隐藏 申请完成处理 按钮，不能让一直点
-            tv_goChat.setVisibility(View.GONE); //这里如果完成成功了 则隐藏 进入聊天 按钮，不能让一直点
+
+            if (btn_processing_complete.getVisibility() == View.VISIBLE) {
+                btn_processing_complete.setVisibility(View.GONE); //这里如果完成成功了 则隐藏 申请完成处理 按钮，不能让一直点
+            }
+            if (tv_goChat.getVisibility() == View.VISIBLE) {
+                tv_goChat.setVisibility(View.GONE); //这里如果完成成功了 则隐藏 进入聊天 按钮，不能让一直点
+            }
+
             ToastUtils.show("处理成功!");
         });
 

@@ -6,7 +6,7 @@
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/qb_px_46"
+        android:layout_height="@dimen/qb_px_35"
         >
 
 
@@ -60,6 +60,7 @@
 
         <RelativeLayout
             android:id="@+id/ll_mc"
+            android:layout_marginTop="@dimen/qb_px_5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -69,8 +70,8 @@
                 android:id="@+id/icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/qb_px_10"
-                android:layout_marginTop="@dimen/qb_px_5"
                 android:src="@mipmap/icon_ship"></ImageView>
 
 
@@ -78,29 +79,19 @@
                 android:id="@+id/visit_type_apply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/qb_px_7"
-                android:layout_marginTop="@dimen/qb_px_4"
                 android:layout_toRightOf="@+id/icon"
                 android:text="视频问诊"
                 android:textColor="#666666"
                 android:textSize="14.5sp"></TextView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/qb_px_4"
-                android:layout_toRightOf="@+id/visit_type_apply"
-                android:text="申请: "
-                android:textColor="#666666"
-                android:textSize="14.5sp"></TextView>
-
 
 
             <ImageView
                 android:id="@+id/iv_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/qb_px_5"
+                android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/qb_px_4"
                 android:layout_toLeftOf="@+id/tv_end_consultation"
                 android:src="@mipmap/icon_jieshu"></ImageView>
@@ -111,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="@dimen/qb_px_4"
+                android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/qb_px_10"
                 android:text="结束问诊"
                 android:textColor="@color/red">
@@ -129,7 +120,7 @@
             android:layout_height="1.5dp"
             android:layout_below="@+id/ll_mc"
             android:layout_marginStart="@dimen/qb_px_10"
-            android:layout_marginTop="@dimen/qb_px_10"
+            android:layout_marginTop="@dimen/qb_px_5"
             android:layout_marginEnd="@dimen/qb_px_10"
             android:background="#E6E6E6"></View>
 

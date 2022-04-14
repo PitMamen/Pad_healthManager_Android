@@ -22,6 +22,7 @@ public class TaskDeatailBean implements Serializable {
     private String updateTime;
     private int execFlag;
     private int noticeFlag;
+    public boolean isShowBottomBuntton = true; //自定义字段 用来区分底部是否显示按钮 标识
 
     public int getId() {
         return id;

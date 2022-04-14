@@ -50,9 +50,20 @@ public class AlreadyDealithAdapter extends BaseQuickAdapter<TaskDeatailBean, Bas
         if (!EmptyUtil.isEmpty((videoClientsResultBean.getTaskDetail().getUserInfo()))) {
             img_head.setImageDrawable(videoClientsResultBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         }
-
+        String rightType = "";
+        switch (videoClientsResultBean.getTaskDetail().getRightsType()) {
+            case "videoNum":
+                rightType = "视频问诊";
+                break;
+            case "textNum":
+                rightType = "图文咨询";
+                break;
+            case "ICUConsultNum":
+                rightType = "重症会诊";
+                break;
+        }
+        holder.setText(R.id.tv_video_visit, rightType);
         holder.setText(R.id.tv_name, videoClientsResultBean.getTaskDetail().getUserInfo().getUserName());
-        holder.setText(R.id.tv_video_visit, videoClientsResultBean.getTaskDetail().getRightsType().equals("videoNum") ? "视频问诊" : "图文咨询");
         holder.setText(R.id.tv_patient_sex, videoClientsResultBean.getTaskDetail().getUserInfo().getUserSex());
         holder.setText(R.id.tv_patient_age, videoClientsResultBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
         holder.setText(R.id.tv_equity_use, videoClientsResultBean.getTaskName());

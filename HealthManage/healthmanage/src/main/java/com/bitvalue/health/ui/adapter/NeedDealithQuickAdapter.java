@@ -33,19 +33,30 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
     }
 
 
-
     @Override
     protected void convert(BaseViewHolder holder, TaskDeatailBean taskdeatailBean) {
-        if (null == taskdeatailBean||null==taskdeatailBean.getTaskDetail()) {
+        if (null == taskdeatailBean || null == taskdeatailBean.getTaskDetail()) {
             return;
         }
         ImageView img_head = holder.getView(R.id.img_head);
-        if (!EmptyUtil.isEmpty((taskdeatailBean.getTaskDetail().getUserInfo()))){
+        if (!EmptyUtil.isEmpty((taskdeatailBean.getTaskDetail().getUserInfo()))) {
             img_head.setImageDrawable(taskdeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         }
 
         holder.setText(R.id.tv_name, taskdeatailBean.getTaskDetail().getUserInfo().getUserName());
-        holder.setText(R.id.tv_video_visit, taskdeatailBean.getTaskDetail().getRightsType().equals("videoNum")?"视频问诊":"图文咨询");
+        String rightType = "";
+        switch (taskdeatailBean.getTaskDetail().getRightsType()) {
+            case "videoNum":
+                rightType = "视频问诊";
+                break;
+            case "textNum":
+                rightType = "图文咨询";
+                break;
+            case "ICUConsultNum":
+                rightType = "重症会诊";
+                break;
+        }
+        holder.setText(R.id.tv_video_visit, rightType);
         holder.setText(R.id.tv_patient_sex, taskdeatailBean.getTaskDetail().getUserInfo().getUserSex());
         holder.setText(R.id.tv_patient_age, taskdeatailBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
         holder.setText(R.id.tv_equity_use, taskdeatailBean.getTaskName());

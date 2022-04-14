@@ -18,6 +18,7 @@ import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.ArticleByDeptCodeBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
+import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.DepartmentResponeBean;
 import com.bitvalue.health.api.responsebean.GoodListBean;
 import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
@@ -333,6 +334,18 @@ public interface CommonService {
      */
     @GET("account-api/userInfo/getBaseInfo")
     Observable<ApiResult<PatientBaseInfoBean>> getPatientBaseInfo(@Query("userId") int userId);
+
+    /**
+     * 查询审核记录
+     */
+    @GET("health-api/patient/qryRightsUserLog")
+    Observable<ApiResult<List<DataReViewRecordResponse>>> getDataReviewRecord(@Query("tradeId") String tardeid,@Query("userId") String userId);
+
+    /**
+     * 保存审核记录
+     */
+    @POST("health-api/patient/saveRightsUserLog")
+    Observable<ApiResult<DataReViewRecordResponse>> saveDataReviewRecord(@Body DataReViewRecordResponse saveReViewRecordRequest);
 
 
 }

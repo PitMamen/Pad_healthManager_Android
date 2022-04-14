@@ -3,6 +3,7 @@ package com.bitvalue.health.model.planmodel;
 import android.util.Log;
 
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
+import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.base.model.BaseModel;
 import com.bitvalue.health.callback.Callback;
@@ -33,7 +34,7 @@ public class MoreDataDetailModel extends BaseModel implements MoreDataDetailCont
 //                            }
 //                        }
                         callback.onSuccess(listBean, 1000);
-                    }else {
+                    } else {
                         callback.onFailedLog("未加载到数据", 1001);
                     }
                 } else {
@@ -44,6 +45,44 @@ public class MoreDataDetailModel extends BaseModel implements MoreDataDetailCont
             }
         }, error -> {
             Log.e(TAG, "请求失败: " + error.getMessage());
+            callback.onFailedLog(error.getMessage(), 1001);
+        });
+    }
+
+    @Override
+    public void getDataReviewRecord(String tradedID, String userID, Callback callback) {
+        mApi.getDataReviewRecord(tradedID, userID).subscribeOn(Schedulers.io()).subscribe(result -> {
+            if (!EmptyUtil.isEmpty(result)) {
+                Log.e(TAG, "getDataReviewRecord: " + result.toString());
+                if (result.getCode() == 0) {
+                    if (!EmptyUtil.isEmpty(result.getData())) {
+                        callback.onSuccess(result.getData(), 1000);
+                    }
+                } else {
+                    callback.onFailedLog(result.getMessage(), 1001);
+                }
+            }
+        }, error -> {
+            callback.onFailedLog(error.getMessage(), 1001);
+        });
+    }
+
+
+    //保存审核记录
+    @Override
+    public void saveDataReviewRecord(DataReViewRecordResponse request, Callback callback) {
+        mApi.saveDataReviewRecord(request).subscribeOn(Schedulers.io()).subscribe(result -> {
+            if (!EmptyUtil.isEmpty(result)) {
+                if (result.getCode() == 0) {
+                    if (!EmptyUtil.isEmpty(result.getData())) {
+                        callback.onSuccess(result.getData(), 1000);
+                    }
+                } else {
+                    callback.onFailedLog(result.getMessage(), 1001);
+                }
+
+            }
+        }, error -> {
             callback.onFailedLog(error.getMessage(), 1001);
         });
     }

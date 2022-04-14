@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
+import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.base.BaseFragment;
@@ -89,7 +90,7 @@ public class MoreDataFragment extends BaseFragment<MoreDataDetailPresenter> impl
                 showLoading();
                 LinearLayoutManager layoutManager = new LinearLayoutManager(homeActivity);
                 totalRecyclerView.setLayoutManager(layoutManager);
-                moreDataAdapter = new MoreDataAdapter(R.layout.item_moredada_layout, null);
+                moreDataAdapter = new MoreDataAdapter(R.layout.item_moredada_layout, null,homeActivity);
                 UserLocalVisitBean bean = new UserLocalVisitBean();
                 bean.userId = itemPosition.getUserId();
                 mPresenter.qryUserLocalVisit(bean);
@@ -118,5 +119,35 @@ public class MoreDataFragment extends BaseFragment<MoreDataDetailPresenter> impl
             default_view.setVisibility(View.VISIBLE);
 //            ToastUtils.show(failMessage);
         });
+    }
+
+
+    /**
+     * 以下两个回调不需要实现
+     * @param responseList
+     */
+    @Override
+    public void getDataReviewRecordSuccess(List<DataReViewRecordResponse> responseList) {
+
+    }
+
+    @Override
+    public void getDataReviewRecordFail(String messageFail) {
+
+    }
+
+
+    /**
+     * 以下两个回调不需要实现
+     * @param reViewRecordResponse
+     */
+    @Override
+    public void saveDataReviewRecordSuucess(DataReViewRecordResponse reViewRecordResponse) {
+
+    }
+
+    @Override
+    public void saveDataReviewRecordFail(String messageFail) {
+
     }
 }

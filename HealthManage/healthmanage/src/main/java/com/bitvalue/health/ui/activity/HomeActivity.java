@@ -1,6 +1,7 @@
 package com.bitvalue.health.ui.activity;
 
 
+import static com.bitvalue.health.util.Constants.DATA_REVIEW;
 import static com.bitvalue.health.util.Constants.FRAGMENT_DETAIL;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY_BYDOC;
@@ -40,6 +41,7 @@ import com.bitvalue.health.presenter.homepersenter.HomePersenter;
 import com.bitvalue.health.ui.fragment.chat.ChatFragment;
 import com.bitvalue.health.ui.fragment.chat.ChatRecordFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.ConsultingServiceFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.DataReviemFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.NeedDealWithFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddArticleFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddRemindFragment;
@@ -443,7 +445,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 bundle_chatrecord.putSerializable(Constants.CHAT_INFO, chatInfo_record);
                 chatrecordFragment.setArguments(bundle_chatrecord);
                 mapFragments.put(Constants.FRAGMENT_RECORD_CHAT, chatrecordFragment);
-            break;
+                break;
 
 
             //套餐配置
@@ -750,6 +752,17 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 bundle_interestuse_bydoc.putSerializable(TASKDETAIL, (Serializable) interestuse_);
                 InterestsUseApplyFragment_bydoc.setArguments(bundle_interestuse_bydoc);
                 mapFragments.put(FRAGMENT_INTERESTSUSER_APPLY_BYDOC, InterestsUseApplyFragment_bydoc);
+                break;
+
+
+            //重症医学科界面
+            case DATA_REVIEW:
+                TaskDeatailBean taskDeatailBean = (TaskDeatailBean) object;
+                DataReviemFragment dataReviemFragment = new DataReviemFragment();
+                Bundle bundle_data_review = new Bundle();
+                bundle_data_review.putSerializable(TASKDETAIL, taskDeatailBean);
+                dataReviemFragment.setArguments(bundle_data_review);
+                mapFragments.put(DATA_REVIEW, dataReviemFragment);
                 break;
 
 

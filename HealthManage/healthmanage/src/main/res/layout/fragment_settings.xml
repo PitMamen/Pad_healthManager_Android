@@ -76,7 +76,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/qb_px_7"
                 android:layout_toRightOf="@id/img_log"
-                android:text="修改密码"
+                android:text="信息维护"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/qb_px_10" />
 
@@ -213,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:text="账        号:"></TextView>
+                android:text="账       号:     "></TextView>
 
             <TextView
                 android:id="@+id/tv_acount"
@@ -245,7 +245,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:text="用户姓名:"></TextView>
+                android:text="用户姓名:    "></TextView>
 
             <EditText
                 android:id="@+id/et_name"
@@ -273,7 +273,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="center_vertical"
-                android:text="手机号码:"></TextView>
+                android:text="手机号码:    "></TextView>
 
             <EditText
                 android:id="@+id/et_phone_numb"

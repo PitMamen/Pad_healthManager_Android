@@ -26,6 +26,7 @@ import com.bitvalue.health.presenter.docfriendpersenter.DocFrienPersenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.AlreadyDealithAdapter;
 import com.bitvalue.health.ui.adapter.NeedDealithQuickAdapter;
+import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.MUtils;
@@ -227,8 +228,12 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
 
                 if (AlreadyDealithAdapter != null) {
                     rl_default_layout.setVisibility(AlradDealWithList != null && AlradDealWithList.size() > 0 ? View.GONE : View.VISIBLE);
-                    if (AlradDealWithList != null) {
-                        AlreadyDealithAdapter.setNewData(AlradDealWithList);
+//                    if (AlradDealWithList != null) {
+//                        AlreadyDealithAdapter.setNewData(AlradDealWithList);
+//                    }
+
+                    if (!ClickUtils.isFastClick()){
+                        getAlradydata();
                     }
                 }
                 break;
@@ -357,6 +362,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateAlradyData(NotifycationAlardyObj notifyactionObj) {
+        Log.e(TAG, "更新已办处理----" );
         getNeedDealWithData();
     }
 

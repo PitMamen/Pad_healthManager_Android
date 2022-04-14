@@ -1,5 +1,6 @@
 package com.bitvalue.health.ui.adapter;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,8 +27,10 @@ import java.util.List;
  * @data : 02/11
  */
 public class MoreDataAdapter extends BaseQuickAdapter<TaskDetailBean, BaseViewHolder> {
-    public MoreDataAdapter(int layoutResId, @Nullable List<TaskDetailBean> data) {
+    private Context context;
+    public MoreDataAdapter(int layoutResId, @Nullable List<TaskDetailBean> data,Context mContext) {
         super(layoutResId, data);
+        this.context = mContext;
     }
 
     @Override
@@ -56,7 +59,7 @@ public class MoreDataAdapter extends BaseQuickAdapter<TaskDetailBean, BaseViewHo
         for (int i = 0; i < item.getHealthImages().size(); i++) {
             imageUrllist.add(item.getHealthImages().get(i).previewFileUrl);
         }
-        MoreDataDetailChildImageAdapter moreDataDetailChildImageAdapter = new MoreDataDetailChildImageAdapter(R.layout.item_moredata_child_layout, imageUrllist);
+        MoreDataDetailChildImageAdapter moreDataDetailChildImageAdapter = new MoreDataDetailChildImageAdapter(R.layout.item_moredata_child_layout, imageUrllist,context);
         childItemLRecycleView.setAdapter(moreDataDetailChildImageAdapter);
     }
 }

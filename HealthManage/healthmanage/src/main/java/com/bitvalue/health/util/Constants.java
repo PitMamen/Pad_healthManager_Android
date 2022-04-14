@@ -50,6 +50,7 @@ public class Constants {
     public static final String FRAGMENT_INTERESTSUSER_APPLY = "interestsuser_apply";
     public static final String FRAGMENT_INTERESTSUSER_APPLY_BYDOC = "interestsuser_apply_by_doc";
     public static final String TASKDETAIL = "task_detail";
+    public static final String DATA_REVIEW = "data_review";
 
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";
@@ -75,6 +76,7 @@ public class Constants {
     public static final String QUESTION_DETAIL = "question_detail";
     public static final String ARTICLE_DETAIL = "article_detail";
     public static final String PLAN_ID = "plan_id";
+    public static final String RIGTH_TYPE = "ICUConsultNum";
 
     public static final int GET_CONVERSATION_COUNT = 100;
 
