@@ -148,7 +148,20 @@ public class MyRightBean implements Serializable {
         private String attrValue;
         private String usedValue;
         private long updateTime;
-        private String remark;
+        private DataRemark remark;
+
+
+        public void setRemark(DataRemark remark) {
+            this.remark = remark;
+        }
+
+        public DataRemark getRemark() {
+            return remark;
+        }
+
+        public static class DataRemark{
+            private String uploadDocFlag;
+        }
 
 
         public int getId() {
@@ -215,13 +228,8 @@ public class MyRightBean implements Serializable {
             this.updateTime = updateTime;
         }
 
-        public String getRemark() {
-            return remark;
-        }
 
-        public void setRemark(String remark) {
-            this.remark = remark;
-        }
+
     }
 
 

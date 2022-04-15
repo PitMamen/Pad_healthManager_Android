@@ -2,6 +2,7 @@ package com.bitvalue.health.ui.fragment.healthmanage;
 
 import static com.bitvalue.health.util.Constants.TASKDETAIL;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.bitvalue.health.api.eventbusbean.RefreshViewUseApply;
 import com.bitvalue.health.api.requestbean.DocListBean;
 import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
 import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
+import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.MyRightBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
@@ -121,7 +123,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     private int useRecordId;
     private boolean flashRecordRigth = false;
     private LoginBean loginBean;
-    private boolean isCompleteAudited = false;
+    private boolean isCompleteAudited = false;  //是否已经完成 分配
     private String rigthDepatCode; //权益中科室代码
 
     @Override
@@ -157,6 +159,11 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
             Log.e(TAG, "taskDeatailBean.getTaskDetail() == null");
             return;
         }
+        //如果是重症的 先获取一下审核记录
+        if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)){
+            mPresenter.getDataReviewRecord(taskDeatailBean.getTaskDetail().getTradeId(), taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "");
+        }
+        Log.e(TAG, "initView: " + taskDeatailBean.getTaskDetail().getRightsType() + "  上否上传资料: " + taskDeatailBean.getTaskDetail().getUploadDocFlag());
         loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
 
         initrightUseTimeRecord();
@@ -171,7 +178,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
             //任务分配
             case R.id.tv_complete:
                 //这里要做一下区分 如果是 重症科室的  需要先完成资料审核才能进行 任务分派
-                if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)) {
+                if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) {
                     if (isCompleteAudited) {
                         showDialog(loginBean, false);
                     } else {
@@ -271,15 +278,13 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
 
 
     private void initCompView() {
-//        taskDeatailBean.getTaskDetail().setRightsType(Constants.RIGTH_TYPE);
         btn_processing_complete.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮shape_cancel_
-        btn_processing_complete.setBackground(taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) ? homeActivity.getDrawable(R.drawable.shape_cancel_) : homeActivity.getDrawable(R.drawable.shape_comfirm_sele)); //@drawable/shape_cancel_
+        btn_processing_complete.setBackground((taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) ? homeActivity.getDrawable(R.drawable.shape_cancel_) : homeActivity.getDrawable(R.drawable.shape_comfirm_sele)); //@drawable/shape_cancel_
         tv_goChat.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.INVISIBLE : View.VISIBLE); //如果是已办 则不显示进入聊天按钮
         iv_icon.setImageDrawable(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         tv_sex.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex());
         tv_name.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
-        tv_data_review.setVisibility(taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) ? View.VISIBLE : View.INVISIBLE); //如果是重症科，显示资料审核
-//        tv_data_review.setVisibility(taskDeatailBean.getTaskDetail().getDeptName().equalsIgnoreCase("重症医学科") ? View.VISIBLE : View.INVISIBLE); //如果是重症科，显示资料审核
+        tv_data_review.setVisibility((taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) ? View.VISIBLE : View.INVISIBLE); //如果是重症科，并且需要审核资料则 显示资料审核
         tv_age.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
         tv_phoneNumber.setText(taskDeatailBean.getTaskDetail().getUserInfo().getPhone());
         useEquityDialog = new UseEquityDialog(homeActivity);
@@ -457,6 +462,10 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                 tv_goChat.setVisibility(View.GONE); //这里如果完成成功了 则隐藏 进入聊天 按钮，不能让一直点
             }
 
+            if (tv_data_review.getVisibility() == View.VISIBLE) {  //任务分配完成了 隐藏资料审核按钮
+                tv_data_review.setVisibility(View.GONE);
+            }
+
             ToastUtils.show("处理成功!");
         });
 
@@ -499,6 +508,35 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
      */
     @Override
     public void getDocListFail(String faileMessage) {
+
+    }
+
+
+    /**
+     * 获取审核记录
+     *
+     * @param responseList
+     */
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    @Override
+    public void getDataReviewRecordSuccess(List<DataReViewRecordResponse> responseList) {
+        homeActivity.runOnUiThread(() -> {
+            if (responseList != null && responseList.size() > 0) {
+                //如果最新的 审核记录 是通过 则任务分配按钮可点击
+                if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)&&responseList.get(0).getDealResult().equals("审核通过")){
+                    isCompleteAudited = true;
+                    taskDeatailBean.isShowBottomBuntton = false;
+                btn_processing_complete.setBackground(getActivity().getDrawable(R.drawable.shape_comfirm_sele));
+                }
+            }
+
+
+        });
+    }
+
+    @Override
+    public void getDataReviewRecordFail(String messageFail) {
 
     }
 }

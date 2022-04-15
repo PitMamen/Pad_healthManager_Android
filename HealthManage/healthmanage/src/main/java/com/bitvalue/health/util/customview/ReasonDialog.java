@@ -3,6 +3,7 @@ package com.bitvalue.health.util.customview;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -67,6 +68,21 @@ public class ReasonDialog extends Dialog {
                 onClickBottomListener.onNegtiveClick();
             }
         });
+    }
+
+
+    public void showKeyboard() {
+        if (ed_input != null) {
+            //设置可获得焦点
+            ed_input.setFocusable(true);
+            ed_input.setFocusableInTouchMode(true);
+            //请求获得焦点
+            ed_input.requestFocus();
+            //调用系统输入法
+            InputMethodManager inputManager = (InputMethodManager) ed_input
+                    .getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.showSoftInput(ed_input, 0);
+        }
     }
 
 

@@ -325,7 +325,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
      */
     @Override
     public void getMyAlreadyDealTaskDetailFail(String failMessage) {
-        homeActivity.runOnUiThread(() -> ToastUtils.show("获取已办列表失败!"));
+//        homeActivity.runOnUiThread(() -> ToastUtils.show("获取已办列表失败!"));
     }
 
 

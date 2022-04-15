@@ -36,6 +36,7 @@ import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.DataReViewRecordAdapter;
 import com.bitvalue.health.ui.adapter.ImageListDisplayAdapter;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.GsonUtils;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.customview.ReasonDialog;
@@ -149,8 +150,6 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
         UserLocalVisitBean userLocalVisitBean = new UserLocalVisitBean();
         userLocalVisitBean.userId = taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "";
         userLocalVisitBean.contentId = taskDeatailBean.getTaskDetail().getTradeId();
-//        userLocalVisitBean.userId = "296";
-//        userLocalVisitBean.contentId = "1";
         mPresenter.qryUserLocalVisit(userLocalVisitBean);
         mPresenter.getDataReviewRecord(taskDeatailBean.getTaskDetail().getTradeId(), taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "");
         initView();
@@ -168,8 +167,13 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
                     reasonDialog.setOnclickListener(new ReasonDialog.OnClickBottomListener() {
                         @Override
                         public void onPositiveClick() {
-                            examineResult(false, reasonDialog.getInputString());  //请求接口 保存审核结果
-                            sendSystemRemind(GsonUtils.ModelToJson(taskDeatailBean.getTaskDetail())); //消息通知
+                            String inputString = reasonDialog.getInputString();
+                            if (EmptyUtil.isEmpty(inputString)){
+                                ToastUtils.show("阐述原因不能为空!");
+                                return;
+                            }
+                            examineResult(false, inputString);  //请求接口 保存审核结果
+
                         }
 
                         @Override
@@ -177,6 +181,8 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
                             reasonDialog.cancel();
                         }
                     }).show();
+
+                    reasonDialog.showKeyboard();
                 }
 
 
@@ -256,6 +262,8 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
         request.setDealUser(loginBean.getUser().user.userId + "");
         request.setTradeId(taskDeatailBean.getTaskDetail().getTradeId());
         mPresenter.saveDataReviewRecord(request);
+        if (!isPass) //审核不通过   发消息  通过 不发
+        sendSystemRemind(GsonUtils.ModelToJson(request)); //消息通知
     }
 
 

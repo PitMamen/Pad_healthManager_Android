@@ -50,6 +50,8 @@ public class AlreadyDealithAdapter extends BaseQuickAdapter<TaskDeatailBean, Bas
         if (!EmptyUtil.isEmpty((videoClientsResultBean.getTaskDetail().getUserInfo()))) {
             img_head.setImageDrawable(videoClientsResultBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         }
+
+
         String rightType = "";
         switch (videoClientsResultBean.getTaskDetail().getRightsType()) {
             case "videoNum":

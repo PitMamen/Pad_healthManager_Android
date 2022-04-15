@@ -91,6 +91,7 @@ public class RightApplyUseModel extends BaseModel implements RightApplyUseContra
             if (!EmptyUtil.isEmpty(result)) {
                 if (result.getCode() == 0) {
                     if (!EmptyUtil.isEmpty(result.getData())) {
+                        Log.e(TAG, "getDocList: "+result.getData().size() );
                         callback.onSuccess(result.getData(), 1000);
                     }
                 } else {
@@ -102,4 +103,25 @@ public class RightApplyUseModel extends BaseModel implements RightApplyUseContra
             callback.onFailedLog(error.getMessage(), 1001);
         });
     }
+
+
+    @Override
+    public void getDataReviewRecord(String tradedID, String userID, Callback callback) {
+        mApi.getDataReviewRecord(tradedID, userID).subscribeOn(Schedulers.io()).subscribe(result -> {
+            if (!EmptyUtil.isEmpty(result)) {
+                Log.e(TAG, "getDataReviewRecord: " + result.toString());
+                if (result.getCode() == 0) {
+                    if (!EmptyUtil.isEmpty(result.getData())) {
+                        callback.onSuccess(result.getData(), 1000);
+                    }
+                } else {
+                    callback.onFailedLog(result.getMessage(), 1001);
+                }
+            }
+        }, error -> {
+            callback.onFailedLog(error.getMessage(), 1001);
+        });
+    }
+
+
 }

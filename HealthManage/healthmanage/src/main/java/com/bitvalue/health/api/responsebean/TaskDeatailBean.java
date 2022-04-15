@@ -135,6 +135,15 @@ public class TaskDeatailBean implements Serializable {
         private String userId;
         private String tradeId;
         private String execName;
+        private int uploadDocFlag; //是否上传资料
+
+        public int getUploadDocFlag() {
+            return uploadDocFlag;
+        }
+
+        public void setUploadDocFlag(int uploadDocFlag) {
+            this.uploadDocFlag = uploadDocFlag;
+        }
 
         public String getExecName() {
             return execName;

@@ -106,18 +106,42 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
             return;
         }
         loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
+        initCompView();
+    }
+
+
+    private void initCompView() {
         iv_endConsultationButton.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮
-        tv_end_consultation.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮
-        tv_end_consultation.setText(taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) ? "结束本次会诊" : "结束问诊");
-        start_consultation.setVisibility(taskDeatailBean.getExecFlag() == 1 || taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) ? View.INVISIBLE : View.VISIBLE); //如果是已办或者是重症学科的 则不显示开始问诊按钮
-        tv_chat_record.setVisibility((taskDeatailBean.getExecFlag() == 1 && !taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)) ? View.VISIBLE : View.GONE); //如果是已办 则显示问诊记录按钮
+        tv_end_consultation.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示结束问诊按钮
+        tv_end_consultation.setText(taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1 ? "结束本次会诊" : "结束问诊");
+        //如果执行完了的  不显示开始问诊
+        if (taskDeatailBean.getExecFlag() == 1) {
+            start_consultation.setVisibility(View.INVISIBLE);
+        } else {
+            //
+            if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)) {
+                start_consultation.setVisibility(View.INVISIBLE);
+            } else {
+                start_consultation.setVisibility(View.VISIBLE);
+            }
+        }
+
+        //如果已经执行完毕 是重症医学科下面的 ICU权益 并且是线上会诊的 不显示问诊记录按钮 其他的都显示
+        if (taskDeatailBean.getExecFlag() == 1) {
+            if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)) {
+                tv_chat_record.setVisibility(View.GONE);
+            } else {
+                tv_chat_record.setVisibility(View.VISIBLE);
+            }
+        } else {
+            tv_chat_record.setVisibility(View.GONE);
+        }
         tv_visitNameByDoc.setText(loginBean.getUser().user.userName); //执行人  (医生自己)
         tv_department.setText(taskDeatailBean.getTaskDetail().getDeptName()); //科室名称
         tv_start_time.setText(TimeUtils.getTime_tosecond(taskDeatailBean.getTaskDetail().getExecTime())); //执行时间
         tv_patientName.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName()); //就诊人
         tv_continue_time.setText(taskDeatailBean.getTaskDetail().getRemark() + "分钟");  //持续时间
-        tv_applyType.setText(taskDeatailBean.getTaskDetail().getRightsName() + "申请:");  //权益申请类型 (图文咨询,视频咨询)
-
+        tv_applyType.setText(taskDeatailBean.getTaskDetail().getRightsName() + "申请:");  //权益申请类型 (图文咨询,视频咨询,重症会诊)
     }
 
 
@@ -182,9 +206,9 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
 
             //进入患者详情界面
             case R.id.tv_clickgotodetail:
-                //如果是重症科室 进入 资料审核界面 其他科室进入 患者详情
-                if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)) {
-                    taskDeatailBean.isShowBottomBuntton = false;
+                //如果是重症科室并且有提交资料的 进入 资料审核界面 其他科室进入 患者详情
+                if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) {
+                    taskDeatailBean.isShowBottomBuntton = false;  //不显示底部  两个按钮
                     homeActivity.switchSecondFragment(Constants.DATA_REVIEW, taskDeatailBean);
                 } else {
                     homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, Integer.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));

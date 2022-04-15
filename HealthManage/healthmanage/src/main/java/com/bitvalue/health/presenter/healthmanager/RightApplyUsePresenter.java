@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.bitvalue.health.api.requestbean.DocListBean;
 import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
+import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.MyRightBean;
 import com.bitvalue.health.api.responsebean.QueryRightsRecordBean;
 import com.bitvalue.health.api.responsebean.SaveAnalyseApi;
@@ -114,7 +115,29 @@ public class RightApplyUsePresenter extends BasePresenter<RightApplyUseContract.
                 }
             });
         }
-
-
     }
+
+    @Override
+    public void getDataReviewRecord(String tradedID, String userID) {
+        if (mModel != null) {
+            mModel.getDataReviewRecord(tradedID, userID, new CallBackAdapter() {
+                @Override
+                public void onSuccess(Object o, int what) {
+                    super.onSuccess(o, what);
+                    if (isViewAttach()) {
+                        getView().getDataReviewRecordSuccess((List<DataReViewRecordResponse>) o);
+                    }
+                }
+
+                @Override
+                public void onFailedLog(String str, int what) {
+                    super.onFailedLog(str, what);
+                    if (isViewAttach()) {
+                        getView().getDataReviewRecordFail(str);
+                    }
+                }
+            });
+        }
+    }
+
 }

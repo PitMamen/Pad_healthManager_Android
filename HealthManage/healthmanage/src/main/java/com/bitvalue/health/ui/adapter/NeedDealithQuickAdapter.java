@@ -43,7 +43,10 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
             img_head.setImageDrawable(taskdeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         }
 
-        holder.setText(R.id.tv_name, taskdeatailBean.getTaskDetail().getUserInfo().getUserName());
+        if (!EmptyUtil.isEmpty(taskdeatailBean.getTaskDetail().getUserInfo())){
+            holder.setText(R.id.tv_name, taskdeatailBean.getTaskDetail().getUserInfo().getUserName());
+        }
+
         String rightType = "";
         switch (taskdeatailBean.getTaskDetail().getRightsType()) {
             case "videoNum":
