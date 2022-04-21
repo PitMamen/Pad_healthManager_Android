@@ -118,30 +118,26 @@ public class SendMessageFragment extends BaseFragment<SendMessagePresenter> impl
             tv_sex.setText(userInfo.getSex());
 
             tv_gotoDetail.setOnClickListener(v -> {
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, userInfo);
+                homeActivity.switchSecondFragment(Constants.DATA_REVIEW, userInfo.getUserId());
             });
         }
 
 
-        tv_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String content = et_text_tx.getText().toString().trim();
-                if (TextUtils.isEmpty(content)){
-                    ToastUtil.toastShortMessage("请输入内容");
-                    return;
-                }
-                if (!ClickUtils.isFastClick()){
-                    if (TypeConstants.Evaluate.equals(userInfo.getSendPlanType())){
-                        sendUserEevaluate(content);
-                    }else if(TypeConstants.Remind.equals(userInfo.getSendPlanType())){
-                        sendUserRemind(content);
-                    }
-                }
-
-
-
+        tv_send.setOnClickListener(v -> {
+            String content = et_text_tx.getText().toString().trim();
+            if (TextUtils.isEmpty(content)){
+                ToastUtil.toastShortMessage("请输入内容");
+                return;
             }
+            if (!ClickUtils.isFastClick()){
+                if (TypeConstants.Evaluate.equals(userInfo.getSendPlanType())){
+                    sendUserEevaluate(content);
+                }else if(TypeConstants.Remind.equals(userInfo.getSendPlanType())){
+                    sendUserRemind(content);
+                }
+            }
+
+
 
         });
     }

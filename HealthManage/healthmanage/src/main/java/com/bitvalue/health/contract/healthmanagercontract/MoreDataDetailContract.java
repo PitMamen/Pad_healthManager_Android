@@ -2,6 +2,7 @@ package com.bitvalue.health.contract.healthmanagercontract;
 
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
+import com.bitvalue.health.api.responsebean.PatientBaseInfoBean;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.base.model.IModel;
 import com.bitvalue.health.base.view.IView;
@@ -17,6 +18,8 @@ public interface MoreDataDetailContract {
 
     interface Model extends IModel {
 
+        void getPatientBaseInfo(int userId,Callback callback);
+
         void qryUserLocalVisit(UserLocalVisitBean visitBean, Callback callback);
 
         void getDataReviewRecord(String tradedID,String userID,Callback callback);
@@ -28,6 +31,12 @@ public interface MoreDataDetailContract {
 
         void qryUserVisitSuccess(List<TaskDetailBean> iamgeList);
         void qryUserVisitFail(String failMessage);
+
+
+        //获取患者基本信息
+        void getPatientBaseInfoSuccess(PatientBaseInfoBean patientBaseInfoBean);
+        void getPatientBaseInfoFail(String messageFail);
+
 
 
 
@@ -51,6 +60,9 @@ public interface MoreDataDetailContract {
 
         //保存审核资料
         void saveDataReviewRecord(DataReViewRecordResponse request);
+
+        //获取患者基本信息
+        void getPatientBaseInfo(int userId);
 
     }
 

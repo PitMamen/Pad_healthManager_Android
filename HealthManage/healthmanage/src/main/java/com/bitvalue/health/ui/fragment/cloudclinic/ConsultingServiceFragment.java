@@ -139,7 +139,8 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
         allPatientAdapter = new AllPatientAdapter(R.layout.item_video_patient, patientList, this);
         contact_list.setAdapter(allPatientAdapter);
         allPatientAdapter.setOnItemClickListener((adapter, view, position) -> {
-            homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, patientList.get(position));
+//            homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, patientList.get(position));
+            homeActivity.switchSecondFragment(Constants.DATA_REVIEW, patientList.get(position).getUserId());
         });
 
         //        上下拉刷新 最外层的

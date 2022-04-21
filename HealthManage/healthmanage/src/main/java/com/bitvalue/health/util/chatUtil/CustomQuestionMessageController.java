@@ -49,7 +49,7 @@ public class CustomQuestionMessageController {
             if (!EmptyUtil.isEmpty(data.url)) {
                 //跳转至问卷详情界面
                 QuestionResultBean.ListDTO listDTO = new QuestionResultBean.ListDTO();
-                listDTO.questUrl = data.url + "?userId=" + data.userId + "&execTime=" + TimeUtils.getCurrenTimeYMDHMS() + "&showsubmitbtn=hide";
+                listDTO.questUrl = data.url + "?userId=" + data.userId + "&execTime=" + TimeUtils.getCurrenTimeYMDHMS() + "&showsubmitbtn=show";
                 Application.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL, listDTO);
             } else {
                 Log.e(TAG, "data.url = null!!!");

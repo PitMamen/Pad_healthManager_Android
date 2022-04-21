@@ -20,6 +20,31 @@ import io.reactivex.schedulers.Schedulers;
  * @data : 02/11
  */
 public class MoreDataDetailModel extends BaseModel implements MoreDataDetailContract.Model {
+
+    /**
+     * 获取患者基本信息
+     * @param userId
+     * @param callback
+     */
+    @Override
+    public void getPatientBaseInfo(int userId, Callback callback) {
+        mApi.getPatientBaseInfo(userId).subscribeOn(Schedulers.io()).subscribe(result -> {
+            if (!EmptyUtil.isEmpty(result)) {
+                if (result.getCode() == 0) {
+                    if (!EmptyUtil.isEmpty(result.getData())) {
+                        callback.onSuccess(result.getData(), 1000);
+                    } else {
+                        callback.onSuccess(null, 1000);
+                    }
+                } else {
+                    callback.onFailedLog(result.getMessage(), 1001);
+                }
+            }
+        }, error -> {
+            callback.onFailedLog(error.getMessage(), 1001);
+        });
+    }
+
     @Override
     public void qryUserLocalVisit(UserLocalVisitBean visitBean, Callback callback) {
         mApi.qryUserLocalVisit(visitBean).subscribeOn(Schedulers.io()).subscribe(result -> {

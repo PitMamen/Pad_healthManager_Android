@@ -31,7 +31,6 @@ public class PatientReportModel extends BaseModel implements PatientReportContra
         if (allocatedPatientRequest != null) {
             mApi.qryallAllocatedPatientList(allocatedPatientRequest).subscribeOn(Schedulers.io()).subscribe(result -> {
                 if (!EmptyUtil.isEmpty(result)) {
-//                    Log.e(TAG, "qryAllocatedPatienList: " + result.getData().getRows());
                     if (result.getCode() == 0) {
                         if (!EmptyUtil.isEmpty(result.getData()))
                         callback.onSuccess(result.getData().getRows(), 1000);

@@ -2,10 +2,13 @@ package com.bitvalue.health.ui.fragment.healthmanage;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 import static com.bitvalue.health.util.Constants.TASKDETAIL;
+import static com.bitvalue.health.util.Constants.USER_ID;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +29,14 @@ import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.LoginBean;
+import com.bitvalue.health.api.responsebean.PatientBaseInfoBean;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.contract.healthmanagercontract.MoreDataDetailContract;
 import com.bitvalue.health.presenter.healthmanager.MoreDataDetailPresenter;
+import com.bitvalue.health.ui.activity.HealthFilesActivity;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.DataReViewRecordAdapter;
 import com.bitvalue.health.ui.adapter.ImageListDisplayAdapter;
@@ -39,6 +44,7 @@ import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.GsonUtils;
 import com.bitvalue.health.util.SharedPreManager;
+import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.ReasonDialog;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
@@ -104,6 +110,10 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
 
     @BindView(R.id.ll_bottom_button)
     LinearLayout ll_bottom_button;
+    @BindView(R.id.list_record_review)
+    LinearLayout ll_record_reviewListLayout;
+    @BindView(R.id.tv_bingli_detail)
+    TextView tv_bingli_detail;
 
 
     private HomeActivity homeActivity;
@@ -114,6 +124,7 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
     private ImageListDisplayAdapter lately_mri_Adapter;
     private DataReViewRecordAdapter dataReViewRecordAdapter;  //审核记录adapter
     private TaskDeatailBean taskDeatailBean;
+    private String userID;
     private List<String> BQJJurlList = new ArrayList<>();
     private List<String> HYJGurlList = new ArrayList<>();
     private List<String> XGurlList = new ArrayList<>();
@@ -142,23 +153,27 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
-        taskDeatailBean = (TaskDeatailBean) getArguments().getSerializable(TASKDETAIL);
-        if (taskDeatailBean == null || taskDeatailBean.getTaskDetail() == null || taskDeatailBean.getTaskDetail().getUserInfo() == null) {
-            return;
-        }
-        loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
+
+        //初始化上一个界面传过来的值 并设置是否显示相关控件可见
+        initDataDefault();
+        initList();
         UserLocalVisitBean userLocalVisitBean = new UserLocalVisitBean();
-        userLocalVisitBean.userId = taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "";
-        userLocalVisitBean.contentId = taskDeatailBean.getTaskDetail().getTradeId();
+        if (taskDeatailBean == null || taskDeatailBean.getTaskDetail() == null || taskDeatailBean.getTaskDetail().getUserInfo() == null) {
+            userLocalVisitBean.userId = userID;
+            mPresenter.getPatientBaseInfo(Integer.valueOf(userID));
+        } else {
+            userLocalVisitBean.userId = taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "";
+            userLocalVisitBean.contentId = taskDeatailBean.getTaskDetail().getTradeId();
+            mPresenter.getDataReviewRecord(taskDeatailBean.getTaskDetail().getTradeId(), taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "");
+            initView();
+        }
         mPresenter.qryUserLocalVisit(userLocalVisitBean);
-        mPresenter.getDataReviewRecord(taskDeatailBean.getTaskDetail().getTradeId(), taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "");
-        initView();
         reasonDialog = new ReasonDialog(homeActivity);
 
     }
 
 
-    @OnClick({R.id.btn_fail, R.id.btn_pass})
+    @OnClick({R.id.btn_fail, R.id.btn_pass,R.id.tv_phone,R.id.tv_bingli_detail})
     public void OnClickBtn(View view) {
         switch (view.getId()) {
             //审核不通过
@@ -168,7 +183,7 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
                         @Override
                         public void onPositiveClick() {
                             String inputString = reasonDialog.getInputString();
-                            if (EmptyUtil.isEmpty(inputString)){
+                            if (EmptyUtil.isEmpty(inputString)) {
                                 ToastUtils.show("阐述原因不能为空!");
                                 return;
                             }
@@ -184,12 +199,20 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
 
                     reasonDialog.showKeyboard();
                 }
-
-
                 break;
             //审核通过
             case R.id.btn_pass:
                 examineResult(true, "");
+                break;
+
+                //拨打电话
+            case R.id.tv_phone:
+                callPhone(tv_phone.getText().toString());
+                break;
+
+                //病历详情
+            case R.id.tv_bingli_detail:
+                clickBingliDetail();
                 break;
         }
 
@@ -197,18 +220,14 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
 
 
     private void initView() {
-        ll_bottom_button.setVisibility(taskDeatailBean.isShowBottomBuntton ? View.VISIBLE : View.GONE);
-        layout_back.setVisibility(View.VISIBLE);
-        layout_back.setOnClickListener(v -> {
-            if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                homeActivity.getSupportFragmentManager().popBackStack();
-            }
-        });
         tv_patient_name.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
         tv_phone.setText(taskDeatailBean.getTaskDetail().getUserInfo().getPhone());
         tv_sex.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex());
-        tv_age.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserAge()+"岁");
+        tv_age.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
         img_icon.setImageDrawable(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+    }
+
+    private void initList() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(homeActivity);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         list_condition_profile.setLayoutManager(layoutManager);
@@ -224,8 +243,6 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
         LinearLayoutManager layoutManager4 = new LinearLayoutManager(homeActivity);
         layoutManager4.setOrientation(RecyclerView.HORIZONTAL);
         list_lately_mri.setLayoutManager(layoutManager4);
-
-
         LinearLayoutManager datareviewrecordlayoutManager = new LinearLayoutManager(homeActivity);
         list_datarevicew_recordlist.setLayoutManager(datareviewrecordlayoutManager);
         dataReViewRecordAdapter = new DataReViewRecordAdapter(R.layout.item_datarevicview_layout, dataReViewRecordList);
@@ -246,10 +263,22 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
 
         lately_mri_Adapter = new ImageListDisplayAdapter(R.layout.item_imagevisitlod_layout, MRIurlList, homeActivity);
         list_lately_mri.setAdapter(lately_mri_Adapter);
-
-
     }
 
+
+    private void initDataDefault(){
+        layout_back.setVisibility(View.VISIBLE);
+        layout_back.setOnClickListener(v -> {
+            if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                homeActivity.getSupportFragmentManager().popBackStack();
+            }
+        });
+        taskDeatailBean = (TaskDeatailBean) getArguments().getSerializable(TASKDETAIL);
+        userID = getArguments().getString(Constants.USER_ID);
+        loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
+        ll_record_reviewListLayout.setVisibility(loginBean.getUser().roleName.equals("casemanager") && taskDeatailBean != null ? View.VISIBLE : View.GONE); //只有个案管理师才显示审核记录 医生的不显示
+        ll_bottom_button.setVisibility((null != taskDeatailBean && taskDeatailBean.isShowBottomBuntton) ? View.VISIBLE : View.GONE);
+    }
 
     //保存审核结果
     private void examineResult(boolean isPass, String detail) {
@@ -263,8 +292,23 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
         request.setTradeId(taskDeatailBean.getTaskDetail().getTradeId());
         mPresenter.saveDataReviewRecord(request);
         if (!isPass) //审核不通过   发消息  通过 不发
-        sendSystemRemind(GsonUtils.ModelToJson(request)); //消息通知
+            sendSystemRemind(GsonUtils.ModelToJson(request)); //消息通知
     }
+
+
+    //病历详情
+    private void clickBingliDetail(){
+            Intent intent = new Intent(homeActivity, HealthFilesActivity.class);
+            if (!EmptyUtil.isEmpty(userID)) {
+                intent.putExtra(USER_ID, userID);
+            } else if (taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserInfo() != null) {
+                intent.putExtra(USER_ID, taskDeatailBean.getTaskDetail().getUserInfo().getUserId());
+            }
+            homeActivity.startActivity(intent);
+    }
+
+
+
 
 
     //资料审核不通过 需要发消息通知
@@ -286,6 +330,16 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
             }
         });
     }
+
+
+    //拨号
+    private void callPhone(String phoneNum){
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + phoneNum);
+        intent.setData(data);
+        startActivity(intent);
+    }
+
 
 
     @Override
@@ -338,6 +392,43 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
     @Override
     public void qryUserVisitFail(String failMessage) {
 
+    }
+
+
+    /**
+     * 获取患者基本信息 成功回调
+     *
+     * @param patientBaseInfoBean
+     */
+    @Override
+    public void getPatientBaseInfoSuccess(PatientBaseInfoBean patientBaseInfoBean) {
+        homeActivity.runOnUiThread(() -> {
+            if (patientBaseInfoBean != null) {
+                if (!EmptyUtil.isEmpty(patientBaseInfoBean.getBaseInfo().getUserSex())) {
+                    img_icon.setImageDrawable(patientBaseInfoBean.getBaseInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+                }
+                tv_patient_name.setText(patientBaseInfoBean.getBaseInfo().getUserName());
+                tv_sex.setText(patientBaseInfoBean.getBaseInfo().getUserSex());
+                String curen = TimeUtils.getCurrenTime();
+                if (!EmptyUtil.isEmpty(patientBaseInfoBean.getBaseInfo().getBirthday())) {
+                    int finatime = Integer.valueOf(curen) - Integer.valueOf((patientBaseInfoBean.getBaseInfo().getBirthday().substring(0, 4)));  //后台给的是出生日期 需要前端换算
+                    tv_age.setText(finatime + "岁");
+                }
+                tv_phone.setText(patientBaseInfoBean.getExternalInfo().getPhone());
+            }
+        });
+    }
+
+    /**
+     * 获取患者基本信息 失败回调
+     *
+     * @param messageFail
+     */
+    @Override
+    public void getPatientBaseInfoFail(String messageFail) {
+        homeActivity.runOnUiThread(() -> {
+
+        });
     }
 
 

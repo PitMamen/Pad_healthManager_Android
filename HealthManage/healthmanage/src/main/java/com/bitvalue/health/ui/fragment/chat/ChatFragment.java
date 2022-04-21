@@ -646,7 +646,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             @Override
             public void onUserIconClick(View view, int position, MessageInfo messageInfo, boolean isLeftIconClick) {
                 if (isLeftIconClick) {
-                    homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, Integer.valueOf(patientinfo.getUserId()));
+                    homeActivity.switchSecondFragment(Constants.DATA_REVIEW, patientinfo.getUserId());
                 }
             }
         });

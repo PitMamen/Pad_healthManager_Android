@@ -183,10 +183,8 @@ public class VisitPlanFragment extends BaseFragment<VisitPlanPersenter> implemen
     private void initList() {
         healthPlanListAdapter = new HealthPlanListAdapter(homeActivity);
         list_dynamic.setAdapter(healthPlanListAdapter);
-        healthPlanListAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            if (view.getId() == R.id.img_head) {
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, adapter.getItem(position));
-            }
+        healthPlanListAdapter.setItemHeadOnclickListenner(userId -> {
+            homeActivity.switchSecondFragment(Constants.DATA_REVIEW, userId);
         });
         healthPlanListAdapter.setOnPlanTaskItemClickListener((planId, rowsDTO) -> {
             rowsDTO.planId = planId;
@@ -236,10 +234,8 @@ public class VisitPlanFragment extends BaseFragment<VisitPlanPersenter> implemen
     private void initSearchList() {
         search_patientAdapter = new HealthPlanListAdapter(homeActivity);
         search_recyclerView.setAdapter(search_patientAdapter);
-        healthPlanListAdapter.setOnItemChildClickListener((adapter, view, position) -> {
-            if (view.getId() == R.id.img_head) {
-                homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, adapter.getItem(position));
-            }
+        healthPlanListAdapter.setItemHeadOnclickListenner(userID -> {
+            homeActivity.switchSecondFragment(Constants.DATA_REVIEW, userID);
         });
         search_patientAdapter.setOnPlanTaskItemClickListener((planId, rowsDTO) -> {
             rowsDTO.planId = planId;
@@ -356,6 +352,7 @@ public class VisitPlanFragment extends BaseFragment<VisitPlanPersenter> implemen
             //拿到所有患者 需要过滤一些没有userID的患者
             hideDialog();
             if (pageNo > 1 && infoDetailDTOList != null && infoDetailDTOList.size() == 0) {
+                cureentPage = pageNo;
                 return;
             }
             allDynamicList.clear();

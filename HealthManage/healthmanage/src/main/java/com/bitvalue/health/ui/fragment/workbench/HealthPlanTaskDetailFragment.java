@@ -119,7 +119,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         planId = getArguments().getString(Constants.PLAN_ID);
         userInfo = (NewLeaveBean.RowsDTO) getArguments().getSerializable(Constants.USERINFO);
         tv_gotoDetail.setOnClickListener(v -> {
-            homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, userInfo);
+            homeActivity.switchSecondFragment(Constants.DATA_REVIEW, userInfo.getUserId());
         });
 
 

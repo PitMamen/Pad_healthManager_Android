@@ -144,7 +144,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     private AllocatedPatientRequest allocatedPatientRequest = new AllocatedPatientRequest();
     private AllocatedPatientRequest unregisterRequest = new AllocatedPatientRequest();
     private int pageNo = 1;
-    private int pageSize = 20;
+    private int pageSize = 30;
     private int currentPage = 0;
     private int searchPageNo = 1;
 
@@ -283,24 +283,6 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
         spinnew_inpatient.setTextSize(12);
         spinnew_inpatient.setRightImageResource(R.mipmap.down_shixin);
         spinnew_inpatient.setHint(getString(R.string.please_select_inpatient_area));
-
-        //测试数据
-//        inpatientAreaList = new ArrayList<>();
-//        inpatientAreaList.add("所有病区");  //这里要默认一个无 第一个 当点中 无 的时候 获取所有病区下的患者
-//        inpatientAreaList.add("小儿麻痹症");
-//        inpatientAreaList.add("精神科");
-//        inpatientAreaList.add("普通外科");
-//        inpatientAreaList.add("微创外科");
-//        inpatientAreaList.add("老年病科");
-//        inpatientAreaList.add("血液内科");
-//        inpatientAreaList.add("儿科");
-//        inpatientAreaList.add("骨科");
-//        inpatientAreaList.add("病区一");
-//        spinnew_inpatient.setItemData(inpatientAreaList);
-//        spinnew_inpatient.setOnItemClickListener(name -> {
-//            selectedInpatientAreaName = name.equals("所有病区") ? "" : name;
-//            requestDistribution("");  //更新列表
-//        });
     }
 
 
@@ -418,9 +400,10 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
         allocatedPatientRequest.pageSize = pageSize;
         allocatedPatientRequest.userName = name;
         if (!EmptyUtil.isEmpty(name)) {
-            mPresenter.qryByNameAllocatedPatienList(allocatedPatientRequest);  //请求 待分配  已注册的患者
+            allocatedPatientRequest.pageNo = 1;
+            mPresenter.qryByNameAllocatedPatienList(allocatedPatientRequest);  //请求 待分配  根据关键字查询
         } else {
-            mPresenter.qryAllocatedPatienList(allocatedPatientRequest);  //请求 待分配  已注册的患者
+            mPresenter.qryAllocatedPatienList(allocatedPatientRequest);  //请求 待分配
         }
     }
 
@@ -662,6 +645,6 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     @Override
     public void onItemClick(Object object) {
         NewLeaveBean.RowsDTO item = (NewLeaveBean.RowsDTO) object;
-        homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, item);
+        homeActivity.switchSecondFragment(Constants.DATA_REVIEW, item.getUserId());
     }
 }

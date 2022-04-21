@@ -5,6 +5,7 @@ package com.bitvalue.health.ui.adapter;
  * @data : 03/01
  */
 
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.LayoutRes;

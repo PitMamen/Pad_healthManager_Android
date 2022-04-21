@@ -122,7 +122,8 @@ public class ChatRecordFragment extends BaseFragment {
             @Override
             public void onUserIconClick(View view, int position, MessageInfo messageInfo, boolean isLeftIconClick) {
                 if (isLeftIconClick) {
-                    homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, Integer.valueOf(user_id));
+//                    homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, Integer.valueOf(user_id));
+                    homeActivity.switchSecondFragment(Constants.DATA_REVIEW, String.valueOf(user_id));
                 }
             }
         });

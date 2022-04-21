@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
+import com.bitvalue.health.api.responsebean.PatientBaseInfoBean;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
@@ -119,6 +120,18 @@ public class MoreDataFragment extends BaseFragment<MoreDataDetailPresenter> impl
             default_view.setVisibility(View.VISIBLE);
 //            ToastUtils.show(failMessage);
         });
+    }
+
+
+    //下面的两个回调这里不要实现
+    @Override
+    public void getPatientBaseInfoSuccess(PatientBaseInfoBean patientBaseInfoBean) {
+
+    }
+
+    @Override
+    public void getPatientBaseInfoFail(String messageFail) {
+
     }
 
 

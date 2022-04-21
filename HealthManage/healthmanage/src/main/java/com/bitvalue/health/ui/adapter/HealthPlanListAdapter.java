@@ -40,12 +40,12 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
 
     public static final String TAG = HealthPlanListAdapter.class.getSimpleName();
     private Context homeActivity;
+    private OnItemClickListenner onItemClickListenner;
 
 
     public HealthPlanListAdapter(Context context) {
         super(R.layout.item_sfjh_layout);
         homeActivity = context;
-
     }
 
 
@@ -64,19 +64,19 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
         if (!EmptyUtil.isEmpty(sfjhBean.getSex())) {
             helper.setImageDrawable(R.id.img_head, sfjhBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         }
-        helper.addOnClickListener(R.id.img_head);
         helper.setText(R.id.tv_name, sfjhBean.getUserName())
                 .setText(R.id.tv_sex, sfjhBean.getSex())
                 .setText(R.id.tv_time, sfjhBean.getDiagDate());
+        helper.getView(R.id.img_head).setOnClickListener(v -> {
+            if (onItemClickListenner!=null){
+                onItemClickListenner.onClickItem(sfjhBean.getUserId());
+            }
+        });
+
 
 
         WrapRecyclerView childItemLRecycleView = helper.getView(R.id.plan_list);
         childItemLRecycleView.setLayoutManager(new LinearLayoutManager(Application.instance()));
-//        for (int i = 0; i < sfjhBean.getPlanInfo().size(); i++) {
-//            if (sfjhBean.getPlanInfo().get(i).getPlanId()==null){
-//                sfjhBean.getPlanInfo().remove(i);  //清除 无效的plan
-//            }
-//        }
         PlanItemChildAdapter childAdapter = new PlanItemChildAdapter(sfjhBean.getPlanInfo());
         childItemLRecycleView.setAdapter(childAdapter);
         childAdapter.setNewData(sfjhBean.getPlanInfo());
@@ -101,5 +101,16 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
     public void setOnPlanTaskItemClickListener(OnPlanTaskItemClickListener listener) {
         onPlanTaskItemClickListener = listener;
     }
+
+
+
+    public void setItemHeadOnclickListenner(OnItemClickListenner headOnclickListenner){
+        this.onItemClickListenner = headOnclickListenner;
+    }
+
+    public interface OnItemClickListenner{
+        void onClickItem(String userId);
+    }
+
 
 }

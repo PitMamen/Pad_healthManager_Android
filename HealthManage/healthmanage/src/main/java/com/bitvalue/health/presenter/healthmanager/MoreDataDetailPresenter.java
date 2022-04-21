@@ -2,6 +2,7 @@ package com.bitvalue.health.presenter.healthmanager;
 
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
+import com.bitvalue.health.api.responsebean.PatientBaseInfoBean;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
@@ -85,6 +86,30 @@ public class MoreDataDetailPresenter extends BasePresenter<MoreDataDetailContrac
                     super.onFailedLog(str, what);
                     if (isViewAttach()) {
                         getView().saveDataReviewRecordFail(str);
+                    }
+                }
+            });
+        }
+    }
+
+    //获取患者基本信息
+    @Override
+    public void getPatientBaseInfo(int userId) {
+        if (mModel!=null){
+            mModel.getPatientBaseInfo(userId,new CallBackAdapter(){
+                @Override
+                public void onSuccess(Object o, int what) {
+                    super.onSuccess(o, what);
+                    if (isViewAttach()){
+                        getView().getPatientBaseInfoSuccess((PatientBaseInfoBean) o);
+                    }
+                }
+
+                @Override
+                public void onFailedLog(String str, int what) {
+                    super.onFailedLog(str, what);
+                    if (isViewAttach()){
+                        getView().getPatientBaseInfoFail(str);
                     }
                 }
             });

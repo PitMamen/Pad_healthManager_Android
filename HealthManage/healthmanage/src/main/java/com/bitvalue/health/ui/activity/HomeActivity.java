@@ -757,10 +757,16 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
             //重症医学科界面
             case DATA_REVIEW:
-                TaskDeatailBean taskDeatailBean = (TaskDeatailBean) object;
-                DataReviemFragment dataReviemFragment = new DataReviemFragment();
                 Bundle bundle_data_review = new Bundle();
-                bundle_data_review.putSerializable(TASKDETAIL, taskDeatailBean);
+                if (object instanceof TaskDeatailBean) {
+                    TaskDeatailBean taskDeatailBean = (TaskDeatailBean) object;
+                    bundle_data_review.putSerializable(TASKDETAIL, taskDeatailBean);
+                }else if (object instanceof String){
+                    Log.e(TAG, "11111111111111" );
+                    bundle_data_review.putString(Constants.USER_ID, (String) object);
+                }
+
+                DataReviemFragment dataReviemFragment = new DataReviemFragment();
                 dataReviemFragment.setArguments(bundle_data_review);
                 mapFragments.put(DATA_REVIEW, dataReviemFragment);
                 break;

@@ -118,7 +118,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
         if (taskDeatailBean.getExecFlag() == 1) {
             start_consultation.setVisibility(View.INVISIBLE);
         } else {
-            //
+            //  如果是 ICU的 是线下会诊 不需要进入聊天接诊
             if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)) {
                 start_consultation.setVisibility(View.INVISIBLE);
             } else {
@@ -211,7 +211,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
                     taskDeatailBean.isShowBottomBuntton = false;  //不显示底部  两个按钮
                     homeActivity.switchSecondFragment(Constants.DATA_REVIEW, taskDeatailBean);
                 } else {
-                    homeActivity.switchSecondFragment(Constants.FRAGMENT_DETAIL, Integer.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+                    homeActivity.switchSecondFragment(Constants.DATA_REVIEW,String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
                 }
                 break;
 

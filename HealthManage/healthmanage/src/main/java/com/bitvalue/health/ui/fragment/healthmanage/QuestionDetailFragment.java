@@ -58,7 +58,6 @@ public class QuestionDetailFragment extends BaseFragment {
     LinearLayout back_layout;
 
 
-
     private HomeActivity homeActivity;
     private QuestionResultBean.ListDTO questionBean;
     private String url;
@@ -108,12 +107,15 @@ public class QuestionDetailFragment extends BaseFragment {
             return;
         }
         url = questionBean.questUrl;
-        Log.e(TAG, "问卷URL: "+url );
-        initWebView();
 
         if (url.contains("?userId=")) {
             tv_right_btn.setVisibility(View.VISIBLE);
+        } else {
+            url = url + "?showsubmitbtn=hide";
         }
+        Log.e(TAG, "问卷URL: " + url);
+
+        initWebView();
     }
 
     private void initWebView() {

@@ -106,7 +106,7 @@ public class HealthFilesActivity extends AppActivity {
 
     @Override
     protected void initView() {
-        userId = String.valueOf(getIntent().getIntExtra(Constants.USER_ID,0));
+        userId = getIntent().getStringExtra(Constants.USER_ID);
 //        idcardNum = getIntent().getStringExtra(Constants.IDCARD_NUMBER);
         getLogsApi = new GetLogsApi();
         getLogsApi.timeHorizon = defaultmouth;
