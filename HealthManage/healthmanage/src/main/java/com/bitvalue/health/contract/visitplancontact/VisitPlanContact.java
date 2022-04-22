@@ -1,6 +1,7 @@
 package com.bitvalue.health.contract.visitplancontact;
 
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
+import com.bitvalue.health.api.requestbean.RequestPlanPatientListBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.model.IModel;
 import com.bitvalue.health.base.view.IView;
@@ -29,9 +30,9 @@ public interface VisitPlanContact {
      interface VisitPlanModel extends IModel {
 
         //获取所有患者列表
-        void qryPatientList(AllocatedPatientRequest requestNewLeaveBean, Callback callback);
+        void qryPatientList(RequestPlanPatientListBean requestNewLeaveBean, Callback callback);
         //根据名字搜索患者
-        void qryPatientByName(AllocatedPatientRequest requestNewLeaveBean,Callback callback);
+        void qryPatientByName(RequestPlanPatientListBean requestNewLeaveBean,Callback callback);
 
     }
 
@@ -40,9 +41,9 @@ public interface VisitPlanContact {
 
 //        需要获取 所有患者列表
 
-        void qryPatientList(AllocatedPatientRequest requestNewLeaveBean);
+        void qryPatientList(RequestPlanPatientListBean requestNewLeaveBean);
         //根据关键字 查询患者
-        void qryPatientByName(AllocatedPatientRequest requestNewLeaveBean);
+        void qryPatientByName(RequestPlanPatientListBean requestNewLeaveBean);
 
     }
 }

@@ -1,6 +1,7 @@
 package com.bitvalue.health.presenter.visitplanpersenter;
 
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
+import com.bitvalue.health.api.requestbean.RequestPlanPatientListBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
@@ -20,7 +21,7 @@ public class VisitPlanPersenter extends BasePresenter<VisitPlanContact.VisitPlan
     }
 
     @Override
-    public void qryPatientList(AllocatedPatientRequest requestNewLeaveBean) {
+    public void qryPatientList(RequestPlanPatientListBean requestNewLeaveBean) {
         mModel.qryPatientList(requestNewLeaveBean, new CallBackAdapter() {
             @Override
             public void onSuccess(Object o, int what) {
@@ -41,7 +42,7 @@ public class VisitPlanPersenter extends BasePresenter<VisitPlanContact.VisitPlan
     }
 
     @Override
-    public void qryPatientByName(AllocatedPatientRequest requestNewLeaveBean) {
+    public void qryPatientByName(RequestPlanPatientListBean requestNewLeaveBean) {
         mModel.qryPatientByName(requestNewLeaveBean, new CallBackAdapter() {
             @Override
             public void onSuccess(Object o, int what) {

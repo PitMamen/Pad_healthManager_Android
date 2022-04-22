@@ -60,7 +60,7 @@ public class MoreDataDetailModel extends BaseModel implements MoreDataDetailCont
 //                        }
                         callback.onSuccess(listBean, 1000);
                     } else {
-                        callback.onFailedLog("未加载到数据", 1001);
+                        callback.onSuccess(null, 1000);
                     }
                 } else {
                     callback.onFailedLog(result.getMessage(), 1001);

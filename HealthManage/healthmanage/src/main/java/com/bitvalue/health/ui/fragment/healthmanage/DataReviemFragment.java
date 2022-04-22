@@ -114,6 +114,11 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
     LinearLayout ll_record_reviewListLayout;
     @BindView(R.id.tv_bingli_detail)
     TextView tv_bingli_detail;
+    @BindView(R.id.ll_nodata_layout)
+    LinearLayout ll_nodata_layout;
+    @BindView(R.id.ll_data_layout)
+    LinearLayout ll_data_layout;
+
 
 
     private HomeActivity homeActivity;
@@ -384,6 +389,9 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
                 lately_ct_Adapter.setNewData(CTurlList);
                 lately_mri_Adapter.setNewData(MRIurlList);
 
+            }else {
+                ll_nodata_layout.setVisibility(View.VISIBLE);
+                ll_data_layout.setVisibility(View.GONE);
             }
         });
 

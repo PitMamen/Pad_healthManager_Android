@@ -180,7 +180,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
             //任务分配
             case R.id.tv_complete:
                 //这里要做一下区分 如果是 重症科室的  需要先完成资料审核才能进行 任务分派
-                if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) {
+                if ( taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) {
                     if (isDistributable) {
                         showDialog(loginBean, false);
                     } else {
@@ -295,7 +295,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
 
     private void initCompView() {
         btn_processing_complete.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮shape_cancel_
-        btn_processing_complete.setBackground((taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) ? homeActivity.getDrawable(R.drawable.shape_cancel_) : homeActivity.getDrawable(R.drawable.shape_comfirm_sele)); //@drawable/shape_cancel_
+        btn_processing_complete.setBackground((taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) ? homeActivity.getDrawable(R.drawable.shape_cancel_) : homeActivity.getDrawable(R.drawable.shape_comfirm_sele)); //@drawable/shape_cancel_
         tv_goChat.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.INVISIBLE : View.VISIBLE); //如果是已办 则不显示进入聊天按钮
         iv_icon.setImageDrawable(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         tv_sex.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex());

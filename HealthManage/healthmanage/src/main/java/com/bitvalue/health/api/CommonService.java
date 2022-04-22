@@ -10,6 +10,7 @@ import com.bitvalue.health.api.requestbean.PersonalDataBean;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.requestbean.ReportStatusBean;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
+import com.bitvalue.health.api.requestbean.RequestPlanPatientListBean;
 import com.bitvalue.health.api.requestbean.ResetPasswordRequestBean;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
 import com.bitvalue.health.api.requestbean.SendUserRemind;
@@ -253,6 +254,17 @@ public interface CommonService {
 
     @POST("health-api/patient/qryPatientListByReg")
     Observable<ApiResult<NewLeaveBean>> qryallAllocatedPatientList(@Body AllocatedPatientRequest leaveBean);
+
+
+    /***
+     * 查询所有已分配计划的患者列表
+     * @param leaveBean
+     * @return
+     */
+    @POST("health-api/patient/qryPlanPatientList")
+    Observable<ApiResult<NewLeaveBean>> qryPlanPatientList(@Body RequestPlanPatientListBean leaveBean);
+
+
 
 
     /**

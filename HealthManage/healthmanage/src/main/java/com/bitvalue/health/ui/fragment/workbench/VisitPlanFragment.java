@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bitvalue.health.api.eventbusbean.VisitPlanRefreshObj;
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
+import com.bitvalue.health.api.requestbean.RequestPlanPatientListBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.callback.PhoneFollowupCliclistener;
@@ -85,7 +86,7 @@ public class VisitPlanFragment extends BaseFragment<VisitPlanPersenter> implemen
     //    @BindView(R.id.framelayout)
 //    FrameLayout framelayout;
     private HomeActivity homeActivity;
-    private AllocatedPatientRequest allocatedPatientRequest = new AllocatedPatientRequest();
+    private RequestPlanPatientListBean allocatedPatientRequest = new RequestPlanPatientListBean();
     private HealthPlanListAdapter healthPlanListAdapter;
     private HealthPlanListAdapter search_patientAdapter;
 
@@ -295,7 +296,6 @@ public class VisitPlanFragment extends BaseFragment<VisitPlanPersenter> implemen
             allocatedPatientRequest.pageNo = pageNo;
         }
         allocatedPatientRequest.pageSize = pageSize;
-        allocatedPatientRequest.existsPlanFlag = "1";
         if (!EmptyUtil.isEmpty(name)) {
             mPresenter.qryPatientByName(allocatedPatientRequest);
         } else {

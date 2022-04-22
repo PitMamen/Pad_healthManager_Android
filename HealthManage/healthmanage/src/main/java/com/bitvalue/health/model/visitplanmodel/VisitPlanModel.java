@@ -3,6 +3,7 @@ package com.bitvalue.health.model.visitplanmodel;
 import android.util.Log;
 
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
+import com.bitvalue.health.api.requestbean.RequestPlanPatientListBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.model.BaseModel;
 import com.bitvalue.health.callback.Callback;
@@ -19,9 +20,9 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class VisitPlanModel extends BaseModel implements VisitPlanContact.VisitPlanModel {
     @Override
-    public void qryPatientList(AllocatedPatientRequest requestNewLeaveBean, Callback callback) {
+    public void qryPatientList(RequestPlanPatientListBean requestNewLeaveBean, Callback callback) {
         if (null != requestNewLeaveBean) {
-            mApi.qryallAllocatedPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
+            mApi.qryPlanPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
                 if (!EmptyUtil.isEmpty(listApiResult)) {
                     if (listApiResult.getCode() == 0) {
                         callback.onSuccess(listApiResult.getData().getRows(), 1000);
@@ -40,9 +41,9 @@ public class VisitPlanModel extends BaseModel implements VisitPlanContact.VisitP
     }
 
     @Override
-    public void qryPatientByName(AllocatedPatientRequest requestNewLeaveBean, Callback callback) {
+    public void qryPatientByName(RequestPlanPatientListBean requestNewLeaveBean, Callback callback) {
         if (null != requestNewLeaveBean) {
-            mApi.qryallAllocatedPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
+            mApi.qryPlanPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
                 if (!EmptyUtil.isEmpty(listApiResult)) {
                     if (listApiResult.getCode() == 0) {
                         NewLeaveBean newLeaveBeanList = listApiResult.getData();
