@@ -2,31 +2,18 @@ package com.bitvalue.health.ui.adapter;
 
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.bitvalue.health.Application;
-import com.bitvalue.health.api.responsebean.HealthImagesDTO;
-import com.bitvalue.health.api.responsebean.HealthPlanTaskListBean;
-import com.bitvalue.health.api.responsebean.PlanDetailResult;
+import com.bitvalue.health.api.requestbean.QueryPlanDetailApi;
 import com.bitvalue.health.api.responsebean.PlanTaskDetail;
-import com.bitvalue.health.api.responsebean.TaskInfoDTO;
-import com.bitvalue.health.util.TimeUtils;
+import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.TypeConstants;
 import com.bitvalue.healthmanage.R;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import cc.shinichi.library.ImagePreview;
-import cc.shinichi.library.bean.ImageInfo;
 
 public class HealthPlanTaskDetailAdapter extends BaseQuickAdapter<PlanTaskDetail.UserPlanDetailsDTO, BaseViewHolder> {
 
@@ -81,40 +68,59 @@ public class HealthPlanTaskDetailAdapter extends BaseQuickAdapter<PlanTaskDetail
             }
 
 
-
-            if (task.getContentInfo()!=null && task.getContentInfo().getHealthImages()!=null && task.getContentInfo().getHealthImages().size()>0){
-
-                helper.setVisible(R.id.recyclerView,true);
-                RecyclerView recyclerView=helper.getView(R.id.recyclerView);
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 4);
-                recyclerView.setLayoutManager(gridLayoutManager);
-                HealthTaskImageAdapter imageAdapter=new HealthTaskImageAdapter(task.getContentInfo().getHealthImages());
-                imageAdapter.setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
-                        final List<String> imageList = new ArrayList<>();
-                        for (HealthImagesDTO image : task.getContentInfo().getHealthImages()) {
-
-                            imageList.add(image.getFileUrl());
-                        }
-                        ImagePreview
-                                .getInstance()
-                                // 上下文，必须是activity，不需要担心内存泄漏，本框架已经处理好；
-                                .setContext(mContext)
-                                .setIndex(position)
-                                .setImageList( imageList)
-                                // 开启预览
-                                .start();
-                    }
-                });
-                recyclerView.setAdapter(imageAdapter);//设置数据
-            }else {
-                helper.setVisible(R.id.recyclerView,false);
+        //点击 查看计划详情内容 问卷 问诊 检查 检验 图片等
+        helper.getView(R.id.tv_title).setOnClickListener(v -> {
+            QueryPlanDetailApi questbean = new QueryPlanDetailApi();
+            questbean.contentId = task.contentId;
+            questbean.planType = task.planType;;
+            questbean.userId = task.contentInfo.userId;
+            switch (task.getPlanType()){
+                case TypeConstants.Quest:
+                    Application.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL,questbean);
+                    break;
+                case TypeConstants.Knowledge:
+                    Application.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_ARTICLE_DETAIL,questbean);
+                    break;
+                case TypeConstants.Exam:
+                case TypeConstants.Check:
+                    Application.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_MORE_DATA,questbean);
+                    break;
             }
 
 
+            Log.e(TAG, "随访任务点击了: "+ task.getPlanType()+" contentID: "+task.contentId+"  planType: "+task.planType+" userID: "+task.getContentInfo().userId);
+        });
 
+//            if (task.getContentInfo()!=null && task.getContentInfo().getHealthImages()!=null && task.getContentInfo().getHealthImages().size()>0){
+//
+//                helper.setVisible(R.id.recyclerView,true);
+//                RecyclerView recyclerView=helper.getView(R.id.recyclerView);
+//                GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 4);
+//                recyclerView.setLayoutManager(gridLayoutManager);
+//                HealthTaskImageAdapter imageAdapter=new HealthTaskImageAdapter(task.getContentInfo().getHealthImages());
+//                imageAdapter.setOnItemClickListener(new OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//
+//                        final List<String> imageList = new ArrayList<>();
+//                        for (HealthImagesDTO image : task.getContentInfo().getHealthImages()) {
+//
+//                            imageList.add(image.getFileUrl());
+//                        }
+//                        ImagePreview
+//                                .getInstance()
+//                                // 上下文，必须是activity，不需要担心内存泄漏，本框架已经处理好；
+//                                .setContext(mContext)
+//                                .setIndex(position)
+//                                .setImageList( imageList)
+//                                // 开启预览
+//                                .start();
+//                    }
+//                });
+//                recyclerView.setAdapter(imageAdapter);//设置数据
+//            }else {
+//                helper.setVisible(R.id.recyclerView,false);
+//            }
 
     }
 

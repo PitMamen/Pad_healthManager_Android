@@ -2,6 +2,10 @@ package com.bitvalue.health.ui.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -10,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.bitvalue.health.Application;
 import com.bitvalue.health.util.EmptyUtil;
+import com.bitvalue.health.util.PhotoDialog;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.component.picture.imageEngine.impl.GlideEngine;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -17,7 +22,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,9 +33,24 @@ import java.util.List;
  */
 public class MoreDataDetailChildImageAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     private Context context;
-    public MoreDataDetailChildImageAdapter(int layoutResId, @Nullable List<String> data,Context mContext) {
+    private PhotoDialog dialog;
+    private List<String> urllist;
+
+    public MoreDataDetailChildImageAdapter(int layoutResId, @Nullable List<String> data, Context mContext) {
         super(layoutResId, data);
         this.context = mContext;
+        if (data == null) {
+            urllist = new ArrayList<>();
+        } else {
+            urllist = data;
+        }
+    }
+
+
+    @Override
+    public void setNewData(@Nullable List<String> data) {
+        super.setNewData(data);
+        urllist = data;
     }
 
     @Override
@@ -37,47 +59,45 @@ public class MoreDataDetailChildImageAdapter extends BaseQuickAdapter<String, Ba
             return;
         }
         ImageView imageView = holder.getView(R.id.iv_pic);
+        int position = holder.getAdapterPosition();
         Picasso.with(Application.instance()).load(item.trim()).into(imageView);
-        imageView.setOnClickListener(v -> enlargeImageDialog(item.trim(), context));
-
+        imageView.setOnClickListener(v -> enlargeImageDialog(context, urllist, position));
 
     }
 
+
+
+    private Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+        }
+
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+        }
+    };
+
+
+
     //点击图片放大
-    private void enlargeImageDialog(String url, Context context) {
-        final Dialog dialog = new Dialog(context);
-        ImageView image = new ImageView(context);
-        Picasso.with(context).load(url).into(image);
-        dialog.setCancelable(false);
-        dialog.setContentView(image);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.show();
-
-
-//        final WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-//        params.width = 800;
-//        params.height = 1200;
-//        dialog.getWindow().setAttributes(params);
-        image.setOnClickListener(v1 -> {
-            dialog.cancel();
-        });
+    private void enlargeImageDialog(Context context, List<String> stringList, int position) {
+        if (dialog == null) {
+            dialog = new PhotoDialog(context, stringList);
+            dialog.onClickPosition(position);
+            dialog.setCancelable(true);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.show();
+            dialog.setOnCancelListener(dialog1 -> {
+                dialog.cancel();
+                dialog = null;
+            });
+        }
     }
-
-
-    //点击图片放大
-//    private void enlargeImageDialog(String url, Context context) {
-//        final Dialog dialog = new Dialog(context);
-//        ImageView image = new ImageView(context);
-//        Picasso.with(context).load(url).into(image);
-//        dialog.setContentView(image);
-//        dialog.setCancelable(false);
-//        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-//        dialog.show();
-//        image.setOnClickListener(v1 -> {
-//            dialog.cancel();
-//        });
-//    }
-
-
-
 }

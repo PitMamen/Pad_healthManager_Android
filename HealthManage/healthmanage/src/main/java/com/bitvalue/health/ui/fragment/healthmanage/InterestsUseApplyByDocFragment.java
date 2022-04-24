@@ -207,7 +207,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
             //进入患者详情界面
             case R.id.tv_clickgotodetail:
                 //如果是重症科室并且有提交资料的 进入 资料审核界面 其他科室进入 患者详情
-                if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) {
+                if (taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) {
                     taskDeatailBean.isShowBottomBuntton = false;  //不显示底部  两个按钮
                     homeActivity.switchSecondFragment(Constants.DATA_REVIEW, taskDeatailBean);
                 } else {

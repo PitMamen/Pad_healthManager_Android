@@ -51,6 +51,7 @@ public class Constants {
     public static final String FRAGMENT_INTERESTSUSER_APPLY_BYDOC = "interestsuser_apply_by_doc";
     public static final String TASKDETAIL = "task_detail";
     public static final String DATA_REVIEW = "data_review";
+    public static final String MORE_DATA = "more_data";
 
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";

@@ -133,7 +133,6 @@
          </LinearLayout>
 
 
-
          <TextView
              android:id="@+id/tv_bingli_detail"
              android:layout_width="wrap_content"
@@ -202,14 +201,69 @@
                     android:layout_height="wrap_content">
                 </TextView>
 
+
+                <TextView
+                    android:id="@+id/btn_fail_two"
+                    android:layout_width="@dimen/qb_px_60"
+                    android:layout_height="34dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/white"
+                    android:background="@drawable/shape_comfirm_sele"
+                    android:gravity="center_horizontal"
+                    android:paddingHorizontal="@dimen/qb_px_8"
+                    android:paddingVertical="@dimen/qb_px_5"
+                    android:text="不通过"></TextView>
+
+
             </RelativeLayout>
+
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/ll_bottom_button_two"-->
+<!--                android:layout_marginStart="@dimen/qb_px_15"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/qb_px_5"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/btn_fail_two"-->
+<!--                    android:layout_width="@dimen/qb_px_60"-->
+<!--                    android:layout_height="34dp"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:background="@drawable/shape_comfirm_sele"-->
+<!--                    android:gravity="center_horizontal"-->
+<!--                    android:paddingHorizontal="@dimen/qb_px_8"-->
+<!--                    android:paddingVertical="@dimen/qb_px_5"-->
+<!--                    android:text="不通过"></TextView>-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/btn_pass_two"-->
+<!--                    android:layout_width="@dimen/qb_px_60"-->
+<!--                    android:layout_height="34dp"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_marginLeft="@dimen/qb_px_20"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:background="@drawable/shape_comfirm_sele"-->
+<!--                    android:gravity="center_horizontal"-->
+<!--                    android:paddingHorizontal="@dimen/qb_px_8"-->
+<!--                    android:paddingVertical="@dimen/qb_px_5"-->
+<!--                    android:text="通 过"></TextView>-->
+
+<!--            </LinearLayout>-->
+
+
+
 
         </LinearLayout>
 
 
 
         <LinearLayout
-            android:visibility="visible"
+            android:visibility="gone"
             android:id="@+id/ll_data_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"

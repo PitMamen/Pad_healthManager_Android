@@ -107,6 +107,7 @@ public class HealthFilesActivity extends AppActivity {
     @Override
     protected void initView() {
         userId = getIntent().getStringExtra(Constants.USER_ID);
+        Log.e("TAG", "传过来的ID: "+userId );
 //        idcardNum = getIntent().getStringExtra(Constants.IDCARD_NUMBER);
         getLogsApi = new GetLogsApi();
         getLogsApi.timeHorizon = defaultmouth;

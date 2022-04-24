@@ -6,8 +6,8 @@
 
     <include layout="@layout/layout_third_title"/>
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/rl_default_view"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -22,23 +22,66 @@
             android:textSize="@dimen/qb_px_12"
             android:textColor="@color/bg_gray_black"
             android:layout_marginTop="@dimen/qb_px_8"
-            android:text="暂无更多数据"
+            android:text="暂无数据"
             android:layout_below="@+id/iv_default"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
         </TextView>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_tips_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_data_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/qb_px_10"
+            android:text="时间"
+            android:textSize="@dimen/qb_px_10">
+
+        </TextView>
+
+
+
+        <TextView
+            android:id="@+id/tv_data_title"
+            android:text="标题"
+            android:layout_toRightOf="@+id/tv_data_time"
+            android:textSize="@dimen/qb_px_10"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/qb_px_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/tv_diagnosis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_data_time"
+            android:layout_marginStart="@dimen/qb_px_10"
+            android:text=""
+            android:textColor="@color/text_desc_dark"
+            android:textSize="@dimen/qb_px_8"
+            android:visibility="visible"></TextView>
 
 
     </RelativeLayout>
 
 
-
     <com.bitvalue.health.util.customview.WrapRecyclerView
-        android:id="@+id/list_moredata"
+        android:id="@+id/item_image_datalist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     </com.bitvalue.health.util.customview.WrapRecyclerView>
 

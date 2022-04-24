@@ -5,6 +5,7 @@ import static com.tencent.liteav.demo.beauty.utils.ResourceUtils.getResources;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -33,6 +34,8 @@ public class PhotoDialog extends Dialog {
     private ViewPager viewPager;
     private Context mContext;
     private List<String> resource_list;
+    private int index_position;
+
 
     public PhotoDialog(@NonNull Context context, List<String> stringList) {
         super(context);
@@ -66,8 +69,6 @@ public class PhotoDialog extends Dialog {
     }
 
 
-
-
     private void initAdapter() {
         viewPager.setAdapter(new PagerAdapter() {
             @Override
@@ -85,7 +86,11 @@ public class PhotoDialog extends Dialog {
                 PhotoView view = new PhotoView(mContext);
                 view.enable();
                 view.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                Picasso.with(Application.instance()).load(resource_list.get(position)).error(R.drawable.image_error_bg).into(view);
+                Picasso.with(Application.instance()).load(resource_list.get(index_position)).error(R.drawable.image_error_bg).into(view);
+                index_position = position;
+
+                Log.e("TAG", "index_position: " + index_position + "  currentPosition: " + position);
+
                 container.addView(view);
                 return view;
             }
@@ -95,6 +100,12 @@ public class PhotoDialog extends Dialog {
                 container.removeView((View) object);
             }
         });
+    }
+
+
+
+    public void onClickPosition(int position) {
+        this.index_position = position;
     }
 
 

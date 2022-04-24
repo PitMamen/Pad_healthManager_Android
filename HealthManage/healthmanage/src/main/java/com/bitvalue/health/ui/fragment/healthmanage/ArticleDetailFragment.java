@@ -29,7 +29,10 @@ import androidx.annotation.NonNull;
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.requestbean.GetArticleByIdApi;
+import com.bitvalue.health.api.requestbean.QueryPlanDetailApi;
 import com.bitvalue.health.api.responsebean.ArticleBean;
+import com.bitvalue.health.api.responsebean.ArticleTypePlanResponseBean;
+import com.bitvalue.health.api.responsebean.QuestResopnseBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.ui.activity.HomeActivity;
@@ -77,7 +80,6 @@ public class ArticleDetailFragment extends BaseFragment {
     LinearLayout back_layout;
 
     private HomeActivity homeActivity;
-    private ArticleBean articleBean;
     private SecondHandler handler;
 
     @OnClick({R.id.layout_back})
@@ -100,21 +102,56 @@ public class ArticleDetailFragment extends BaseFragment {
     @Override
     public void initView(View rootView) {
         back_layout.setVisibility(View.VISIBLE);
-        articleBean = (ArticleBean) getArguments().getSerializable(Constants.ARTICLE_DETAIL);
-        if (articleBean == null && articleBean.articleId <= 0) {
-            ToastUtil.toastShortMessage("文章数据错误");
-            return;
-        }
+        Object object = getArguments().getSerializable(Constants.ARTICLE_DETAIL);
         handler = new SecondHandler(this);
+        //如果传过来是 文章 详情实体 则 直接通过文章ID 查询详情
+        if (object instanceof ArticleBean) {
+            ArticleBean articleBean = (ArticleBean) object;
+            getArticleDetail(articleBean.articleId);
+
+            //如果是通过随访计划中 点击文章条目传过来的实体 则需要先获取到计划的详情 通过计划的文章详情拿到 文章的ID  再通过此文章ID 查询文章详情
+        } else if (object instanceof QueryPlanDetailApi) {
+            QueryPlanDetailApi queryPlanDetailApi = (QueryPlanDetailApi) object;
+            getArticleByPlanDetail(queryPlanDetailApi);
+        }
+
+
+    }
+
+
+    private void getArticleByPlanDetail(QueryPlanDetailApi request) {
+        EasyHttp.get(this).api(request).request(new HttpCallback<ApiResult<ArticleTypePlanResponseBean>>((this)) {
+            @Override
+            public void onSucceed(ApiResult<ArticleTypePlanResponseBean> result) {
+                super.onSucceed(result);
+                if (!EmptyUtil.isEmpty(result)) {
+                    if (result.getCode() == 0) {
+                        if (result.getData() != null) {
+                            int articleId = result.getData().articleId;
+                            getArticleDetail(articleId);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(Exception e) {
+                super.onFail(e);
+            }
+        });
+    }
+
+
+    private void getArticleDetail(int id) {
         GetArticleByIdApi getArticleByIdApi = new GetArticleByIdApi();
-        getArticleByIdApi.id = articleBean.articleId;
-        EasyHttp.get(this).api(getArticleByIdApi).request(new HttpCallback<ApiResult<ArticleBean>>(this){
+        getArticleByIdApi.id = id;
+        EasyHttp.get(this).api(getArticleByIdApi).request(new HttpCallback<ApiResult<ArticleBean>>(this) {
             @Override
             public void onSucceed(ApiResult<ArticleBean> result) {
                 super.onSucceed(result);
-                if (result.getCode()==0){
-                    if (!EmptyUtil.isEmpty(result.getData())){
-                        ArticleBean articleBean = result.getData();;
+                if (result.getCode() == 0) {
+                    if (!EmptyUtil.isEmpty(result.getData())) {
+                        ArticleBean articleBean = result.getData();
                         tv_title.setText(articleBean.title);
                         String title = articleBean.title;
                         String htmlText1 = articleBean.content;
@@ -136,9 +173,6 @@ public class ArticleDetailFragment extends BaseFragment {
                 super.onFail(e);
             }
         });
-
-
-
     }
 
 

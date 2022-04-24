@@ -38,6 +38,7 @@ import com.bitvalue.health.ui.adapter.RightUseTimeRecordAdapter;
 import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.GsonUtils;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
@@ -161,10 +162,8 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
             Log.e(TAG, "taskDeatailBean.getTaskDetail() == null");
             return;
         }
-        //如果是重症的 先获取一下审核记录
-        if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)){
-            mPresenter.getDataReviewRecord(taskDeatailBean.getTaskDetail().getTradeId(), taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "");
-        }
+        //先获取一下审核记录
+        mPresenter.getDataReviewRecord(taskDeatailBean.getTaskDetail().getTradeId(), taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "");
         Log.e(TAG, "initView: " + taskDeatailBean.getTaskDetail().getRightsType() + "  上否上传资料: " + taskDeatailBean.getTaskDetail().getUploadDocFlag());
         loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
 
@@ -174,13 +173,13 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     }
 
 
-    @OnClick({R.id.tv_complete, R.id.tv_gochat, R.id.tv_data_review, R.id.tv_reset, R.id.tv_gotodetail,R.id.tv_patient_phone})
+    @OnClick({R.id.tv_complete, R.id.tv_gochat, R.id.tv_data_review, R.id.tv_reset, R.id.tv_gotodetail, R.id.tv_patient_phone})
     public void onClickButtonLisenner(View view) {
         switch (view.getId()) {
             //任务分配
             case R.id.tv_complete:
                 //这里要做一下区分 如果是 重症科室的  需要先完成资料审核才能进行 任务分派
-                if ( taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) {
+                if (taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) {
                     if (isDistributable) {
                         showDialog(loginBean, false);
                     } else {
@@ -217,13 +216,13 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
             //进入详情
             case R.id.tv_gotodetail:
                 tv_detail.setOnClickListener(v -> {
-                    homeActivity.switchSecondFragment(Constants.DATA_REVIEW,String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+                    homeActivity.switchSecondFragment(Constants.DATA_REVIEW, String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
                 });
                 break;
 
-                //拨号
+            //拨号
             case R.id.tv_patient_phone:
-                   callPhone(tv_phoneNumber.getText().toString());
+                callPhone(tv_phoneNumber.getText().toString());
                 break;
         }
 
@@ -231,7 +230,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
 
 
     //拨号
-    private void callPhone(String phoneNum){
+    private void callPhone(String phoneNum) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         Uri data = Uri.parse("tel:" + phoneNum);
         intent.setData(data);
@@ -301,7 +300,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
         tv_sex.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex());
         tv_name.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
 //        tv_data_review.setVisibility((taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) ? View.VISIBLE : View.INVISIBLE); //如果是重症科，并且需要审核资料则 显示资料审核
-        tv_data_review.setVisibility(taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1? View.VISIBLE : View.INVISIBLE); //如果是需要审核资料则 显示资料审核
+        tv_data_review.setVisibility(taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1 ? View.VISIBLE : View.INVISIBLE); //如果是需要审核资料则 显示资料审核
         tv_age.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
         tv_phoneNumber.setText(taskDeatailBean.getTaskDetail().getUserInfo().getPhone());
         useEquityDialog = new UseEquityDialog(homeActivity);
@@ -541,11 +540,14 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
         homeActivity.runOnUiThread(() -> {
             if (responseList != null && responseList.size() > 0) {
                 //如果最新的 审核记录 是通过 则任务分配按钮可点击
-                if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)&&responseList.get(0).getDealResult().equals("审核通过")){
-                    isDistributable = true;
-                    taskDeatailBean.isShowBottomBuntton = false;  //不显示底部 按钮
-                btn_processing_complete.setBackground(getActivity().getDrawable(R.drawable.shape_comfirm_sele));
+                if (!EmptyUtil.isEmpty(responseList.get(0).getDealResult())){
+                    if (responseList.get(0).getDealResult().equals("审核通过")) {
+                        isDistributable = true;
+                        taskDeatailBean.isShowBottomBuntton = false;  //不显示底部 按钮
+                        btn_processing_complete.setBackground(getActivity().getDrawable(R.drawable.shape_comfirm_sele));
+                    }
                 }
+
             }
 
 

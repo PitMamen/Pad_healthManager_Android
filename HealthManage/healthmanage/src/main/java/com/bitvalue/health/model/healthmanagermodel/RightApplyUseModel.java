@@ -107,7 +107,7 @@ public class RightApplyUseModel extends BaseModel implements RightApplyUseContra
 
     @Override
     public void getDataReviewRecord(String tradedID, String userID, Callback callback) {
-        mApi.getDataReviewRecord(tradedID, userID).subscribeOn(Schedulers.io()).subscribe(result -> {
+        mApi.getDataReviewRecord(tradedID, userID,"资料审核").subscribeOn(Schedulers.io()).subscribe(result -> {
             if (!EmptyUtil.isEmpty(result)) {
                 Log.e(TAG, "getDataReviewRecord: " + result.toString());
                 if (result.getCode() == 0) {

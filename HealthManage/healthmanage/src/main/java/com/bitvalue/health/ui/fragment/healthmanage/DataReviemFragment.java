@@ -118,7 +118,8 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
     LinearLayout ll_nodata_layout;
     @BindView(R.id.ll_data_layout)
     LinearLayout ll_data_layout;
-
+    @BindView(R.id.btn_fail_two)
+    TextView btn_nodata_nopass;
 
 
     private HomeActivity homeActivity;
@@ -178,10 +179,11 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
     }
 
 
-    @OnClick({R.id.btn_fail, R.id.btn_pass,R.id.tv_phone,R.id.tv_bingli_detail})
+    @OnClick({R.id.btn_fail, R.id.btn_pass, R.id.tv_phone, R.id.tv_bingli_detail, R.id.btn_fail_two})
     public void OnClickBtn(View view) {
         switch (view.getId()) {
             //审核不通过
+            case R.id.btn_fail_two:
             case R.id.btn_fail:
                 if (reasonDialog != null) {
                     reasonDialog.setOnclickListener(new ReasonDialog.OnClickBottomListener() {
@@ -210,12 +212,12 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
                 examineResult(true, "");
                 break;
 
-                //拨打电话
+            //拨打电话
             case R.id.tv_phone:
                 callPhone(tv_phone.getText().toString());
                 break;
 
-                //病历详情
+            //病历详情
             case R.id.tv_bingli_detail:
                 clickBingliDetail();
                 break;
@@ -271,7 +273,7 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
     }
 
 
-    private void initDataDefault(){
+    private void initDataDefault() {
         layout_back.setVisibility(View.VISIBLE);
         layout_back.setOnClickListener(v -> {
             if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
@@ -279,7 +281,7 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
             }
         });
         taskDeatailBean = (TaskDeatailBean) getArguments().getSerializable(TASKDETAIL);
-        userID = getArguments().getString(Constants.USER_ID);
+        userID = getArguments().getString(Constants.USER_ID);// 如果是只传了 一个userId过来的  是不需要资料审核的
         loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
         ll_record_reviewListLayout.setVisibility(loginBean.getUser().roleName.equals("casemanager") && taskDeatailBean != null ? View.VISIBLE : View.GONE); //只有个案管理师才显示审核记录 医生的不显示
         ll_bottom_button.setVisibility((null != taskDeatailBean && taskDeatailBean.isShowBottomBuntton) ? View.VISIBLE : View.GONE);
@@ -302,18 +304,15 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
 
 
     //病历详情
-    private void clickBingliDetail(){
-            Intent intent = new Intent(homeActivity, HealthFilesActivity.class);
-            if (!EmptyUtil.isEmpty(userID)) {
-                intent.putExtra(USER_ID, userID);
-            } else if (taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserInfo() != null) {
-                intent.putExtra(USER_ID, taskDeatailBean.getTaskDetail().getUserInfo().getUserId());
-            }
-            homeActivity.startActivity(intent);
+    private void clickBingliDetail() {
+        Intent intent = new Intent(homeActivity, HealthFilesActivity.class);
+        if (!EmptyUtil.isEmpty(userID)) {
+            intent.putExtra(USER_ID, userID);
+        } else if (taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserInfo() != null) {
+            intent.putExtra(USER_ID, String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+        }
+        homeActivity.startActivity(intent);
     }
-
-
-
 
 
     //资料审核不通过 需要发消息通知
@@ -338,7 +337,7 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
 
 
     //拨号
-    private void callPhone(String phoneNum){
+    private void callPhone(String phoneNum) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         Uri data = Uri.parse("tel:" + phoneNum);
         intent.setData(data);
@@ -346,13 +345,12 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
     }
 
 
-
     @Override
     public void qryUserVisitSuccess(List<TaskDetailBean> imageList) {
         homeActivity.runOnUiThread(() -> {
             if (imageList != null && imageList.size() > 0) {
+                ll_data_layout.setVisibility(View.VISIBLE);
                 for (int i = 0; i < imageList.size(); i++) {
-//                    Log.e(TAG, "类型: " + imageList.get(i).getVisitType() + "  集合大小:" + imageList.get(i).getHealthImages().size());
                     List<TaskDetailBean.HealthImagesDTO> URLlList = imageList.get(i).getHealthImages();
                     switch (imageList.get(i).getVisitType()) {
                         case "BQJJ":
@@ -389,8 +387,11 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
                 lately_ct_Adapter.setNewData(CTurlList);
                 lately_mri_Adapter.setNewData(MRIurlList);
 
-            }else {
+            } else {
                 ll_nodata_layout.setVisibility(View.VISIBLE);
+                if (!EmptyUtil.isEmpty(userID)) {   // 如果传过来的 userId 不为空  肯定是不需要审核资料的 不需显示底部的  "不通过"按钮
+                    btn_nodata_nopass.setVisibility(View.GONE);
+                }
                 ll_data_layout.setVisibility(View.GONE);
             }
         });

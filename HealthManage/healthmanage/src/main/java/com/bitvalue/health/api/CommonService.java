@@ -351,7 +351,7 @@ public interface CommonService {
      * 查询审核记录
      */
     @GET("health-api/patient/qryRightsUserLog")
-    Observable<ApiResult<List<DataReViewRecordResponse>>> getDataReviewRecord(@Query("tradeId") String tardeid,@Query("userId") String userId);
+    Observable<ApiResult<List<DataReViewRecordResponse>>> getDataReviewRecord(@Query("tradeId") String tardeid,@Query("userId") String userId,@Query("dealType") String dealType);  //dealType String
 
     /**
      * 保存审核记录

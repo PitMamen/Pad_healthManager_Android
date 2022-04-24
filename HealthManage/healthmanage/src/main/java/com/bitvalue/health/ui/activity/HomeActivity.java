@@ -7,6 +7,7 @@ import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY_BYDOC;
 import static com.bitvalue.health.util.Constants.FRAGMENT_MORE_DATA;
 import static com.bitvalue.health.util.Constants.FRAGMENT_PLAN_LIST;
+import static com.bitvalue.health.util.Constants.MORE_DATA;
 import static com.bitvalue.health.util.Constants.TASKDETAIL;
 import static com.bitvalue.health.util.Constants.USER_ID;
 import static com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI.CHAT_TYPE_VIDEO;
@@ -26,6 +27,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.eventbusbean.VideoRefreshObj;
+import com.bitvalue.health.api.requestbean.QueryPlanDetailApi;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.LoginBean;
@@ -266,16 +268,16 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         consultingServiceFragment = ConsultingServiceFragment.getInstance(false);
         needDealWithFragment = NeedDealWithFragment.getInstance(false);
         workbenchFragment = VisitPlanFragment.getInstance(false);
-        scheduleFragment = ScheduleFragment.getInstance(false);
+//        scheduleFragment = ScheduleFragment.getInstance(false);
 
-        fragmentArrays = new Fragment[]{patientReportFragment, settingsFragment, consultingServiceFragment, needDealWithFragment, workbenchFragment, scheduleFragment};
+        fragmentArrays = new Fragment[]{patientReportFragment, settingsFragment, consultingServiceFragment, needDealWithFragment, workbenchFragment};
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.layout_fragment, fragmentArrays[0]);
         transaction.add(R.id.layout_fragment, fragmentArrays[1]);
         transaction.add(R.id.layout_fragment, fragmentArrays[2]);
         transaction.add(R.id.layout_fragment, fragmentArrays[3]);
         transaction.add(R.id.layout_fragment, fragmentArrays[4]);
-        transaction.add(R.id.framelaout_workbench, fragmentArrays[5]);
+//        transaction.add(R.id.framelaout_workbench, fragmentArrays[5]);
         transaction.commitAllowingStateLoss();
         afterTabSelect(index);
     }
@@ -586,18 +588,29 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
              * 问卷调查界面
              */
             case Constants.FRAGMENT_QUESTION_DETAIL:
-                QuestionResultBean.ListDTO questionBean = (QuestionResultBean.ListDTO) object;
                 Bundle bundleQuest = new Bundle();
-                bundleQuest.putSerializable(Constants.QUESTION_DETAIL, questionBean);
+                if (object instanceof QuestionResultBean.ListDTO ){
+                    QuestionResultBean.ListDTO questionBean = (QuestionResultBean.ListDTO) object;
+                    bundleQuest.putSerializable(Constants.QUESTION_DETAIL, questionBean);
+
+                }else if (object instanceof QueryPlanDetailApi){
+                    QueryPlanDetailApi questionBean = (QueryPlanDetailApi) object;
+                    bundleQuest.putSerializable(Constants.QUESTION_DETAIL, questionBean);
+                }
                 QuestionDetailFragment questionDetailFragment = new QuestionDetailFragment();
                 questionDetailFragment.setArguments(bundleQuest);
                 mapFragments.put(Constants.FRAGMENT_QUESTION_DETAIL, questionDetailFragment);
                 break;
             //   文章预览界面
             case Constants.FRAGMENT_ARTICLE_DETAIL:
-                ArticleBean articleBean = (ArticleBean) object;
                 Bundle bundleArticle = new Bundle();
-                bundleArticle.putSerializable(Constants.ARTICLE_DETAIL, articleBean);
+                if (object instanceof ArticleBean ){
+                    ArticleBean articleBean = (ArticleBean) object;
+                    bundleArticle.putSerializable(Constants.ARTICLE_DETAIL, articleBean);
+                }else if (object instanceof QueryPlanDetailApi){
+                    QueryPlanDetailApi queryArticle = (QueryPlanDetailApi) object;
+                    bundleArticle.putSerializable(Constants.ARTICLE_DETAIL, queryArticle);
+                }
                 ArticleDetailFragment articleDetailFragment = new ArticleDetailFragment();
                 articleDetailFragment.setArguments(bundleArticle);
                 mapFragments.put(Constants.FRAGMENT_ARTICLE_DETAIL, articleDetailFragment);
@@ -726,10 +739,10 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
             //患者详情界面的更多数据界面
             case FRAGMENT_MORE_DATA:
-                NewLeaveBean.RowsDTO patientitemmoredata = (NewLeaveBean.RowsDTO) object;
+                QueryPlanDetailApi patientitemmoredata = (QueryPlanDetailApi) object;
                 MoreDataFragment moredataFragment = new MoreDataFragment();
                 Bundle bundle_detail_moredata = new Bundle();
-                bundle_detail_moredata.putSerializable(FRAGMENT_DETAIL, (Serializable) patientitemmoredata);
+                bundle_detail_moredata.putSerializable(MORE_DATA, (Serializable) patientitemmoredata);
                 moredataFragment.setArguments(bundle_detail_moredata);
                 mapFragments.put(FRAGMENT_MORE_DATA, moredataFragment);
                 break;

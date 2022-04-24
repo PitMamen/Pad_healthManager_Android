@@ -39,6 +39,7 @@ public class ImageListDisplayAdapter extends BaseQuickAdapter<String, BaseViewHo
 
     private Context mContext;
     private List<String> list = new ArrayList<>();
+    private PhotoDialog dialog;
 
     public ImageListDisplayAdapter(int layoutResId, @Nullable List<String> data, Context context) {
         super(layoutResId, data);
@@ -54,30 +55,27 @@ public class ImageListDisplayAdapter extends BaseQuickAdapter<String, BaseViewHo
         ImageView imageView = holder.getView(R.id.iv_pic);
         Picasso.with(Application.instance()).load(item.trim()).error(R.drawable.image_error_bg).into(imageView);
         list.add(item);
+        int position = holder.getAdapterPosition();
         //点击查看大图 事件
         imageView.setOnClickListener(v -> {
-            enlargeImageDialog( mContext,list);
+            enlargeImageDialog(mContext, list, position);
         });
     }
 
     //点击图片放大
-    private void enlargeImageDialog( Context context,List<String> stringList) {
-        PhotoDialog dialog = new PhotoDialog(context,stringList);
-        dialog.setCancelable(true);
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.show();
+    private void enlargeImageDialog(Context context, List<String> stringList, int position) {
+        if (dialog == null) {
+            dialog = new PhotoDialog(context, stringList);
+            dialog.onClickPosition(position);
+            dialog.setCancelable(true);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.show();
+            dialog.setOnCancelListener(dialog1 -> {
+                dialog.cancel();
+                dialog = null;
+            });
+        }
 
-
-//        final Dialog dialog = new Dialog(context);
-//        ImageView image = new ImageView(context);
-//        Picasso.with(context).load(url).into(image);
-//        dialog.setContentView(image);
-//        dialog.setCancelable(false);
-//        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-//        dialog.show();
-//        image.setOnClickListener(v1 -> {
-//            dialog.cancel();
-//        });
     }
 
 

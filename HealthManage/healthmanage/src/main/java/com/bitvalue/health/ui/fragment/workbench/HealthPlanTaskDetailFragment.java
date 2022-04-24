@@ -84,7 +84,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
     RelativeLayout default_view;
 
 
-    private HealthPlanPreviewListAdapter planAdapter;
+    private HealthPlanPreviewListAdapter planAdapter;   //点击随访计划 进入的第一个界面 患者详情下面显示的 list  (第N次随访任务)
     private HealthPlanTaskDetailAdapter taskDetailAdapter;
     private PlanTaskDetail planTaskDetail;
     private NewLeaveBean.RowsDTO userInfo;
@@ -277,7 +277,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         if (footerview == null) {
             footerview = LayoutInflater.from(getContext()).inflate(R.layout.layout_plan_task_footer, null);
             initFooterViewClick(footerview);
-            taskDetailAdapter.addFooterView(footerview);
+            taskDetailAdapter.addFooterView(footerview);  //底部 健康评估 健康提醒 结束随访 按钮
         }
 
     }
