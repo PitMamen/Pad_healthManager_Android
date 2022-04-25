@@ -81,9 +81,11 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
         childItemLRecycleView.setAdapter(childAdapter);
         childAdapter.setNewData(sfjhBean.getPlanInfo());
         childAdapter.setOnItemClickListener((adapter, view, position) -> {
-
             NewLeaveBean.RowsDTO.PlanInfoDetailDTO planInfo = (NewLeaveBean.RowsDTO.PlanInfoDetailDTO) adapter.getItem(position);
             sfjhBean.id_plan = planInfo.getId();
+            if (!EmptyUtil.isEmpty(planInfo.getGoodsType())){
+                sfjhBean.isShowEndPlanButton = planInfo.getGoodsType().equals("plan_package");  // "plan_package" 才允许结束计划
+            }
             if (onPlanTaskItemClickListener != null) {
                 onPlanTaskItemClickListener.onCkeckPlanItemClick(planInfo.getPlanId(), sfjhBean);
             }

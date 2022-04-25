@@ -75,7 +75,7 @@
                 android:id="@+id/tv_patient_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="刘晓明"
+                android:text=" "
                 android:textColor="@color/text_black"
                 android:textSize="16sp"></TextView>
 
@@ -84,12 +84,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/qb_px_15"
-                android:text="男"
+                android:text=""
                 android:textSize="13sp"></TextView>
 
 
             <View
                 android:id="@+id/view_line"
+                android:visibility="gone"
                 android:layout_width="@dimen/qb_px_1"
                 android:layout_height="@dimen/qb_px_7"
                 android:layout_below="@+id/tv_name"
@@ -106,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/qb_px_6"
-                android:text="25岁"
+                android:text=""
                 android:textSize="13sp"></TextView>
 
 
@@ -127,7 +128,7 @@
                  android:layout_height="wrap_content"
                  android:layout_gravity="center_vertical"
                  android:layout_marginLeft="@dimen/qb_px_8"
-                 android:text="135****4802"
+                 android:text=""
                  android:textSize="13sp"></TextView>
 
          </LinearLayout>

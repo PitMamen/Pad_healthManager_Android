@@ -147,7 +147,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     private int pageSize = 30;
     private int currentPage = 0;
     private int searchPageNo = 1;
-
+    private String currentUserID = "";
 
     private HomeActivity homeActivity;
 
@@ -635,10 +635,10 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
             tempPaitentList.remove(item);
         }
         EventBus.getDefault().post(tempPaitentList);
-//        tempPaitentList.clear();
-
 
     }
+
+
 
     /***
      * 点击头像切换至患者详情界面回调
@@ -647,6 +647,9 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
     @Override
     public void onItemClick(Object object) {
         NewLeaveBean.RowsDTO item = (NewLeaveBean.RowsDTO) object;
-        homeActivity.switchSecondFragment(Constants.DATA_REVIEW, item.getUserId());
+        if (!item.getUserId().equals(currentUserID)) {
+            currentUserID = item.getUserId();
+            homeActivity.switchSecondFragment(Constants.DATA_REVIEW, item.getUserId());
+        }
     }
 }

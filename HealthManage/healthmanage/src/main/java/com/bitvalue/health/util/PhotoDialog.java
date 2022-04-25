@@ -1,11 +1,15 @@
 package com.bitvalue.health.util;
 
+
+import static com.bitvalue.health.util.Constants.TARGET_HEIGHT;
+import static com.bitvalue.health.util.Constants.TARGET_WIDTH;
 import static com.tencent.liteav.demo.beauty.utils.ResourceUtils.getResources;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +25,12 @@ import com.bitvalue.health.util.photopreview.PhotoView;
 import com.bitvalue.healthmanage.R;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.http.Url;
 
 /**
@@ -34,12 +41,12 @@ public class PhotoDialog extends Dialog {
 
     private ViewPager viewPager;
     private Context mContext;
-    private List<Bitmap> resource_list;
+    private List<String> resource_list;
     private int index_position;
     private PagerAdapter pagerAdapter;
 
 
-    public PhotoDialog(@NonNull Context context, List<Bitmap> stringList) {
+    public PhotoDialog(@NonNull Context context, List<String> stringList) {
         super(context);
         mContext = context;
         if (stringList == null) {
@@ -84,20 +91,28 @@ public class PhotoDialog extends Dialog {
             }
 
             @Override
-            public Object instantiateItem(ViewGroup container, int position) {
-                PhotoView view = new PhotoView(mContext);
-                view.enable();
-                view.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                if (position > resource_list.size()) {
-                    position = resource_list.size() - 1;
-                }
-                view.setImageBitmap(resource_list.get(position));
-//                Picasso.with(Application.instance()).load(resource_list.get(index_position)).error(R.drawable.image_error_bg).into(view);
+            public Object instantiateItem(ViewGroup container,  int position) {
+                PhotoView photoView = new PhotoView(mContext);
+                photoView.setImageResource(R.drawable.image_error_bg);
+                photoView.enable();
+                photoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+//                Log.e("TAG", "ViewPagerPosition: " + position + " indePosition : " + index_position);
+                Picasso.with(mContext).load(index_position >= 0 ? resource_list.get(index_position).trim() : resource_list.get(position).trim()).error(R.drawable.image_error_bg).resize(TARGET_WIDTH,TARGET_HEIGHT).onlyScaleDown().into(photoView);
+                container.addView(photoView);
+                index_position = -1;
+//                position = index_position;
 
-                Log.e("TAG", "index_position: " + index_position + "  currentPosition: " + position);
-
-                container.addView(view);
-                return view;
+//                Observable.just(0).subscribeOn(Schedulers.io()).subscribe(r -> {
+//                    Bitmap bitmap = Picasso.with(mContext).load(index_position >= 0 ? resource_list.get(index_position).trim() : resource_list.get(position).trim()).error(R.drawable.image_error_bg).get();
+//                    if (bitmap != null) {
+//                        Application.instance().getHomeActivity().runOnUiThread(() -> {
+//                            index_position = -1;
+//                            photoView.setImageBitmap(bitmap);
+//                            container.addView(photoView);
+//                        });
+//                    }
+//                });
+                return photoView;
             }
 
             @Override
@@ -109,8 +124,7 @@ public class PhotoDialog extends Dialog {
         viewPager.setAdapter(pagerAdapter);
     }
 
-
-    public synchronized void updateData(List<Bitmap> data) {
+    public synchronized void updateData(List<String> data) {
         resource_list = data;
         if (pagerAdapter != null) {
             pagerAdapter.notifyDataSetChanged();
@@ -120,6 +134,7 @@ public class PhotoDialog extends Dialog {
 
     public void onClickPosition(int position) {
         this.index_position = position;
+        Log.e("TAG", "onClickPosition: " + position);
     }
 
 

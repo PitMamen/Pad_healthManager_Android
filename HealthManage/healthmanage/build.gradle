@@ -23,6 +23,7 @@ android {
     proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     // Enabling multidex support.
     multiDexEnabled true
+    javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
   }
 
   // Apk 签名的那些事：https://www.jianshu.com/p/a1f8e5896aa2
@@ -61,12 +62,8 @@ android {
       // 测试包下的 BuglyId
       buildConfigField('String', 'BUGLY_ID', '"811f8ffd4f"')
       // 测试服务器的主机地址
-//            buildConfigField('String', 'HOST_URL', '"http://192.168.0.114"')//晓峰192.168.0.248
-//            buildConfigField('String', 'HOST_URL', '"http://192.168.1.112"')//江南
-      buildConfigField('String', 'HOST_URL', '"http://manager.mclouds.org.cn:8008"')//测试环境    //http://192.168.1.122
-//            buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
-//            buildConfigField('String', 'HOST_URL', '"http://218.77.104.74:8008"')//演示环境
-//            buildConfigField('String', 'HOST_URL', '"http://happy-mao01.imwork.net:39596/"')//演示环境
+//      buildConfigField('String', 'HOST_URL', '"http://manager.mclouds.org.cn:8008"')//测试环境    //http://192.168.1.122
+            buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
 
       // 设置清单占位符
       manifestPlaceholders = ['app_name': '病友服务']
@@ -208,7 +205,7 @@ dependencies {
   // 图片加载框架：https://github.com/bumptech/glide
   // 官方使用文档：https://muyangmin.github.io/glide-docs-cn/
   implementation 'com.github.bumptech.glide:glide:4.12.0'
-  annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+  implementation 'com.github.bumptech.glide:compiler:4.12.0'
 
   // 沉浸式框架：https://github.com/gyf-dev/ImmersionBar
   implementation 'com.gyf.immersionbar:immersionbar:3.0.0'

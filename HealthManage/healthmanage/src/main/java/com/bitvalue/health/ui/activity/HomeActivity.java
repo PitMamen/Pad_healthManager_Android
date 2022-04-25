@@ -625,7 +625,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 Bundle bundlePre = new Bundle();
                 bundlePre.putString(Constants.PLAN_ID, RowsDTO.planId);
                 bundlePre.putSerializable(Constants.USERINFO, RowsDTO);
-//                bundlePre.putSerializable(Constants.PLAN_PREVIEW, planDetailResult);
                 HealthPlanTaskDetailFragment healthPlanPreviewFragment = new HealthPlanTaskDetailFragment();
                 healthPlanPreviewFragment.setArguments(bundlePre);
                 mapFragments.put(Constants.FRAGMENT_HEALTH_PLAN_PREVIEW, healthPlanPreviewFragment);

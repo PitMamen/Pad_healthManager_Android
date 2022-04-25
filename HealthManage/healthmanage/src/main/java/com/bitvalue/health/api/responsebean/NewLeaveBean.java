@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * @author created by bitvalue
  * @data : 12/06
- * 新出院患者实体
+ *
  */
 public class NewLeaveBean implements Serializable {
     private int pageNo;
@@ -102,6 +102,7 @@ public class NewLeaveBean implements Serializable {
         public boolean isConsultation = false;//区分是 问诊还是咨询
         public boolean isShowCollection = true;  //是否显示 预诊收集控件（默认显示,只有从咨询界面跳转进去的才不显示）
         public boolean isShowSendRemind = true;  //是否显示 发送提醒控件（默认显示,只有从咨询界面跳转进去的才不显示）
+        public boolean isShowEndPlanButton = true;// 是否显示 结束计划按钮 (权益和计划分开 权益的不让结束，计划可结束)
 
 
         //add
@@ -443,6 +444,7 @@ public class NewLeaveBean implements Serializable {
             private String templateId;
             private String planId;
             private String goodsName;
+            private String goodsType;
             private String planName;
             private String surplusConsultingNum;
             private String startDate;
@@ -463,6 +465,7 @@ public class NewLeaveBean implements Serializable {
                         ", templateId='" + templateId + '\'' +
                         ", planId='" + planId + '\'' +
                         ", goodsName='" + goodsName + '\'' +
+                        ", goodsType='" + goodsType + '\'' +
                         ", planName='" + planName + '\'' +
                         ", surplusConsultingNum='" + surplusConsultingNum + '\'' +
                         ", startDate='" + startDate + '\'' +
@@ -471,6 +474,13 @@ public class NewLeaveBean implements Serializable {
                         '}';
             }
 
+            public String getGoodsType() {
+                return goodsType;
+            }
+
+            public void setGoodsType(String goodsType) {
+                this.goodsType = goodsType;
+            }
             public boolean isChecked() {
                 return checked;
             }

@@ -7,8 +7,8 @@ public class Constants {
     public static final String USER_ID = "user_id";
     public static final String IDCARD_NUMBER = "idcard_number";
     public static final String NEED_TOAST = "need_toast";
-    public static final String HOST_URL = "http://manager.mclouds.org.cn:8008";    //http://192.168.1.122/
-//    public static final String HOST_URL = "http://hmg.mclouds.org.cn";
+//    public static final String HOST_URL = "http://manager.mclouds.org.cn:8008";    //http://192.168.1.122/
+    public static final String HOST_URL = "http://hmg.mclouds.org.cn";
     public static int screenWidth, screenHeight;
     public static final String KEY_REMEMBER_PSD = "key_remember_psd";
     public static final String KEY_TOKEN = "Authorization";
@@ -151,6 +151,12 @@ public class Constants {
     public static final int EVENTBUS_MES_HEALTHMANAGER = 1;
     public static final String DOC_ID = "docId";
     public static final String INDEX_NAME = "indexName";
+
+    public static final int TARGET_WIDTH = 2160;  //预览图 最大宽度
+    public static final int TARGET_HEIGHT = 1440; //预览图 最大高度
+
+    public static final int PREVIEWTARGET_WIDTH = 1920;  //缩略图 最大宽度
+    public static final int PREVIEWTARGET_HEIGHT = 1440;  //缩略图 最大高度
 
 
 //    //自己的

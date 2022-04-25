@@ -55,9 +55,9 @@ public class MoreDataAdapter extends BaseQuickAdapter<TaskDetailBean, BaseViewHo
         LinearLayoutManager layoutManager = new LinearLayoutManager(Application.instance());
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         childItemLRecycleView.setLayoutManager(layoutManager);
-        List<String> imageUrllist = new ArrayList<>();
+        List<TaskDetailBean.HealthImagesDTO> imageUrllist = new ArrayList<>();
         for (int i = 0; i < item.getHealthImages().size(); i++) {
-            imageUrllist.add(item.getHealthImages().get(i).previewFileUrl);
+            imageUrllist.add(item.getHealthImages().get(i));
         }
         MoreDataDetailChildImageAdapter moreDataDetailChildImageAdapter = new MoreDataDetailChildImageAdapter(R.layout.item_moredata_child_layout, imageUrllist,context);
         childItemLRecycleView.setAdapter(moreDataDetailChildImageAdapter);

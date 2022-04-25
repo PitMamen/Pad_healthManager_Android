@@ -135,11 +135,11 @@ public class MoreDataFragment extends BaseFragment<MoreDataDetailPresenter> impl
                             tv_data_time.setText(TimeUtils.getTime(responseBean.createdTime));
                             List<TaskDetailBean.HealthImagesDTO> imagesDTOList = responseBean.healthImages;
                             if (imagesDTOList != null && imagesDTOList.size() > 0) {
-                                List<String> urlList = new ArrayList<>();
-                                for (int i = 0; i < imagesDTOList.size(); i++) {
-                                    urlList.add(imagesDTOList.get(i).getFileUrl());
-                                }
-                                moreDataDetailChildImageAdapter.setNewData(urlList);
+//                                List<String> urlList = new ArrayList<>();
+//                                for (int i = 0; i < imagesDTOList.size(); i++) {
+//                                    urlList.add(imagesDTOList.get(i).getPreviewFileUrl());
+//                                }
+                                moreDataDetailChildImageAdapter.setNewData(imagesDTOList);
                             } else {
                                 rl_tips_layout.setVisibility(View.GONE);
                                 default_view.setVisibility(View.VISIBLE);

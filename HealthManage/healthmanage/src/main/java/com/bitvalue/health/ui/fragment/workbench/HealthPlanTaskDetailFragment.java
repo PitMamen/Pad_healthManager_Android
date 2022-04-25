@@ -111,8 +111,6 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
                 }
             }
         });
-
-
         if (getArguments() == null) {
             return;
         }
@@ -149,6 +147,7 @@ public class HealthPlanTaskDetailFragment extends BaseFragment<HealthPlanPreview
         Button tv_send_jktx = footerview.findViewById(R.id.tv_send_jktx);
         //结束计划
         Button tv_send_end = footerview.findViewById(R.id.tv_send_end);
+        tv_send_end.setVisibility(userInfo.isShowEndPlanButton ? View.VISIBLE : View.GONE);
 
         tv_send_jkpg.setOnClickListener(v -> {
             if (planTaskDetail == null || userInfo == null) {

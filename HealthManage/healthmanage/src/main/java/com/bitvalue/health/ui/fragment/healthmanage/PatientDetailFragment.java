@@ -255,7 +255,7 @@ public class PatientDetailFragment extends BaseFragment<VisitPlanDetailPresenter
         homeActivity.runOnUiThread(() -> {
             hideDialog();
             if (listBean != null && listBean.size() > 0) {
-                displayAdapter.setNewData(listBean);
+//                displayAdapter.setNewData(listBean);
             }
         });
     }

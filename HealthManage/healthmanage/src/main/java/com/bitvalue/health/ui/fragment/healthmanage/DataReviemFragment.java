@@ -83,6 +83,9 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
     TextView tv_age; //年龄
     @BindView(R.id.iv_patient_icon)
     ImageView img_icon;//头像
+    @BindView(R.id.view_line)
+    View view_line;
+
     @BindView(R.id.btn_fail)
     TextView btn_notPass;
     @BindView(R.id.btn_pass)
@@ -131,11 +134,11 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
     private DataReViewRecordAdapter dataReViewRecordAdapter;  //审核记录adapter
     private TaskDeatailBean taskDeatailBean;
     private String userID;
-    private List<String> BQJJurlList = new ArrayList<>();
-    private List<String> HYJGurlList = new ArrayList<>();
-    private List<String> XGurlList = new ArrayList<>();
-    private List<String> CTurlList = new ArrayList<>();
-    private List<String> MRIurlList = new ArrayList<>();
+    private List<TaskDetailBean.HealthImagesDTO> BQJJurlList = new ArrayList<>();
+    private List<TaskDetailBean.HealthImagesDTO> HYJGurlList = new ArrayList<>();
+    private List<TaskDetailBean.HealthImagesDTO> XGurlList = new ArrayList<>();
+    private List<TaskDetailBean.HealthImagesDTO> CTurlList = new ArrayList<>();
+    private List<TaskDetailBean.HealthImagesDTO> MRIurlList = new ArrayList<>();
     private List<DataReViewRecordResponse> dataReViewRecordList = new ArrayList<>(); //审核记录列表
     private ReasonDialog reasonDialog;
     private LoginBean loginBean;
@@ -227,6 +230,7 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
 
 
     private void initView() {
+        view_line.setVisibility(View.VISIBLE);
         tv_patient_name.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
         tv_phone.setText(taskDeatailBean.getTaskDetail().getUserInfo().getPhone());
         tv_sex.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex());
@@ -355,27 +359,27 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
                     switch (imageList.get(i).getVisitType()) {
                         case "BQJJ":
                             for (TaskDetailBean.HealthImagesDTO bqjjUrlList : URLlList) {
-                                BQJJurlList.add(bqjjUrlList.getFileUrl());
+                                BQJJurlList.add(bqjjUrlList);
                             }
                             break;
                         case "HYJG":
                             for (TaskDetailBean.HealthImagesDTO hyjgUrlList : URLlList) {
-                                HYJGurlList.add(hyjgUrlList.getFileUrl());
+                                HYJGurlList.add(hyjgUrlList);
                             }
                             break;
                         case "XG":
                             for (TaskDetailBean.HealthImagesDTO xgUrlList : URLlList) {
-                                XGurlList.add(xgUrlList.getFileUrl());
+                                XGurlList.add(xgUrlList);
                             }
                             break;
                         case "CT":
                             for (TaskDetailBean.HealthImagesDTO ctUrlList : URLlList) {
-                                CTurlList.add(ctUrlList.getFileUrl());
+                                CTurlList.add(ctUrlList);
                             }
                             break;
                         case "MRI":
                             for (TaskDetailBean.HealthImagesDTO ctUrlList : URLlList) {
-                                MRIurlList.add(ctUrlList.getFileUrl());
+                                MRIurlList.add(ctUrlList);
                             }
                             break;
                     }
@@ -416,6 +420,7 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
                 if (!EmptyUtil.isEmpty(patientBaseInfoBean.getBaseInfo().getUserSex())) {
                     img_icon.setImageDrawable(patientBaseInfoBean.getBaseInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
                 }
+                view_line.setVisibility(View.VISIBLE);
                 tv_patient_name.setText(patientBaseInfoBean.getBaseInfo().getUserName());
                 tv_sex.setText(patientBaseInfoBean.getBaseInfo().getUserSex());
                 String curen = TimeUtils.getCurrenTime();
