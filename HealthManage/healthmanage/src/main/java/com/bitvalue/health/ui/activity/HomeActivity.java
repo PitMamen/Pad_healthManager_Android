@@ -201,6 +201,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     private NeedDealWithFragment needDealWithFragment; //待办
     private VisitPlanFragment workbenchFragment;   //随访计划
     private ScheduleFragment scheduleFragment;
+    private LoginBean loginBean;
 
 
     @Override
@@ -220,7 +221,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
     @Override
     protected void initView() {
-        LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, this);
+        loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, this);
         if (loginBean == null) {
             Log.e(TAG, "initView  loginBean is null ");
             return;
@@ -239,17 +240,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         img_boll_red.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
-
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onEvent(MsgRemindObj msgRemindObj) {
-//        if (msgRemindObj.type == EVENT_MES_TYPE_CLOUDCLINC) {
-//            tv_new_count_video.setText(msgRemindObj.num > 99 ? (msgRemindObj.num + "+") : (msgRemindObj.num + ""));
-//            layout_pot_video.setVisibility(msgRemindObj.num > 0 ? View.VISIBLE : View.GONE);
-//        } else {
-//            tv_new_count_health.setText(msgRemindObj.num > 99 ? (msgRemindObj.num + "+") : (msgRemindObj.num + ""));
-//            layout_pot_health.setVisibility(msgRemindObj.num > 0 ? View.VISIBLE : View.GONE);
-//        }
-//    }
 
     @Override
     protected void onResume() {
@@ -869,8 +859,9 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                     return;
                 }
                 frameLayout_full.setVisibility(View.GONE);
-                switchSecondFragment(FRAGMENT_PLAN_LIST, "");
-                afterTabSelect(PATIENT_REPORT);
+                //这里还要区分 账号类型 如果是医生账号 进来的界面 右边的fragment 不能默认显示 分配计划的界面
+                    switchSecondFragment(FRAGMENT_PLAN_LIST, "");
+                    afterTabSelect(PATIENT_REPORT);
                 break;
 
 

@@ -4,6 +4,7 @@ import static com.tencent.liteav.demo.beauty.utils.ResourceUtils.getResources;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,11 +34,12 @@ public class PhotoDialog extends Dialog {
 
     private ViewPager viewPager;
     private Context mContext;
-    private List<String> resource_list;
+    private List<Bitmap> resource_list;
     private int index_position;
+    private PagerAdapter pagerAdapter;
 
 
-    public PhotoDialog(@NonNull Context context, List<String> stringList) {
+    public PhotoDialog(@NonNull Context context, List<Bitmap> stringList) {
         super(context);
         mContext = context;
         if (stringList == null) {
@@ -70,7 +72,7 @@ public class PhotoDialog extends Dialog {
 
 
     private void initAdapter() {
-        viewPager.setAdapter(new PagerAdapter() {
+        pagerAdapter = new PagerAdapter() {
             @Override
             public int getCount() {
                 return resource_list != null && resource_list.size() > 0 ? resource_list.size() : 0;
@@ -86,8 +88,11 @@ public class PhotoDialog extends Dialog {
                 PhotoView view = new PhotoView(mContext);
                 view.enable();
                 view.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                Picasso.with(Application.instance()).load(resource_list.get(index_position)).error(R.drawable.image_error_bg).into(view);
-                index_position = position;
+                if (position > resource_list.size()) {
+                    position = resource_list.size() - 1;
+                }
+                view.setImageBitmap(resource_list.get(position));
+//                Picasso.with(Application.instance()).load(resource_list.get(index_position)).error(R.drawable.image_error_bg).into(view);
 
                 Log.e("TAG", "index_position: " + index_position + "  currentPosition: " + position);
 
@@ -99,9 +104,18 @@ public class PhotoDialog extends Dialog {
             public void destroyItem(ViewGroup container, int position, Object object) {
                 container.removeView((View) object);
             }
-        });
+        };
+
+        viewPager.setAdapter(pagerAdapter);
     }
 
+
+    public synchronized void updateData(List<Bitmap> data) {
+        resource_list = data;
+        if (pagerAdapter != null) {
+            pagerAdapter.notifyDataSetChanged();
+        }
+    }
 
 
     public void onClickPosition(int position) {

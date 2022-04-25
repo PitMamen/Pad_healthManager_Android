@@ -110,9 +110,9 @@ public class QuestionDetailFragment extends BaseFragment {
                     if (!EmptyUtil.isEmpty(result)) {
                         if (result.getCode() == 0) {
                             if (result.getData() != null) {
-                                String url = result.getData().questUrl;
-                                url = url + "?showsubmitbtn=hide";
-                                initWebView(url.contains("/r/")?url.replace("/r/","/s"):url);
+                                String url = result.getData().questUrl + "?userId=" + questbean.userId;  // /r需加Userid
+                                Log.e(TAG, "问卷URL: " + url);
+                                initWebView(url);
                             }
                         }
                     }

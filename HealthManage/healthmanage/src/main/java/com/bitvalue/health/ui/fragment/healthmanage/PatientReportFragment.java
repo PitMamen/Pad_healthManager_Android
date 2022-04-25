@@ -211,7 +211,9 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
         initSpinnerCon();
         initSearchButton();
         initSearchList();
-        homeActivity.switchSecondFragment(FRAGMENT_PLAN_LIST, "");
+        if (loginBean.getAccount().roleName.equals("casemanager")) {
+            homeActivity.switchSecondFragment(FRAGMENT_PLAN_LIST, "");
+        }
         ll_unregister.setVisibility(View.GONE);
 
     }
