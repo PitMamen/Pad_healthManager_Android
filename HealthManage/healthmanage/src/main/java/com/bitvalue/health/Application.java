@@ -233,7 +233,7 @@ public final class Application extends android.app.Application {
         registerCustomListeners();
     }
 
-    private static void registerCustomListeners() {
+    private  void registerCustomListeners() {
         TUIKitListenerManager.getInstance().addChatListener(new HelloChatController());
         TUIKitListenerManager.getInstance().addConversationListener(new HelloChatController.HelloConversationController());
     }

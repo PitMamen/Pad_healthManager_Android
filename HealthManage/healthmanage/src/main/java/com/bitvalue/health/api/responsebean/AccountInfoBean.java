@@ -12,6 +12,7 @@ public final class AccountInfoBean {
     public String phone;
     public String roleName;
     public Object openId;
+    public String imAppId;
 
     public UserInfo user;
 

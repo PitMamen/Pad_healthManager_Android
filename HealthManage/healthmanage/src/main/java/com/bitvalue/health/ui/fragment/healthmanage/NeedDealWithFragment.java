@@ -30,6 +30,7 @@ import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.MUtils;
+import com.bitvalue.health.util.RSAEncrypt;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
@@ -44,6 +45,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -103,7 +105,6 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     WrapRecyclerView search_alreadyPatient;
 
 
-
     @BindView(R.id.ll_needdeal_patient)
     LinearLayout ll_needDealWithlayoout;
     @BindView(R.id.ll_already_deal)
@@ -151,7 +152,6 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
         initListView();
         EventBus.getDefault().register(this);
         loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
-
     }
 
 
@@ -232,7 +232,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
 //                        AlreadyDealithAdapter.setNewData(AlradDealWithList);
 //                    }
 
-                    if (!ClickUtils.isFastClick()){
+                    if (!ClickUtils.isFastClick()) {
                         getAlradydata();
                     }
                 }
@@ -362,7 +362,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void updateAlradyData(NotifycationAlardyObj notifyactionObj) {
-        Log.e(TAG, "更新已办处理----" );
+        Log.e(TAG, "更新已办处理----");
         getNeedDealWithData();
     }
 

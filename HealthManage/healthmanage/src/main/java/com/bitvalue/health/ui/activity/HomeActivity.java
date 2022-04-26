@@ -79,6 +79,7 @@ import com.bitvalue.health.ui.fragment.workbench.HealthPlanTaskDetailFragment;
 import com.bitvalue.health.ui.fragment.workbench.VisitPlanFragment;
 import com.bitvalue.health.ui.fragment.workbench.SendMessageFragment;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.RSAEncrypt;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
@@ -89,6 +90,7 @@ import com.tencent.imsdk.v2.V2TIMConversation;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -233,6 +235,10 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         ll_patient_report.setVisibility(loginBean.getAccount().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示患者报道模块
         initFragments(loginBean.getAccount().roleName.equals("casemanager") ? PATIENT_REPORT : FOLLOWUP_PLAN);  //如果是个案师账号默认首页工作台界面 否则默认随访计划首页
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig);
+
+
+
+
     }
 
 
