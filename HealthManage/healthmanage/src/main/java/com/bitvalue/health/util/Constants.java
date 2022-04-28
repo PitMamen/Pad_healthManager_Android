@@ -114,6 +114,8 @@ public class Constants {
     public static final String CHAT_INFO = "chatInfo";
     public static final String CALL_MODEL = "callModel";
     public static final String IS_OFFLINE_PUSH_JUMP = "is_offline_push";
+    public static final String LOCAL_PUBLIC_KEY="publicKey";
+    public static final String LOCAL_PRIVATER_KEY="privateKey";
 
     public static final String IM_PRIVACY_PROTECTION = "https://web.sdk.qcloud.com/document/Tencent-IM-Privacy-Protection-Guidelines.html";
     public static final String IM_USER_AGREEMENT = "https://web.sdk.qcloud.com/document/Tencent-IM-User-Agreement.html";
@@ -151,6 +153,7 @@ public class Constants {
     public static final int EVENTBUS_MES_HEALTHMANAGER = 1;
     public static final String DOC_ID = "docId";
     public static final String INDEX_NAME = "indexName";
+    public static final String SERIALNUMBER = "serialNumber";  //流水记录
 
     public static final int TARGET_WIDTH = 2160;  //预览图 最大宽度
     public static final int TARGET_HEIGHT = 1440; //预览图 最大高度

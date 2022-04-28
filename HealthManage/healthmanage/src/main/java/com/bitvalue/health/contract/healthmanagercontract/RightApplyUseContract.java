@@ -2,6 +2,7 @@ package com.bitvalue.health.contract.healthmanagercontract;
 
 import com.bitvalue.health.api.requestbean.DocListBean;
 import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
+import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.MyRightBean;
 import com.bitvalue.health.api.responsebean.QueryRightsRecordBean;
@@ -36,6 +37,8 @@ public interface RightApplyUseContract {
         void getDataReviewRecordSuccess(List<DataReViewRecordResponse> responseList);
         void getDataReviewRecordFail(String messageFail);
 
+
+
     }
 
     interface Model extends IModel {
@@ -50,6 +53,8 @@ public interface RightApplyUseContract {
 
 
         void getDataReviewRecord(String tradedID,String userID,Callback callback);
+
+
     }
 
     interface Presenter {
@@ -63,6 +68,8 @@ public interface RightApplyUseContract {
 
         //获取审核记录
         void getDataReviewRecord(String tradedID,String userID);
+
+
 
     }
 

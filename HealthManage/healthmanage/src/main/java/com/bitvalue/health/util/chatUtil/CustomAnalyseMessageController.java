@@ -5,10 +5,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bitvalue.health.Application;
-import com.bitvalue.health.ui.fragment.chat.ChatFragment;
+import com.bitvalue.health.util.customview.SummaryDialog;
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKitImpl;
-import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.MessageLayout;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
@@ -22,7 +21,7 @@ public class CustomAnalyseMessageController {
         // 把自定义消息view添加到TUIKit内部的父容器里
         final View view = LayoutInflater.from(Application.instance()).inflate(R.layout.layout_analyse_message, null, false);
         parent.addMessageContentView(view);
-
+        Application application = (Application) view.getContext();
         // 自定义消息view的实现，这里仅仅展示文本信息，并且实现超链接跳转
         TextView tv_title = view.findViewById(R.id.tv_title);
         TextView tv_content = view.findViewById(R.id.tv_content);
@@ -30,28 +29,23 @@ public class CustomAnalyseMessageController {
         if (tv_content == null || tv_title == null) {
             return;
         }
-        if (data == null) {
-            tv_title.setText(text);
-        } else {
-            tv_title.setText(data.title);
-        }
-        tv_content.setText(data.content);
+
+        tv_title.setText(data == null ? text : data.title);
+        tv_content.setText("内容:" + data.content);
         view.setClickable(true);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Application appApplication = (Application) view.getContext();
-                ChatFragment.NewMsgData msgData = new ChatFragment.NewMsgData();
-                msgData.userIds = data.userId;
-                msgData.id = data.msgDetailId;
-//                appApplication.getHomeActivity().switchSecondFragment(Constants.FRAGMENT_HEALTH_ANALYSE_DISPLAY, msgData);
-            }
+        view.setOnClickListener(v -> {
+            SummaryDialog summaryDialog = new SummaryDialog(application.getHomeActivity());
+            summaryDialog.setCanceledOnTouchOutside(true);
+            summaryDialog.show();
+            summaryDialog.setVisibleBotomButton(false);
+            summaryDialog.setEditeTextString(data.content);
+            summaryDialog.setDocNameAndSummaryTime(data.dealName, data.time);
         });
-        view.setOnLongClickListener(v -> {
-            if (onItemLongClickListener != null) {
-                onItemLongClickListener.onMessageLongClick(v, position, info);
-            }
-            return false;
-        });
+//        view.setOnLongClickListener(v -> {
+//            if (onItemLongClickListener != null) {
+//                onItemLongClickListener.onMessageLongClick(v, position, info);
+//            }
+//            return false;
+//        });
     }
 }

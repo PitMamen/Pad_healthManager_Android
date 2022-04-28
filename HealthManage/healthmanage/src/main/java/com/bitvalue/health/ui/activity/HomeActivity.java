@@ -237,8 +237,6 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig);
 
 
-
-
     }
 
 
@@ -585,11 +583,11 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
              */
             case Constants.FRAGMENT_QUESTION_DETAIL:
                 Bundle bundleQuest = new Bundle();
-                if (object instanceof QuestionResultBean.ListDTO ){
+                if (object instanceof QuestionResultBean.ListDTO) {
                     QuestionResultBean.ListDTO questionBean = (QuestionResultBean.ListDTO) object;
                     bundleQuest.putSerializable(Constants.QUESTION_DETAIL, questionBean);
 
-                }else if (object instanceof QueryPlanDetailApi){
+                } else if (object instanceof QueryPlanDetailApi) {
                     QueryPlanDetailApi questionBean = (QueryPlanDetailApi) object;
                     bundleQuest.putSerializable(Constants.QUESTION_DETAIL, questionBean);
                 }
@@ -600,10 +598,10 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             //   文章预览界面
             case Constants.FRAGMENT_ARTICLE_DETAIL:
                 Bundle bundleArticle = new Bundle();
-                if (object instanceof ArticleBean ){
+                if (object instanceof ArticleBean) {
                     ArticleBean articleBean = (ArticleBean) object;
                     bundleArticle.putSerializable(Constants.ARTICLE_DETAIL, articleBean);
-                }else if (object instanceof QueryPlanDetailApi){
+                } else if (object instanceof QueryPlanDetailApi) {
                     QueryPlanDetailApi queryArticle = (QueryPlanDetailApi) object;
                     bundleArticle.putSerializable(Constants.ARTICLE_DETAIL, queryArticle);
                 }
@@ -700,7 +698,11 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 break;
             //快捷回复界面
             case Constants.FRAGMENT_QUICKREPLY:
+                Bundle bundleQuickReply = new Bundle();
+                String userId = (String) object;
                 QuickReplyFragment quickReplyFragment = new QuickReplyFragment();
+                bundleQuickReply.putString(USER_ID,userId);
+                quickReplyFragment.setArguments(bundleQuickReply);
                 mapFragments.put(Constants.FRAGMENT_QUICKREPLY, quickReplyFragment);
                 break;
 
@@ -769,8 +771,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 if (object instanceof TaskDeatailBean) {
                     TaskDeatailBean taskDeatailBean = (TaskDeatailBean) object;
                     bundle_data_review.putSerializable(TASKDETAIL, taskDeatailBean);
-                }else if (object instanceof String){
-                    Log.e(TAG, "11111111111111" );
+                } else if (object instanceof String) {
+                    Log.e(TAG, "11111111111111");
                     bundle_data_review.putString(Constants.USER_ID, (String) object);
                 }
 
@@ -865,8 +867,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 }
                 frameLayout_full.setVisibility(View.GONE);
                 //这里还要区分 账号类型 如果是医生账号 进来的界面 右边的fragment 不能默认显示 分配计划的界面
-                    switchSecondFragment(FRAGMENT_PLAN_LIST, "");
-                    afterTabSelect(PATIENT_REPORT);
+                switchSecondFragment(FRAGMENT_PLAN_LIST, "");
+                afterTabSelect(PATIENT_REPORT);
                 break;
 
 

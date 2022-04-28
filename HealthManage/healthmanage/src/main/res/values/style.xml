@@ -29,6 +29,11 @@
         <item name="android:windowSoftInputMode">stateAlwaysVisible</item><!--显示软件盘-->
     </style>
 
+<!--    //popwind style-->
+    <style name="popmenu_animation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/pop_show_show</item>
+        <item name="android:windowExitAnimation">@anim/pop_show_hide</item>
+    </style>
 
 
 </resources>

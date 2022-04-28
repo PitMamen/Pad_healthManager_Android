@@ -25,6 +25,7 @@
     <string name="bga_pp_format_remain_image">+%1$d</string>
     <string name="bedreservation">床位预约</string>
     <string name="newly_discharged_patients">新出院患者</string>
+    <string name="my_quickreply">我的快捷回复</string>
 
     <!-- 通用的 -->
     <string name="common_crash_hint">应用出了点小意外，正在重新启动</string>

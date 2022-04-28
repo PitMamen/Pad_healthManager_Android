@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="MissingDefaultResource"
+    android:orientation="vertical">
+
+   <LinearLayout
+       android:orientation="horizontal"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+       <TextView
+           android:id="@+id/tv_title"
+           android:layout_width="wrap_content"
+           android:layout_height="40dp"
+           android:textColor="#333333"
+           android:textSize="14sp"
+           android:paddingLeft="13dp"
+           android:gravity="center_vertical"
+           android:text="问诊小结"
+           />
+
+
+       <TextView
+           android:id="@+id/tv_time"
+           android:layout_width="wrap_content"
+           android:layout_height="40dp"
+           android:text=""
+           android:textColor="#333333"
+           android:textSize="14sp"
+           android:gravity="center_vertical"
+           android:layout_marginLeft="@dimen/qb_px_5"
+           />
+   </LinearLayout>
+
+    <View
+        android:id="@+id/ll_line_"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:background="#E6E6E6"></View>
+
+
+
+
+
+</LinearLayout>
+
+
+

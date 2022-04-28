@@ -1,6 +1,7 @@
 package com.bitvalue.health;
 
 
+import com.bitvalue.health.util.Constants;
 import com.bitvalue.healthmanage.BuildConfig;
 
 /**
@@ -61,6 +62,6 @@ public final class AppConfig {
      * 获取服务器主机地址
      */
     public static String getHostUrl() {
-        return BuildConfig.HOST_URL;
+        return Constants.HOST_URL;
     }
 }

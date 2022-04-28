@@ -41,14 +41,15 @@ public class HealthLogsAdapter extends AppAdapter<GetLogsApi.LogBean> {
         @Override
         public void onBindView(int position) {
             logBean = getItem(position);
-            tv_time.setText(logBean.getSj().substring(0, 10));
-            tv_type.setText(logBean.getType().equals("menzhen") ? "门诊" : "住院");
-            tv_type.setTextColor(logBean.getType().equals("menzhen") ?
-                    getContext().getResources().getColor(R.color.main_blue) : getContext().getResources().getColor(R.color.green));
-            tv_result.setText(logBean.getZdmc());
-            tv_hospital.setText(logBean.getHospitalName());
-            tv_office.setText(logBean.getKsmc());
-            tv_doctor.setText(logBean.getZzysxm());
+            tv_time.setText(logBean.getHappenedTime().substring(0, 10));  //就诊时间
+            if (logBean.getRecordType()!=null){
+                tv_type.setText(logBean.getRecordType().equals("menzhen") ? "门诊" : "住院");
+                tv_type.setTextColor(logBean.getRecordType().equals("menzhen") ?getContext().getResources().getColor(R.color.main_blue) : getContext().getResources().getColor(R.color.green));//类型
+            }
+            tv_result.setText(logBean.getDepartmentDiagnosis());  //诊断
+            tv_hospital.setText(logBean.getHospitalName()); //医院
+            tv_office.setText(logBean.getHospitalDepartment()); //科室
+            tv_doctor.setText(logBean.getDoctorName()); //医生
         }
     }
 }

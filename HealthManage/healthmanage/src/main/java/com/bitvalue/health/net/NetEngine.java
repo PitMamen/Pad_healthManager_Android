@@ -21,9 +21,11 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -70,11 +72,40 @@ public class NetEngine {
                 .readTimeout(30 * 1000L, TimeUnit.MILLISECONDS)
                 .addNetworkInterceptor(new NetInterceptor())
                 .addInterceptor(new LoggerInterceptor("OkHttp", true))
+                .addInterceptor(reInterceptor)
                 .addInterceptor(new ExceptionInterceptor())
                 .retryOnConnectionFailure(true)
                 //其他配置
                 .build();
     }
+
+    private String HOST_URL_LIST = "http://36.158.225.181:24702/ehr/v1/list";   //获取病历列表
+    private String HOST_URL_LIST_RECORD = "http://36.158.225.181:24702/ehr/v1/getRecord";   //获取病历详情
+
+    private Interceptor reInterceptor = new Interceptor() {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            Request.Builder builder = request.newBuilder();
+            HttpUrl oldHttpUrl = request.url();   //从request中获取原有的HttpUrl实例oldHttpUrl
+//            Log.e(TAG, "oldHttpUrl000: " + oldHttpUrl.url());
+            HttpUrl newBaseUrl = HttpUrl.parse(Constants.HOST_URL);
+            if (oldHttpUrl.url().toString().contains("/ehr/v1/list")) {
+                newBaseUrl = HttpUrl.parse(HOST_URL_LIST);
+            }else if (oldHttpUrl.url().toString().contains("/ehr/v1/getRecord")){
+                newBaseUrl = HttpUrl.parse(HOST_URL_LIST_RECORD);
+            }
+            //重建新的HttpUrl，配置成我们需要的
+            HttpUrl newFullUrl = oldHttpUrl
+                    .newBuilder()
+                    .scheme(newBaseUrl.scheme())
+                    .host(newBaseUrl.host())    //新的url的域名
+                    .port(newBaseUrl.port())
+                    .build();
+            Log.e(TAG, "intercept111: "+newFullUrl );
+            return chain.proceed(builder.url(newFullUrl).build());
+        }
+    };
 
 
     private OkHttpClient getCommonServiceClient() {

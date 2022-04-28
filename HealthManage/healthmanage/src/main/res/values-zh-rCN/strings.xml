@@ -48,7 +48,7 @@
     <string name="common_step_next">下一步</string>
     <string name="common_step_complete">完成</string>
     <string name="common_step_commit">提交</string>
-
+    <string name="my_quickreply">我的快捷回复</string>
     <string name="common_permission_alert">授权提醒</string>
     <string name="common_permission_fail_1">授权失败，请正确授予权限</string>
     <string name="common_permission_fail_2">获取权限失败，请手动授予权限</string>

@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.requestbean.GetLogsApi;
 import com.bitvalue.health.api.requestbean.PatientDataMoreApi;
+import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.base.BaseAdapter;
 import com.bitvalue.health.ui.adapter.HealthLogsAdapter;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
+import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
@@ -98,6 +100,7 @@ public class HealthFilesActivity extends AppActivity {
     private String idcardNum;//身份证号码
     private PatientDataMoreApi.PatientDataMoreResponse patientDataMoreResponse;
     private final String defaultmouth = "48";
+    private LoginBean loginBean;
 
     @Override
     protected int getLayoutId() {
@@ -106,15 +109,12 @@ public class HealthFilesActivity extends AppActivity {
 
     @Override
     protected void initView() {
+        loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, this);
         userId = getIntent().getStringExtra(Constants.USER_ID);
-        Log.e("TAG", "传过来的ID: "+userId );
-        getLogsApi = new GetLogsApi();
-        getLogsApi.timeHorizon = defaultmouth;
-        getLogsApi.userId = userId;  //249  调试参数
-//        getLogsApi.idNumber = "430202198802186610";
+        Log.e("TAG", "传过来的ID: " + userId+" docId: "+loginBean.getUser().user.userId);
         initList(); //初始化各控件
         getPersonalData(); //加载患者详细数据
-        getLogsData(); //加载患者的就诊记录
+        getLogsData(); //获取病历列表
     }
 
 
@@ -225,8 +225,9 @@ public class HealthFilesActivity extends AppActivity {
         mAdapter = new HealthLogsAdapter(this);
         mAdapter.setOnItemClickListener((recyclerView, itemView, position) -> {
             Intent intent = new Intent(HealthFilesActivity.this, MRDetailActivity.class);
-            intent.putExtra(Constants.DOC_ID, Uri.encode(logBeans.get(position).getDocId()));
-            intent.putExtra(Constants.INDEX_NAME, logBeans.get(position).getType());
+            intent.putExtra(Constants.DOC_ID,String.valueOf(loginBean.getUser().user.userId));
+            intent.putExtra(Constants.INDEX_NAME, "347");
+            intent.putExtra(Constants.SERIALNUMBER, logBeans.get(position).getSerialNumber());
             HealthFilesActivity.this.startActivity(intent);
         });
         list_health_log.setAdapter(mAdapter);
@@ -237,6 +238,15 @@ public class HealthFilesActivity extends AppActivity {
      * 网络请求 获取患者看诊记录
      */
     private void getLogsData() {
+
+        Log.e("TAG", "患者ID: "+userId+" 医生ID： "+ loginBean.getUser().user.userId);
+        getLogsApi = new GetLogsApi();
+        getLogsApi.pastMonths = defaultmouth;
+        getLogsApi.dataUserId = loginBean.getUser().user.userId+""; //249  调试参数
+        getLogsApi.dataOwnerId = "347";
+        getLogsApi.recordType = "menzhen";
+//        getLogsApi.dataOwnerId = "347";
+//        getLogsApi.dataUserId = "347"; //249  调试参数
         EasyHttp.post(this).api(getLogsApi).request(new HttpCallback<ApiResult<ArrayList<GetLogsApi.LogBean>>>(this) {
             @Override
             public void onStart(Call call) {
@@ -252,6 +262,9 @@ public class HealthFilesActivity extends AppActivity {
                 }
                 if (result.getCode() == 0) {
                     logBeans = result.getData();
+//                    for (int  i= 0; i < logBeans.size(); i++) {
+//                        Log.e("TAG", "病历列表: "+logBeans.get(i).toString() );
+//                    }
                     if (logBeans.size() > 0) {
                         tv_no_data.setVisibility(View.GONE);
                         list_health_log.setVisibility(View.VISIBLE);

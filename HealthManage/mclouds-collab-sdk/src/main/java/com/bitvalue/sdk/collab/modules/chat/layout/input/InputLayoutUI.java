@@ -74,9 +74,9 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
 
 
     /***
-     * 发送快捷消息     预诊收集          发送提醒       发送问卷        发送文章       快捷回复
+     * 发送快捷消息     预诊收集          发送提醒       发送问卷        发送文章       快捷回复    病历夹
      */
-    public TextView tv_datacollection, tv_sendremind, tv_sendquestion, tv_sendarticle, tv_sendshortcut;
+    public TextView tv_datacollection, tv_sendremind, tv_sendquestion, tv_sendarticle, tv_sendshortcut,tv_medicalfolder;
 
 
     protected AppCompatActivity mActivity;
@@ -140,6 +140,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
         tv_sendremind = findViewById(R.id.tv_sendremind);
         tv_sendquestion = findViewById(R.id.tv_sendquestion);
         tv_sendarticle = findViewById(R.id.tv_sendarti);
+        tv_medicalfolder = findViewById(R.id.tv_medicalfolder);
         tv_sendshortcut = findViewById(R.id.tv_shortcut);
         linearLayout = findViewById(R.id.ll_input_content);
         mInputMoreView = findViewById(R.id.more_groups);

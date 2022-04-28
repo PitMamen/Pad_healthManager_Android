@@ -1,12 +1,18 @@
 package com.bitvalue.health.util;
 
 import android.annotation.SuppressLint;
+import android.media.MediaCodec;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import java.security.SecureRandom;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
@@ -141,5 +147,7 @@ import javax.crypto.spec.SecretKeySpec;
 	   private static void appendHex(StringBuffer sb, byte b) {
 	     sb.append(HEX.charAt((b >> 4) & 0x0f)).append(HEX.charAt(b & 0x0f));
 	   }
+
+
 	 }
 

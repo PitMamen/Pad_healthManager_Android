@@ -87,6 +87,7 @@ public class MessageLayout extends MessageLayoutUI {
             return;
         }
 
+
         final PopupList popupList = new PopupList(getContext());
         List<String> mItemList = new ArrayList<>();
         for (PopMenuAction action : mPopActions) {
@@ -144,6 +145,20 @@ public class MessageLayout extends MessageLayoutUI {
             return;
         }
         List<PopMenuAction> actions = new ArrayList<>();
+        //如果消息类型 是文本 并且是 自己发送的 新增一个PopMenuAction "添加至快捷用语"      自己添加 非腾讯自带的
+        if (msg.getMsgType() == MessageInfo.MSG_TYPE_TEXT && msg.isSelf()) {
+            PopMenuAction action = new PopMenuAction();
+            action.setActionName(getContext().getString(R.string.add_to_quickreply));
+            action.setActionClickListener(new PopActionClickListener() {
+                @Override
+                public void onActionClick(int position, Object data) {
+                    mOnPopActionClickListener.addToQuickwords(msg);
+                }
+            });
+            actions.add(action);
+        }
+
+
         PopMenuAction action = new PopMenuAction();
         if (msg.getMsgType() == MessageInfo.MSG_TYPE_TEXT) {
             action.setActionName(getContext().getString(R.string.copy_action));
@@ -236,7 +251,7 @@ public class MessageLayout extends MessageLayoutUI {
                         ((MessageListAdapter) getAdapter()).showLoading();
                     }
                     mHandler.loadMore(TUIKitConstants.GET_MESSAGE_FORWARD);
-                } else if (lastPosition == getAdapter().getItemCount() -1 && !isListEnd(lastPosition)){
+                } else if (lastPosition == getAdapter().getItemCount() - 1 && !isListEnd(lastPosition)) {
                     if (getAdapter() instanceof MessageListAdapter) {
                         ((MessageListAdapter) getAdapter()).showLoading();
                     }
@@ -247,7 +262,7 @@ public class MessageLayout extends MessageLayoutUI {
     }
 
     private boolean isListEnd(int lastPosition) {
-       return mHandler.isListEnd(lastPosition);
+        return mHandler.isListEnd(lastPosition);
     }
 
     public void scrollToEnd() {
@@ -299,9 +314,9 @@ public class MessageLayout extends MessageLayoutUI {
             }
 
             @Override
-            public void onUserIconClick(View view, int position, MessageInfo info,boolean isLeftIconClick) {
+            public void onUserIconClick(View view, int position, MessageInfo info, boolean isLeftIconClick) {
                 if (mOnItemLongClickListener != null) {
-                    mOnItemLongClickListener.onUserIconClick(view, position, info,isLeftIconClick);
+                    mOnItemLongClickListener.onUserIconClick(view, position, info, isLeftIconClick);
                 }
             }
         });
@@ -309,6 +324,7 @@ public class MessageLayout extends MessageLayoutUI {
 
     public interface OnLoadMoreHandler {
         void loadMore(int type);
+
         boolean isListEnd(int postion);
     }
 
@@ -319,10 +335,12 @@ public class MessageLayout extends MessageLayoutUI {
     public interface OnItemLongClickListener {
         void onMessageLongClick(View view, int position, MessageInfo messageInfo);
 
-        void onUserIconClick(View view, int position, MessageInfo messageInfo,boolean isLeftIconClick);
+        void onUserIconClick(View view, int position, MessageInfo messageInfo, boolean isLeftIconClick);
     }
 
     public interface OnPopActionClickListener {
+
+        void addToQuickwords(MessageInfo msg);
 
         void onCopyClick(int position, MessageInfo msg);
 

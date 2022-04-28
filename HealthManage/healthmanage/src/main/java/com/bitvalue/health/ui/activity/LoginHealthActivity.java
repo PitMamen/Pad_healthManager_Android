@@ -1,5 +1,8 @@
 package com.bitvalue.health.ui.activity;
 
+import static com.bitvalue.health.util.Constants.LOCAL_PRIVATER_KEY;
+import static com.bitvalue.health.util.Constants.LOCAL_PUBLIC_KEY;
+
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -14,10 +17,14 @@ import com.bitvalue.health.base.BaseActivity;
 import com.bitvalue.health.contract.homecontract.LoginContract;
 import com.bitvalue.health.presenter.homepersenter.LoginPersenter;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.RSAEncrypt;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
 import com.hjq.http.EasyConfig;
 import com.hjq.toast.ToastUtils;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -63,6 +70,19 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
             et_work_no.setText(account);
         }
         updateIsRememberPwdImage();
+        try {
+            Map<String, String> map_key = RSAEncrypt.genKeyPair(); // 生成 公钥和私钥 并保存
+            if (map_key != null && map_key.size() > 0) {
+                String publicKey = map_key.get("publicKey");
+                String privaterkey = map_key.get("privateKey");
+                SharedPreManager.putString(LOCAL_PUBLIC_KEY, publicKey);
+                SharedPreManager.putString(LOCAL_PRIVATER_KEY, privaterkey);
+                Log.d(TAG, "publicKey: " + publicKey + "  \n" + " privaterkey: " + privaterkey);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            Log.e(TAG, "生成公钥私钥异常: " + e.getMessage());
+        }
     }
 
     @Override
@@ -100,7 +120,9 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
                     SharedPreManager.putString(Constants.KEY_ACCOUNT, et_work_no.getText().toString());
                 }
                 showDialog();
-                mPresenter.login(new LoginReqBean(userId, passWord, 2));
+               String publicKey= SharedPreManager.getString(LOCAL_PUBLIC_KEY);
+                Log.e(TAG, "222222: "+publicKey );
+                mPresenter.login(new LoginReqBean(userId, passWord, 2,publicKey));
                 break;
         }
     }
@@ -118,13 +140,13 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
     //用户登录成功之后的回调
     @Override
     public void loginSuccess(Object object) {
-    runOnUiThread(() -> hideDialog());
+        runOnUiThread(() -> hideDialog());
         LoginResBean resBean = (LoginResBean) object;
         EasyConfig.getInstance().addHeader("Authorization", resBean.getToken()); //这里也要给EasyHttp添加Token，其他地方有用到EasyHttp请求
         SharedPreManager.putObject(Constants.KYE_USER_BEAN, resBean);
         SharedPreManager.putString(Constants.KEY_TOKEN, resBean.getToken());
         SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, Application.instance());
-        Log.e(TAG, "loginSuccess: "+SharedPreManager.getString(Constants.KEY_TOKEN) );
+        Log.e(TAG, "loginSuccess: " + SharedPreManager.getString(Constants.KEY_TOKEN));
         startActivity(new Intent(LoginHealthActivity.this, HomeActivity.class));
         finish();
 

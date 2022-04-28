@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.api.ApiResult;
+import com.bitvalue.health.api.MRRecordResult;
 import com.bitvalue.health.api.requestbean.CommonConfig;
 import com.bitvalue.health.api.requestbean.filemodel.HisDataCfxx;
 import com.bitvalue.health.api.requestbean.filemodel.HisDataCommon;
@@ -486,41 +487,45 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         //初始化入参
         String docId = getIntent().getStringExtra(Constants.DOC_ID);
         mIndex = getIntent().getStringExtra(Constants.INDEX_NAME);
+       String serialnumber = getIntent().getStringExtra(Constants.SERIALNUMBER);
+        Log.e(TAG, "流水号: "+serialnumber +" docUserId: "+docId+"  患者ID: "+mIndex);
         MRDetailRequestApi mrDetailRequestApi = new MRDetailRequestApi();
-        mrDetailRequestApi.docId = docId;
-        mrDetailRequestApi.indexName = mIndex;
+        mrDetailRequestApi.dataOwnerId = mIndex;
+        mrDetailRequestApi.dataUserId = docId;
+        mrDetailRequestApi.serialNumber = serialnumber;
 
-//        presenter.getMRDetail(mrDetailRequestApi);
         getDetailData(mrDetailRequestApi);
 
         setupFeed(); //设置结果列表的RecyclerViewAdapter
-//            }
     }
 
     private void getDetailData(MRDetailRequestApi mrDetailRequestApi) {
-        EasyHttp.get(this).api(mrDetailRequestApi).request(new HttpCallback<ApiResult<MRDetailResult>>(this) {
+        EasyHttp.post(this).api(mrDetailRequestApi).request(new HttpCallback<MRRecordResult>(this) {
             @Override
             public void onStart(Call call) {
                 super.onStart(call);
             }
 
             @Override
-            public void onSucceed(ApiResult<MRDetailResult> result) {
+            public void onSucceed(MRRecordResult result) {
                 super.onSucceed(result);
                 //增加判空
                 if (result == null) {
                     return;
                 }
-                if (result.getCode() == 0) {
-                    mrDetailResult = result.getData();
-                    String toJson = new Gson().toJson(mrDetailResult);
-                    if (null == mrDetailResult) {
-                        return;
-                    }
-                    refreshMRDetail(new Gson().toJson(mrDetailResult.medicalRecord.source), new Gson().toJson(mrDetailResult.medicalRecord.medicalMain));
-                } else {
-                    ToastUtil.toastShortMessage(result.getMessage());
-                }
+                Log.e(TAG, "请求病历详情: "+result.toString() );
+
+
+//                if (result.getCode() == 0) {
+//                    mrDetailResult = result.getData();
+//                    String toJson = new Gson().toJson(mrDetailResult);
+//                    if (null == mrDetailResult) {
+//                        return;
+//                    }
+//                    refreshMRDetail(new Gson().toJson(mrDetailResult.medicalRecord.source), new Gson().toJson(mrDetailResult.medicalRecord.medicalMain));
+//                } else {
+//                    ToastUtil.toastShortMessage(result.getMessage());
+//                }
             }
 
             @Override

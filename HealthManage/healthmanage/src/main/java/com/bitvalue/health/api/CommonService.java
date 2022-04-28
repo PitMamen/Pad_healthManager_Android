@@ -8,6 +8,7 @@ import com.bitvalue.health.api.requestbean.GetHistoryApi;
 import com.bitvalue.health.api.requestbean.LoginReqBean;
 import com.bitvalue.health.api.requestbean.PersonalDataBean;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
+import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.ReportStatusBean;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
 import com.bitvalue.health.api.requestbean.RequestPlanPatientListBean;
@@ -265,8 +266,6 @@ public interface CommonService {
     Observable<ApiResult<NewLeaveBean>> qryPlanPatientList(@Body RequestPlanPatientListBean leaveBean);
 
 
-
-
     /**
      * 查看患者上传资料
      *
@@ -351,7 +350,7 @@ public interface CommonService {
      * 查询审核记录
      */
     @GET("health-api/patient/qryRightsUserLog")
-    Observable<ApiResult<List<DataReViewRecordResponse>>> getDataReviewRecord(@Query("tradeId") String tardeid,@Query("userId") String userId,@Query("dealType") String dealType);  //dealType String
+    Observable<ApiResult<List<DataReViewRecordResponse>>> getDataReviewRecord(@Query("tradeId") String tardeid, @Query("userId") String userId, @Query("dealType") String dealType);  //dealType String
 
     /**
      * 保存审核记录
@@ -359,5 +358,27 @@ public interface CommonService {
     @POST("health-api/patient/saveRightsUserLog")
     Observable<ApiResult<DataReViewRecordResponse>> saveDataReviewRecord(@Body DataReViewRecordResponse saveReViewRecordRequest);
 
+
+    /**
+     * 获取问诊小结
+     *
+     * @return
+     */
+    @GET("health-api/patient/qryRightsUserSummary")
+    Observable<ApiResult<List<DataReViewRecordResponse>>> qryRightsUserSummary(@Query("userId") String userID);
+
+
+    /**
+     * 查询病历常用语
+     */
+    @POST("health-api/medical/doctor/qryCaseCommonWords")
+    Observable<ApiResult<List<QuickReplyRequest>>> qryCaseCommonWords(@Body QuickReplyRequest request);
+
+
+    /**
+     * 新增/修改快捷用语
+     */
+    @POST("health-api/medical/doctor/saveCaseCommonWords")
+    Observable<ApiResult<QuickReplyRequest>> modify_createCommonWords(@Body QuickReplyRequest request);
 
 }

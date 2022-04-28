@@ -1,7 +1,9 @@
 package com.bitvalue.health.contract.healthmanagercontract;
 
 import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
+import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.MyRightBean;
 import com.bitvalue.health.api.responsebean.QueryRightsRecordBean;
 import com.bitvalue.health.base.model.IModel;
@@ -23,14 +25,48 @@ public interface InterestsUseApplyByDocContract {
         void saveRightsUseRecordFail(String failMessage);
 
 
+        void sendsummary_resultSuucess(DataReViewRecordResponse reViewRecordResponse);
+
+        void sendsummary_resultFail(String messageFail);
+
+
+        void getSummaryListSuucess(List<DataReViewRecordResponse> reViewRecordResponse);
+
+        void getSummaryListFail(String messageFail);
+
+
+        void saveCaseCommonWordsSuccess(QuickReplyRequest quickReplyResult);
+        void saveCaseCommonWordsFail(String failMessage);
+
     }
 
     interface Model extends IModel {
         void saveRightsUseRecord(SaveRightsUseBean bean, Callback callback);
+
+
+        void sendsummary_result(DataReViewRecordResponse request, Callback callback);
+
+
+        void getsummary_resultList(String userId,Callback callback);
+
+
+        void saveCaseCommonWords(QuickReplyRequest request,Callback callback);
     }
 
     interface Presenter {
         void saveRightsUseRecord(SaveRightsUseBean bean);
+
+
+        //保存问诊小结
+        void sendsummary_result(DataReViewRecordResponse request);
+
+
+        //获取问诊小结
+        void getsummary_resultList(String userId);
+
+
+        //保存快捷用语
+        void saveCaseCommonWords(QuickReplyRequest request);
     }
 
 

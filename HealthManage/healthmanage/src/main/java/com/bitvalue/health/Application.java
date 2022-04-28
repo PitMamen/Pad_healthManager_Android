@@ -209,21 +209,13 @@ public final class Application extends android.app.Application {
                 .addHeader("Authorization", SharedPreManager.getString(Constants.KEY_TOKEN))
                 // 设置服务器配置
                 .setServer(new RequestServer())
-                .setInterceptor(new IRequestInterceptor() {
-                    @Override
-                    public void intercept(String url, String tag, HttpParams params, HttpHeaders headers) {
+                .setInterceptor((url, tag, params, headers) -> {
 
-                    }
                 })
                 // 设置请求处理策略
                 .setHandler(new RequestHandler(instance()))
                 // 设置请求重试次数
                 .setRetryCount(1)
-                // 添加全局请求参数
-                //.addParam("token", "6666666")
-                // 添加全局请求头
-                //.addHeader("time", "20191030")
-                // 启用配置
                 .into();
     }
 

@@ -76,6 +76,12 @@ public class TimeUtils {
     }
 
 
+    public static String getTimeToDay(long timeInMillis_){
+        return getTime(timeInMillis_, YY_MM_DD_FORMAT_3);
+    }
+
+
+
     /**
      * get current time in milliseconds
      *

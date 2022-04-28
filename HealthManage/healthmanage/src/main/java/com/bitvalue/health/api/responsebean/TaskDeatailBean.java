@@ -20,7 +20,7 @@ public class TaskDeatailBean implements Serializable {
     private long execTime;
     private String finishRate;
     private String updateTime;
-    private int execFlag;
+    private int execFlag;  // 1 = 已执行  其他 未执行
     private int noticeFlag;
     public boolean isShowBottomBuntton = true; //自定义字段 用来区分底部是否显示按钮 标识
 
@@ -135,7 +135,7 @@ public class TaskDeatailBean implements Serializable {
         private String userId;
         private String tradeId;
         private String execName;
-        private int uploadDocFlag; //是否上传资料
+        private int uploadDocFlag; //是否上传资料  1 = 上传   其他 不上传
 
         public int getUploadDocFlag() {
             return uploadDocFlag;

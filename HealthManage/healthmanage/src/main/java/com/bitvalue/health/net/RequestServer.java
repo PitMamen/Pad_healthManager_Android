@@ -19,7 +19,7 @@ public class RequestServer implements IRequestServer {
 
     @Override
     public BodyType getType() {
-        // 以表单的形式提交参数
+        // 以JSON的形式提交参数
         return BodyType.JSON;
     }
 }

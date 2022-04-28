@@ -5,11 +5,13 @@ import com.hjq.http.config.IRequestApi;
 
 public class MRDetailRequestApi  implements IRequestApi {
 
-    public String docId;
-    public String indexName;
+    public String dataOwnerId;
+    public String dataUserId;
+    public String serialNumber;
 
     @Override
     public String getApi() {
-        return Constants.API_HEALTH + "/health/doctor/getPatientHospitalRecordDetail";
+//        return Constants.API_HEALTH + "/health/doctor/getPatientHospitalRecordDetail";
+        return "/ehr/v1/getRecord";
     }
 }

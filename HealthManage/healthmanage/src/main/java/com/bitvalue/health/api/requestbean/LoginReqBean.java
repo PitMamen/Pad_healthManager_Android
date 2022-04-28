@@ -11,6 +11,9 @@ public class LoginReqBean {
     private String userName;
     private String password;
     private int loginType;
+    private String pubKey;
+
+
 
     /***
      *
@@ -18,12 +21,20 @@ public class LoginReqBean {
      * @param password
      * @param loginType
      */
-    public LoginReqBean(String userName, String password, int loginType) {
+    public LoginReqBean(String userName, String password, int loginType,String publicKey) {
         this.userName = userName;
         this.password = password;
         this.loginType = loginType;
+        this.pubKey = publicKey;
     }
 
+    public String getPubKey() {
+        return pubKey;
+    }
+
+    public void setPubKey(String pubKey) {
+        this.pubKey = pubKey;
+    }
     public String getUserName() {
         return userName;
     }

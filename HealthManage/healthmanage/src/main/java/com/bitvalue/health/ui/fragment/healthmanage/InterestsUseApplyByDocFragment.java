@@ -14,8 +14,10 @@ import androidx.annotation.NonNull;
 import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
+import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
 import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
+import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
@@ -111,8 +113,8 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
 
 
     private void initCompView() {
-        iv_endConsultationButton.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮
-        tv_end_consultation.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示结束问诊按钮
+        iv_endConsultationButton.setVisibility(taskDeatailBean.getExecFlag() == 1 ||taskDeatailBean.getTaskDetail().getUploadDocFlag() != 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮
+        tv_end_consultation.setVisibility(taskDeatailBean.getExecFlag() == 1 ||taskDeatailBean.getTaskDetail().getUploadDocFlag() != 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示结束问诊按钮
         tv_end_consultation.setText(taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1 ? "结束本次会诊" : "结束问诊");
         //如果执行完了的  不显示开始问诊
         if (taskDeatailBean.getExecFlag() == 1) {
@@ -211,7 +213,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
                     taskDeatailBean.isShowBottomBuntton = false;  //不显示底部  两个按钮
                     homeActivity.switchSecondFragment(Constants.DATA_REVIEW, taskDeatailBean);
                 } else {
-                    homeActivity.switchSecondFragment(Constants.DATA_REVIEW,String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+                    homeActivity.switchSecondFragment(Constants.DATA_REVIEW, String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
                 }
                 break;
 
@@ -315,5 +317,58 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
         homeActivity.runOnUiThread(() -> {
             ToastUtils.show(failMessage);
         });
+    }
+
+
+    /***
+     * 以下两个回调不需要实现
+     * @param reViewRecordResponse
+     */
+
+    //发送问诊小结 成功回调
+    @Override
+    public void sendsummary_resultSuucess(DataReViewRecordResponse reViewRecordResponse) {
+
+    }
+
+    //发送问诊小结 失败回调
+    @Override
+    public void sendsummary_resultFail(String messageFail) {
+
+    }
+
+
+    /**
+     *以下两个回调 不需实现
+     */
+
+    /**
+     * 获取问诊小结 成功回调
+     *
+     * @param reViewRecordResponse
+     */
+    @Override
+    public void getSummaryListSuucess(List<DataReViewRecordResponse> reViewRecordResponse) {
+
+    }
+
+    /**
+     * 获取问诊小结 失败回调
+     *
+     * @param
+     */
+    @Override
+    public void getSummaryListFail(String messageFail) {
+
+    }
+
+    @Override
+    public void saveCaseCommonWordsSuccess(QuickReplyRequest quickReplyResult) {
+
+    }
+
+    @Override
+    public void saveCaseCommonWordsFail(String failMessage) {
+
     }
 }

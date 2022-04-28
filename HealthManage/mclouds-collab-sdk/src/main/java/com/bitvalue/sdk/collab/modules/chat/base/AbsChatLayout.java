@@ -50,9 +50,10 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
     private static final String TAG = AbsChatLayout.class.getSimpleName();
     // 逐条转发消息数量限制
     private static final int FORWARD_MSG_NUM_LIMIT = 30;
-
+    public String newQuickString;
     protected MessageListAdapter mAdapter;
     private onForwardSelectActivityListener mForwardSelectActivityListener;
+    private onaddToQuickwordsListenner onaddToQuickwordsListenner;
 
     private V2TIMMessage mConversationLastMessage;
 
@@ -88,8 +89,31 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         super(context, attrs, defStyleAttr);
     }
 
+
+    public String getNewQuickString() {
+        return newQuickString;
+    }
+
+
     private void initListener() {
         getMessageLayout().setPopActionClickListener(new MessageLayout.OnPopActionClickListener() {
+
+            //添加至快捷用语回调
+            @Override
+            public void addToQuickwords(MessageInfo msg) {
+                V2TIMTextElem textElem = msg.getTimMessage().getTextElem();
+                if (textElem == null) {
+                    newQuickString = (String) msg.getExtra();
+                } else {
+                    newQuickString = textElem.getText();
+                }
+                if (onaddToQuickwordsListenner!=null){
+                    onaddToQuickwordsListenner.onAddStringToQuickword(newQuickString);
+                }
+
+                Log.e(TAG, "添加快捷用语: " + newQuickString);
+            }
+
             @Override
             public void onCopyClick(int position, MessageInfo msg) {
                 ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -130,7 +154,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
             }
 
             @Override
-            public void onForwardMessageClick(int position, MessageInfo msg){
+            public void onForwardMessageClick(int position, MessageInfo msg) {
                 forwardMessage(position, msg);
             }
         });
@@ -351,8 +375,8 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
     public void loadMessages(int type) {
         if (type == TUIKitConstants.GET_MESSAGE_FORWARD) {
             loadChatMessages(mAdapter.getItemCount() > 0 ? mAdapter.getItem(1).getTimMessage() : null, type);
-        } else if (type == TUIKitConstants.GET_MESSAGE_BACKWARD){
-            loadChatMessages(mAdapter.getItemCount() > 0 ? mAdapter.getItem(mAdapter.getItemCount() -1).getTimMessage() : null, type);
+        } else if (type == TUIKitConstants.GET_MESSAGE_BACKWARD) {
+            loadChatMessages(mAdapter.getItemCount() > 0 ? mAdapter.getItem(mAdapter.getItemCount() - 1).getTimMessage() : null, type);
         }
     }
 
@@ -366,7 +390,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
 
                 if (getMessageType == TUIKitConstants.GET_MESSAGE_TWO_WAY) {
                     if (mAdapter != null) {
-                       mAdapter.notifyDataSourceChanged(MessageLayout.DATA_CHANGE_SCROLL_TO_POSITION, mAdapter.getLastMessagePosition(lastMessage));
+                        mAdapter.notifyDataSourceChanged(MessageLayout.DATA_CHANGE_SCROLL_TO_POSITION, mAdapter.getLastMessagePosition(lastMessage));
                     }
                 }
             }
@@ -390,8 +414,8 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
 
             @Override
             public void onSuccess(V2TIMConversation v2TIMConversation) {
-                if (v2TIMConversation == null){
-                    Log.d(TAG,"getConversationLastMessage failed");
+                if (v2TIMConversation == null) {
+                    Log.d(TAG, "getConversationLastMessage failed");
                     mConversationLastMessage = null;
                     return;
                 }
@@ -416,7 +440,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         return getChatManager().checkFailedMessages(positions);
     }
 
-    protected boolean checkFailedMessageInfos(final List<MessageInfo> msgIds){
+    protected boolean checkFailedMessageInfos(final List<MessageInfo> msgIds) {
         return getChatManager().checkFailedMessageInfos(msgIds);
     }
 
@@ -425,7 +449,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
     }
 
     protected void multiSelectMessage(int position, MessageInfo msg) {
-        if(mAdapter != null){
+        if (mAdapter != null) {
             mAdapter.setShowMutiSelectCheckBox(true);
             mAdapter.setItemChecked(msg.getId(), true);
             mAdapter.notifyDataSetChanged();
@@ -442,7 +466,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         }
     }
 
-    private void resetTitleBar(String leftTitle){
+    private void resetTitleBar(String leftTitle) {
         getTitleBar().getRightGroup().setVisibility(VISIBLE);
 
         getTitleBar().getLeftGroup().setVisibility(View.VISIBLE);
@@ -464,9 +488,9 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         getForwardLayout().setVisibility(GONE);
     }
 
-    private void resetForwardState(String leftTitle){
+    private void resetForwardState(String leftTitle) {
         //取消多选界面
-        if(mAdapter != null){
+        if (mAdapter != null) {
             mAdapter.setShowMutiSelectCheckBox(false);
             mAdapter.notifyDataSetChanged();
         }
@@ -475,7 +499,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         resetTitleBar(leftTitle);
     }
 
-    private void setTitleBarWhenMultiSelectMessage(){
+    private void setTitleBarWhenMultiSelectMessage() {
         getTitleBar().getRightGroup().setVisibility(GONE);
 
         getTitleBar().getLeftGroup().setVisibility(View.VISIBLE);
@@ -492,7 +516,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
 
         getForwardLayout().setVisibility(VISIBLE);
         //点击转发
-        getForwardButton().setOnClickListener(new OnClickListener(){
+        getForwardButton().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 showForwardDialog(true);
@@ -500,13 +524,13 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         });
 
         //点击删除
-        getDeleteButton().setOnClickListener(new OnClickListener(){
+        getDeleteButton().setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<MessageInfo> msgIds = new ArrayList<MessageInfo>();
-                msgIds =  mAdapter.getSelectedItem();
+                msgIds = mAdapter.getSelectedItem();
 
-                if(msgIds == null || msgIds.isEmpty()){
+                if (msgIds == null || msgIds.isEmpty()) {
                     ToastUtil.toastShortMessage("please select message!");
                     return;
                 }
@@ -519,13 +543,13 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         });
     }
 
-    private String SwitchToForwardBundle(List<V2TIMMessage> msgList){
+    private String SwitchToForwardBundle(List<V2TIMMessage> msgList) {
         if (msgList == null || msgList.size() == 0) {
             return "";
         }
 
         String bundle = "";
-        for(int i = 0; i < msgList.size(); i++){
+        for (int i = 0; i < msgList.size(); i++) {
             bundle += msgList.get(i).getMsgID();
             bundle += ",";
         }
@@ -533,7 +557,7 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         return bundle;
     }
 
-    private List<MessageInfo> SwitchToV2TIMMessage(List<Integer> positions){
+    private List<MessageInfo> SwitchToV2TIMMessage(List<Integer> positions) {
         if (positions == null || positions.size() == 0) {
             return null;
         }
@@ -544,17 +568,17 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
     }
 
     private void showForwardDialog(boolean isMultiSelect) {
-        if (mAdapter == null){
+        if (mAdapter == null) {
             return;
         }
 
         final List<MessageInfo> messageInfoList = mAdapter.getSelectedItem();
-        if(messageInfoList == null || messageInfoList.isEmpty()){
+        if (messageInfoList == null || messageInfoList.isEmpty()) {
             ToastUtil.toastShortMessage(getContext().getString(R.string.forward_tip));
             return;
         }
 
-        if(checkFailedMessageInfos(messageInfoList)){
+        if (checkFailedMessageInfos(messageInfoList)) {
             ToastUtil.toastShortMessage(getContext().getString(R.string.forward_failed_tip));
             return;
         }
@@ -592,7 +616,8 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
                 bottomDialog.dismiss();
 
                 startSelectForwardActivity(ForwardSelectActivity.FORWARD_MODE_MERGE, messageInfoList);
-                resetForwardState("");;//发送完清理选中
+                resetForwardState("");
+                ;//发送完清理选中
             }
         });
         contentView.findViewById(R.id.cancel_action).setOnClickListener(new OnClickListener() {
@@ -615,7 +640,8 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
                     public void onClick(View v) {
                         bottomDialog.dismiss();
                         startSelectForwardActivity(ForwardSelectActivity.FORWARD_MODE_MERGE, messageInfoList);
-                        resetForwardState("");;//发送完清理选中
+                        resetForwardState("");
+                        ;//发送完清理选中
                     }
                 })
                 .setNegativeButton(getContext().getString(R.string.cancel), new OnClickListener() {
@@ -624,10 +650,10 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
 
                     }
                 });
-         tipsDialog.show();
+        tipsDialog.show();
     }
 
-    private void startSelectForwardActivity(int mode, List<MessageInfo> msgIds){
+    private void startSelectForwardActivity(int mode, List<MessageInfo> msgIds) {
         if (mForwardSelectActivityListener != null) {
             mForwardSelectActivityListener.onStartForwardSelectActivity(mode, msgIds);
         }
@@ -637,12 +663,18 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
         this.mForwardSelectActivityListener = listener;
     }
 
+
+    public void setAddQuickwordsListener(onaddToQuickwordsListenner Listenner){
+        this.onaddToQuickwordsListenner = Listenner;
+    }
+
+
     @Override
     public void sendMessage(MessageInfo msg, boolean retry) {
         getChatManager().sendMessage(msg, retry, new IUIKitCallBack() {
             @Override
             public void onSuccess(Object data) {
-                Log.e(TAG, "发送成功" );
+                Log.e(TAG, "发送成功");
                 BackgroundTasks.getInstance().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -681,6 +713,10 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
 
     public interface onForwardSelectActivityListener {
         public void onStartForwardSelectActivity(int mode, List<MessageInfo> msgIds);
+    }
+
+    public interface onaddToQuickwordsListenner{
+        void onAddStringToQuickword(String message);
     }
 
 }

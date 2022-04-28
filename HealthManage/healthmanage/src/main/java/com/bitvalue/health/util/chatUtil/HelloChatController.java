@@ -16,7 +16,6 @@ import com.bitvalue.sdk.collab.base.IBaseInfo;
 import com.bitvalue.sdk.collab.base.IBaseViewHolder;
 import com.bitvalue.sdk.collab.base.TUIChatControllerListener;
 import com.bitvalue.sdk.collab.base.TUIConversationControllerListener;
-import com.bitvalue.sdk.collab.helper.CustomAnalyseMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthPlanMessage;
@@ -200,6 +199,9 @@ public class HelloChatController implements TUIChatControllerListener {
                             }
                         }
                         break;
+
+
+
                 }
 
             } catch (JSONException e) {
