@@ -76,7 +76,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     /***
      * 发送快捷消息     预诊收集          发送提醒       发送问卷        发送文章       快捷回复    病历夹
      */
-    public TextView tv_datacollection, tv_sendremind, tv_sendquestion, tv_sendarticle, tv_sendshortcut,tv_medicalfolder;
+    public TextView tv_datacollection, tv_sendremind, tv_sendquestion, tv_sendarticle, tv_sendshortcut, tv_medicalfolder;
 
 
     protected AppCompatActivity mActivity;
@@ -100,6 +100,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     private boolean mHealthUploadDisable;
     private boolean mHealthVideoDisable;
     private boolean mHealthplantrackDisable;
+    private boolean showCall = false;
     /**
      * 健康管理聊天类型
      */
@@ -128,6 +129,11 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     public InputLayoutUI(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initViews();
+    }
+
+
+    public void setShowCallButton(boolean isshow) {
+        showCall = isshow;
     }
 
 
@@ -259,17 +265,19 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
 //                    mInputMoreActionList.add(actionUnit);
                 }
 
-                //结束看诊
+                //拨打电话
                 if (!mHealthVideoDisable) {
                     actionUnit = new InputMoreActionUnit() {
                         @Override
                         public void onAction(String chatInfoId, int chatType) {
-                            endVideoConsult();
+                            callphone();
                         }
                     };
-                    actionUnit.setIconResId(R.drawable.icon_end);
-                    actionUnit.setTitleId(R.string.video_end_consult);
-//                    mInputMoreActionList.add(actionUnit);
+                    actionUnit.setIconResId(R.drawable.icon_bddh);
+                    actionUnit.setTitleId(R.string.call_phone);
+                    if (showCall) {
+                        mInputMoreActionList.add(actionUnit);
+                    }
                 }
 
                 break;
@@ -415,7 +423,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
 
     protected abstract void writeConsultConclusion();
 
-    protected abstract void endVideoConsult();
+    protected abstract void callphone();
 
     protected abstract void startUploadData();
 

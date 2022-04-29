@@ -9,12 +9,17 @@ import static com.bitvalue.health.util.Constants.FRAGMENT_QUICKREPLY;
 import static com.bitvalue.health.util.Constants.FRAGMENT_SEND_REMIND;
 import static com.tencent.imsdk.v2.V2TIMConversation.V2TIM_C2C;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -27,6 +32,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -35,10 +41,12 @@ import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.MainRefreshObj;
 import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
+import com.bitvalue.health.api.requestbean.CallRequest;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
 import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
+import com.bitvalue.health.api.responsebean.CallResultBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
@@ -59,6 +67,7 @@ import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.GsonUtils;
+import com.bitvalue.health.util.PermissionUtil;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.chatUtil.CustomAnalyseMessage;
@@ -82,6 +91,7 @@ import com.bitvalue.sdk.collab.modules.group.info.GroupInfo;
 import com.bitvalue.sdk.collab.modules.group.info.StartGroupMemberSelectActivity;
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
+import com.bitvalue.sdk.collab.utils.PermissionUtils;
 import com.bitvalue.sdk.collab.utils.TUIKitConstants;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
@@ -320,6 +330,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     @Override
     public void saveRightsUseRecordSuccess(SaveRightsUseBean bean) {
         homeActivity.runOnUiThread(() -> {
+            ToastUtils.show("已结束问诊!");
             EventBus.getDefault().post(new NotifycationAlardyObj()); //通知更新最新数据
             EventBus.getDefault().post(new RefreshDataViewObj());  //通知医生端界面 更新 已结束 字样和 隐藏开始问诊控件
             if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
@@ -368,7 +379,6 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     public void getSummaryListSuucess(List<DataReViewRecordResponse> reViewRecordResponse) {
         homeActivity.runOnUiThread(() -> {
             if (reViewRecordResponse != null && reViewRecordResponse.size() > 0) {
-                Log.e(TAG, "getSummaryListSuucess: " + reViewRecordResponse.size());
                 popData = reViewRecordResponse;
             } else {
                 popData = null;
@@ -390,13 +400,38 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     }
 
     @Override
-    public void saveCaseCommonWordsSuccess(QuickReplyRequest quickReplyResult) {
-
+    public void saveCaseCommonWordsSuccess(String quickReplyResult) {
+        homeActivity.runOnUiThread(() -> ToastUtils.show(quickReplyResult));
     }
 
     @Override
     public void saveCaseCommonWordsFail(String failMessage) {
 
+    }
+
+    /**
+     * 拨打电话成功回调
+     *
+     * @param resultBean
+     */
+    @Override
+    public void callSuccess(CallResultBean resultBean) {
+        if (!EmptyUtil.isEmpty(resultBean)) {
+            homeActivity.runOnUiThread(() -> {
+                callPhone(resultBean.telX); //拨号  号码是接口返回的 虚拟号码
+            });
+
+        }
+    }
+
+    /**
+     * 拨打电话失败回调
+     *
+     * @param
+     */
+    @Override
+    public void callFail(String failMessage) {
+       homeActivity.runOnUiThread(() -> ToastUtils.show(failMessage));
     }
 
     //如果是个案师账号 这里是预问诊收集   如果是医生账号 就是 预诊信息
@@ -733,14 +768,46 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 //                homeActivity.switchSecondFragment(Constants.FRAGMENT_WRITE_HEALTH, msgData);
             }
 
-            //    结束就诊
+            // 拨打电话 
+            @SuppressLint("WrongConstant")
             @Override
-            public void onEndVideoConsult() {
-                // TODO: 2021/10/27 弹出对话框
+            public void onCallPhone() {
+                // TODO: 2022/4/29 调用接口 准备拨号 获取本机号码
+                TelephonyManager telephonyManager = (TelephonyManager) homeActivity.getSystemService(Context.TELEPHONY_SERVICE);
+                if (!PermissionUtils.checkPermission(homeActivity, Manifest.permission.READ_PHONE_STATE)){
+                    Log.e(TAG, "手动添加权限----" );
+                    return;
+                }
+                String local_phone = telephonyManager.getLine1Number();
+                if (taskDeatailBean != null && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserInfo() != null) {
+                    String patientPhone = taskDeatailBean.getTaskDetail().getUserInfo().getPhone();
+                    if (!EmptyUtil.isEmpty(patientPhone) && !EmptyUtil.isEmpty(local_phone)) {
+                        if (local_phone.length()>10){
+                            local_phone = local_phone.substring(3);
+                        }
+                        CallRequest callRequest = new CallRequest();
+                        callRequest.distPhone = patientPhone;
+                        callRequest.sourcePhone = local_phone;
+                        mPresenter.callPhone(callRequest);
+                    } else {
+                        ToastUtils.show("未检测到本机号码!");
+                    }
+                    Log.e(TAG, "患者phone: " + patientPhone + " 本机号码： " + local_phone);
+//                    callPhone(patientPhone);  //测试拨号
+                }
 
             }
         });
 
+    }
+
+
+    //拨号
+    private void callPhone(String phoneNum) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + phoneNum);
+        intent.setData(data);
+        startActivity(intent);
     }
 
 
@@ -797,14 +864,17 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         mChatInfo.setChatName(mChatInfo.getChatName());
         mChatLayout.getFlayout_tipmessage().setVisibility(patientinfo.isConsultation ? VISIBLE : GONE);  //如果是 问诊 顶部显示 “您已进入...” 字样  反之不显示
         mChatLayout.getInputLayout().ll_shortCutlayout.setVisibility(mChatInfo.isShowShortCut ? VISIBLE : GONE); //底部快捷回复布局
-
+        mChatLayout.getInputLayout().setShowCallButton(!loginBean.getAccount().roleName.equals("casemanager")); //只有医生才能拨打电话 个案师不显示 底部拨号按钮
         //长按信息 添加信息 至快捷用语 回调  拿到需添加的信息后  请求接口
         mChatLayout.setAddQuickwordsListener(message -> {
-            Log.e(TAG, "收到添加的信息: "+message );
-              QuickReplyRequest request = new QuickReplyRequest();
-              request.content = message;
-              request.userId = String.valueOf(loginBean.getUser().user.userId);
-              mPresenter.saveCaseCommonWords(request);
+            QuickReplyRequest request = new QuickReplyRequest();
+            if (message.length()<=70){
+                request.content = message;
+                request.userId = String.valueOf(loginBean.getUser().user.userId);
+                mPresenter.saveCaseCommonWords(request);
+            }else {
+                ToastUtils.show("操作失败!超出字数限制");
+            }
         });
         mChatLayout.setForwardSelectActivityListener((mode, msgIds) -> {
             mForwardMode = mode;

@@ -286,7 +286,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
 
             @Override
             public void onNegtiveClick() {
-                useEquityDialog.cancel();
+                useEquityDialog.dismiss();
             }
         }).show();
     }
@@ -463,7 +463,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     public void finishMidRequestSuccess(FinshMidRequestBean finshMidRequestBean) {
         homeActivity.runOnUiThread(() -> {
             if (useEquityDialog != null) {
-                useEquityDialog.cancel();
+                useEquityDialog.dismiss();
             }
             if (flashRecordRigth) {   //如果是个案师重新设置的  设置提交成功后 需要更新一下权益记录列表 但不需要更新待办列表
                 getRightsRecord();

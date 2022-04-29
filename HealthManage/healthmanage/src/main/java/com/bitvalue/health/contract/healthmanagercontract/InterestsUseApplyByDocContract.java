@@ -1,8 +1,10 @@
 package com.bitvalue.health.contract.healthmanagercontract;
 
+import com.bitvalue.health.api.requestbean.CallRequest;
 import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
 import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.responsebean.CallResultBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.MyRightBean;
 import com.bitvalue.health.api.responsebean.QueryRightsRecordBean;
@@ -35,8 +37,13 @@ public interface InterestsUseApplyByDocContract {
         void getSummaryListFail(String messageFail);
 
 
-        void saveCaseCommonWordsSuccess(QuickReplyRequest quickReplyResult);
+        void saveCaseCommonWordsSuccess(String quickReplyResult);
+
         void saveCaseCommonWordsFail(String failMessage);
+
+        void callSuccess(CallResultBean resultBean);
+
+        void callFail(String failMessage);
 
     }
 
@@ -47,10 +54,12 @@ public interface InterestsUseApplyByDocContract {
         void sendsummary_result(DataReViewRecordResponse request, Callback callback);
 
 
-        void getsummary_resultList(String userId,Callback callback);
+        void getsummary_resultList(String userId, Callback callback);
 
 
-        void saveCaseCommonWords(QuickReplyRequest request,Callback callback);
+        void saveCaseCommonWords(QuickReplyRequest request, Callback callback);
+
+        void callPhone(CallRequest callRequest, Callback callback);
     }
 
     interface Presenter {
@@ -67,6 +76,11 @@ public interface InterestsUseApplyByDocContract {
 
         //保存快捷用语
         void saveCaseCommonWords(QuickReplyRequest request);
+
+
+        //拨打电话
+        void callPhone(CallRequest callRequest);
+
     }
 
 

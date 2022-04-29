@@ -73,7 +73,6 @@ public class RightApplyUseModel extends BaseModel implements RightApplyUseContra
                         FinshMidRequestBean finshMidResponse = result.getData();
                         if (!EmptyUtil.isEmpty(finshMidResponse)) {
                             callback.onSuccess(finshMidResponse, 1000);
-
                         }
                     } else {
                         callback.onFailedLog(result.getMessage(), 1001);

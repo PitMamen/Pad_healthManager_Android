@@ -238,7 +238,6 @@ public class HealthFilesActivity extends AppActivity {
      * 网络请求 获取患者看诊记录
      */
     private void getLogsData() {
-
         Log.e("TAG", "患者ID: "+userId+" 医生ID： "+ loginBean.getUser().user.userId);
         getLogsApi = new GetLogsApi();
         getLogsApi.pastMonths = defaultmouth;

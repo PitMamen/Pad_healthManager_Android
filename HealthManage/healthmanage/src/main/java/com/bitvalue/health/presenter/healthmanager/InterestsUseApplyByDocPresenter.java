@@ -1,7 +1,9 @@
 package com.bitvalue.health.presenter.healthmanager;
 
+import com.bitvalue.health.api.requestbean.CallRequest;
 import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.responsebean.CallResultBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
@@ -99,7 +101,7 @@ public class InterestsUseApplyByDocPresenter extends BasePresenter<InterestsUseA
                 public void onSuccess(Object o, int what) {
                     super.onSuccess(o, what);
                     if (isViewAttach()) {
-                        getView().saveCaseCommonWordsSuccess((QuickReplyRequest) o);
+                        getView().saveCaseCommonWordsSuccess((String) o);
                     }
                 }
 
@@ -109,6 +111,31 @@ public class InterestsUseApplyByDocPresenter extends BasePresenter<InterestsUseA
                     if (isViewAttach()) {
                         getView().saveCaseCommonWordsFail(str);
                     }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void callPhone(CallRequest callRequest) {
+        if (mModel != null) {
+            mModel.callPhone(callRequest, new CallBackAdapter() {
+                @Override
+                public void onSuccess(Object o, int what) {
+                    super.onSuccess(o, what);
+                    if (isViewAttach()) {
+                        getView().callSuccess((CallResultBean) o);
+                    }
+                }
+
+                @Override
+                public void onFailedLog(String str, int what) {
+                    super.onFailedLog(str, what);
+                    if (isViewAttach()) {
+                        getView().callFail(str);
+                    }
+
+
                 }
             });
         }

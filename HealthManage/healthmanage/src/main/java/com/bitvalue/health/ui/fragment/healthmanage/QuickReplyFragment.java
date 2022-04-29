@@ -103,7 +103,7 @@ public class QuickReplyFragment extends BaseFragment<QuickreplyPresenter> implem
         docUserId = getArguments().getString(USER_ID, "");
         LinearLayoutManager layoutManager = new LinearLayoutManager(homeActivity);
         recyclerView.setLayoutManager(layoutManager);
-        quickReplyAdapter = new QuickReplyAdapter(R.layout.item_quickreplay_layout, quickReplyList);
+        quickReplyAdapter = new QuickReplyAdapter(R.layout.item_quickreplay_layout, quickReplyList, homeActivity);
         recyclerView.setAdapter(quickReplyAdapter);
         quickReplyAdapter.setOnClicListner(this);
     }
@@ -128,6 +128,11 @@ public class QuickReplyFragment extends BaseFragment<QuickreplyPresenter> implem
             // 自定义快捷用语
             case R.id.tv_custom_reply:
                 if (!ClickUtils.isFastClick()) {
+                    if (quickReplyAdapter != null && quickReplyAdapter.getItemCount() >= 20) {
+                       ToastUtils.show("超出限制条数!不能创建新的快捷用语");
+                        return;
+                    }
+
                     dialog = new QuickReplyDialog(homeActivity);
                     dialog.setOnclickListener(new QuickReplyDialog.OnButtonClickListener() {
                         @Override

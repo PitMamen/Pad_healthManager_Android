@@ -88,6 +88,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     private boolean isMass = false;
     private boolean isVisibleMore;
     private boolean isPictrueConsulting = false;  //图文咨询和视频咨询标识
+
     public InputLayout(Context context) {
         super(context);
     }
@@ -215,6 +216,9 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     }
 
 
+
+
+
     public void updateInputText(String names, String ids) {
         if (names == null || ids == null || names.isEmpty() || ids.isEmpty()) {
             return;
@@ -325,9 +329,9 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     }
 
     @Override
-    protected void endVideoConsult() {
+    protected void callphone() {
         if (null != onCustomClickListener) {
-            onCustomClickListener.onEndVideoConsult();
+            onCustomClickListener.onCallPhone();
         }
     }
 
@@ -551,7 +555,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
 
         void onWriteConsultConclusion();
 
-        void onEndVideoConsult();
+        void onCallPhone();
     }
 
     public void setOnCustomClickListener(OnCustomClickListener onCustomClickListener) {
@@ -852,7 +856,6 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     }
 
 
-
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         mInputContent = s.toString();
@@ -867,7 +870,7 @@ public class InputLayout extends InputLayoutUI implements View.OnClickListener, 
     public void afterTextChanged(Editable s) {
         if (TextUtils.isEmpty(s.toString().trim())) {
             mSendEnable = false;
-            if (!isPictrueConsulting){
+            if (!isPictrueConsulting) {
                 showSendTextButton(View.VISIBLE);
                 return;
             }

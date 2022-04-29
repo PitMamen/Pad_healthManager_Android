@@ -2,6 +2,7 @@ package com.bitvalue.health.api;
 
 
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
+import com.bitvalue.health.api.requestbean.CallRequest;
 import com.bitvalue.health.api.requestbean.DocListBean;
 import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
 import com.bitvalue.health.api.requestbean.GetHistoryApi;
@@ -17,8 +18,8 @@ import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
 import com.bitvalue.health.api.requestbean.SendUserRemind;
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
-import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.ArticleByDeptCodeBean;
+import com.bitvalue.health.api.responsebean.CallResultBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.DepartmentResponeBean;
@@ -34,14 +35,12 @@ import com.bitvalue.health.api.responsebean.PlanDetailResult;
 import com.bitvalue.health.api.responsebean.PlanListBean;
 import com.bitvalue.health.api.responsebean.PlanTaskDetail;
 import com.bitvalue.health.api.responsebean.QueryRightsRecordBean;
-import com.bitvalue.health.api.responsebean.AnswerResultBean;
 import com.bitvalue.health.api.responsebean.SaveAnalyseApi;
 import com.bitvalue.health.api.responsebean.SaveCaseApi;
 import com.bitvalue.health.api.responsebean.SearchArticleResult;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.api.responsebean.TaskPlanDetailBean;
-import com.bitvalue.health.api.responsebean.VideoClientsResultBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -381,4 +380,9 @@ public interface CommonService {
     @POST("health-api/medical/doctor/saveCaseCommonWords")
     Observable<ApiResult<QuickReplyRequest>> modify_createCommonWords(@Body QuickReplyRequest request);
 
+    /**
+     * 手动呼叫
+     */
+    @POST("tc-api/phoneBind/getPrivateCallNumber")
+    Observable<ApiResult<CallResultBean>> callPhone(@Body CallRequest request);
 }

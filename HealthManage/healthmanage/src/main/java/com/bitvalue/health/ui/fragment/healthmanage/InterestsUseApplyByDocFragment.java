@@ -17,6 +17,7 @@ import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
 import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
 import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
+import com.bitvalue.health.api.responsebean.CallResultBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
@@ -363,12 +364,33 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
     }
 
     @Override
-    public void saveCaseCommonWordsSuccess(QuickReplyRequest quickReplyResult) {
+    public void saveCaseCommonWordsSuccess(String quickReplyResult) {
 
     }
 
     @Override
     public void saveCaseCommonWordsFail(String failMessage) {
+
+    }
+
+    /**
+     * 以下两个回调 这个界面不需要实现
+     */
+
+    /**
+     * 拨打电话成功回调
+     * @param resultBean
+     */
+    @Override
+    public void callSuccess(CallResultBean resultBean) {
+
+    }
+    /**
+     * 拨打电话失败回调
+     * @param
+     */
+    @Override
+    public void callFail(String failMessage) {
 
     }
 }

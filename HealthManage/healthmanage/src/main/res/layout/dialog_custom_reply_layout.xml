@@ -44,6 +44,7 @@
             android:layout_marginStart="@dimen/qb_px_5"
             android:background="@null"
             android:gravity="top"
+            android:maxLength="70"
             android:hint="请编辑快捷用语..."
             android:singleLine="false"></EditText>
 

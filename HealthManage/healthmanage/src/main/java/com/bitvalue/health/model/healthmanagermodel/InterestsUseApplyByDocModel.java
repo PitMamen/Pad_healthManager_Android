@@ -2,6 +2,7 @@ package com.bitvalue.health.model.healthmanagermodel;
 
 import android.util.Log;
 
+import com.bitvalue.health.api.requestbean.CallRequest;
 import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
@@ -60,7 +61,6 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
     public void getsummary_resultList(String userId, Callback callback) {
         mApi.qryRightsUserSummary(userId).subscribeOn(Schedulers.io()).subscribe(result -> {
             if (!EmptyUtil.isEmpty(result)) {
-                Log.e(TAG, "getsummary_resultList: " + result.toString());
                 if (result.getCode() == 0) {
                     callback.onSuccess(result.getData(), 1000);
                 } else {
@@ -68,7 +68,7 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
                 }
             }
         }, error -> {
-            Log.e(TAG, "请求获取问诊小结出错: "+error.getMessage() );
+            Log.e(TAG, "请求获取问诊小结出错: " + error.getMessage());
             callback.onFailedLog(error.getMessage(), 1001);
         });
     }
@@ -76,17 +76,32 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
     @Override
     public void saveCaseCommonWords(QuickReplyRequest request, Callback callback) {
         mApi.modify_createCommonWords(request).subscribeOn(Schedulers.io()).subscribe(result -> {
-            Log.e(TAG, "saveCaseCommonWords: "+result );
             if (!EmptyUtil.isEmpty(result)) {
                 if (result.getCode() == 0) {
-                    QuickReplyRequest resultBean = result.getData();
-                    callback.onSuccess(resultBean, 1000);
+//                    QuickReplyRequest resultBean = result.getData();
+                    callback.onSuccess(result.getMessage(), 1000);
                 } else {
                     callback.onFailedLog(result.getMessage(), 1001);
                 }
             }
         }, error -> {
-            Log.e(TAG, "saveCaseCommonWords error: "+error.getMessage() );
+            Log.e(TAG, "saveCaseCommonWords error: " + error.getMessage());
+            callback.onFailedLog(error.getMessage(), 1001);
+        });
+    }
+
+    @Override
+    public void callPhone(CallRequest callRequest, Callback callback) {
+        mApi.callPhone(callRequest).subscribeOn(Schedulers.io()).subscribe(result -> {
+            if (!EmptyUtil.isEmpty(result)) {
+                Log.e(TAG, "callPhone: "+result.toString() );
+                if (result.getCode() == 0) {
+                    callback.onSuccess(result.getData(), 1000);
+                } else {
+                    callback.onFailedLog(result.getMessage(), 1001);
+                }
+            }
+        }, error -> {
             callback.onFailedLog(error.getMessage(), 1001);
         });
     }
