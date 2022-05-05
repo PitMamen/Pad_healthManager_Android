@@ -1,25 +1,21 @@
-package com.bitvalue.health.util.customview;
+package com.bitvalue.health.util.customview.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bitvalue.health.api.requestbean.DocListBean;
 import com.bitvalue.health.pickdatetime.DatePickDialog;
-import com.bitvalue.health.pickdatetime.OnSureListener;
 import com.bitvalue.health.pickdatetime.bean.DateParams;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.TimeUtils;
@@ -27,13 +23,9 @@ import com.bitvalue.healthmanage.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * @author created by bitvalue

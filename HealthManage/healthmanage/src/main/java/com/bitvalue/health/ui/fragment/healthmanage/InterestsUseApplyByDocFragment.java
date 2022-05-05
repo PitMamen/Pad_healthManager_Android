@@ -114,9 +114,14 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
 
 
     private void initCompView() {
-        iv_endConsultationButton.setVisibility(taskDeatailBean.getExecFlag() == 1 ||taskDeatailBean.getTaskDetail().getUploadDocFlag() != 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮
-        tv_end_consultation.setVisibility(taskDeatailBean.getExecFlag() == 1 ||taskDeatailBean.getTaskDetail().getUploadDocFlag() != 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示结束问诊按钮
-        tv_end_consultation.setText(taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1 ? "结束本次会诊" : "结束问诊");
+
+        if (taskDeatailBean.getExecFlag() != 1
+                && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1
+                && taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)) {
+            iv_endConsultationButton.setVisibility(View.VISIBLE);
+            tv_end_consultation.setVisibility(View.VISIBLE);
+            tv_end_consultation.setText("结束本次会诊");
+        }
         //如果执行完了的  不显示开始问诊
         if (taskDeatailBean.getExecFlag() == 1) {
             start_consultation.setVisibility(View.INVISIBLE);
@@ -162,7 +167,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
             case R.id.iv_icon:
             case R.id.tv_end_consultation:
 
-                if (tv_end_consultation.getText().toString().equals(homeActivity.getString(R.string.has_ended))) {
+                if (tv_end_consultation.getVisibility() == View.VISIBLE && tv_end_consultation.getText().toString().equals(homeActivity.getString(R.string.has_ended))) {
                     ToastUtils.show("已结束问诊!无需再次结束");
                     return;
                 }
@@ -274,7 +279,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
      * 更新视图
      */
     private void refreshView() {
-        tv_end_consultation.setText(homeActivity.getString(R.string.has_ended));
+//        tv_end_consultation.setText(homeActivity.getString(R.string.has_ended));
         start_consultation.setVisibility(View.INVISIBLE);
         if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
             homeActivity.getSupportFragmentManager().popBackStack();
@@ -379,14 +384,17 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
 
     /**
      * 拨打电话成功回调
+     *
      * @param resultBean
      */
     @Override
     public void callSuccess(CallResultBean resultBean) {
 
     }
+
     /**
      * 拨打电话失败回调
+     *
      * @param
      */
     @Override

@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bitvalue.health.Application;
-import com.bitvalue.health.util.customview.SummaryDialog;
+import com.bitvalue.health.util.customview.dialog.SummaryDialog;
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKitImpl;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.MessageLayout;

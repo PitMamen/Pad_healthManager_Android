@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 文章
+ */
 public class CustomCaseHistoryMessage extends CustomMessage implements Serializable {
     public String title;
     public String content;

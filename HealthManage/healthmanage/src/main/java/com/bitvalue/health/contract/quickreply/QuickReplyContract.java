@@ -18,6 +18,8 @@ public interface QuickReplyContract {
         void qryCaseCommonWords(QuickReplyRequest request, Callback callback);
 
         void saveCaseCommonWords(QuickReplyRequest request,Callback callback);
+
+        void deleteCommonWord(String id,String userId,Callback callback);
     }
 
     interface View extends IView {
@@ -28,6 +30,10 @@ public interface QuickReplyContract {
 
         void saveCaseCommonWordsSuccess(QuickReplyRequest quickReplyResult);
         void saveCaseCommonWordsFail(String failMessage);
+
+        void deleteCommonWordsSuccess(boolean isSuccess);
+        void deleteCommonWordsFail(String failMessage);
+
     }
 
     interface Presenter {
@@ -36,6 +42,9 @@ public interface QuickReplyContract {
 
 
         void saveCaseCommonWords(QuickReplyRequest request);
+
+
+        void deleteCommonWord(String id,String userId);
 
     }
 

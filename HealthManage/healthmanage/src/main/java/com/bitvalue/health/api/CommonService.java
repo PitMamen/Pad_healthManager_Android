@@ -380,6 +380,13 @@ public interface CommonService {
     @POST("health-api/medical/doctor/saveCaseCommonWords")
     Observable<ApiResult<QuickReplyRequest>> modify_createCommonWords(@Body QuickReplyRequest request);
 
+    /***
+     * 删除 快捷用语
+     */
+    @GET("health-api/medical/doctor/delCommonWords")
+    Observable<ApiResult<Boolean>> deletecommonWords(@Query("id") String id,@Query("userId") String userid);
+
+
     /**
      * 手动呼叫
      */

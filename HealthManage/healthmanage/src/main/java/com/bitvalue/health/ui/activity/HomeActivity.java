@@ -2,12 +2,14 @@ package com.bitvalue.health.ui.activity;
 
 
 import static com.bitvalue.health.util.Constants.DATA_REVIEW;
+import static com.bitvalue.health.util.Constants.FRAGEMNT_PHONE_CONSULTATION;
 import static com.bitvalue.health.util.Constants.FRAGMENT_DETAIL;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY_BYDOC;
 import static com.bitvalue.health.util.Constants.FRAGMENT_MORE_DATA;
 import static com.bitvalue.health.util.Constants.FRAGMENT_PLAN_LIST;
 import static com.bitvalue.health.util.Constants.MORE_DATA;
+import static com.bitvalue.health.util.Constants.PATIENT_EXPECTTIME;
 import static com.bitvalue.health.util.Constants.TASKDETAIL;
 import static com.bitvalue.health.util.Constants.USER_ID;
 import static com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI.CHAT_TYPE_VIDEO;
@@ -67,6 +69,7 @@ import com.bitvalue.health.ui.fragment.healthmanage.NewMsgFragmentDisplay;
 import com.bitvalue.health.ui.fragment.healthmanage.PlanMsgFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.QuestionDetailFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.QuickReplyFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.SetConsultationtimeFragment;
 import com.bitvalue.health.ui.fragment.schedule.ScheduleFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddQuestionFragment;
 import com.bitvalue.health.ui.fragment.setting.CreateNewHealthPlanFragment;
@@ -701,7 +704,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 Bundle bundleQuickReply = new Bundle();
                 String userId = (String) object;
                 QuickReplyFragment quickReplyFragment = new QuickReplyFragment();
-                bundleQuickReply.putString(USER_ID,userId);
+                bundleQuickReply.putString(USER_ID, userId);
                 quickReplyFragment.setArguments(bundleQuickReply);
                 mapFragments.put(Constants.FRAGMENT_QUICKREPLY, quickReplyFragment);
                 break;
@@ -779,6 +782,17 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 DataReviemFragment dataReviemFragment = new DataReviemFragment();
                 dataReviemFragment.setArguments(bundle_data_review);
                 mapFragments.put(DATA_REVIEW, dataReviemFragment);
+                break;
+
+            //电话 咨询设置咨询时间界面
+            case FRAGEMNT_PHONE_CONSULTATION:
+                String expecttime = (String) object;
+                Bundle phone_consultationBundle = new Bundle();
+                phone_consultationBundle.putString(PATIENT_EXPECTTIME, expecttime);
+                SetConsultationtimeFragment setConsultationtimeFragment = new SetConsultationtimeFragment();
+                setConsultationtimeFragment.setArguments(phone_consultationBundle);
+                mapFragments.put(FRAGEMNT_PHONE_CONSULTATION, setConsultationtimeFragment);
+
                 break;
 
 

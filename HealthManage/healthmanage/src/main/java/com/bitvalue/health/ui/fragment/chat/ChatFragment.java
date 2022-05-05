@@ -6,7 +6,6 @@ import static android.view.View.VISIBLE;
 import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_PAPER;
 import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_QUESTION;
 import static com.bitvalue.health.util.Constants.FRAGMENT_QUICKREPLY;
-import static com.bitvalue.health.util.Constants.FRAGMENT_SEND_REMIND;
 import static com.tencent.imsdk.v2.V2TIMConversation.V2TIM_C2C;
 
 import android.Manifest;
@@ -15,7 +14,6 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,17 +21,12 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bitvalue.health.Application;
@@ -63,17 +56,15 @@ import com.bitvalue.health.ui.adapter.DialogItemAdapter;
 import com.bitvalue.health.ui.adapter.DialogItemAnswerAdapter;
 import com.bitvalue.health.ui.adapter.PopWindorAdapter;
 import com.bitvalue.health.util.Constants;
-import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.GsonUtils;
-import com.bitvalue.health.util.PermissionUtil;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.chatUtil.CustomAnalyseMessage;
 import com.bitvalue.health.util.chatUtil.CustomVideoCallMessageController;
 import com.bitvalue.health.util.chatUtil.CustomWenJuanMessage;
-import com.bitvalue.health.util.customview.SummaryDialog;
+import com.bitvalue.health.util.customview.dialog.SummaryDialog;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
@@ -81,7 +72,6 @@ import com.bitvalue.sdk.collab.component.TitleBarLayout;
 import com.bitvalue.sdk.collab.helper.ChatLayoutHelper;
 import com.bitvalue.sdk.collab.helper.CustomMessage;
 import com.bitvalue.sdk.collab.helper.CustomVideoCallMessage;
-import com.bitvalue.sdk.collab.modules.chat.base.AbsChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.ChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayout;
@@ -93,7 +83,6 @@ import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.PermissionUtils;
 import com.bitvalue.sdk.collab.utils.TUIKitConstants;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
@@ -431,7 +420,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
      */
     @Override
     public void callFail(String failMessage) {
-       homeActivity.runOnUiThread(() -> ToastUtils.show(failMessage));
+        homeActivity.runOnUiThread(() -> ToastUtils.show(failMessage));
     }
 
     //如果是个案师账号 这里是预问诊收集   如果是医生账号 就是 预诊信息
@@ -569,6 +558,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         });
         mChatLayout.getInputLayout().tv_sendshortcut.setOnClickListener(v -> {
             homeActivity.switchSecondFragment(FRAGMENT_QUICKREPLY, String.valueOf(loginBean.getUser().user.userId));
+//            homeActivity.switchSecondFragment(FRAGEMNT_PHONE_CONSULTATION, "8:00-19:00");
         });
 
         mChatLayout.getInputLayout().tv_medicalfolder.setOnClickListener(v -> {  //病历夹
@@ -774,15 +764,15 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             public void onCallPhone() {
                 // TODO: 2022/4/29 调用接口 准备拨号 获取本机号码
                 TelephonyManager telephonyManager = (TelephonyManager) homeActivity.getSystemService(Context.TELEPHONY_SERVICE);
-                if (!PermissionUtils.checkPermission(homeActivity, Manifest.permission.READ_PHONE_STATE)){
-                    Log.e(TAG, "手动添加权限----" );
+                if (!PermissionUtils.checkPermission(homeActivity, Manifest.permission.READ_PHONE_STATE)) {
+                    Log.e(TAG, "手动添加权限----");
                     return;
                 }
                 String local_phone = telephonyManager.getLine1Number();
                 if (taskDeatailBean != null && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserInfo() != null) {
                     String patientPhone = taskDeatailBean.getTaskDetail().getUserInfo().getPhone();
                     if (!EmptyUtil.isEmpty(patientPhone) && !EmptyUtil.isEmpty(local_phone)) {
-                        if (local_phone.length()>10){
+                        if (local_phone.length() > 10) {
                             local_phone = local_phone.substring(3);
                         }
                         CallRequest callRequest = new CallRequest();
@@ -868,11 +858,11 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         //长按信息 添加信息 至快捷用语 回调  拿到需添加的信息后  请求接口
         mChatLayout.setAddQuickwordsListener(message -> {
             QuickReplyRequest request = new QuickReplyRequest();
-            if (message.length()<=70){
+            if (message.length() <= 70) {
                 request.content = message;
                 request.userId = String.valueOf(loginBean.getUser().user.userId);
                 mPresenter.saveCaseCommonWords(request);
-            }else {
+            } else {
                 ToastUtils.show("操作失败!超出字数限制");
             }
         });

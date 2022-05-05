@@ -63,6 +63,7 @@ public interface InterestsUseApplyByDocContract {
     }
 
     interface Presenter {
+        //保存权益使用记录
         void saveRightsUseRecord(SaveRightsUseBean bean);
 
 

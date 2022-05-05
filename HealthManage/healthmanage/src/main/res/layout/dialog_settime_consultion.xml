@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <RelativeLayout
+        android:id="@+id/title_re"
+        android:background="@color/main_blue"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_35">
+
+
+        <ImageView
+            android:visibility="invisible"
+            android:id="@+id/back_btn"
+            android:layout_width="@dimen/qb_px_20"
+            android:layout_height="@dimen/qb_px_20"
+            android:layout_centerVertical="true"
+            android:src="@drawable/left_aco"></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="预约时间"
+            android:textColor="@color/white"
+            android:textSize="@dimen/qb_px_12"></TextView>
+
+    </RelativeLayout>
+
+
+    <com.bitvalue.health.util.customview.WrapRecyclerView
+        android:id="@+id/list_time"
+        android:layout_below="@+id/title_re"
+        android:layout_marginTop="@dimen/qb_px_12"
+        app:spanCount="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.bitvalue.health.util.customview.WrapRecyclerView>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>

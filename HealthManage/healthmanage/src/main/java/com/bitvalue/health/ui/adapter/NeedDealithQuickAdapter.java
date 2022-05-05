@@ -43,20 +43,38 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
             img_head.setImageDrawable(taskdeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         }
 
-        if (!EmptyUtil.isEmpty(taskdeatailBean.getTaskDetail().getUserInfo())){
+        if (!EmptyUtil.isEmpty(taskdeatailBean.getTaskDetail().getUserInfo())) {
             holder.setText(R.id.tv_name, taskdeatailBean.getTaskDetail().getUserInfo().getUserName());
         }
 
         String rightType = "";
         switch (taskdeatailBean.getTaskDetail().getRightsType()) {
             case "videoNum":
-                rightType = "视频问诊";
+                rightType = "视频咨询";
                 break;
             case "textNum":
                 rightType = "图文咨询";
                 break;
+            case "appointBedNum":
+                rightType = "床位预约";
+                break;
+            case "appointNum":
+                rightType = "复诊预约";
+                break;
             case "ICUConsultNum":
                 rightType = "重症会诊";
+                break;
+            case "telNum":
+                rightType = "电话随访追踪";
+                break;
+            case "eatEvaluateNum":
+                rightType = "膳食点评";
+                break;
+            case "sportEvaluateNum":
+                rightType = "身体活动情况点评";
+                break;
+            case "mailNum":
+                rightType = "邮寄服务";
                 break;
         }
         holder.setText(R.id.tv_video_visit, rightType);

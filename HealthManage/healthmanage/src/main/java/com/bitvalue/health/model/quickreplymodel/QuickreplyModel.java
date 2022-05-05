@@ -51,4 +51,24 @@ public class QuickreplyModel extends BaseModel implements QuickReplyContract.Mod
             callback.onFailedLog(error.getMessage(), 1001);
         });
     }
+
+    @Override
+    public void deleteCommonWord(String id, String userId, Callback callback) {
+        if (!EmptyUtil.isEmpty(id) && !EmptyUtil.isEmpty(userId)) {
+            mApi.deletecommonWords(id, userId).subscribeOn(Schedulers.io()).subscribe(result->{
+                if (!EmptyUtil.isEmpty(result)){
+                    Log.e(TAG, "deleteCommonWord: "+result.toString() );
+                    if (result.getCode()==0){
+                        boolean isSuccess = result.getData();
+                        callback.onSuccess(isSuccess,1000);
+                    }else {
+                        callback.onFailedLog(result.getMessage(),1001);
+                    }
+                }
+            },error->{
+                callback.onFailedLog(error.getMessage(),1001);
+            });
+        } ;
+
+    }
 }

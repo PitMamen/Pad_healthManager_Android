@@ -3,19 +3,15 @@ package com.bitvalue.health.ui.fragment.healthmanage;
 import static com.bitvalue.health.util.Constants.USER_ID;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.base.BaseFragment;
-import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.OnItemClickCallback;
 import com.bitvalue.health.contract.quickreply.QuickReplyContract;
 import com.bitvalue.health.presenter.quickreplypresenter.QuickreplyPresenter;
@@ -23,7 +19,7 @@ import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.QuickReplyAdapter;
 import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.EmptyUtil;
-import com.bitvalue.health.util.customview.QuickReplyDialog;
+import com.bitvalue.health.util.customview.dialog.QuickReplyDialog;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
@@ -40,8 +36,9 @@ import butterknife.OnClick;
 /**
  * @author created by bitvalue
  * @data : 01/12
+ * 快捷回复界面
  */
-public class QuickReplyFragment extends BaseFragment<QuickreplyPresenter> implements QuickReplyContract.View, OnItemClickCallback {
+public class QuickReplyFragment extends BaseFragment<QuickreplyPresenter> implements QuickReplyContract.View, OnItemClickCallback,QuickReplyAdapter.OnPopwindClickLisener {
     @BindView(R.id.layout_back)
     LinearLayout back;
     @BindView(R.id.tv_title)
@@ -106,6 +103,7 @@ public class QuickReplyFragment extends BaseFragment<QuickreplyPresenter> implem
         quickReplyAdapter = new QuickReplyAdapter(R.layout.item_quickreplay_layout, quickReplyList, homeActivity);
         recyclerView.setAdapter(quickReplyAdapter);
         quickReplyAdapter.setOnClicListner(this);
+        quickReplyAdapter.setOnPopwindClickLisener(this);
     }
 
     @Override
@@ -205,7 +203,6 @@ public class QuickReplyFragment extends BaseFragment<QuickreplyPresenter> implem
             }
             qryCaseCommonWord(); //添加自定义快捷用语成功后 更新列表 重新请求接口
         });
-
     }
 
     /**
@@ -216,5 +213,43 @@ public class QuickReplyFragment extends BaseFragment<QuickreplyPresenter> implem
     @Override
     public void saveCaseCommonWordsFail(String failMessage) {
 
+    }
+
+
+    /**
+     * 删除快捷用语 成功回调
+     * @param isSuccess
+     */
+    @Override
+    public void deleteCommonWordsSuccess(boolean isSuccess) {
+
+    }
+
+    /**
+     * 删除快捷用语 失败回调
+     * @param failMessage
+     */
+    @Override
+    public void deleteCommonWordsFail(String failMessage) {
+
+    }
+
+
+    /**
+     * 快捷回复界面 长按删除回调
+     * @param position
+     */
+    @Override
+    public void onDeleteItem(QuickReplyRequest position) {
+         mPresenter.deleteCommonWord(position.id,position.userId);
+    }
+
+    /**
+     * 快捷回复界面 长按编辑回调
+     * @param
+     */
+    @Override
+    public void onNewEditItem(QuickReplyRequest newSting) {
+         mPresenter.saveCaseCommonWords(newSting);
     }
 }

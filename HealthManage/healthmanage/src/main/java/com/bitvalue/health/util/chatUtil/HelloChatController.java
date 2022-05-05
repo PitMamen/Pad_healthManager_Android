@@ -18,7 +18,6 @@ import com.bitvalue.sdk.collab.base.TUIChatControllerListener;
 import com.bitvalue.sdk.collab.base.TUIConversationControllerListener;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.helper.CustomHealthMessage;
-import com.bitvalue.sdk.collab.helper.CustomHealthPlanMessage;
 import com.bitvalue.sdk.collab.helper.CustomVideoCallMessage;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.IOnCustomMessageDrawListener;
@@ -138,6 +137,7 @@ public class HelloChatController implements TUIChatControllerListener {
                 String type = jsonObject.optString("type");
                 Log.e(TAG, "helle_onDraw: "+type );
                 switch (type) {
+                    //健康消息
                     case "CustomHealthMessage":
                         CustomHealthMessage healthMessage = new Gson().fromJson(dataJson, CustomHealthMessage.class);
                         if (healthMessage != null) {
@@ -147,6 +147,7 @@ public class HelloChatController implements TUIChatControllerListener {
                             }
                         }
                         break;
+                        //问诊小结
                     case "CustomAnalyseMessage":
                         CustomAnalyseMessage customAnalyseMessage = new Gson().fromJson(dataJson, CustomAnalyseMessage.class);
                         if (customAnalyseMessage != null) {
@@ -155,6 +156,7 @@ public class HelloChatController implements TUIChatControllerListener {
                             }
                         }
                         break;
+                        //暂定义为 电话预约
                     case "CustomHealthManageMessage":
                         CustomHealthPlanMessage customHealthPlanMessage = new Gson().fromJson(dataJson, CustomHealthPlanMessage.class);
                         if (customHealthPlanMessage != null) {
@@ -173,6 +175,7 @@ public class HelloChatController implements TUIChatControllerListener {
                         }
                         break;
 
+                        //视频问诊
                     case "CustomVideoCallMessage":
                         CustomVideoCallMessage customVideoCallMessage = new Gson().fromJson(dataJson, CustomVideoCallMessage.class);
                         if (customVideoCallMessage != null) {
@@ -181,6 +184,7 @@ public class HelloChatController implements TUIChatControllerListener {
                             }
                         }
                         break;
+                        //文章
                     case "CustomArticleMessage":
                         CustomCaseHistoryMessage customCaseHistoryMessage = new Gson().fromJson(dataJson, CustomCaseHistoryMessage.class);
                         if (customCaseHistoryMessage != null) {
@@ -189,7 +193,7 @@ public class HelloChatController implements TUIChatControllerListener {
                             }
                         }
                         break;
-
+                    //问卷
                     case "CustomYuWenZhenMessage":
                     case "CustomWenJuanMessage":
                         CustomWenJuanMessage customWenJuanMessage = new Gson().fromJson(dataJson, CustomWenJuanMessage.class);
@@ -199,6 +203,7 @@ public class HelloChatController implements TUIChatControllerListener {
                             }
                         }
                         break;
+
 
 
 

@@ -1,4 +1,4 @@
-package com.bitvalue.health.util.customview;
+package com.bitvalue.health.util.customview.dialog;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -1,8 +1,7 @@
-package com.bitvalue.health.util.customview;
+package com.bitvalue.health.util.customview.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,12 +12,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bitvalue.health.util.InputMethodUtils;
 import com.bitvalue.healthmanage.R;
 
 /**
  * @author created by bitvalue
  * @data : 04/27
- *
+ * <p>
  * 问诊小结 dialog
  */
 public class SummaryDialog extends Dialog {
@@ -55,9 +55,7 @@ public class SummaryDialog extends Dialog {
         initClicklisenter();
         this.setOnDismissListener(dialog -> {    //当前dialog 一旦隐藏 则隐藏键盘
             // TODO Auto-generated method stub
-            InputMethodManager inputMgr = (InputMethodManager) mContext
-                    .getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMgr.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0);
+            InputMethodUtils.hideSoftInput(mContext);
         });
     }
 
@@ -126,8 +124,6 @@ public class SummaryDialog extends Dialog {
         this.onClickBottomListener = onclickListener;
         return this;
     }
-
-
 
 
     public interface OnButtonClickListener {

@@ -1,8 +1,6 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,15 +22,12 @@ import com.bitvalue.health.api.responsebean.DiseaseListBean;
 import com.bitvalue.health.api.responsebean.GoodListBean;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
-import com.bitvalue.health.api.responsebean.PlanListBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
-import com.bitvalue.health.callback.ItemClickLisenterCallback;
 import com.bitvalue.health.callback.OnItemClick;
 import com.bitvalue.health.callback.ViewCallback;
 import com.bitvalue.health.model.planmodel.DiseaseListApi;
 import com.bitvalue.health.model.planmodel.GoodListApi;
-import com.bitvalue.health.model.planmodel.PlanListApi;
 import com.bitvalue.health.model.planmodel.getDepartmentListApi;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.AlreadySelectPatientAdapter;
@@ -43,7 +38,6 @@ import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.MPopupWindow;
 import com.bitvalue.health.util.customview.TypeGravity;
-import com.bitvalue.health.util.customview.UseEquityDialog;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.health.util.customview.spinner.EditSpinner;
 import com.bitvalue.healthmanage.R;
@@ -57,14 +51,12 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.Call;
 
 /**
  * @author created by bitvalue

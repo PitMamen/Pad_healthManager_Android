@@ -18,6 +18,7 @@ public class QuickreplyPresenter extends BasePresenter<QuickReplyContract.View, 
     protected QuickReplyContract.Model createModule() {
         return new QuickreplyModel();
     }
+
     @Override
     public void qryCaseCommonWords(QuickReplyRequest replyRequest) {
         if (mModel != null) {
@@ -58,6 +59,29 @@ public class QuickreplyPresenter extends BasePresenter<QuickReplyContract.View, 
                     super.onFailedLog(str, what);
                     if (isViewAttach()) {
                         getView().saveCaseCommonWordsFail(str);
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void deleteCommonWord(String id, String userId) {
+        if (mModel != null) {
+            mModel.deleteCommonWord(id, userId, new CallBackAdapter() {
+                @Override
+                public void onSuccess(Object o, int what) {
+                    super.onSuccess(o, what);
+                    if (isViewAttach()) {
+                        getView().deleteCommonWordsSuccess((Boolean) o);
+                    }
+                }
+
+                @Override
+                public void onFailedLog(String str, int what) {
+                    super.onFailedLog(str, what);
+                    if (isViewAttach()) {
+                        getView().deleteCommonWordsFail(str);
                     }
                 }
             });

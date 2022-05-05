@@ -141,6 +141,7 @@
     <color name="colorPrimary">#0E88EB</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent_">#eff0f7</color>
 
     <color name="black_overlay">#66000000</color>
 

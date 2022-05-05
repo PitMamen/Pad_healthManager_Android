@@ -23,7 +23,7 @@ import com.bitvalue.health.util.action.StatusAction;
 import com.bitvalue.health.util.action.StatusLayout;
 import com.bitvalue.health.util.aop.Permissions;
 import com.bitvalue.health.util.aop.SingleClick;
-import com.bitvalue.health.util.customview.AlbumDialog;
+import com.bitvalue.health.util.customview.dialog.AlbumDialog;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

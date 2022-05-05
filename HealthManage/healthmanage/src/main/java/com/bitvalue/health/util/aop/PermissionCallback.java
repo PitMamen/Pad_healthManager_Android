@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Build;
 
 import com.bitvalue.health.util.ActivityManager;
-import com.bitvalue.health.util.customview.MessageDialog;
+import com.bitvalue.health.util.customview.dialog.MessageDialog;
 import com.bitvalue.healthmanage.R;
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.Permission;

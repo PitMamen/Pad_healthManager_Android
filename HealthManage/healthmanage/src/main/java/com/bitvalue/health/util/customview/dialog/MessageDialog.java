@@ -1,4 +1,4 @@
-package com.bitvalue.health.util.customview;
+package com.bitvalue.health.util.customview.dialog;
 
 import android.content.Context;
 import android.view.View;
@@ -8,6 +8,7 @@ import androidx.annotation.StringRes;
 
 import com.bitvalue.health.util.BaseDialog;
 import com.bitvalue.health.util.aop.SingleClick;
+import com.bitvalue.health.util.customview.dialog.CommonDialog;
 import com.bitvalue.healthmanage.R;
 
 /**

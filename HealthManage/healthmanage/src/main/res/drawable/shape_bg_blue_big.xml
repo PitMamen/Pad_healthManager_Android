@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
     <corners
         android:bottomLeftRadius="@dimen/qb_px_3"
         android:bottomRightRadius="@dimen/qb_px_3"
         android:topLeftRadius="@dimen/qb_px_3"
         android:topRightRadius="@dimen/qb_px_3" />
 
+    <item android:state_pressed="false">
 
-    <stroke
-        android:width="@dimen/qb_px_1"
-        android:color="@color/home_blue" />
-    <!-- 背景色 -->
-    <solid android:color="@color/home_blue" />
+        <shape>
+            <stroke
+                android:width="@dimen/qb_px_1"
+                android:color="@color/home_blue" />
+            <!-- 背景色 -->
+            <solid android:color="@color/home_blue" />
+        </shape>
+    </item>
 
 
-</shape>
+    <item android:state_pressed="true">
+        <shape>
+            <stroke
+                android:width="@dimen/qb_px_1"
+                android:color="@color/white" />
+            <!-- 背景色 -->
+            <solid android:color="@color/beauty_color_gray_text" />
+        </shape>
+    </item>
+
+</selector>
 
