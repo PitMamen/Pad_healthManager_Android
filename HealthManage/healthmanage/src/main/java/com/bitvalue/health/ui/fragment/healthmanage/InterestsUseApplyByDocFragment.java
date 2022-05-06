@@ -148,7 +148,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
         tv_department.setText(taskDeatailBean.getTaskDetail().getDeptName()); //科室名称
         tv_start_time.setText(TimeUtils.getTime_tosecond(taskDeatailBean.getTaskDetail().getExecTime())); //执行时间
         tv_patientName.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName()); //就诊人
-        tv_continue_time.setText(taskDeatailBean.getTaskDetail().getRemark() + "分钟");  //持续时间
+        tv_continue_time.setText(EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail().getRemark()) ? "待确认" : taskDeatailBean.getTaskDetail().getRemark() + "分钟");  //持续时间
         tv_applyType.setText(taskDeatailBean.getTaskDetail().getRightsName() + "申请:");  //权益申请类型 (图文咨询,视频咨询,重症会诊)
     }
 
@@ -232,7 +232,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
                 item.setKsmc(taskDeatailBean.getTaskDetail().getDeptName()); //传科室名称
                 item.isConsultation = true;   //问诊
                 item.taskDeatailBean = taskDeatailBean;
-                item.rightsName = taskDeatailBean.getTaskDetail().getRightsName();
+                item.rightsType = taskDeatailBean.getTaskDetail().getRightsType();
                 homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, item);
                 break;
 

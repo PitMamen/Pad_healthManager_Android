@@ -34,16 +34,47 @@
 
     <TextView
         android:id="@+id/tv_content"
-        android:maxLines="3"
+        android:maxLines="1"
         android:singleLine="false"
         android:ellipsize="none"
         android:inputType="textMultiLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/qb_px_8"
-        android:text="时间:"
+        android:text="时间1:"
         android:textSize="@dimen/qb_px_7"
         android:textColor="@color/black" />
+
+
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/tv_content_two"
+        android:maxLines="1"
+        android:singleLine="false"
+        android:ellipsize="none"
+        android:inputType="textMultiLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_8"
+        android:text="时间2:"
+        android:textSize="@dimen/qb_px_7"
+        android:textColor="@color/black" />
+
+
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/tv_content_three"
+        android:maxLines="1"
+        android:singleLine="false"
+        android:ellipsize="none"
+        android:inputType="textMultiLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/qb_px_8"
+        android:text="时间2:"
+        android:textSize="@dimen/qb_px_7"
+        android:textColor="@color/black" />
+
 
 
 

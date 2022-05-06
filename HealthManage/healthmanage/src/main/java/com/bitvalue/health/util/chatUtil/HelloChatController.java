@@ -135,7 +135,7 @@ public class HelloChatController implements TUIChatControllerListener {
             try {
                 JSONObject jsonObject = new JSONObject(dataJson);
                 String type = jsonObject.optString("type");
-                Log.e(TAG, "helle_onDraw: "+type );
+                Log.e(TAG, "helle_onDraw: " + type);
                 switch (type) {
                     //健康消息
                     case "CustomHealthMessage":
@@ -147,7 +147,7 @@ public class HelloChatController implements TUIChatControllerListener {
                             }
                         }
                         break;
-                        //问诊小结
+                    //问诊小结
                     case "CustomAnalyseMessage":
                         CustomAnalyseMessage customAnalyseMessage = new Gson().fromJson(dataJson, CustomAnalyseMessage.class);
                         if (customAnalyseMessage != null) {
@@ -156,8 +156,8 @@ public class HelloChatController implements TUIChatControllerListener {
                             }
                         }
                         break;
-                        //暂定义为 电话预约
-                    case "CustomHealthManageMessage":
+                    //暂定义为 电话预约
+                    case "CustomAppointmentTimeMessage":
                         CustomHealthPlanMessage customHealthPlanMessage = new Gson().fromJson(dataJson, CustomHealthPlanMessage.class);
                         if (customHealthPlanMessage != null) {
                             if (parent instanceof MessageBaseHolder) {
@@ -165,6 +165,18 @@ public class HelloChatController implements TUIChatControllerListener {
                             }
                         }
                         break;
+
+
+                    //  病情概述
+                    case "CustomIllnessMessage":
+                        CustomIllnessMessage customillnessmessage = new Gson().fromJson(dataJson, CustomIllnessMessage.class);
+                        if (customillnessmessage != null) {
+                            if (parent instanceof MessageBaseHolder) {
+                                CustomlllnessMessageController.onDraw(parent, customillnessmessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                            }
+                        }
+                        break;
+
 
                     case "CustomUploadMessage":
                         CustomHealthDataMessage customHealthDataMessage = new Gson().fromJson(dataJson, CustomHealthDataMessage.class);
@@ -175,7 +187,7 @@ public class HelloChatController implements TUIChatControllerListener {
                         }
                         break;
 
-                        //视频问诊
+                    //视频问诊
                     case "CustomVideoCallMessage":
                         CustomVideoCallMessage customVideoCallMessage = new Gson().fromJson(dataJson, CustomVideoCallMessage.class);
                         if (customVideoCallMessage != null) {
@@ -184,7 +196,7 @@ public class HelloChatController implements TUIChatControllerListener {
                             }
                         }
                         break;
-                        //文章
+                    //文章
                     case "CustomArticleMessage":
                         CustomCaseHistoryMessage customCaseHistoryMessage = new Gson().fromJson(dataJson, CustomCaseHistoryMessage.class);
                         if (customCaseHistoryMessage != null) {
@@ -203,8 +215,6 @@ public class HelloChatController implements TUIChatControllerListener {
                             }
                         }
                         break;
-
-
 
 
                 }

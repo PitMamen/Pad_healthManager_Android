@@ -3,6 +3,7 @@ package com.bitvalue.health.ui.fragment.chat;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import static com.bitvalue.health.util.Constants.FRAGEMNT_PHONE_CONSULTATION;
 import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_PAPER;
 import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_QUESTION;
 import static com.bitvalue.health.util.Constants.FRAGMENT_QUICKREPLY;
@@ -558,11 +559,10 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         });
         mChatLayout.getInputLayout().tv_sendshortcut.setOnClickListener(v -> {
             homeActivity.switchSecondFragment(FRAGMENT_QUICKREPLY, String.valueOf(loginBean.getUser().user.userId));
-//            homeActivity.switchSecondFragment(FRAGEMNT_PHONE_CONSULTATION, "8:00-19:00");
+
         });
 
         mChatLayout.getInputLayout().tv_medicalfolder.setOnClickListener(v -> {  //病历夹
-            Log.e(TAG, "病历夹----------------");
             mPresenter.getsummary_resultList(planId);  //获取问诊小结 列表
             initPop();
 
@@ -880,8 +880,8 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             intent.putExtra(TUIKitConstants.Group.GROUP_INFO, groupInfo);
             startActivityForResult(intent, 1);
         });
-        mChatLayout.getInputLayout().setGoneInputMore(patientinfo.rightsName.equals("视频咨询"));  //如果是图文咨询的 聊天界面点击更多不显示视频问诊控件
-        mChatLayout.getInputLayout().hideMoreShowSendbutton(patientinfo.rightsName.equals("视频咨询"));//如果是图文咨询 进入聊天界面 输入界面右端不显示加号按钮  直接显示发送字样
+        mChatLayout.getInputLayout().setGoneInputMore(patientinfo.rightsType.equals("videoNum")||patientinfo.rightsType.equals("telNum"));  //如果是图文咨询的 聊天界面点击更多不显示视频问诊控件
+        mChatLayout.getInputLayout().hideMoreShowSendbutton(patientinfo.rightsType.equals("videoNum")||patientinfo.rightsType.equals("telNum"));//如果是图文咨询 进入聊天界面 输入界面右端不显示加号按钮  直接显示发送字样
         mChatLayout.getInputLayout().setVisibility(VISIBLE);
         mChatLayout.getInputLayout().setChatType(mChatInfo.chatType);
         if (mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP) {

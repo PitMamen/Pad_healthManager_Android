@@ -16,7 +16,6 @@ import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 
 public class CustomHealthMessageController {
 
-    private static final String TAG = CustomHealthMessageController.class.getSimpleName();
 
     public static void onDraw(ICustomMessageViewGroup parent, final CustomHealthMessage data, final int position, final MessageLayout.OnItemLongClickListener onItemLongClickListener, final MessageInfo info) {
 

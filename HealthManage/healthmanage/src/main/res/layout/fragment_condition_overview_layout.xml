@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingDefaultResource">
+
+    <RelativeLayout
+        android:background="@color/main_blue"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_35">
+
+
+        <ImageView
+            android:id="@+id/back_btn"
+            android:layout_width="@dimen/qb_px_20"
+            android:layout_height="@dimen/qb_px_20"
+            android:layout_centerVertical="true"
+            android:src="@drawable/left_aco"></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="病情概述"
+            android:textColor="@color/white"
+            android:textSize="@dimen/qb_px_12"></TextView>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:background="@drawable/shape_white_bac"
+        android:layout_marginTop="@dimen/qb_px_5"
+        android:layout_marginStart="@dimen/qb_px_15"
+        android:layout_marginEnd="@dimen/qb_px_15"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_150">
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_marginStart="@dimen/qb_px_2"
+            android:text="概述"
+            android:textColor="@color/beauty_color_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></TextView>
+    </LinearLayout>
+
+
+
+    <TextView
+        android:text="患者图像资料:"
+        android:textColor="@color/beauty_color_gray"
+        android:textSize="@dimen/qb_px_8"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:layout_marginStart="@dimen/qb_px_15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </TextView>
+
+
+    <!--            最近化验结果 list-->
+
+    <com.bitvalue.health.util.customview.WrapRecyclerView
+        android:id="@+id/image_list"
+        android:layout_marginStart="@dimen/qb_px_15"
+        android:layout_marginEnd="@dimen/qb_px_15"
+        android:layout_marginTop="@dimen/qb_px_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.bitvalue.health.util.customview.WrapRecyclerView>
+
+
+
+
+
+
+
+
+
+
+
+</LinearLayout>

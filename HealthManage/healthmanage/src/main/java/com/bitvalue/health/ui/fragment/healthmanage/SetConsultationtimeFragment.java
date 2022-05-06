@@ -1,6 +1,7 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
 import static com.bitvalue.health.util.Constants.PATIENT_EXPECTTIME;
+import static com.bitvalue.health.util.Constants.PATIENT_TRADEID;
 
 import android.content.Context;
 import android.util.Log;
@@ -64,10 +65,11 @@ public class SetConsultationtimeFragment extends BaseFragment {
     @BindView(R.id.tv_doc_changetime)
     TextView getTv_docconfirmtime;
 
-    private String finalTime = "";
+    private String finalTimes = "";
 
 
     private HomeActivity homeActivity;
+    private String tradeid;
 
     @Override
     protected BasePresenter createPresenter() {
@@ -93,6 +95,7 @@ public class SetConsultationtimeFragment extends BaseFragment {
             return;
         }
         String patientTime = getArguments().getString(PATIENT_EXPECTTIME, "00:00-24:00");
+        tradeid = getArguments().getString(PATIENT_TRADEID, "");
         tv_expecttime.setText(patientTime);
 
     }
@@ -121,20 +124,20 @@ public class SetConsultationtimeFragment extends BaseFragment {
             case R.id.tv_btnconfirm:
 //                if (showSetConfirmDialog()) return;
                 // TODO: 2022/5/4 医生只选中了一个或两个时间段 则直接提交
-                    Log.e(TAG, "直接提交！！！ ");
-                    if (!EmptyUtil.isEmpty(finalTime)){
-                        CustomHealthPlanMessage customHealthPlanMessage = new CustomHealthPlanMessage();
-                        customHealthPlanMessage.time = finalTime;
-                        customHealthPlanMessage.title = "预约时间";
-                        customHealthPlanMessage.type = "CustomHealthManageMessage";
-                        customHealthPlanMessage.description = "预约时间";
-                        EventBus.getDefault().post(customHealthPlanMessage);
-                        if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {   //退出当前界面
-                            homeActivity.getSupportFragmentManager().popBackStack();
-                        }
-                    }else {
-                        ToastUtils.show("请至少选择一个时间段!");
+                if (!EmptyUtil.isEmpty(finalTimes)) {
+                    CustomHealthPlanMessage customHealthPlanMessage = new CustomHealthPlanMessage();
+                    customHealthPlanMessage.tradeId = tradeid;
+                    customHealthPlanMessage.time = finalTimes;
+                    customHealthPlanMessage.title = "预约时间";
+                    customHealthPlanMessage.type = "CustomAppointmentTimeMessage";
+                    customHealthPlanMessage.description = "请选择时间";
+                    EventBus.getDefault().post(customHealthPlanMessage);
+                    if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {   //退出当前界面
+                        homeActivity.getSupportFragmentManager().popBackStack();
                     }
+                } else {
+                    ToastUtils.show("请至少选择一个时间段!");
+                }
 
                 break;
         }
@@ -144,24 +147,23 @@ public class SetConsultationtimeFragment extends BaseFragment {
     private boolean showSetConfirmDialog() {
         if (tv_timeone.getText().toString().contains("-") && tv_timetwo.getText().toString().contains("-") && tv_timethree.getText().toString().contains("-")) {
             // TODO: 2022/5/4 弹框 选一个
-             if (getTv_docconfirmtime.getVisibility()==View.GONE&&tv_docconfirmtime.getVisibility()==View.GONE){
-                 List<String> sorcrListTime = new ArrayList<>();
-                 sorcrListTime.add(tv_timeone.getText().toString());
-                 sorcrListTime.add(tv_timetwo.getText().toString());
-                 sorcrListTime.add(tv_timethree.getText().toString());
-                 ConfirmTimeDialog confirmTimeDialog = new ConfirmTimeDialog(homeActivity, sorcrListTime);
-                 confirmTimeDialog.setOnClickListener(() -> {
-                     tv_docconfirmtime.setVisibility(View.VISIBLE);
-                     getTv_docconfirmtime.setVisibility(View.VISIBLE);
-                     String confirmedTime = confirmTimeDialog.getconfirmedTime();
-                     getTv_docconfirmtime.setText(confirmedTime);
-                     finalTime = confirmedTime;
-                     confirmTimeDialog.dismiss();
-                     // TODO: 2022/5/4 提交
+            if (getTv_docconfirmtime.getVisibility() == View.GONE && tv_docconfirmtime.getVisibility() == View.GONE) {
+                List<String> sorcrListTime = new ArrayList<>();
+                sorcrListTime.add(tv_timeone.getText().toString());
+                sorcrListTime.add(tv_timetwo.getText().toString());
+                sorcrListTime.add(tv_timethree.getText().toString());
+                ConfirmTimeDialog confirmTimeDialog = new ConfirmTimeDialog(homeActivity, sorcrListTime);
+                confirmTimeDialog.setOnClickListener(() -> {
+                    tv_docconfirmtime.setVisibility(View.VISIBLE);
+                    getTv_docconfirmtime.setVisibility(View.VISIBLE);
+                    String confirmedTime = confirmTimeDialog.getconfirmedTime();
+                    getTv_docconfirmtime.setText(confirmedTime);
+                    confirmTimeDialog.dismiss();
+                    // TODO: 2022/5/4 提交
 
-                 }).show();
-                 return true;
-             }
+                }).show();
+                return true;
+            }
         }
         return false;
     }
@@ -172,7 +174,7 @@ public class SetConsultationtimeFragment extends BaseFragment {
             String selectedTime = setConsultionTimeDialog.getselectedTime();
             textView.setText(selectedTime);
             setConsultionTimeDialog.dismiss();
-            finalTime = selectedTime;
+            finalTimes += selectedTime + ",";
         }).show();
     }
 

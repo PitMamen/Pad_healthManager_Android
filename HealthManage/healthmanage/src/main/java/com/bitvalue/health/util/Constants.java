@@ -16,6 +16,7 @@ public class Constants {
     public static  String ROLE_TYPE = "casemanager"; //默认角色是个案管理师
     public static  String DEPT_CODE = "dept_code"; //科室代码
     public static final String KEY_PSD = "key_psd";
+    public static final String MESSAGEINFO = "messageinfo";
     public static final String KEY_ACCOUNT = "key_account";
     public static final String FRAGMENT_CHAT = "fragment_chat";
     public static final String FRAGMENT_RECORD_CHAT = "chat_record_fragment";
@@ -53,6 +54,7 @@ public class Constants {
     public static final String DATA_REVIEW = "data_review";
     public static final String MORE_DATA = "more_data";
     public static final String FRAGEMNT_PHONE_CONSULTATION = "fragemnt_phone_consultation";
+    public static final String FRAGEMNT_CONDITONOVERVIEW = "fragemnt_conditonoverview";
 
     public static final String API_ACCOUNT = "/account-api";
     public static final String API_HEALTH = "/health-api";
@@ -80,6 +82,7 @@ public class Constants {
     public static final String PLAN_ID = "plan_id";
     public static final String RIGTH_TYPE = "ICUConsultNum";
     public static final String PATIENT_EXPECTTIME = "patient_expecttime";
+    public static final String PATIENT_TRADEID = "patient_tradeIde";
 
     public static final int GET_CONVERSATION_COUNT = 100;
 

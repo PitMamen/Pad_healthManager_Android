@@ -2,6 +2,7 @@ package com.bitvalue.health.ui.activity;
 
 
 import static com.bitvalue.health.util.Constants.DATA_REVIEW;
+import static com.bitvalue.health.util.Constants.FRAGEMNT_CONDITONOVERVIEW;
 import static com.bitvalue.health.util.Constants.FRAGEMNT_PHONE_CONSULTATION;
 import static com.bitvalue.health.util.Constants.FRAGMENT_DETAIL;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY;
@@ -10,6 +11,7 @@ import static com.bitvalue.health.util.Constants.FRAGMENT_MORE_DATA;
 import static com.bitvalue.health.util.Constants.FRAGMENT_PLAN_LIST;
 import static com.bitvalue.health.util.Constants.MORE_DATA;
 import static com.bitvalue.health.util.Constants.PATIENT_EXPECTTIME;
+import static com.bitvalue.health.util.Constants.PATIENT_TRADEID;
 import static com.bitvalue.health.util.Constants.TASKDETAIL;
 import static com.bitvalue.health.util.Constants.USER_ID;
 import static com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI.CHAT_TYPE_VIDEO;
@@ -33,6 +35,7 @@ import com.bitvalue.health.api.requestbean.QueryPlanDetailApi;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
 import com.bitvalue.health.api.responsebean.LoginBean;
+import com.bitvalue.health.api.responsebean.MessageInfoData;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.PlanListBean;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
@@ -45,6 +48,7 @@ import com.bitvalue.health.presenter.homepersenter.HomePersenter;
 import com.bitvalue.health.ui.fragment.chat.ChatFragment;
 import com.bitvalue.health.ui.fragment.chat.ChatRecordFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.ConsultingServiceFragment;
+import com.bitvalue.health.ui.fragment.healthmanage.ConditionoverViewFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.DataReviemFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.NeedDealWithFragment;
 import com.bitvalue.health.ui.fragment.healthmanage.AddArticleFragment;
@@ -82,7 +86,6 @@ import com.bitvalue.health.ui.fragment.workbench.HealthPlanTaskDetailFragment;
 import com.bitvalue.health.ui.fragment.workbench.VisitPlanFragment;
 import com.bitvalue.health.ui.fragment.workbench.SendMessageFragment;
 import com.bitvalue.health.util.Constants;
-import com.bitvalue.health.util.RSAEncrypt;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
@@ -93,7 +96,6 @@ import com.tencent.imsdk.v2.V2TIMConversation;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -786,13 +788,23 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
             //电话 咨询设置咨询时间界面
             case FRAGEMNT_PHONE_CONSULTATION:
-                String expecttime = (String) object;
+                MessageInfoData messageInfoData = (MessageInfoData) object;
                 Bundle phone_consultationBundle = new Bundle();
-                phone_consultationBundle.putString(PATIENT_EXPECTTIME, expecttime);
+                phone_consultationBundle.putString(PATIENT_EXPECTTIME, messageInfoData.time);
+                phone_consultationBundle.putString(PATIENT_TRADEID, messageInfoData.tradeId);
                 SetConsultationtimeFragment setConsultationtimeFragment = new SetConsultationtimeFragment();
                 setConsultationtimeFragment.setArguments(phone_consultationBundle);
                 mapFragments.put(FRAGEMNT_PHONE_CONSULTATION, setConsultationtimeFragment);
+                break;
 
+                //病情概述界面
+            case FRAGEMNT_CONDITONOVERVIEW:
+                MessageInfoData messageInfo = (MessageInfoData) object;
+                Bundle bundle_conditionoverview = new Bundle();
+                bundle_conditionoverview.putSerializable(Constants.MESSAGEINFO,messageInfo);
+                ConditionoverViewFragment conditionoverViewFragment = new ConditionoverViewFragment();
+                conditionoverViewFragment.setArguments(bundle_conditionoverview);
+                mapFragments.put(FRAGEMNT_CONDITONOVERVIEW,conditionoverViewFragment);
                 break;
 
 
