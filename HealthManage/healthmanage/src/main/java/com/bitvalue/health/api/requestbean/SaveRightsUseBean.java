@@ -12,7 +12,7 @@ public class SaveRightsUseBean implements Serializable {
     public String createTime;
     public String deptName;
     public String execDept;
-    public int execFlag;  //1 =  已结束
+    public int execFlag;  //1 =  已结束   0 = 申请中  2 个案师(医生)完成分配任务
     public String execTime;
     public String execUser;
     public int id;

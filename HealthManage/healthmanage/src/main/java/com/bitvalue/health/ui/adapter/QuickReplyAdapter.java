@@ -106,7 +106,20 @@ public class QuickReplyAdapter extends BaseQuickAdapter<QuickReplyRequest, BaseV
         holder.setText(R.id.tv_quick_reply, replyBean.content);
         EditText editText = holder.getView(R.id.tv_quick_reply);
 
+        holder.getView(R.id.tv_quick_reply).setOnClickListener(v -> {
+            if (null != itemClick) {
+                itemClick.onItemClick(replyBean);
+            }
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            if (null != itemClick) {
+                itemClick.onItemClick(replyBean);
+            }
+        });
+
         holder.itemView.setOnLongClickListener(v -> {
+            editText.setTextIsSelectable(false);
             showPop(v);
             editTv.setOnClickListener(v13 -> {
                 if (popupWindow != null && popupWindow.isShowing()) {
@@ -153,11 +166,6 @@ public class QuickReplyAdapter extends BaseQuickAdapter<QuickReplyRequest, BaseV
             return true;
         });
 
-        holder.itemView.setOnClickListener(v -> {
-            if (null != itemClick) {
-                itemClick.onItemClick(replyBean);
-            }
-        });
 
     }
 

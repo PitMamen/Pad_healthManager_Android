@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bitvalue.health.Application;
+import com.bitvalue.health.api.eventbusbean.NotiflyUIObj;
 import com.bitvalue.health.api.responsebean.MessageInfoData;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.sdk.collab.R;
@@ -15,6 +16,9 @@ import com.bitvalue.sdk.collab.TUIKitImpl;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.MessageLayout;
 import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessageViewGroup;
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
+import com.hjq.toast.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class CustomHealthPlanMessageController {
 
@@ -34,8 +38,8 @@ public class CustomHealthPlanMessageController {
         if (data == null || EmptyUtil.isEmpty(data.time)) {
             return;
         }
-        tv_title.setText(data == null ? text : data.title);
-        String dataString = data.time.contains(",") ? data.time.substring(0, data.time.length() - 1) : data.time;  //去除最后一个逗号
+        tv_title.setText(data == null ? text : data.description);
+        String dataString = data.time;
 
         String[] secind = dataString.split(",");
         if (secind.length >= 1) {
@@ -49,12 +53,29 @@ public class CustomHealthPlanMessageController {
                 }
             }
         }
+        if (!info.isSelf()&&data.description.equals("确认时间")){
+            EventBus.getDefault().post(new NotiflyUIObj(data.tradeId));
+        }
+
+
+
         view.setClickable(true);
         view.setOnClickListener(v -> {
-            MessageInfoData messageInfoData = new MessageInfoData();
-            messageInfoData.time = secind[0];
-            messageInfoData.tradeId = data.tradeId;
-            Application.instance().getHomeActivity().switchSecondFragment(FRAGEMNT_PHONE_CONSULTATION, messageInfoData);
+            if (!info.isSelf()) {
+                if (!data.description.equals("确认时间")) {
+                    MessageInfoData messageInfoData = new MessageInfoData();
+                    messageInfoData.time = secind[0];
+                    messageInfoData.tradeId = data.tradeId;
+                    Application.instance().getHomeActivity().switchSecondFragment(FRAGEMNT_PHONE_CONSULTATION, messageInfoData);
+                } else {
+                    ToastUtils.show("已确认过时间,无需再次选择!");
+                }
+
+            } else {
+                Log.e("TAG", "非登录用户!!!");
+            }
+
+
         });
     }
 }

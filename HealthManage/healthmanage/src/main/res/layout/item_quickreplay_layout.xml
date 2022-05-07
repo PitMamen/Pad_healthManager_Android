@@ -1,42 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_plans"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
     <LinearLayout
-        android:layout_marginTop="@dimen/qb_px_5"
-        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/qb_px_5"
+        android:orientation="vertical">
 
         <EditText
-            android:background="@null"
             android:id="@+id/tv_quick_reply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="快捷回复用语"
             android:layout_marginLeft="@dimen/qb_px_10"
+            android:background="@null"
+            android:textIsSelectable="true"
+            android:text="快捷回复用语"
             android:textColor="@color/text_black"
             android:textSize="@dimen/qb_px_8" />
 
 
-
     </LinearLayout>
+
     <View
-        android:layout_marginTop="@dimen/qb_px_2"
         android:id="@+id/ll_view"
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
         android:layout_below="@+id/rl_title"
+        android:layout_marginTop="@dimen/qb_px_2"
         android:background="#E6E6E6"></View>
-
-
-
-
 
 
 </LinearLayout>

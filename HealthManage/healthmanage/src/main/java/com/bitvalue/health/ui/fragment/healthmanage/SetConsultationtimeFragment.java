@@ -127,6 +127,7 @@ public class SetConsultationtimeFragment extends BaseFragment {
                 if (!EmptyUtil.isEmpty(finalTimes)) {
                     CustomHealthPlanMessage customHealthPlanMessage = new CustomHealthPlanMessage();
                     customHealthPlanMessage.tradeId = tradeid;
+                    finalTimes = finalTimes.contains(",") ? finalTimes.substring(0, finalTimes.length() - 1) : finalTimes;  //去除最后一个逗号
                     customHealthPlanMessage.time = finalTimes;
                     customHealthPlanMessage.title = "预约时间";
                     customHealthPlanMessage.type = "CustomAppointmentTimeMessage";

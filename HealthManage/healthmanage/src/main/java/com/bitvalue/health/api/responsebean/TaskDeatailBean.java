@@ -131,7 +131,7 @@ public class TaskDeatailBean implements Serializable {
         private String remark;
         private String execUser;
         private int id;  //权益ID
-        private int execFlag;
+        private int execFlag;   //1 =  已结束   0 = 申请中  2 个案师(医生)完成分配任务  3  意外终止
         private String userId;
         private String tradeId;
         private String execName;
@@ -373,6 +373,7 @@ public class TaskDeatailBean implements Serializable {
                     ", execFlag=" + execFlag +
                     ", userId='" + userId + '\'' +
                     ", tradeId='" + tradeId + '\'' +
+                    ",uploadDocFlag='"+uploadDocFlag+'\''+
                     '}';
         }
     }

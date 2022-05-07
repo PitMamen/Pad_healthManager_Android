@@ -16,6 +16,7 @@ import com.bitvalue.health.api.requestbean.RequestPlanPatientListBean;
 import com.bitvalue.health.api.requestbean.ResetPasswordRequestBean;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
 import com.bitvalue.health.api.requestbean.SendUserRemind;
+import com.bitvalue.health.api.requestbean.UpdateRightsRequestTimeRequestBean;
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.ArticleByDeptCodeBean;
@@ -303,7 +304,7 @@ public interface CommonService {
      * 权益使用记录
      */
     @GET("health-api/patient/queryRightsUserRecord")
-    Observable<ApiResult<QueryRightsRecordBean>> queryRightsUserRecord(@Query("pageNo") int pageNo, @Query("pageSize") int pageSize, @Query("userId") String userId, @Query("rightsId") int rightsId);
+    Observable<ApiResult<QueryRightsRecordBean>> queryRightsUserRecord(@Query("pageNo") int pageNo, @Query("pageSize") int pageSize, @Query("userId") String userId, @Query("rightsId") int rightsId,@Query("id") String id);
 
 
     /**
@@ -392,4 +393,13 @@ public interface CommonService {
      */
     @POST("tc-api/phoneBind/getPrivateCallNumber")
     Observable<ApiResult<CallResultBean>> callPhone(@Body CallRequest request);
+
+    /**
+     *更新权益 确认时间
+     */
+    @POST("health-api/patient/updateRightsRequestTime")
+    Observable<ApiResult<Boolean>> updateRightsRequestTime(@Body UpdateRightsRequestTimeRequestBean request);
+
+
+
 }

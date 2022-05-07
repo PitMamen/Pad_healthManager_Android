@@ -44,7 +44,7 @@ public class RightApplyUseModel extends BaseModel implements RightApplyUseContra
     @Override
     public void queryRightsRecord(int pageNo, int pageSize, int rightsId, String userId, Callback callback) {
         if (!EmptyUtil.isEmpty(userId)) {
-            mApi.queryRightsUserRecord(pageNo, pageSize, userId,rightsId).subscribeOn(Schedulers.io()).subscribe(result -> {
+            mApi.queryRightsUserRecord(pageNo, pageSize, userId,rightsId,"").subscribeOn(Schedulers.io()).subscribe(result -> {
                 if (!EmptyUtil.isEmpty(result)) {
                     if (result.getCode() == 0) {
                         if (!EmptyUtil.isEmpty(result.getData())) {

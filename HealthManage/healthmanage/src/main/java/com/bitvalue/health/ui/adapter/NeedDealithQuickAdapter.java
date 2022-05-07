@@ -1,13 +1,9 @@
 package com.bitvalue.health.ui.adapter;
 
 
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
-
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.callback.OnRightClickCallBack;
@@ -16,7 +12,6 @@ import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.healthmanage.R;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-
 import java.util.List;
 
 /**
@@ -31,8 +26,6 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
         super(layoutResId, data);
         this.onRightClickCallBack = callBack;
     }
-
-
     @Override
     protected void convert(BaseViewHolder holder, TaskDeatailBean taskdeatailBean) {
         if (null == taskdeatailBean || null == taskdeatailBean.getTaskDetail()) {
@@ -46,50 +39,15 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
         if (!EmptyUtil.isEmpty(taskdeatailBean.getTaskDetail().getUserInfo())) {
             holder.setText(R.id.tv_name, taskdeatailBean.getTaskDetail().getUserInfo().getUserName());
         }
-
-        String rightType = "";
-        switch (taskdeatailBean.getTaskDetail().getRightsType()) {
-            case "videoNum":
-                rightType = "视频咨询";
-                break;
-            case "textNum":
-                rightType = "图文咨询";
-                break;
-            case "appointBedNum":
-                rightType = "床位预约";
-                break;
-            case "appointNum":
-                rightType = "复诊预约";
-                break;
-            case "ICUConsultNum":
-                rightType = "重症会诊";
-                break;
-            case "telNum":
-                rightType = "电话随访追踪";
-                break;
-            case "eatEvaluateNum":
-                rightType = "膳食点评";
-                break;
-            case "sportEvaluateNum":
-                rightType = "身体活动情况点评";
-                break;
-            case "mailNum":
-                rightType = "邮寄服务";
-                break;
-        }
-        holder.setText(R.id.tv_video_visit, rightType);
+        holder.setText(R.id.tv_video_visit, taskdeatailBean.getTaskDetail().getRightsName());
         holder.setText(R.id.tv_patient_sex, taskdeatailBean.getTaskDetail().getUserInfo().getUserSex());
         holder.setText(R.id.tv_patient_age, taskdeatailBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
         holder.setText(R.id.tv_equity_use, taskdeatailBean.getTaskName());
         holder.setText(R.id.tv_time, TimeUtils.getTime_(taskdeatailBean.getExecTime()));
-
-
         holder.itemView.setOnClickListener(v -> {
             if (onRightClickCallBack != null) {
                 onRightClickCallBack.OnItemClick(taskdeatailBean);
             }
         });
-
     }
-
 }

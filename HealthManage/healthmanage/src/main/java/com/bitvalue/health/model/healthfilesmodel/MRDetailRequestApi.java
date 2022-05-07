@@ -8,6 +8,7 @@ public class MRDetailRequestApi  implements IRequestApi {
     public String dataOwnerId;
     public String dataUserId;
     public String serialNumber;
+    public String recordType;
 
     @Override
     public String getApi() {

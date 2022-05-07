@@ -1,5 +1,8 @@
 package com.bitvalue.health.ui.activity;
 
+import static com.bitvalue.health.util.Constants.LOCAL_PRIVATER_KEY;
+import static com.bitvalue.health.util.Constants.LOCAL_PUBLIC_KEY;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -51,7 +54,9 @@ import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.GsonUtils;
+import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
+import com.bitvalue.health.util.encryption.EnvelopeUtils;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.blankj.utilcode.util.StringUtils;
@@ -367,7 +372,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
 
     private MRDetailContract.Presenter presenter = new MRDetailPresenter(this);
     private String mPrivateCloudName; //数据来源
-    private String mIndex; //记录类型，门诊还是住院
+    private String record_type; //记录类型，门诊还是住院
     private String mDocumentId; //病历ID，用来获取病历详情
     private String name, sex, age, diagnosis, time;
     private String providerId;
@@ -473,25 +478,27 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         tv_menu_2_lcbx.setVisibility(View.GONE);
         ll_tgjc_zone.setVisibility(View.GONE);
         //只展示住院的诊断信息
-        if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+        if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
             tv_menu_4_zdjg.setVisibility(View.VISIBLE);
         } else {
             tv_menu_4_zdjg.setVisibility(View.GONE);
         }
         //门诊无 个人信息页 切换第二页 电子病历  。2020.11.11 屏蔽电子病历，改为切换到检查
-        if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+        if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
             tv_menu_7_basy.setVisibility(View.GONE);
             showSelectFragment("jcjy");
         }
 
         //初始化入参
         String docId = getIntent().getStringExtra(Constants.DOC_ID);
-        mIndex = getIntent().getStringExtra(Constants.INDEX_NAME);
-       String serialnumber = getIntent().getStringExtra(Constants.SERIALNUMBER);
-        Log.e(TAG, "流水号: "+serialnumber +" docUserId: "+docId+"  患者ID: "+mIndex);
+        record_type = getIntent().getStringExtra(Constants.INDEX_NAME);
+       String  patienUserId = getIntent().getStringExtra(Constants.USER_ID);
+        String serialnumber = getIntent().getStringExtra(Constants.SERIALNUMBER);
+        Log.e(TAG, "流水号: " + serialnumber + " docUserId: " + docId + "  患者ID: " + patienUserId+" 类型:"+record_type);
         MRDetailRequestApi mrDetailRequestApi = new MRDetailRequestApi();
-        mrDetailRequestApi.dataOwnerId = mIndex;
+        mrDetailRequestApi.dataOwnerId = patienUserId;
         mrDetailRequestApi.dataUserId = docId;
+        mrDetailRequestApi.recordType = record_type;
         mrDetailRequestApi.serialNumber = serialnumber;
 
         getDetailData(mrDetailRequestApi);
@@ -510,10 +517,15 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
             public void onSucceed(MRRecordResult result) {
                 super.onSucceed(result);
                 //增加判空
-                if (result == null) {
+                if (result.code==0&&EmptyUtil.isEmpty(result)) {
                     return;
                 }
-                Log.e(TAG, "请求病历详情: "+result.toString() );
+                Log.e(TAG, "请求病历详情: " + result.toString());
+                String privaterKey = SharedPreManager.getString(LOCAL_PRIVATER_KEY).replaceAll("\r|\n","").trim();
+                String encryptedRecord = result.encryptedRecord;
+                String wrappedDEK = result.wrappedDEK;
+                String decodeData = EnvelopeUtils.decrypt(encryptedRecord, wrappedDEK, privaterKey);
+                Log.e(TAG, "解密数据: "+decodeData );
 
 
 //                if (result.getCode() == 0) {
@@ -618,7 +630,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
                 intent.putExtra("time", timec);
                 intent.putExtra("mPrivateCloudName", TextUtils.isEmpty(mPrivateCloudName) ? "" : mPrivateCloudName);
                 intent.putExtra("privateCloudId", TextUtils.isEmpty(providerId) ? "" : providerId);
-                intent.putExtra("mIndex", TextUtils.isEmpty(mIndex) ? "" : mIndex);
+                intent.putExtra("record_type", TextUtils.isEmpty(record_type) ? "" : record_type);
                 intent.putExtra("mDocumentId", TextUtils.isEmpty(mDocumentId) ? "" : mDocumentId);
 //                 intent.putExtra("token",MyApplication.getInstance().getToken());
                 startActivity(intent);
@@ -681,9 +693,9 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
                 break;
             case "lcbx":
                 tv_menu_2_lcbx.setTextColor(ContextCompat.getColor(this, R.color.blue_files));
-                if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+                if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
                     mr_detail_item_2_linchuangbiaoxian_menzhen.setVisibility(View.VISIBLE);
-                } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+                } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
                     mr_detail_item_2_linchuangbiaoxian_zhuyuan.setVisibility(View.VISIBLE);
                 }
 //                tv_menu_2_lcbx.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_medical_2,0,0,0);
@@ -698,18 +710,18 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
                 break;
             case "zdjg":
                 tv_menu_4_zdjg.setTextColor(ContextCompat.getColor(this, R.color.blue_files));
-                if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+                if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
                     mr_detail_item_4_zhenduanjieguo_menzhen.setVisibility(View.VISIBLE);
-                } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+                } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
                     mr_detail_item_4_zhenduanjieguo_zhuyuan.setVisibility(View.VISIBLE);
                 }
                 tv_menu_4_zdjg.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_medical_1_yes, 0, 0, 0);
                 break;
             case "zlfa":
                 tv_menu_5_zlfa.setTextColor(ContextCompat.getColor(this, R.color.blue_files));
-                if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+                if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
                     mr_detail_item_5_zhiliaofangan_menzhen.setVisibility(View.VISIBLE);
-                } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+                } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
                     mr_detail_item_5_zhiliaofangan_zhuyuan.setVisibility(View.VISIBLE);
                 }
                 tv_menu_5_zlfa.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_medical_5_yes, 0, 0, 0);
@@ -743,7 +755,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
             return;
         }
         List<Float> floatList = new ArrayList<>();
-        if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+        if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
 
             //门诊没有首页，直接显示检查
             tv_menu_7_basy.setVisibility(View.GONE);
@@ -851,7 +863,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
                 sfxxje_time_tv.setText(TimeUtils.getTime(hisMzRecord.getSfxx().get(0).getStfsj(), TimeUtils.YY_MM_DD_FORMAT_3));
             }
 
-        } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+        } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
             //如果是住院病历，那么显示出院记录菜单
             tv_menu_6_cyjl.setVisibility(View.VISIBLE);
             hisZyRecord = GsonUtils.getGson().fromJson(sourceEntityJsonStr, new TypeToken<HisZyRecord>() {
@@ -1188,7 +1200,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         int offset = sll_detail_item_3_jianyanjiance.getMeasuredHeight() - sll_detail_item_3_jianyanjiance.getHeight();
         sll_detail_item_3_jianyanjiance.scrollTo(0, offset);
         mYqjcAndSysjcCombineDataMap = new TreeMap<String, YqjcAndSysjcCombineData>(Comparator.reverseOrder());
-        if (null == mHisDataCommon){
+        if (null == mHisDataCommon) {
             return;
         }
         List<HisDataSysjc> listSysjc = mHisDataCommon.getSysjc();
@@ -1791,7 +1803,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
 
         private void bindViewHolder(int position, MyAPHolder holder) {
             YqjcAndSysjcCombineData entryData;
-            if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {//住院
+            if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {//住院
                 entryData = mYqjcAndSysjcCombineDataMap.get(mYqjcAndSysjcCombineData_keyArray[mJcjyCurrentPositon]);
             } else {
                 entryData = new YqjcAndSysjcCombineData();
@@ -1858,13 +1870,13 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         @Override
         public int getItemCount() {
             int count = 0;
-            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
                 if (hisMzRecord == null || hisMzRecord.getSysjc() == null) {
                     count = 0;
                 } else {
                     count = hisMzRecord.getSysjc().size();
                 }
-            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
                 if (mYqjcAndSysjcCombineDataMap == null) {
                     count = 0;
                 } else {
@@ -2038,9 +2050,9 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
             holder.item_mr_detail_jcjy_jyjgzb.setOnClickListener(this);
             holder.item_mr_detail_jcjy_jyjgzb.setTag(holder);
             List<HisDataJyjgzb> jyjgzbList = null;
-            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
                 jyjgzbList = hisMzRecord.getSysjc().get(mParentItemSysjcPostion).getJyjgzb();
-            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
                 YqjcAndSysjcCombineData entryData = mYqjcAndSysjcCombineDataMap.get(mYqjcAndSysjcCombineData_keyArray[mJcjyCurrentPositon]);
                 jyjgzbList = entryData.hisDataSysjcList.get(mParentItemSysjcPostion).getJyjgzb();
             }
@@ -2069,14 +2081,14 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         @Override
         public int getItemCount() {
             int count = 0;
-            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
                 if (hisMzRecord.getSysjc() != null
                         && hisMzRecord.getSysjc().size() != 0
                         && hisMzRecord.getSysjc().get(mParentItemSysjcPostion) != null
                         && hisMzRecord.getSysjc().get(mParentItemSysjcPostion).getJyjgzb() != null) {
                     count = hisMzRecord.getSysjc().get(mParentItemSysjcPostion).getJyjgzb().size();
                 }
-            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
                 if (mYqjcAndSysjcCombineDataMap == null) {
                     count = 0;
                 } else {
@@ -2213,16 +2225,16 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         }
 
         private void bindViewHolder(int position, MyAPHolder holder) {
-            Log.d("111", "xj_bindViewHolder" + mIndex);
+            Log.d("111", "xj_bindViewHolder" + record_type);
             //LogUtils.d("5-----1>position=" + position);
             holder.item_mr_detail_jcjy_xjjg.setOnClickListener(this);
             holder.item_mr_detail_jcjy_xjjg.setTag(holder);
 
             List<HisDataXjjg> xjjgList = null;
-            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
                 Log.d("111", "***menzhen");
                 xjjgList = hisMzRecord.getSysjc().get(mParentItemSysjcPostion).getXjjg();
-            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
                 Log.d("111", "****zhuyuan");
                 YqjcAndSysjcCombineData entryDate = mYqjcAndSysjcCombineDataMap.get(mYqjcAndSysjcCombineData_keyArray[mJcjyCurrentPositon]);
                 xjjgList = entryDate.hisDataSysjcList.get(mParentItemSysjcPostion).getXjjg();
@@ -2271,14 +2283,14 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
             Log.d("111", "GetItemCountFunc");
             int count = 0;
 
-            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
                 if (hisMzRecord.getSysjc() != null
                         && hisMzRecord.getSysjc().size() != 0
                         && hisMzRecord.getSysjc().get(mParentItemSysjcPostion) != null
                         && hisMzRecord.getSysjc().get(mParentItemSysjcPostion).getXjjg() != null) {
                     count = hisMzRecord.getSysjc().get(mParentItemSysjcPostion).getXjjg().size();
                 }
-            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
                 if (mYqjcAndSysjcCombineDataMap == null) {
                     count = 0;
                 } else {
@@ -2416,9 +2428,9 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
             holder.item_mr_detail_jcjy_ymjg.setTag(holder);
 
             List<HisDataYmjg> ymjgList = null;
-            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
                 ymjgList = hisMzRecord.getSysjc().get(mParentItemSysjcPostion).getYmjg();
-            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
                 YqjcAndSysjcCombineData entryDate = mYqjcAndSysjcCombineDataMap.get(mYqjcAndSysjcCombineData_keyArray[mJcjyCurrentPositon]);
                 ymjgList = entryDate.hisDataSysjcList.get(mParentItemSysjcPostion).getYmjg();
             }
@@ -2466,14 +2478,14 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         public int GetItemCountFunc() {
             int count = 0;
 
-            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
                 if (hisMzRecord.getSysjc() != null
                         && hisMzRecord.getSysjc().size() != 0
                         && hisMzRecord.getSysjc().get(mParentItemSysjcPostion) != null
                         && hisMzRecord.getSysjc().get(mParentItemSysjcPostion).getYmjg() != null) {
                     count = hisMzRecord.getSysjc().get(mParentItemSysjcPostion).getYmjg().size();
                 }
-            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
                 if (mYqjcAndSysjcCombineDataMap == null) {
                     count = 0;
                 } else {
@@ -2610,9 +2622,9 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
             holder.item_mr_detail_jcjy_yqjc.setTag(holder);
 
             HisDataYqjc yqjc = null;
-            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
                 yqjc = hisMzRecord.getYqjc().get(position);
-            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
                 YqjcAndSysjcCombineData entryDate = mYqjcAndSysjcCombineDataMap.get(mYqjcAndSysjcCombineData_keyArray[mJcjyCurrentPositon]);
                 yqjc = entryDate.hisDataYqjcList.get(position);
             }
@@ -2638,13 +2650,13 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         @Override
         public int getItemCount() {
             int count = 0;
-            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(mIndex)) {
+            if (CommonConfig.MR_INDEX_MENZHEN_ID.equals(record_type)) {
                 if (hisMzRecord == null || hisMzRecord.getYqjc() == null) {
                     count = 0;
                 } else {
                     count = hisMzRecord.getYqjc().size();
                 }
-            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(mIndex)) {
+            } else if (CommonConfig.MR_INDEX_ZHUYUAN_ID.equals(record_type)) {
                 if (mYqjcAndSysjcCombineDataMap == null) {
                     count = 0;
                 } else {

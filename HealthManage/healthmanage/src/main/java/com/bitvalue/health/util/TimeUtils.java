@@ -100,13 +100,14 @@ public class TimeUtils {
         return YY_MM_DD_FORMAT_8.format(new Date());
     }
 
+
     public static String getCurrenTimeYMDHMS() {
         return YY_MM_DD_FORMAT_3.format(new Date());
     }
 
 
     public static String getCurrentTimeMinute(){
-        return YY_MM_DD_FORMAT_7.format(new Date());
+        return YY_MM_DD_FORMAT_4.format(new Date());
     }
 
 

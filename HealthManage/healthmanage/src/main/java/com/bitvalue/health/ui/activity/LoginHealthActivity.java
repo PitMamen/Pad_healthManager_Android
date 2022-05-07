@@ -121,8 +121,9 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
                 }
                 showDialog();
                String publicKey= SharedPreManager.getString(LOCAL_PUBLIC_KEY);
-                Log.e(TAG, "222222: "+publicKey );
-                mPresenter.login(new LoginReqBean(userId, passWord, 2,publicKey));
+               String publicKey2= "MIGiMA0GCSqGSIb3DQEBAQUAA4GQADCBjAKBhACWY1XkBxypNQTuhBZB50eYRLWmn/q3V0+xbrIOPAza3WcqKeHMCW7u1bmhHwCsNfWYJwh771mIWv0RH6IpQQGbMlIU85pjBzxAtmvLf8d2fLTdrTiAYdG35U1EFUoAoJw0awvgbZo96lqhb+HPgmIIGslLLrHmWki39PoE1/p4w9JD1wIDAQAB";
+                Log.e(TAG, "222222: "+publicKey.replaceAll("\r\n","") );
+                mPresenter.login(new LoginReqBean(userId, passWord, 2,publicKey.replaceAll("\r|\n","")));
                 break;
         }
     }

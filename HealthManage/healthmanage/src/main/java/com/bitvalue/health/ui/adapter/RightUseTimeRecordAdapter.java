@@ -45,7 +45,10 @@ public class RightUseTimeRecordAdapter extends BaseQuickAdapter<MyRightBean.User
                 attrName = "重症会诊";
                 break;
             case "telNum":
-                attrName = "电话随访追踪";
+                attrName = "电话咨询";
+                break;
+            case "telVisitNum":
+                attrName = "电话追踪随访";
                 break;
             case "eatEvaluateNum":
                 attrName = "膳食点评";

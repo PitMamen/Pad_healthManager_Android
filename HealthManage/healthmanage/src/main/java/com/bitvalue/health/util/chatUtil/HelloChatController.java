@@ -216,6 +216,19 @@ public class HelloChatController implements TUIChatControllerListener {
                         }
                         break;
 
+                        //接诊
+                    case "CustomDoctorReceptionMessage":
+                        CustomDoctorReceptionMessage customdoctorreceptionmessage = new Gson().fromJson(dataJson, CustomDoctorReceptionMessage.class);
+                        if (customdoctorreceptionmessage != null) {
+                            if (parent instanceof MessageBaseHolder) {
+                                CustomDoctorReceptionMessageController.onDraw(parent, customdoctorreceptionmessage, position, ((MessageBaseHolder) parent).getOnItemClickListener(), info);
+                            }
+                        }
+                        break;
+
+
+
+
 
                 }
 

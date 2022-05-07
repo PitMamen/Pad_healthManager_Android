@@ -5,6 +5,7 @@ import android.util.Log;
 import com.bitvalue.health.api.requestbean.CallRequest;
 import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.requestbean.UpdateRightsRequestTimeRequestBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.base.model.BaseModel;
 import com.bitvalue.health.callback.Callback;
@@ -104,5 +105,47 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
         }, error -> {
             callback.onFailedLog(error.getMessage(), 1001);
         });
+    }
+
+
+    @Override
+    public void queryRightsRecord(int pageNo, int pageSize, int rightsId, String userId,String id, Callback callback) {
+        if (!EmptyUtil.isEmpty(userId)) {
+            mApi.queryRightsUserRecord(pageNo, pageSize, userId,rightsId,id).subscribeOn(Schedulers.io()).subscribe(result -> {
+                if (!EmptyUtil.isEmpty(result)) {
+                    if (result.getCode() == 0) {
+                        if (!EmptyUtil.isEmpty(result.getData())) {
+                            callback.onSuccess(result.getData(), 1000);
+                        } else {
+                            callback.onSuccess(null, 1000);
+                        }
+
+                    } else {
+                        callback.onFailedLog(result.getMessage(), 1001);
+                    }
+                }
+            }, error -> {
+                Log.e(TAG, "queryRightsRecord: "+error.getMessage() );
+                callback.onFailedLog(error.getMessage(), 1001);
+            });
+        }
+    }
+
+    @Override
+    public void updateRightsRequestTime(UpdateRightsRequestTimeRequestBean requestTimeRequestBean, Callback callback) {
+        if (!EmptyUtil.isEmpty(requestTimeRequestBean)){
+            mApi.updateRightsRequestTime(requestTimeRequestBean).subscribeOn(Schedulers.io()).subscribe(reuslt->{
+                if (!EmptyUtil.isEmpty(reuslt)){
+                    if (reuslt.getCode()==0){
+                        callback.onSuccess(reuslt.getData(),1000);
+                    }else {
+                        callback.onFailedLog(reuslt.getMessage(),1001);
+                    }
+                }
+            }, error -> {
+                Log.e(TAG, "updateRightsRequestTime: "+error.getMessage() );
+                callback.onFailedLog(error.getMessage(), 1001);
+            });
+        }
     }
 }

@@ -4,6 +4,7 @@ import com.bitvalue.health.api.requestbean.CallRequest;
 import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
 import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.requestbean.UpdateRightsRequestTimeRequestBean;
 import com.bitvalue.health.api.responsebean.CallResultBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.MyRightBean;
@@ -45,6 +46,14 @@ public interface InterestsUseApplyByDocContract {
 
         void callFail(String failMessage);
 
+        void queryRightsRecordSuccess(QueryRightsRecordBean queryRightsRecordBean);
+
+        void queryRightsRecordFail(String faiMessage);
+
+        void updateRightsRequestTimeSuccess(boolean isSuccess);
+
+        void updateRightsRequestTimeFail(String failMessage);
+
     }
 
     interface Model extends IModel {
@@ -60,6 +69,10 @@ public interface InterestsUseApplyByDocContract {
         void saveCaseCommonWords(QuickReplyRequest request, Callback callback);
 
         void callPhone(CallRequest callRequest, Callback callback);
+
+        void queryRightsRecord(int pageNo, int pageSize, int rightsId, String userId, String id, Callback callback);
+
+        void updateRightsRequestTime(UpdateRightsRequestTimeRequestBean requestTimeRequestBean, Callback callback);
     }
 
     interface Presenter {
@@ -81,6 +94,12 @@ public interface InterestsUseApplyByDocContract {
 
         //拨打电话
         void callPhone(CallRequest callRequest);
+
+        //查询权益使用记录
+        void queryRightsRecord(int pageNo, int pageSize, int rightsId, String userId, String id);//权益使用记录
+
+
+        void updateRightsRequestTime(UpdateRightsRequestTimeRequestBean requestTimeRequestBean);
 
     }
 

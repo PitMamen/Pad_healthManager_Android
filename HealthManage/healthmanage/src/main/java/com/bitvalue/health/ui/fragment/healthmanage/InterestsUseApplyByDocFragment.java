@@ -14,13 +14,13 @@ import androidx.annotation.NonNull;
 import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
-import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
 import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
 import com.bitvalue.health.api.responsebean.CallResultBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
+import com.bitvalue.health.api.responsebean.QueryRightsRecordBean;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.base.presenter.BasePresenter;
@@ -75,6 +75,9 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
     TextView tv_clickGotoDeatail;
     @BindView(R.id.rl_start_consultation)
     RelativeLayout start_consultation;
+    @BindView(R.id.tv_startwenzhen)
+    TextView tv_startwenzhen;
+
     @BindView(R.id.tv_chat_record)
     TextView tv_chat_record; //问诊记录
 
@@ -114,9 +117,8 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
 
 
     private void initCompView() {
-
+        Log.e(TAG, "initCompView: " + taskDeatailBean.toString());
         if (taskDeatailBean.getExecFlag() != 1
-                && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1
                 && taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)) {
             iv_endConsultationButton.setVisibility(View.VISIBLE);
             tv_end_consultation.setVisibility(View.VISIBLE);
@@ -127,11 +129,9 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
             start_consultation.setVisibility(View.INVISIBLE);
         } else {
             //  如果是 ICU的 是线下会诊 不需要进入聊天接诊
-            if (taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)) {
-                start_consultation.setVisibility(View.INVISIBLE);
-            } else {
-                start_consultation.setVisibility(View.VISIBLE);
-            }
+            start_consultation.setVisibility(taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) ? View.INVISIBLE : View.VISIBLE);
+//            tv_startwenzhen.setText(taskDeatailBean.getTaskDetail().getExecFlag() == 0&&(taskDeatailBean.getTaskDetail().getRightsType().equals("telNum")||taskDeatailBean.getTaskDetail().getRightsType().equals("videoNum"))? getString(R.string.confirmtime) : getString(R.string.startconsultation));
+            tv_startwenzhen.setText(taskDeatailBean.getTaskDetail().getExecFlag() == 0? getString(R.string.confirmtime) : getString(R.string.startconsultation));
         }
 
         //如果已经执行完毕 是重症医学科下面的 ICU权益 并且是线上会诊的 不显示问诊记录按钮 其他的都显示
@@ -401,4 +401,45 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
     public void callFail(String failMessage) {
 
     }
+
+
+
+    /***
+     * 查询权益使用记录 成功回调
+     * @param queryRightsRecordBean
+     */
+    @Override
+    public void queryRightsRecordSuccess(QueryRightsRecordBean queryRightsRecordBean) {
+
+    }
+
+
+    /***
+     * 查询权益使用记录 失败回调
+     * @param faiMessage
+     */
+    @Override
+    public void queryRightsRecordFail(String faiMessage) {
+        homeActivity.runOnUiThread(() -> {
+//            ToastUtils.show(faiMessage);
+        });
+    }
+
+
+
+    /**
+     * 医生接诊 更新权益时间  回调
+     * @param isSuccess
+     */
+    @Override
+    public void updateRightsRequestTimeSuccess(boolean isSuccess) {
+
+    }
+
+    @Override
+    public void updateRightsRequestTimeFail(String failMessage) {
+
+    }
+
+
 }

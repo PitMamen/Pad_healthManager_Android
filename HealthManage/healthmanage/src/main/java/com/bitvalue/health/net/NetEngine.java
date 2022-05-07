@@ -79,10 +79,8 @@ public class NetEngine {
                 .build();
     }
 
-//    private String HOST_URL_LIST = "http://36.158.225.181:24702/ehr/v1/list";   //获取病历列表  正式
-//    private String HOST_URL_LIST_RECORD = "http://36.158.225.181:24702/ehr/v1/getRecord";   //获取病历详情 正式
-    private String HOST_URL_LIST = "http://192.168.1.120:24702/ehr/v1/list";   //获取病历列表  正式
-    private String HOST_URL_LIST_RECORD = "http://192.168.1.120:24702/ehr/v1/getRecord";   //获取病历详情 正式
+    private String HOST_URL_LIST = "http://36.158.225.181:24702/ehr/v1/list";   //获取病历列表  正式
+    private String HOST_URL_LIST_RECORD = "http://36.158.225.181:24702/ehr/v1/getRecord";   //获取病历详情 正式
 
     private Interceptor reInterceptor = new Interceptor() {
         @Override

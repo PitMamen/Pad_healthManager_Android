@@ -101,6 +101,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     private boolean mHealthVideoDisable;
     private boolean mHealthplantrackDisable;
     private boolean showCall = false;
+    private boolean showVedio = false;
     /**
      * 健康管理聊天类型
      */
@@ -135,6 +136,11 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
     public void setShowCallButton(boolean isshow) {
         showCall = isshow;
     }
+
+    public void setShowVedioButton(boolean isShow){
+        showVedio = isShow;
+    }
+
 
 
     private void initViews() {
@@ -249,7 +255,9 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
                     actionUnit.setIconResId(R.drawable.icon_video_communicate);
 //                    actionUnit.setIconResId(R.drawable.icon_spkz);
                     actionUnit.setTitleId(R.string.video_communicate);
-                    mInputMoreActionList.add(actionUnit);
+                    if (showVedio){
+                        mInputMoreActionList.add(actionUnit);
+                    }
                 }
 
                 //书写病历

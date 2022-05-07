@@ -225,9 +225,10 @@ public class HealthFilesActivity extends AppActivity {
         mAdapter = new HealthLogsAdapter(this);
         mAdapter.setOnItemClickListener((recyclerView, itemView, position) -> {
             Intent intent = new Intent(HealthFilesActivity.this, MRDetailActivity.class);
-            intent.putExtra(Constants.DOC_ID,String.valueOf(loginBean.getUser().user.userId));
-            intent.putExtra(Constants.INDEX_NAME, "347");
-            intent.putExtra(Constants.SERIALNUMBER, logBeans.get(position).getSerialNumber());
+            intent.putExtra(Constants.DOC_ID,String.valueOf(loginBean.getUser().user.userId));    //医生ID
+            intent.putExtra(Constants.USER_ID, "347");                                      //患者ID
+            intent.putExtra(Constants.INDEX_NAME, logBeans.get(position).getRecordType());
+            intent.putExtra(Constants.SERIALNUMBER, logBeans.get(position).getDocId());
             HealthFilesActivity.this.startActivity(intent);
         });
         list_health_log.setAdapter(mAdapter);
@@ -241,7 +242,7 @@ public class HealthFilesActivity extends AppActivity {
         Log.e("TAG", "患者ID: "+userId+" 医生ID： "+ loginBean.getUser().user.userId);
         getLogsApi = new GetLogsApi();
         getLogsApi.pastMonths = defaultmouth;
-        getLogsApi.dataUserId = loginBean.getUser().user.userId+""; //249  调试参数
+        getLogsApi.dataUserId = loginBean.getUser().user.userId+""; //293  调试参数
         getLogsApi.dataOwnerId = "347";
         getLogsApi.recordType = "menzhen";
 //        getLogsApi.dataOwnerId = "347";
@@ -261,9 +262,6 @@ public class HealthFilesActivity extends AppActivity {
                 }
                 if (result.getCode() == 0) {
                     logBeans = result.getData();
-//                    for (int  i= 0; i < logBeans.size(); i++) {
-//                        Log.e("TAG", "病历列表: "+logBeans.get(i).toString() );
-//                    }
                     if (logBeans.size() > 0) {
                         tv_no_data.setVisibility(View.GONE);
                         list_health_log.setVisibility(View.VISIBLE);

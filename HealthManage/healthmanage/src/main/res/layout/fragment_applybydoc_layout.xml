@@ -6,8 +6,7 @@
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/qb_px_35"
-        >
+        android:layout_height="@dimen/qb_px_35">
 
 
         <RelativeLayout
@@ -44,25 +43,24 @@
         android:background="#E6E6E6"></View>
 
 
-
     <RelativeLayout
         android:id="@+id/rl_bg"
-        android:background="@drawable/shape_white_bg_"
-        android:layout_marginTop="@dimen/qb_px_10"
-        android:layout_marginStart="@dimen/qb_px_4"
-        android:layout_marginEnd="@dimen/qb_px_4"
-        android:layout_below="@+id/ll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_view"
+        android:layout_marginStart="@dimen/qb_px_4"
+        android:layout_marginTop="@dimen/qb_px_10"
+        android:layout_marginEnd="@dimen/qb_px_4"
+        android:background="@drawable/shape_white_bg_"
         android:elevation="3dp"
         android:translationZ="3dp">
 
 
         <RelativeLayout
             android:id="@+id/ll_mc"
-            android:layout_marginTop="@dimen/qb_px_5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/qb_px_5"
             android:orientation="horizontal">
 
 
@@ -88,14 +86,14 @@
 
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/iv_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/qb_px_4"
                 android:layout_toLeftOf="@+id/tv_end_consultation"
-                android:src="@mipmap/icon_jieshu"></ImageView>
+                android:src="@mipmap/icon_jieshu"
+                android:visibility="gone"></ImageView>
 
 
             <TextView
@@ -126,62 +124,54 @@
             android:background="#E6E6E6"></View>
 
 
+        <RelativeLayout
+            android:id="@+id/visit_doc_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_line_">
 
 
-     <RelativeLayout
-         android:id="@+id/visit_doc_name"
-         android:layout_below="@+id/ll_line_"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:text="问诊医生"
+                android:textColor="@color/text_gray"
+                android:textSize="14.5sp"></TextView>
 
 
-         <TextView
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginStart="@dimen/qb_px_10"
-             android:layout_marginTop="@dimen/qb_px_10"
-             android:text="问诊医生"
-             android:textColor="@color/text_gray"
-             android:textSize="14.5sp"></TextView>
+            <TextView
+                android:id="@+id/tv_name_by_doc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:layout_marginEnd="@dimen/qb_px_10"
+                android:text="王一一"
+                android:textColor="@color/text_gray"
+                android:textSize="14.5sp"></TextView>
 
 
-         <TextView
-             android:id="@+id/tv_name_by_doc"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_alignParentRight="true"
-             android:layout_marginStart="@dimen/qb_px_10"
-             android:layout_marginTop="@dimen/qb_px_10"
-             android:layout_marginEnd="@dimen/qb_px_10"
-             android:text="王一一"
-             android:textColor="@color/text_gray"
-             android:textSize="14.5sp"></TextView>
-
-
-
-     </RelativeLayout>
-
-
-
-
+        </RelativeLayout>
 
 
         <RelativeLayout
             android:id="@+id/rl_department"
-            android:layout_below="@+id/visit_doc_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/visit_doc_name">
 
 
             <TextView
-                android:text="科室"
-                android:textSize="14.5sp"
-                android:textColor="@color/text_gray"
-                android:layout_marginTop="@dimen/qb_px_10"
-                android:layout_marginStart="@dimen/qb_px_10"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </TextView>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:text="科室"
+                android:textColor="@color/text_gray"
+                android:textSize="14.5sp"></TextView>
 
 
             <TextView
@@ -197,30 +187,24 @@
                 android:textSize="14.5sp"></TextView>
 
 
-
         </RelativeLayout>
-
-
-
-
 
 
         <RelativeLayout
             android:id="@+id/rl_starttime"
-            android:layout_below="@+id/rl_department"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_department">
 
 
             <TextView
-                android:text="开始时间"
-                android:textSize="14.5sp"
-                android:textColor="@color/text_gray"
-                android:layout_marginTop="@dimen/qb_px_10"
-                android:layout_marginStart="@dimen/qb_px_10"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </TextView>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:text="开始时间"
+                android:textColor="@color/text_gray"
+                android:textSize="14.5sp"></TextView>
 
 
             <TextView
@@ -236,27 +220,24 @@
                 android:textSize="14.5sp"></TextView>
 
 
-
         </RelativeLayout>
-
 
 
         <RelativeLayout
             android:id="@+id/rl_continuetime"
-            android:layout_below="@+id/rl_starttime"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_starttime">
 
 
             <TextView
-                android:text="持续时间"
-                android:textSize="14.5sp"
-                android:textColor="@color/text_gray"
-                android:layout_marginTop="@dimen/qb_px_10"
-                android:layout_marginStart="@dimen/qb_px_10"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </TextView>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:text="持续时间"
+                android:textColor="@color/text_gray"
+                android:textSize="14.5sp"></TextView>
 
 
             <TextView
@@ -272,30 +253,24 @@
                 android:textSize="14.5sp"></TextView>
 
 
-
         </RelativeLayout>
-
-
-
-
 
 
         <RelativeLayout
             android:id="@+id/rl_patient_name"
-            android:layout_below="@+id/rl_continuetime"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_continuetime">
 
 
             <TextView
-                android:text="就诊人"
-                android:textSize="14.5sp"
-                android:textColor="@color/text_gray"
-                android:layout_marginTop="@dimen/qb_px_10"
-                android:layout_marginStart="@dimen/qb_px_10"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </TextView>
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/qb_px_10"
+                android:layout_marginTop="@dimen/qb_px_10"
+                android:text="就诊人"
+                android:textColor="@color/text_gray"
+                android:textSize="14.5sp"></TextView>
 
 
             <TextView
@@ -312,24 +287,21 @@
         </RelativeLayout>
 
 
-
         <View
             android:id="@+id/ll_view_"
-            android:layout_marginStart="@dimen/qb_px_10"
-            android:layout_marginEnd="@dimen/qb_px_10"
-            android:layout_marginTop="@dimen/qb_px_10"
             android:layout_width="match_parent"
             android:layout_height="1.5dp"
             android:layout_below="@+id/rl_patient_name"
+            android:layout_marginStart="@dimen/qb_px_10"
+            android:layout_marginTop="@dimen/qb_px_10"
+            android:layout_marginEnd="@dimen/qb_px_10"
             android:background="#E6E6E6"></View>
 
 
-
-
         <RelativeLayout
-            android:layout_below="@+id/ll_view_"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_view_">
 
 
             <TextView
@@ -347,11 +319,11 @@
                 android:id="@+id/tv_chat_record"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="问诊记录"
                 android:layout_alignParentRight="true"
-                android:textColor="@color/home_blue"
+                android:layout_centerInParent="true"
                 android:layout_marginEnd="@dimen/qb_px_20"
+                android:text="问诊记录"
+                android:textColor="@color/home_blue"
                 android:textSize="15sp">
 
             </TextView>
@@ -370,11 +342,11 @@
 
 
                 <TextView
+                    android:id="@+id/tv_startwenzhen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:text="开始问诊"
+                    android:layout_centerInParent="true"
+                    android:text="@string/startconsultation"
                     android:textColor="@color/white"
                     android:textSize="15sp">
 
@@ -383,31 +355,10 @@
             </RelativeLayout>
 
 
-
-
-
-
-
-
-
-
-
-
-
         </RelativeLayout>
 
 
     </RelativeLayout>
-
-
-
-
-
-
-
-
-
-
 
 
 </RelativeLayout>

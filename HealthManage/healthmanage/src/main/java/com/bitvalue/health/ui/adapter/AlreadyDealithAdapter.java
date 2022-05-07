@@ -51,51 +51,17 @@ public class AlreadyDealithAdapter extends BaseQuickAdapter<TaskDeatailBean, Bas
         if (!EmptyUtil.isEmpty((videoClientsResultBean.getTaskDetail().getUserInfo()))) {
             img_head.setImageDrawable(videoClientsResultBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         }
-        String rightType = "";
-        switch (videoClientsResultBean.getTaskDetail().getRightsType()) {
-            case "videoNum":
-                rightType = "视频咨询";
-                break;
-            case "textNum":
-                rightType = "图文咨询";
-                break;
-            case "appointBedNum":
-                rightType = "床位预约";
-                break;
-            case "appointNum":
-                rightType = "复诊预约";
-                break;
-            case "ICUConsultNum":
-                rightType = "重症会诊";
-                break;
-            case "telNum":
-                rightType = "电话随访追踪";
-                break;
-            case "eatEvaluateNum":
-                rightType = "膳食点评";
-                break;
-            case "sportEvaluateNum":
-                rightType = "身体活动情况点评";
-                break;
-            case "mailNum":
-                rightType = "邮寄服务";
-                break;
-        }
-        holder.setText(R.id.tv_video_visit, rightType);
+        holder.setText(R.id.tv_video_visit, videoClientsResultBean.getTaskDetail().getRightsName());
         holder.setText(R.id.tv_name, videoClientsResultBean.getTaskDetail().getUserInfo().getUserName());
         holder.setText(R.id.tv_patient_sex, videoClientsResultBean.getTaskDetail().getUserInfo().getUserSex());
         holder.setText(R.id.tv_patient_age, videoClientsResultBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
         holder.setText(R.id.tv_equity_use, videoClientsResultBean.getTaskName());
         holder.setText(R.id.tv_time, TimeUtils.getTime_(videoClientsResultBean.getExecTime()));
-
-
         holder.itemView.setOnClickListener(v -> {
             if (onRightClickCallBack != null) {
                 onRightClickCallBack.OnItemClick(videoClientsResultBean);
             }
         });
-
     }
-
 }
 
