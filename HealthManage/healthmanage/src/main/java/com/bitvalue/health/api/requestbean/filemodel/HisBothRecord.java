@@ -10,6 +10,7 @@ import java.util.List;
  * @Version V1.0
  **/
 public class HisBothRecord extends HisDataCommon {
+    public TbCisMain cismain;
     // 就诊类型
     private String jzlx;
     // 就诊日期
@@ -435,4 +436,62 @@ public class HisBothRecord extends HisDataCommon {
         this.yzxx = yzxx;
     }
 
+
+    public TbCisMain getCismain() {
+        return cismain;
+    }
+
+    public void setCismain(TbCisMain cismain) {
+        this.cismain = cismain;
+    }
+
+
+    @Override
+    public String toString() {
+        return "HisBothRecord{" +
+                "cismain'"+cismain.toString()+'\''+
+                ", jzlx='" + jzlx + '\'' +
+                ", jzrq='" + jzrq + '\'' +
+                ", yljgdm='" + yljgdm + '\'' +
+                ", jzksdm='" + jzksdm + '\'' +
+                ", yyjzksmc='" + yyjzksmc + '\'' +
+                ", zzysgh='" + zzysgh + '\'' +
+                ", zzysxm='" + zzysxm + '\'' +
+                ", mzzdbm='" + mzzdbm + '\'' +
+                ", yymzzdbmmc='" + yymzzdbmmc + '\'' +
+                ", bmlx='" + bmlx + '\'' +
+                ", mzzdsm='" + mzzdsm + '\'' +
+                ", zs='" + zs + '\'' +
+                ", zzms='" + zzms + '\'' +
+                ", tgjc='" + tgjc + '\'' +
+                ", cfxx=" + cfxx +
+                ", jzlxmc='" + jzlxmc + '\'' +
+                ", zdbm0='" + zdbm0 + '\'' +
+                ", zdmc='" + zdmc + '\'' +
+                ", bmlx0='" + bmlx0 + '\'' +
+                ", ryks='" + ryks + '\'' +
+                ", ryksmc='" + ryksmc + '\'' +
+                ", cyks='" + cyks + '\'' +
+                ", cyksmc='" + cyksmc + '\'' +
+                ", rysj='" + rysj + '\'' +
+                ", cysj=" + cysj +
+                ", zyts=" + zyts +
+                ", ryzd='" + ryzd + '\'' +
+                ", mzzd='" + mzzd + '\'' +
+                ", cyzd='" + cyzd + '\'' +
+                ", ryzztz='" + ryzztz + '\'' +
+                ", jchz='" + jchz + '\'' +
+                ", tsjc='" + tsjc + '\'' +
+                ", zlgc='" + zlgc + '\'' +
+                ", hbz='" + hbz + '\'' +
+                ", cyqk='" + cyqk + '\'' +
+                ", cyyz='" + cyyz + '\'' +
+                ", zljg='" + zljg + '\'' +
+                ", zljgmc='" + zljgmc + '\'' +
+                ", cyszzytz='" + cyszzytz + '\'' +
+                ", yxfzjjg='" + yxfzjjg + '\'' +
+                ", zdxx=" + zdxx +
+                ", yzxx=" + yzxx +
+                '}';
+    }
 }

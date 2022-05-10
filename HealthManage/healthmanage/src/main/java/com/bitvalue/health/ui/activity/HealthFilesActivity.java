@@ -111,7 +111,7 @@ public class HealthFilesActivity extends AppActivity {
     protected void initView() {
         loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, this);
         userId = getIntent().getStringExtra(Constants.USER_ID);
-        Log.e("TAG", "传过来的ID: " + userId+" docId: "+loginBean.getUser().user.userId);
+        Log.e("TAG", "传过来的ID: " + userId + " docId: " + loginBean.getUser().user.userId);
         initList(); //初始化各控件
         getPersonalData(); //加载患者详细数据
         getLogsData(); //获取病历列表
@@ -225,10 +225,11 @@ public class HealthFilesActivity extends AppActivity {
         mAdapter = new HealthLogsAdapter(this);
         mAdapter.setOnItemClickListener((recyclerView, itemView, position) -> {
             Intent intent = new Intent(HealthFilesActivity.this, MRDetailActivity.class);
-            intent.putExtra(Constants.DOC_ID,String.valueOf(loginBean.getUser().user.userId));    //医生ID
+            intent.putExtra(Constants.DOC_ID, String.valueOf(loginBean.getUser().user.userId));    //医生ID
             intent.putExtra(Constants.USER_ID, "347");                                      //患者ID
-            intent.putExtra(Constants.INDEX_NAME, logBeans.get(position).getRecordType());
-            intent.putExtra(Constants.SERIALNUMBER, logBeans.get(position).getDocId());
+            intent.putExtra(Constants.INDEX_NAME, logBeans.get(position).getRecordType());                                      //类型
+            intent.putExtra(Constants.HOSPITALCODE, logBeans.get(position).getHospitalCode());
+            intent.putExtra(Constants.SERIALNUMBER, logBeans.get(position).getSerialNumber());
             HealthFilesActivity.this.startActivity(intent);
         });
         list_health_log.setAdapter(mAdapter);
@@ -239,12 +240,12 @@ public class HealthFilesActivity extends AppActivity {
      * 网络请求 获取患者看诊记录
      */
     private void getLogsData() {
-        Log.e("TAG", "患者ID: "+userId+" 医生ID： "+ loginBean.getUser().user.userId);
+        Log.e("TAG", "患者ID: " + userId + " 医生ID： " + loginBean.getUser().user.userId);
         getLogsApi = new GetLogsApi();
         getLogsApi.pastMonths = defaultmouth;
-        getLogsApi.dataUserId = loginBean.getUser().user.userId+""; //293  调试参数
-        getLogsApi.dataOwnerId = "347";
-        getLogsApi.recordType = "menzhen";
+        getLogsApi.dataUserId = loginBean.getUser().user.userId + ""; //293  调试参数
+        getLogsApi.dataOwnerId = "353";
+        getLogsApi.recordType = "zhuyuan";
 //        getLogsApi.dataOwnerId = "347";
 //        getLogsApi.dataUserId = "347"; //249  调试参数
         EasyHttp.post(this).api(getLogsApi).request(new HttpCallback<ApiResult<ArrayList<GetLogsApi.LogBean>>>(this) {

@@ -66,12 +66,15 @@ import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.GsonUtils;
+import com.bitvalue.health.util.InputMethodUtils;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.chatUtil.CustomAnalyseMessage;
 import com.bitvalue.health.util.chatUtil.CustomDoctorReceptionMessage;
+import com.bitvalue.health.util.chatUtil.CustomRefuseVisitMessage;
 import com.bitvalue.health.util.chatUtil.CustomVideoCallMessageController;
 import com.bitvalue.health.util.chatUtil.CustomWenJuanMessage;
+import com.bitvalue.health.util.customview.dialog.RefusalDiagnosisDialog;
 import com.bitvalue.health.util.customview.dialog.SummaryDialog;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
@@ -364,7 +367,11 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     //保存问诊小结 结果失败回调
     @Override
     public void sendsummary_resultFail(String messageFail) {
-
+        homeActivity.runOnUiThread(() -> {
+            if (null != summaryDialog) {
+                summaryDialog.dismiss();
+            }
+        });
     }
 
     /**
@@ -468,7 +475,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                                         Log.e(TAG, "问卷: " + questionBean.name);
                                     }).create();
                             alertDialog.show();
-                            alertDialog.getWindow().setLayout(DensityUtil.dip2px(homeActivity, 250), LinearLayout.LayoutParams.WRAP_CONTENT);
+                            alertDialog.getWindow().setLayout(DensityUtil.dip2px(homeActivity, 400), LinearLayout.LayoutParams.WRAP_CONTENT);
                         } else {
                             ToastUtils.show("患者所属科室无相关问卷列表!");
                         }
@@ -485,7 +492,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             });
         } else {
             //医生账号  请求获取 答卷列表 接口
-            Log.d(TAG, "getQuestionListByKeyWord: " + planId);
+//            Log.d(TAG, "getQuestionListByKeyWord: " + planId);
             GetAnserListApi getAnserListApi = new GetAnserListApi();
             getAnserListApi.current = 1;
             getAnserListApi.size = 10;
@@ -517,7 +524,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                                         homeActivity.switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL, answerBean);
                                     }).create();
                             alertDialog.show();
-                            alertDialog.getWindow().setLayout(DensityUtil.dip2px(homeActivity, 300), LinearLayout.LayoutParams.WRAP_CONTENT);
+                            alertDialog.getWindow().setLayout(DensityUtil.dip2px(homeActivity, 400), LinearLayout.LayoutParams.WRAP_CONTENT);
 
                         } else {
                             ToastUtils.show("该患者暂无预诊资料!");
@@ -719,34 +726,64 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                     DataUtil.showNormalDialog(homeActivity, "温馨提示", "确定拒绝问诊吗？", "确定", "取消", new DataUtil.OnNormalDialogClicker() {
                         @Override
                         public void onPositive() {
-                            SaveRightsUseBean saveRightsUseBean = new SaveRightsUseBean();
-                            saveRightsUseBean.deptName = loginBean.getUser().user.departmentName;
-                            saveRightsUseBean.execDept = String.valueOf(loginBean.getUser().user.departmentId); //这里传科室代码
-                            saveRightsUseBean.execFlag = 3;
-                            saveRightsUseBean.execTime = TimeUtils.getTime_tosecond(taskDeatailBean.getExecTime());
-                            saveRightsUseBean.execUser = String.valueOf(loginBean.getUser().user.userId);
-                            saveRightsUseBean.id = taskDeatailBean.getTaskDetail().getId();
-                            saveRightsUseBean.rightsId = taskDeatailBean.getTaskDetail().getRightsId();
-                            saveRightsUseBean.rightsName = taskDeatailBean.getTaskDetail().getRightsName();
-                            saveRightsUseBean.rightsType = taskDeatailBean.getTaskDetail().getRightsType();
-                            saveRightsUseBean.statusDescribe = "拒绝问诊";
-                            saveRightsUseBean.tradeId = taskDeatailBean.getTaskDetail().getTradeId();
-                            saveRightsUseBean.userId = taskDeatailBean.getTaskDetail().getUserId();
-                            saveRightsUseBean.taskId = String.valueOf(taskDeatailBean.getId());
-                            Log.e(TAG, "拒绝问诊=== ");
-                            mPresenter.saveRightsUseRecord(saveRightsUseBean);
-                            /**
-                             * 提醒通知 调用接口
-                             */
-                            if (EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail())) {
-                                Log.e(TAG, "结束问诊 taskDeatailBean.getTaskDetail == null");
-                                return;
-                            }
-                            eventType = 7; //拒绝问诊的  发送通知 标识 暂定义为 7  还未确认
-                            TaskDeatailBean.TaskDetailDTO taskDetail = taskDeatailBean.getTaskDetail();
-                            String jsonString = GsonUtils.ModelToJson(taskDetail);
-                            sendSystemRemind(jsonString);
-                            getFragmentManager().beginTransaction().remove(ChatFragment.this).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit(); //退出fragment  不返回上一个界面
+                            RefusalDiagnosisDialog dialog = new RefusalDiagnosisDialog(homeActivity);
+                            dialog.setOnclickListener(new RefusalDiagnosisDialog.OnClickBottomListener() {
+                                @Override
+                                public void onPositiveClick() {
+                                    String reason = "";
+                                    String selectReason = dialog.getSelectedReason();
+                                    String inputReason = dialog.getInputReason();
+                                    if (selectReason.equals("其他")) {
+                                        if (EmptyUtil.isEmpty(inputReason)) {
+                                            ToastUtils.show("请输入理由");
+                                            return;
+                                        }
+                                        reason = inputReason;
+                                    }else {
+                                        reason = selectReason;
+                                    }
+                                    Log.e(TAG, "拒绝原因: "+reason );
+                                    SaveRightsUseBean saveRightsUseBean = new SaveRightsUseBean();
+                                    saveRightsUseBean.deptName = loginBean.getUser().user.departmentName;
+                                    saveRightsUseBean.execDept = String.valueOf(loginBean.getUser().user.departmentId); //这里传科室代码
+                                    saveRightsUseBean.execFlag = 3;
+                                    saveRightsUseBean.execUser = loginBean.getUser().user.userName;
+                                    saveRightsUseBean.execTime = TimeUtils.getTime_tosecond(taskDeatailBean.getExecTime());
+                                    saveRightsUseBean.execUser = String.valueOf(loginBean.getUser().user.userId);
+                                    saveRightsUseBean.id = taskDeatailBean.getTaskDetail().getId();
+                                    saveRightsUseBean.rightsId = taskDeatailBean.getTaskDetail().getRightsId();
+                                    saveRightsUseBean.rightsName = taskDeatailBean.getTaskDetail().getRightsName();
+                                    saveRightsUseBean.rightsType = taskDeatailBean.getTaskDetail().getRightsType();
+                                    saveRightsUseBean.statusDescribe = "拒绝问诊";
+                                    saveRightsUseBean.remark = reason;
+                                    saveRightsUseBean.tradeId = taskDeatailBean.getTaskDetail().getTradeId();
+                                    saveRightsUseBean.userId = taskDeatailBean.getTaskDetail().getUserId();
+                                    saveRightsUseBean.taskId = String.valueOf(taskDeatailBean.getId());
+                                    Log.e(TAG, "拒绝问诊=== ");
+                                    mPresenter.saveRightsUseRecord(saveRightsUseBean);
+                                    //需要发送一条自定义消息给患者
+                                    CustomRefuseVisitMessage customdoctorreceptionmessage = new CustomRefuseVisitMessage();
+                                    customdoctorreceptionmessage.description = "医生拒诊";
+                                    customdoctorreceptionmessage.content = "医生拒诊";
+                                    customdoctorreceptionmessage.reason = reason;
+                                    customdoctorreceptionmessage.tradeId = taskDeatailBean.getTaskDetail().getTradeId();
+                                    customdoctorreceptionmessage.docName = loginBean.getUser().user.userName;
+                                    customdoctorreceptionmessage.docId = String.valueOf(loginBean.getUser().user.userId);
+                                    customdoctorreceptionmessage.type = "CustomDoctorRefuseMessage";
+                                    MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(customdoctorreceptionmessage), customdoctorreceptionmessage.description, null);
+                                    mChatLayout.sendMessage(info, false);
+
+                                    eventType = 10; //拒绝问诊的  发送通知 标识 暂定义为 10  还未确认
+                                    String jsonString = GsonUtils.ModelToJson(saveRightsUseBean);  //这里发送提醒 调用接口参数和之前的发送通知不一样
+                                    sendSystemRemind(jsonString);
+                                    getFragmentManager().beginTransaction().remove(ChatFragment.this).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit(); //退出fragment  不返回上一个界面
+
+                                }
+
+                                @Override
+                                public void onNegtiveClick() {
+                                }
+                            }).show();
                         }
 
                         @Override
@@ -811,6 +848,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                 customDoctorReceptionMessage.type = "CustomDoctorReceptionMessage";
                 MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(customDoctorReceptionMessage), customDoctorReceptionMessage.description, null);
                 mChatLayout.sendMessage(info, false);
+                EventBus.getDefault().post(new NotifycationAlardyObj()); //通知更新最新数据  接诊成功后 需更新待办列表
             }
         });
     }
@@ -986,16 +1024,22 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         //获取单聊面板的标题栏
         mTitleBar = mChatLayout.getTitleBar();
         mTitleBar.getEndVisitText().setVisibility(patientinfo.isConsultation ? VISIBLE : GONE); //如果是 问诊 顶部显示 “结束问诊” 字样 反之不显示
-        mTitleBar.getEndVisitText().setText(taskDeatailBean.getTaskDetail().getExecFlag() == 0 ? "拒绝问诊" : "结束问诊");
+        mTitleBar.getEndVisitText().setText(taskDeatailBean!=null&&taskDeatailBean.getTaskDetail()!=null&&taskDeatailBean.getTaskDetail().getExecFlag() == 0 ? "拒绝问诊" : "结束问诊");
         mTitleBar.getLeftGroup().setVisibility(VISIBLE);//bug 381，隐藏返回键
         mTitleBar.getRightIcon().setVisibility(GONE);//沒有好友详情页面，隐藏
 
-        mTitleBar.getAcceptdiagnosisText().setVisibility(taskDeatailBean.getTaskDetail().getExecFlag() == 0 && taskDeatailBean.getTaskDetail().getRightsType().equals("textNum") ? VISIBLE : GONE);  //接诊按钮  只有图文咨询权益并且是还未确认时间的 才显示
+        mTitleBar.getAcceptdiagnosisText().setVisibility(taskDeatailBean!=null&&taskDeatailBean.getTaskDetail()!=null&&taskDeatailBean.getTaskDetail().getExecFlag() == 0 && taskDeatailBean.getTaskDetail().getRightsType().equals("textNum") ? VISIBLE : GONE);  //接诊按钮  只有图文咨询权益并且是还未确认时间的 才显示
 
         //单聊面板标记栏返回按钮点击事件，这里需要开发者自行控制
         mTitleBar.setOnLeftClickListener(v -> {
-            if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                homeActivity.getSupportFragmentManager().popBackStack();
+            //如果是  图文咨询 并且还未确认接诊的 点击返回 不再返回上一个fragment
+            if (taskDeatailBean!=null&&taskDeatailBean.getTaskDetail().getRightsType().equals("textNum")&&taskDeatailBean.getTaskDetail().getExecFlag()==0){
+                getFragmentManager().beginTransaction().remove(ChatFragment.this).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit(); //退出fragment  不返回上一个界面
+            }else {
+                //正常返回上一个界面
+                if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    homeActivity.getSupportFragmentManager().popBackStack();
+                }
             }
         });
     }

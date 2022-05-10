@@ -119,7 +119,6 @@ public class QuickReplyAdapter extends BaseQuickAdapter<QuickReplyRequest, BaseV
         });
 
         holder.itemView.setOnLongClickListener(v -> {
-            editText.setTextIsSelectable(false);
             showPop(v);
             editTv.setOnClickListener(v13 -> {
                 if (popupWindow != null && popupWindow.isShowing()) {

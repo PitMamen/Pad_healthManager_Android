@@ -1,5 +1,6 @@
 package com.bitvalue.health.ui.activity;
 
+import static com.bitvalue.health.util.Constants.HOSPITALCODE;
 import static com.bitvalue.health.util.Constants.LOCAL_PRIVATER_KEY;
 import static com.bitvalue.health.util.Constants.LOCAL_PUBLIC_KEY;
 
@@ -33,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.MRRecordResult;
 import com.bitvalue.health.api.requestbean.CommonConfig;
+import com.bitvalue.health.api.requestbean.filemodel.HisBothRecord;
 import com.bitvalue.health.api.requestbean.filemodel.HisDataCfxx;
 import com.bitvalue.health.api.requestbean.filemodel.HisDataCommon;
 import com.bitvalue.health.api.requestbean.filemodel.HisDataJyjgzb;
@@ -492,14 +494,16 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         //初始化入参
         String docId = getIntent().getStringExtra(Constants.DOC_ID);
         record_type = getIntent().getStringExtra(Constants.INDEX_NAME);
-       String  patienUserId = getIntent().getStringExtra(Constants.USER_ID);
+        String hospitalCode = getIntent().getStringExtra(HOSPITALCODE);
+        String patienUserId = getIntent().getStringExtra(Constants.USER_ID);
         String serialnumber = getIntent().getStringExtra(Constants.SERIALNUMBER);
-        Log.e(TAG, "流水号: " + serialnumber + " docUserId: " + docId + "  患者ID: " + patienUserId+" 类型:"+record_type);
+        Log.e(TAG, "流水号: " + serialnumber + " docUserId: " + docId + "  患者ID: " + patienUserId + " 类型:" + record_type + "  hospitalCode:" + hospitalCode);
         MRDetailRequestApi mrDetailRequestApi = new MRDetailRequestApi();
-        mrDetailRequestApi.dataOwnerId = patienUserId;
-        mrDetailRequestApi.dataUserId = docId;
-        mrDetailRequestApi.recordType = record_type;
+        mrDetailRequestApi.dataOwnerId = "353";  //patienUserId
+        mrDetailRequestApi.dataUserId = "293";
+        mrDetailRequestApi.recordType = "zhuyuan";
         mrDetailRequestApi.serialNumber = serialnumber;
+        mrDetailRequestApi.hospitalCode = hospitalCode;
 
         getDetailData(mrDetailRequestApi);
 
@@ -517,16 +521,22 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
             public void onSucceed(MRRecordResult result) {
                 super.onSucceed(result);
                 //增加判空
-                if (result.code==0&&EmptyUtil.isEmpty(result)) {
+                if (result.code == 0 && EmptyUtil.isEmpty(result)) {
                     return;
                 }
                 Log.e(TAG, "请求病历详情: " + result.toString());
-                String privaterKey = SharedPreManager.getString(LOCAL_PRIVATER_KEY).replaceAll("\r|\n","").trim();
+                if (EmptyUtil.isEmpty(result.encryptedRecord) || EmptyUtil.isEmpty(result.wrappedDEK))
+                    return;
+
+                String privaterKey = SharedPreManager.getString(LOCAL_PRIVATER_KEY).replaceAll("\r|\n", "").trim();
                 String encryptedRecord = result.encryptedRecord;
                 String wrappedDEK = result.wrappedDEK;
                 String decodeData = EnvelopeUtils.decrypt(encryptedRecord, wrappedDEK, privaterKey);
-                Log.e(TAG, "解密数据: "+decodeData );
-
+                HisBothRecord resource = new Gson().fromJson(decodeData, HisBothRecord.class);
+                Log.e(TAG, "解密数据222: " + resource.toString());
+                if (!EmptyUtil.isEmpty(resource))
+                refreshMRDetail(new Gson().toJson(resource), new Gson().toJson(resource.cismain));
+                else ToastUtil.toastShortMessage("未获取到数据");
 
 //                if (result.getCode() == 0) {
 //                    mrDetailResult = result.getData();
@@ -875,7 +885,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
                 TbCisMain medecalMain = GsonUtils.getGson().fromJson(medicalMainStr, new TypeToken<TbCisMain>() {
                 }.getType());
                 if (medecalMain != null) {
-                    A02.setText(mrDetailResult.hospitalName);
+                    A02.setText("中南大学湘雅二医院");
                     A01.setText(medecalMain.getYljgdm());
                     A46C.setText(medecalMain.getYlfffsmc());
                     A47.setText(medecalMain.getJkkh());

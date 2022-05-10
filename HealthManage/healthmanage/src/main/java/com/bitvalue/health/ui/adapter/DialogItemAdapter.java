@@ -52,6 +52,8 @@ public class DialogItemAdapter extends BaseAdapter {
             holder = new ViewHolder();
             convertView = inflater.inflate(R.layout.dialog_item, null);
             holder.typeTextview = (TextView) convertView.findViewById(R.id.tv_content_name);
+            holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);   //个案师的 可以不显示时间
+            holder.vv_line = (View) convertView.findViewById(R.id.vv_line);   //个案师的 可以不显示时间
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -63,11 +65,14 @@ public class DialogItemAdapter extends BaseAdapter {
         }else {
             holder.typeTextview.setText(getItem(position).name);
         }
+        holder.vv_line.setVisibility(View.GONE);
+        holder.tv_time.setVisibility(View.GONE);
         return convertView;
     }
 
 
     public static class ViewHolder {
-        public TextView typeTextview;
+        public TextView typeTextview,tv_time;
+        private View vv_line;
     }
 }

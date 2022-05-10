@@ -9,6 +9,7 @@ public class MRDetailRequestApi  implements IRequestApi {
     public String dataUserId;
     public String serialNumber;
     public String recordType;
+    public String hospitalCode;
 
     @Override
     public String getApi() {

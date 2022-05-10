@@ -1,4 +1,4 @@
-package com.bitvalue.health.util.customview;
+package com.bitvalue.health.util.customview.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,12 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.bitvalue.health.pickdatetime.bean.DateParams;
 import com.bitvalue.healthmanage.R;
 
 /**
  * @author created by bitvalue
  * @data : 04/14
+ * 审核不通过
  */
 public class ReasonDialog extends Dialog {
     public EditText ed_input;

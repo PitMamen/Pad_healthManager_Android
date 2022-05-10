@@ -1,18 +1,12 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
-import static androidx.core.content.ContextCompat.getSystemService;
 import static com.bitvalue.health.util.Constants.TASKDETAIL;
 import static com.bitvalue.health.util.Constants.USER_ID;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,7 +27,6 @@ import com.bitvalue.health.api.responsebean.PatientBaseInfoBean;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.base.BaseFragment;
-import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.contract.healthmanagercontract.MoreDataDetailContract;
 import com.bitvalue.health.presenter.healthmanager.MoreDataDetailPresenter;
 import com.bitvalue.health.ui.activity.HealthFilesActivity;
@@ -45,15 +38,12 @@ import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.GsonUtils;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
-import com.bitvalue.health.util.customview.ReasonDialog;
+import com.bitvalue.health.util.customview.dialog.ReasonDialog;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.OnHttpListener;
 import com.hjq.toast.ToastUtils;
-import com.squareup.picasso.Picasso;
-import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.greenrobot.eventbus.EventBus;
 

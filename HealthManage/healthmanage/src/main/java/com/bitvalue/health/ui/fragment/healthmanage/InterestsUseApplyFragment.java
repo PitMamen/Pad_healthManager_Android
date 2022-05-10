@@ -189,7 +189,6 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                 break;
             //进入聊天
             case R.id.tv_gochat:
-                tv_goChat.setOnClickListener(v -> {
                     // TODO: 2022/3/25 进入聊天界面
                     NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
                     info.setUserName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
@@ -197,7 +196,6 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                     info.setKsmc(taskDeatailBean.getTaskDetail().getDeptName());
                     info.isShowSendRemind = false;  //进入咨询 不需要显示底部 发送提醒 按钮
                     homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
-                });
                 break;
             //资料审核
             case R.id.tv_data_review:

@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/qb_px_180"
-    android:layout_height="@dimen/qb_px_80"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
+
     tools:ignore="MissingDefaultResource">
+<!--android:background="@drawable/shape_dialog_item"-->
 
 
-
+<!--     android:background="@drawable/shape_white_bac"-->
     <LinearLayout
+        android:id="@+id/ll_conten"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tv_bestnewmodify"
-            android:visibility="gone"
+            android:visibility="visible"
             android:textColor="@color/home_blue"
             android:text="最新"
             android:layout_marginStart="@dimen/qb_px_1"
             android:layout_toLeftOf="@+id/tv_content_name"
             android:textSize="8sp"
             android:layout_gravity="center_vertical"
-            android:layout_width="wrap_content"
+            android:layout_weight="0.3"
+            android:layout_width="0dp"
             android:layout_height="wrap_content">
-
         </TextView>
 
 
@@ -33,22 +36,47 @@
             android:id="@+id/tv_content_name"
             android:ellipsize="end"
             android:singleLine="true"
-            android:layout_width="match_parent"
+            android:layout_weight="2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
             android:text="问卷名称"
             android:textColor="@drawable/text_color_selector"
-            android:background="@drawable/tv_bg_bacgrand"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <View
+            android:id="@+id/vv_line"
+            android:background="@color/text_desc"
+            android:layout_width="1.0dp"
+            android:layout_height="match_parent">
+        </View>
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:text=""
+            android:layout_weight="0.9"
+            android:layout_width="0dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="@dimen/qb_px_8"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content">
+        </TextView>
+
     </LinearLayout>
 
+    <View
+        android:layout_below="@+id/ll_conten"
+        android:background="@color/beauty_color_blue"
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp">
+    </View>
 
 
 
 
-
-</LinearLayout>
+</RelativeLayout>

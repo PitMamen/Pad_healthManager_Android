@@ -49,6 +49,7 @@ public class DialogItemAnswerAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.dialog_item, null);
             holder.typeTextview = (TextView) convertView.findViewById(R.id.tv_content_name);
             holder.tv_bestnewModify = (TextView) convertView.findViewById(R.id.tv_bestnewmodify);
+            holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
             convertView.setTag(holder);
         } else {
             holder = (DialogItemAnswerAdapter.ViewHolder) convertView.getTag();
@@ -56,9 +57,11 @@ public class DialogItemAnswerAdapter extends BaseAdapter {
         if (getItem(position).getName().contains("-")) {
             String[] name = getItem(position).getName().split("-");
             holder.typeTextview.setText(name[1]);
-        }else {
+        } else {
             holder.typeTextview.setText(getItem(position).getName());
         }
+        holder.tv_time.setText(getItem(position).getCreateTime().length()>10?getItem(position).getCreateTime().substring(0,10):getItem(position).getCreateTime());
+
         holder.tv_bestnewModify.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
         return convertView;
     }
@@ -66,5 +69,6 @@ public class DialogItemAnswerAdapter extends BaseAdapter {
     public static class ViewHolder {
         public TextView typeTextview;
         public TextView tv_bestnewModify;
+        public TextView tv_time;
     }
 }

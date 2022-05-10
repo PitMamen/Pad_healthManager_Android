@@ -5,8 +5,8 @@ import com.bitvalue.health.api.requestbean.filemodel.HisBothRecord;
 import com.bitvalue.health.api.requestbean.filemodel.TbCisMain;
 
 public class MRDetailResult {
-    public String privateCloudId;
-    public String privateCloudName;
+//    public String privateCloudId;
+//    public String privateCloudName;
     public String hospitalName;
     public MedicalRecord medicalRecord;
     public static class MedicalRecord{
@@ -16,5 +16,14 @@ public class MRDetailResult {
         public HisBothRecord source;
         public TbCisMain medicalMain;
 
+    }
+
+
+    @Override
+    public String toString() {
+        return "MRDetailResult{" +
+                "hospitalName='" + hospitalName + '\'' +
+                ", medicalRecord=" + medicalRecord +
+                '}';
     }
 }
