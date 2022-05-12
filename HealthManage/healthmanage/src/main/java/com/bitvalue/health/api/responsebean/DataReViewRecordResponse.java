@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class DataReViewRecordResponse implements Serializable {
 
-
+    private String rightsName;  //套餐名称
     private String createTime;
     private String dealDetail;
     private String dealImages;
@@ -111,10 +111,19 @@ public class DataReViewRecordResponse implements Serializable {
     }
 
 
+    public String getRightsName() {
+        return rightsName;
+    }
+
+    public void setRightsName(String rightsName) {
+        this.rightsName = rightsName;
+    }
+
     @Override
     public String toString() {
         return "DataReViewRecordResponse{" +
                 "createTime='" + createTime + '\'' +
+                "rightsName='" + rightsName + '\'' +
                 ", dealDetail='" + dealDetail + '\'' +
                 ", dealImages='" + dealImages + '\'' +
                 ", dealResult='" + dealResult + '\'' +

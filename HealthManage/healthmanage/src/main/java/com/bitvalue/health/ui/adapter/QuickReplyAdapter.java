@@ -93,7 +93,7 @@ public class QuickReplyAdapter extends BaseQuickAdapter<QuickReplyRequest, BaseV
         int[] location = new int[2];
         v.getLocationOnScreen(location);
         popupWindow.showAtLocation(v, Gravity.NO_GRAVITY,
-                (int) (location[0] + v.getWidth() / 2 - popupWindow.getWidth() / 0.5f),
+                (int) (location[0] + v.getWidth() / 2 - popupWindow.getWidth() / 1.5f),             //0.5f
                 location[1] - popupWindow.getHeight());
     }
 
@@ -105,6 +105,8 @@ public class QuickReplyAdapter extends BaseQuickAdapter<QuickReplyRequest, BaseV
         }
         holder.setText(R.id.tv_quick_reply, replyBean.content);
         EditText editText = holder.getView(R.id.tv_quick_reply);
+
+
 
         holder.getView(R.id.tv_quick_reply).setOnClickListener(v -> {
             if (null != itemClick) {
@@ -118,15 +120,72 @@ public class QuickReplyAdapter extends BaseQuickAdapter<QuickReplyRequest, BaseV
             }
         });
 
+
+
+        holder.getView(R.id.tv_quick_reply).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                editText.setFocusable(true);
+                editText.setFocusableInTouchMode(true);
+                showPop(v);
+                editTv.setOnClickListener(v13 -> {
+                    if (popupWindow != null && popupWindow.isShowing()) {
+                        popupWindow.dismiss();
+                    }
+
+                    editText.requestFocus();
+                    editText.setSelection(editText.getText().length());//光标显示在文字后面
+                    InputMethodUtils.showSoftInput(editText);
+                    //编辑
+                    editText.setOnEditorActionListener((v12, actionId, keyEvent) -> {
+                        if (null != keyEvent && KeyEvent.KEYCODE_ENTER == keyEvent.getKeyCode()) {
+                            switch (keyEvent.getAction()) {
+                                case KeyEvent.ACTION_UP:
+                                    if (lisener != null) {
+                                        replyBean.content = editText.getText().toString();
+                                        lisener.onNewEditItem(replyBean);
+                                    }
+                                    editText.setFocusable(false);
+                                    InputMethodUtils.hideSoftInput(mContext);
+                                    return true;
+                                default:
+                                    return true;
+                            }
+                        }
+                        return false;
+                    });
+                });
+
+                //删除
+                deleteTv.setOnClickListener(v1 -> {
+                    if (currentData != null && currentData.size() > 0) {
+                        currentData.remove(replyBean);
+                        if (lisener != null) {
+                            lisener.onDeleteItem(replyBean);
+                        }
+                        if (popupWindow != null && popupWindow.isShowing()) {
+                            popupWindow.dismiss();
+                        }
+                        notifyDataSetChanged();
+                    }
+                });
+                return true;
+            }
+        });
+
+
+
+
         holder.itemView.setOnLongClickListener(v -> {
+            editText.setFocusable(true);
+            editText.setFocusableInTouchMode(true);
             showPop(v);
             editTv.setOnClickListener(v13 -> {
                 if (popupWindow != null && popupWindow.isShowing()) {
                     popupWindow.dismiss();
                 }
-                editText.setFocusable(true);
+
                 editText.requestFocus();
-                editText.setFocusableInTouchMode(true);
                 editText.setSelection(editText.getText().length());//光标显示在文字后面
                 InputMethodUtils.showSoftInput(editText);
                 //编辑
