@@ -279,6 +279,7 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
         loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
         ll_record_reviewListLayout.setVisibility(loginBean.getUser().roleName.equals("casemanager") && taskDeatailBean != null ? View.VISIBLE : View.GONE); //只有个案管理师才显示审核记录 医生的不显示
         ll_bottom_button.setVisibility((null != taskDeatailBean && taskDeatailBean.isShowBottomBuntton) ? View.VISIBLE : View.GONE);
+        tv_bingli_detail.setVisibility(!loginBean.getUser().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);//个案师 不让看患者电子病历
     }
 
     //保存审核结果

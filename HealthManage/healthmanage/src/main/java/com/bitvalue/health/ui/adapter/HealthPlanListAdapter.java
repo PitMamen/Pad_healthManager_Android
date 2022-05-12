@@ -54,12 +54,16 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
      */
     @Override
     protected void convert(@NotNull BaseViewHolder helper, @NotNull NewLeaveBean.RowsDTO sfjhBean) {
+        if (sfjhBean == null) {
+            return;
+        }
         String curen = TimeUtils.getCurrenTime();
         if (!EmptyUtil.isEmpty(sfjhBean.getAge()) && sfjhBean.getAge().length() >= 5) {
             int finatime = Integer.valueOf(curen) - Integer.valueOf((sfjhBean.getAge().substring(0, 4)));  //后台给的是出生日期 需要前端换算
             helper.setText(R.id.tv_age, finatime + "岁");
-        }else {
-            helper.getView(R.id.view_line).setVisibility(View.INVISIBLE);
+        } else {
+            helper.setText(R.id.tv_age, "不详");
+//            helper.getView(R.id.view_line).setVisibility(View.INVISIBLE);
         }
         if (!EmptyUtil.isEmpty(sfjhBean.getSex())) {
             helper.setImageDrawable(R.id.img_head, sfjhBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
@@ -68,11 +72,10 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
                 .setText(R.id.tv_sex, sfjhBean.getSex())
                 .setText(R.id.tv_time, sfjhBean.getDiagDate());
         helper.getView(R.id.img_head).setOnClickListener(v -> {
-            if (onItemClickListenner!=null){
+            if (onItemClickListenner != null) {
                 onItemClickListenner.onClickItem(sfjhBean.getUserId());
             }
         });
-
 
 
         WrapRecyclerView childItemLRecycleView = helper.getView(R.id.plan_list);
@@ -83,7 +86,7 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
         childAdapter.setOnItemClickListener((adapter, view, position) -> {
             NewLeaveBean.RowsDTO.PlanInfoDetailDTO planInfo = (NewLeaveBean.RowsDTO.PlanInfoDetailDTO) adapter.getItem(position);
             sfjhBean.id_plan = planInfo.getId();
-            if (!EmptyUtil.isEmpty(planInfo.getGoodsType())){
+            if (!EmptyUtil.isEmpty(planInfo.getGoodsType())) {
                 sfjhBean.isShowEndPlanButton = planInfo.getGoodsType().equals("plan_package");  // "plan_package" 才允许结束计划
             }
             if (onPlanTaskItemClickListener != null) {
@@ -105,12 +108,11 @@ public class HealthPlanListAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO
     }
 
 
-
-    public void setItemHeadOnclickListenner(OnItemClickListenner headOnclickListenner){
+    public void setItemHeadOnclickListenner(OnItemClickListenner headOnclickListenner) {
         this.onItemClickListenner = headOnclickListenner;
     }
 
-    public interface OnItemClickListenner{
+    public interface OnItemClickListenner {
         void onClickItem(String userId);
     }
 

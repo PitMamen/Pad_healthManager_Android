@@ -10,6 +10,7 @@ import java.util.List;
  * @Version V1.0
  **/
 public class HisBothRecord extends HisDataCommon {
+    private String hospitalName;
     public TbCisMain cismain;
     // 就诊类型
     private String jzlx;
@@ -446,10 +447,18 @@ public class HisBothRecord extends HisDataCommon {
     }
 
 
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
+    }
+
     @Override
     public String toString() {
         return "HisBothRecord{" +
-                "cismain'"+cismain.toString()+'\''+
+                "hospitalName='"+hospitalName+'\''+
                 ", jzlx='" + jzlx + '\'' +
                 ", jzrq='" + jzrq + '\'' +
                 ", yljgdm='" + yljgdm + '\'' +

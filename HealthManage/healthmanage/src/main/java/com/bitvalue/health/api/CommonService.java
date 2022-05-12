@@ -22,6 +22,7 @@ import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.ArticleByDeptCodeBean;
 import com.bitvalue.health.api.responsebean.CallResultBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
+import com.bitvalue.health.api.responsebean.CodeValueResopnse;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.DepartmentResponeBean;
 import com.bitvalue.health.api.responsebean.GoodListBean;
@@ -66,6 +67,15 @@ public interface CommonService {
      */
     @POST("/account-api/login")
     Observable<ApiResult<LoginResBean>> login(@Body LoginReqBean loginReqBean);
+
+
+    /**
+     * 根据类别查询枚举值
+     * @param GOODS_SERVICE_TYPE
+     * @return
+     */
+    @GET("/health-api/medical/common/qryCodeValue")
+    Observable<ApiResult<List<CodeValueResopnse>>> qryCodeValue(@Query("codeGroup") String GOODS_SERVICE_TYPE);
 
 
     /**
@@ -304,7 +314,7 @@ public interface CommonService {
      * 权益使用记录
      */
     @GET("health-api/patient/queryRightsUserRecord")
-    Observable<ApiResult<QueryRightsRecordBean>> queryRightsUserRecord(@Query("pageNo") int pageNo, @Query("pageSize") int pageSize, @Query("userId") String userId, @Query("rightsId") int rightsId,@Query("id") String id);
+    Observable<ApiResult<QueryRightsRecordBean>> queryRightsUserRecord(@Query("pageNo") int pageNo, @Query("pageSize") int pageSize, @Query("userId") String userId, @Query("rightsId") int rightsId, @Query("id") String id);
 
 
     /**
@@ -385,7 +395,7 @@ public interface CommonService {
      * 删除 快捷用语
      */
     @GET("health-api/medical/doctor/delCommonWords")
-    Observable<ApiResult<Boolean>> deletecommonWords(@Query("id") String id,@Query("userId") String userid);
+    Observable<ApiResult<Boolean>> deletecommonWords(@Query("id") String id, @Query("userId") String userid);
 
 
     /**
@@ -395,11 +405,10 @@ public interface CommonService {
     Observable<ApiResult<CallResultBean>> callPhone(@Body CallRequest request);
 
     /**
-     *更新权益 确认时间
+     * 更新权益 确认时间
      */
     @POST("health-api/patient/updateRightsRequestTime")
     Observable<ApiResult<Boolean>> updateRightsRequestTime(@Body UpdateRightsRequestTimeRequestBean request);
-
 
 
 }

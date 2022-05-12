@@ -110,24 +110,25 @@ public class SetConsultationtimeFragment extends BaseFragment {
                 break;
             //时间段1
             case R.id.re_settime_one:
-                showSetTimeDialog(tv_timeone);
+                showSetTimeDialog(tv_timeone, 1);
                 break;
             //时间段2
             case R.id.re_settime_two:
-                showSetTimeDialog(tv_timetwo);
+                showSetTimeDialog(tv_timetwo, 2);
                 break;
             //时间段3
             case R.id.re_settime_three:
-                showSetTimeDialog(tv_timethree);
+                showSetTimeDialog(tv_timethree, 3);
                 break;
             //确认时间  如果医生选中了三个 则跳出弹框 让气选中一个  小于三个 直接提交
             case R.id.tv_btnconfirm:
 //                if (showSetConfirmDialog()) return;
                 // TODO: 2022/5/4 医生只选中了一个或两个时间段 则直接提交
-                if (!EmptyUtil.isEmpty(finalTimes)) {
+                if (!EmptyUtil.isEmpty(time1) || !EmptyUtil.isEmpty(time2) || !EmptyUtil.isEmpty(time3)) {
                     CustomHealthPlanMessage customHealthPlanMessage = new CustomHealthPlanMessage();
                     customHealthPlanMessage.tradeId = tradeid;
-                    finalTimes = finalTimes.contains(",") ? finalTimes.substring(0, finalTimes.length() - 1) : finalTimes;  //去除最后一个逗号
+//                    finalTimes = finalTimes.contains(",") ? finalTimes.substring(0, finalTimes.length() - 1) : finalTimes;  //去除最后一个逗号
+                    finalTimes = time1 + "," + time2 + "," + time3;
                     customHealthPlanMessage.time = finalTimes;
                     customHealthPlanMessage.title = "预约时间";
                     customHealthPlanMessage.type = "CustomAppointmentTimeMessage";
@@ -169,13 +170,29 @@ public class SetConsultationtimeFragment extends BaseFragment {
         return false;
     }
 
-    private void showSetTimeDialog(TextView textView) {
+
+    private String time1 = "";
+    private String time2 = "";
+    private String time3 = "";
+
+    private void showSetTimeDialog(TextView textView, int timeslot) {
         SetConsultionTimeDialog setConsultionTimeDialog = new SetConsultionTimeDialog(homeActivity);
         setConsultionTimeDialog.setOnClickListener(() -> {
             String selectedTime = setConsultionTimeDialog.getselectedTime();
             textView.setText(selectedTime);
             setConsultionTimeDialog.dismiss();
-            finalTimes += selectedTime + ",";
+            switch (timeslot) {
+                case 1:    //时间段1
+                    time1 = selectedTime;
+                    break;
+                case 2:    //时间段2
+                    time2 = selectedTime;
+                    break;
+                case 3:   //时间段3
+                    time3 = selectedTime;
+                    break;
+            }
+//            finalTimes += selectedTime + ",";
         }).show();
     }
 

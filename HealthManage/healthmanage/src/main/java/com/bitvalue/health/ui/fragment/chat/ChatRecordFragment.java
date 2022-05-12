@@ -76,6 +76,8 @@ public class ChatRecordFragment extends BaseFragment {
     private void initTitleBar() {
         //获取单聊面板的标题栏
         mTitleBar = mChatLayout.getTitleBar();
+        mTitleBar.getAcceptdiagnosisText().setVisibility(GONE); //隐藏接诊按钮
+        mTitleBar.getEndVisitText().setVisibility(GONE); //隐藏结束问诊按钮
         mTitleBar.getLeftGroup().setVisibility(VISIBLE);//bug 381，隐藏返回键
         mTitleBar.getRightIcon().setVisibility(GONE);//沒有好友详情页面，隐藏
         //单聊面板标记栏返回按钮点击事件，这里需要开发者自行控制

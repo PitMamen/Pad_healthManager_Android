@@ -18,6 +18,8 @@ import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 /**
  * @author created by bitvalue
  * @data : 05/05
+ *
+ * 病情概述
  */
 public class CustomlllnessMessageController {
 

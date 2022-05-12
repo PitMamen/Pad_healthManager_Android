@@ -162,7 +162,6 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
         }
         //先获取一下审核记录
         mPresenter.getDataReviewRecord(taskDeatailBean.getTaskDetail().getTradeId(), taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "");
-        Log.e(TAG, "initView: " + taskDeatailBean.getTaskDetail().getRightsType() + "  上否上传资料: " + taskDeatailBean.getTaskDetail().getUploadDocFlag());
         loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
 
         initrightUseTimeRecord();

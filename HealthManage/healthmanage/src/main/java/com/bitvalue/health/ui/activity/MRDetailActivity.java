@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -374,7 +376,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
 
     private MRDetailContract.Presenter presenter = new MRDetailPresenter(this);
     private String mPrivateCloudName; //数据来源
-    private String record_type; //记录类型，门诊还是住院
+    private String record_type = ""; //记录类型，门诊还是住院
     private String mDocumentId; //病历ID，用来获取病历详情
     private String name, sex, age, diagnosis, time;
     private String providerId;
@@ -499,9 +501,11 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         String serialnumber = getIntent().getStringExtra(Constants.SERIALNUMBER);
         Log.e(TAG, "流水号: " + serialnumber + " docUserId: " + docId + "  患者ID: " + patienUserId + " 类型:" + record_type + "  hospitalCode:" + hospitalCode);
         MRDetailRequestApi mrDetailRequestApi = new MRDetailRequestApi();
-        mrDetailRequestApi.dataOwnerId = "353";  //patienUserId
-        mrDetailRequestApi.dataUserId = "293";
-        mrDetailRequestApi.recordType = "zhuyuan";
+        mrDetailRequestApi.dataOwnerId = patienUserId;  //patienUserId  患者ID
+        mrDetailRequestApi.dataUserId = docId;        //医生id
+//        mrDetailRequestApi.dataOwnerId = "353";  //patienUserId
+//        mrDetailRequestApi.dataUserId = "293";
+        mrDetailRequestApi.recordType = record_type;
         mrDetailRequestApi.serialNumber = serialnumber;
         mrDetailRequestApi.hospitalCode = hospitalCode;
 
@@ -517,6 +521,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
                 super.onStart(call);
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onSucceed(MRRecordResult result) {
                 super.onSucceed(result);
@@ -524,30 +529,20 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
                 if (result.code == 0 && EmptyUtil.isEmpty(result)) {
                     return;
                 }
-                Log.e(TAG, "请求病历详情: " + result.toString());
-                if (EmptyUtil.isEmpty(result.encryptedRecord) || EmptyUtil.isEmpty(result.wrappedDEK))
+                if (EmptyUtil.isEmpty(result.encryptedRecord) || EmptyUtil.isEmpty(result.wrappedDEK)) {
                     return;
-
+                }
+//                Log.e(TAG, "请求病历详情: " + result.toString());
                 String privaterKey = SharedPreManager.getString(LOCAL_PRIVATER_KEY).replaceAll("\r|\n", "").trim();
                 String encryptedRecord = result.encryptedRecord;
                 String wrappedDEK = result.wrappedDEK;
                 String decodeData = EnvelopeUtils.decrypt(encryptedRecord, wrappedDEK, privaterKey);
+                if (EmptyUtil.isEmpty(decodeData)) return;
                 HisBothRecord resource = new Gson().fromJson(decodeData, HisBothRecord.class);
-                Log.e(TAG, "解密数据222: " + resource.toString());
+//                Log.e(TAG, "解密数据222: " + resource.toString());
                 if (!EmptyUtil.isEmpty(resource))
-                refreshMRDetail(new Gson().toJson(resource), new Gson().toJson(resource.cismain));
+                    refreshMRDetail(new Gson().toJson(resource), new Gson().toJson(resource.cismain), resource.getHospitalName()); //显示界面所有参数
                 else ToastUtil.toastShortMessage("未获取到数据");
-
-//                if (result.getCode() == 0) {
-//                    mrDetailResult = result.getData();
-//                    String toJson = new Gson().toJson(mrDetailResult);
-//                    if (null == mrDetailResult) {
-//                        return;
-//                    }
-//                    refreshMRDetail(new Gson().toJson(mrDetailResult.medicalRecord.source), new Gson().toJson(mrDetailResult.medicalRecord.medicalMain));
-//                } else {
-//                    ToastUtil.toastShortMessage(result.getMessage());
-//                }
             }
 
             @Override
@@ -760,7 +755,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
     }
 
     @Override
-    public void refreshMRDetail(String sourceEntityJsonStr, String medicalMainStr) {
+    public void refreshMRDetail(String sourceEntityJsonStr, String medicalMainStr, String hospitalName) {
         if (TextUtils.isEmpty(sourceEntityJsonStr)) {
             return;
         }
@@ -885,7 +880,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
                 TbCisMain medecalMain = GsonUtils.getGson().fromJson(medicalMainStr, new TypeToken<TbCisMain>() {
                 }.getType());
                 if (medecalMain != null) {
-                    A02.setText("中南大学湘雅二医院");
+                    A02.setText(hospitalName);
                     A01.setText(medecalMain.getYljgdm());
                     A46C.setText(medecalMain.getYlfffsmc());
                     A47.setText(medecalMain.getJkkh());
@@ -1168,7 +1163,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         int offset = sll_detail_item_3_jianyanjiance.getMeasuredHeight() - sll_detail_item_3_jianyanjiance.getHeight();
         sll_detail_item_3_jianyanjiance.scrollTo(0, offset);
         mYqjcAndSysjcCombineDataMap = new TreeMap<String, YqjcAndSysjcCombineData>(Comparator.reverseOrder());
-        if (mHisDataCommon != null && mHisDataCommon.getYqjc().size() != 0) {
+        if (mHisDataCommon != null && mHisDataCommon.getYqjc() != null && mHisDataCommon.getYqjc().size() != 0) {
             List<HisDataYqjc> listYqjc = mHisDataCommon.getYqjc();
             if (!listYqjc.isEmpty() && listYqjc != null) {
                 for (HisDataYqjc yqjc : listYqjc) {

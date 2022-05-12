@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,6 +11,7 @@
 
 
     <View
+        android:layout_below="@+id/rl_thred_"
         android:id="@+id/ll_view"
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
@@ -18,20 +19,31 @@
 
 
 
+    <com.bitvalue.health.util.customview.WrapRecyclerView
+        android:id="@+id/list_quickreply"
+        android:layout_below="@+id/ll_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_250"
+        android:layout_marginTop="@dimen/qb_px_3"
+        />
+
+
+
+
     <RelativeLayout
-        android:visibility="visible"
+        android:layout_alignParentBottom="true"
         android:id="@+id/rl_commonlyuselayout"
         android:layout_marginStart="@dimen/qb_px_10"
-        android:layout_below="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/qb_px_50">
 
         <TextView
+            android:layout_centerInParent="true"
             android:id="@+id/tv_custom_reply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/qb_px_1"
-            android:text="自定义快捷用语"
+            android:text="十 自定义快捷用语"
             android:textColor="@color/blue_one"
             android:textSize="13sp">
 
@@ -41,15 +53,9 @@
     </RelativeLayout>
 
 
-    <com.bitvalue.health.util.customview.WrapRecyclerView
-        android:id="@+id/list_quickreply"
-        android:layout_below="@+id/rl_commonlyuselayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/qb_px_3"
-       />
 
 
 
 
-</LinearLayout>
+
+</RelativeLayout>

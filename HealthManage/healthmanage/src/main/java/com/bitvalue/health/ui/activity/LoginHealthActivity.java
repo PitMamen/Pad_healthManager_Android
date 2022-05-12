@@ -12,11 +12,13 @@ import android.widget.Toast;
 
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.requestbean.LoginReqBean;
+import com.bitvalue.health.api.responsebean.CodeValueResopnse;
 import com.bitvalue.health.api.responsebean.LoginResBean;
 import com.bitvalue.health.base.BaseActivity;
 import com.bitvalue.health.contract.homecontract.LoginContract;
 import com.bitvalue.health.presenter.homepersenter.LoginPersenter;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.RSAEncrypt;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
@@ -24,6 +26,7 @@ import com.hjq.http.EasyConfig;
 import com.hjq.toast.ToastUtils;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -77,7 +80,7 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
                 String privaterkey = map_key.get("privateKey");
                 SharedPreManager.putString(LOCAL_PUBLIC_KEY, publicKey);
                 SharedPreManager.putString(LOCAL_PRIVATER_KEY, privaterkey);
-                Log.d(TAG, "publicKey: " + publicKey + "  \n" + " privaterkey: " + privaterkey);
+//                Log.d(TAG, "publicKey: " + publicKey + "  \n" + " privaterkey: " + privaterkey);
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -120,10 +123,8 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
                     SharedPreManager.putString(Constants.KEY_ACCOUNT, et_work_no.getText().toString());
                 }
                 showDialog();
-               String publicKey= SharedPreManager.getString(LOCAL_PUBLIC_KEY);
-               String publicKey2= "MIGiMA0GCSqGSIb3DQEBAQUAA4GQADCBjAKBhACWY1XkBxypNQTuhBZB50eYRLWmn/q3V0+xbrIOPAza3WcqKeHMCW7u1bmhHwCsNfWYJwh771mIWv0RH6IpQQGbMlIU85pjBzxAtmvLf8d2fLTdrTiAYdG35U1EFUoAoJw0awvgbZo96lqhb+HPgmIIGslLLrHmWki39PoE1/p4w9JD1wIDAQAB";
-                Log.e(TAG, "222222: "+publicKey.replaceAll("\r\n","") );
-                mPresenter.login(new LoginReqBean(userId, passWord, 2,publicKey.replaceAll("\r|\n","")));
+                String publicKey = SharedPreManager.getString(LOCAL_PUBLIC_KEY);
+                mPresenter.login(new LoginReqBean(userId, passWord, 2, publicKey.replaceAll("\r|\n", "")));
                 break;
         }
     }
@@ -147,7 +148,8 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
         SharedPreManager.putObject(Constants.KYE_USER_BEAN, resBean);
         SharedPreManager.putString(Constants.KEY_TOKEN, resBean.getToken());
         SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, Application.instance());
-        Log.e(TAG, "loginSuccess: " + SharedPreManager.getString(Constants.KEY_TOKEN));
+//        Log.e(TAG, "loginSuccess: " + SharedPreManager.getString(Constants.KEY_TOKEN));
+//        mPresenter.qryCodeValue(GOODS_SERVICE_TYPE);
         startActivity(new Intent(LoginHealthActivity.this, HomeActivity.class));
         finish();
 
@@ -160,6 +162,15 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
             showToast(failMessage);
             hideDialog();
         });
+
+    }
+
+    @Override
+    public void qryCodeValueSuccess(List<CodeValueResopnse> listdata) {
+    }
+
+    @Override
+    public void qryCodeValueFail(String failmessage) {
 
     }
 }

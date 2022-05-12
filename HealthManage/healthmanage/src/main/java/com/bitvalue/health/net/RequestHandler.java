@@ -59,7 +59,7 @@ public final class RequestHandler implements IRequestHandler {
 
         if (!response.isSuccessful()) {
             // 返回响应异常
-            throw new ResponseException(mApplication.getString(R.string.http_response_error) + "，responseCode：" + response.code() + "，message：" + response.message(), response);
+            throw new ResponseException(mApplication.getString(R.string.http_unauthorized_data) + "，responseCode：" + response.code() + "，message：" + response.message(), response);
         }
 
         if (Headers.class.equals(type)) {

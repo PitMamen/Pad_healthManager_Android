@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * @author created by bitvalue
  * @data : 02/21
+ * 我的权益 响应
  */
 public class MyRightBean implements Serializable {
     private int id;
@@ -149,6 +150,7 @@ public class MyRightBean implements Serializable {
         private String usedValue;
         private long updateTime;
         private DataRemark remark;
+        private String attrDesc;
 
 
         public void setRemark(DataRemark remark) {
@@ -228,8 +230,13 @@ public class MyRightBean implements Serializable {
             this.updateTime = updateTime;
         }
 
+        public String getAttrDesc() {
+            return attrDesc;
+        }
 
-
+        public void setAttrDesc(String attrDesc) {
+            this.attrDesc = attrDesc;
+        }
     }
 
 

@@ -24,7 +24,7 @@
             <TextView
                 android:id="@+id/A02"
                 style="@style/textview_select"
-                android:text="中南大学湘雅二医院" />
+                android:text="" />
 
             <View
                 android:layout_width="0dp"
@@ -38,7 +38,7 @@
             <TextView
                 android:id="@+id/A01"
                 style="@style/textview_select"
-                android:text="123456789" />
+                android:text="" />
 
         </LinearLayout>
 
@@ -75,7 +75,7 @@
             <TextView
                 android:id="@+id/A46C"
                 style="@style/textview_select"
-                android:text="本市城镇职工基本医疗保险" />
+                android:text="" />
 
         </LinearLayout>
 
@@ -94,7 +94,7 @@
             <TextView
                 android:id="@+id/A47"
                 style="@style/textview_select"
-                android:text="123456789" />
+                android:text="" />
 
             <TextView
                 style="@style/textview_break"
@@ -106,7 +106,7 @@
             <TextView
                 android:id="@+id/A49"
                 style="@style/textview_select"
-                android:text="1" />
+                android:text="" />
 
             <TextView
                 style="@style/textview_break"
@@ -122,7 +122,7 @@
                 android:id="@+id/A48"
                 style="@style/textview_select"
                 android:layout_marginRight="@dimen/qb_px_30"
-                android:text="123456789" />
+                android:text="" />
 
         </LinearLayout>
 
@@ -145,7 +145,7 @@
                     android:id="@+id/A11"
                     style="@style/textview_select"
                     android:layout_width="@dimen/qb_px_60"
-                    android:text="郑某某" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -154,7 +154,7 @@
                 <TextView
                     android:id="@+id/A12C"
                     style="@style/textview_select"
-                    android:text=" 1 " />
+                    android:text="  " />
 
                 <TextView
                     style="@style/textview_break"
@@ -169,7 +169,7 @@
                 <TextView
                     android:id="@+id/A13"
                     style="@style/textview_select"
-                    android:text="1989年08月08日" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -178,14 +178,14 @@
                 <TextView
                     android:id="@+id/A14"
                     style="@style/textview_select"
-                    android:text="88岁" />
+                    android:text="" />
 
                 <TextView
                     android:id="@+id/A16"
                     style="@style/textview_break"
                     android:layout_marginLeft="@dimen/qb_px_15"
                     android:layout_marginRight="@dimen/qb_px_15"
-                    android:text="21天"
+                    android:text=""
                     android:textColor="@color/blue_f1" />
 
 
@@ -203,7 +203,7 @@
                     android:id="@+id/A15C"
                     style="@style/textview_select"
                     android:layout_width="@dimen/qb_px_80"
-                    android:text="中国" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -213,7 +213,7 @@
                     android:id="@+id/A19C"
                     style="@style/textview_select"
                     android:paddingRight="@dimen/qb_px_30"
-                    android:text="汉" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -222,7 +222,7 @@
                 <TextView
                     android:id="@+id/A18x01A18x05"
                     style="@style/textview_select"
-                    android:text="4500" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -259,7 +259,7 @@
                     style="@style/textview_select"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="某地" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -269,7 +269,7 @@
                     android:id="@+id/A23C"
                     style="@style/textview_select"
                     android:layout_width="@dimen/qb_px_120"
-                    android:text="湖南省" />
+                    android:text="" />
 
             </LinearLayout>
 
@@ -284,7 +284,7 @@
                 <TextView
                     android:id="@+id/A20"
                     style="@style/textview_select"
-                    android:text="430000000000000000" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -294,7 +294,7 @@
                 <TextView
                     android:id="@+id/A38C"
                     style="@style/textview_select"
-                    android:text="自由职业者" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -304,7 +304,7 @@
                 <TextView
                     android:id="@+id/A21C"
                     style="@style/textview_select"
-                    android:text="1" />
+                    android:text="" />
 
 
                 <TextView
@@ -328,7 +328,7 @@
                     style="@style/textview_select"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="湖南省长沙市" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -337,7 +337,7 @@
                 <TextView
                     android:id="@+id/A25C"
                     style="@style/textview_select"
-                    android:text="430000" />
+                    android:text="" />
 
 
             </LinearLayout>
@@ -355,7 +355,7 @@
                     style="@style/textview_select"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="湖南省长沙市" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -364,7 +364,7 @@
                 <TextView
                     android:id="@+id/A27"
                     style="@style/textview_select"
-                    android:text="13600000000" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -373,7 +373,7 @@
                 <TextView
                     android:id="@+id/A28C"
                     style="@style/textview_select"
-                    android:text="430000" />
+                    android:text="" />
 
 
             </LinearLayout>
@@ -391,7 +391,7 @@
                     style="@style/textview_select"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="湖南长沙" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -400,7 +400,7 @@
                 <TextView
                     android:id="@+id/A30"
                     style="@style/textview_select"
-                    android:text="13600000000" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -409,7 +409,7 @@
                 <TextView
                     android:id="@+id/A31C"
                     style="@style/textview_select"
-                    android:text="430000" />
+                    android:text="" />
 
 
             </LinearLayout>
@@ -425,7 +425,7 @@
                 <TextView
                     android:id="@+id/A32"
                     style="@style/textview_select"
-                    android:text="郑某" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -434,7 +434,7 @@
                 <TextView
                     android:id="@+id/A33C"
                     style="@style/textview_select"
-                    android:text="兄弟姐妹" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -445,7 +445,7 @@
                     style="@style/textview_select"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="湖南长沙" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -454,7 +454,7 @@
                 <TextView
                     android:id="@+id/A35"
                     style="@style/textview_select"
-                    android:text="13600000000" />
+                    android:text="" />
 
 
             </LinearLayout>
@@ -471,7 +471,7 @@
                 <TextView
                     android:id="@+id/B11C"
                     style="@style/textview_select"
-                    android:text="2" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -491,7 +491,7 @@
                 <TextView
                     android:id="@+id/B12"
                     style="@style/textview_select"
-                    android:text="2020年01月01日 01时01分" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -501,7 +501,7 @@
                 <TextView
                     android:id="@+id/B13C"
                     style="@style/textview_select"
-                    android:text="呼吸内科" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -511,7 +511,7 @@
                 <TextView
                     android:id="@+id/B14"
                     style="@style/textview_select"
-                    android:text="01" />
+                    android:text="" />
 
 
             </LinearLayout>
@@ -527,7 +527,7 @@
                 <TextView
                     android:id="@+id/B21C"
                     style="@style/textview_select"
-                    android:text="呼吸内科" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -536,7 +536,7 @@
                 <TextView
                     android:id="@+id/B21C2"
                     style="@style/textview_select"
-                    android:text="呼吸内科" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -546,7 +546,7 @@
                 <TextView
                     android:id="@+id/B21C3"
                     style="@style/textview_select"
-                    android:text="呼吸内科" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -555,7 +555,7 @@
                 <TextView
                     android:id="@+id/B21C4"
                     style="@style/textview_select"
-                    android:text="呼吸内科" />
+                    android:text="" />
 
 
             </LinearLayout>
@@ -571,7 +571,7 @@
                 <TextView
                     android:id="@+id/B15"
                     style="@style/textview_select"
-                    android:text="2020年01月01日 01时01分" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -581,7 +581,7 @@
                 <TextView
                     android:id="@+id/B16C"
                     style="@style/textview_select"
-                    android:text="呼吸内科" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -591,7 +591,7 @@
                 <TextView
                     android:id="@+id/B17"
                     style="@style/textview_select"
-                    android:text="01" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -601,7 +601,7 @@
                 <TextView
                     android:id="@+id/B20"
                     style="@style/textview_select"
-                    android:text="1" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -623,7 +623,7 @@
                     style="@style/textview_select"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="肾型高血压" />
+                    android:text="" />
 
                 <TextView
                     style="@style/textview_break"
@@ -635,7 +635,7 @@
                     style="@style/textview_select"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="01" />
+                    android:text="" />
 
 
             </LinearLayout>

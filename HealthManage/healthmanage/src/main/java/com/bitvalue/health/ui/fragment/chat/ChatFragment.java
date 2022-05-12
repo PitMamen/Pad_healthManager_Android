@@ -1153,7 +1153,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             summaryDialog.show();
             summaryDialog.setVisibleBotomButton(false);
             summaryDialog.setEditeTextString(summaBean.getDealDetail());
-            summaryDialog.setDocNameAndSummaryTime(summaBean.getDealUserName(), String.valueOf(Long.parseLong(summaBean.getCreateTime())));
+            summaryDialog.setDocNameAndSummaryTime(summaBean.getDealUserName(), TimeUtils.getTimeToDay(Long.parseLong(summaBean.getCreateTime())));
         });
         popupWindow = new PopupWindow(mlistView, 400, ActionBar.LayoutParams.WRAP_CONTENT, true);
         View view = popupWindow.getContentView();

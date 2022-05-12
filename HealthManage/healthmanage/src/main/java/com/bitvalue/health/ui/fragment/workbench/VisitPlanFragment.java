@@ -90,8 +90,8 @@ public class VisitPlanFragment extends BaseFragment<VisitPlanPersenter> implemen
     private HealthPlanListAdapter healthPlanListAdapter;
     private HealthPlanListAdapter search_patientAdapter;
 
-    private List<NewLeaveBean.RowsDTO> allDynamicList = new ArrayList<>(); //我的待办患者列表
-    private List<NewLeaveBean.RowsDTO> searchPatientList = new ArrayList<>(); //我的待办患者列表
+    private List<NewLeaveBean.RowsDTO> allDynamicList = new ArrayList<>(); //随访计划 数据
+    private List<NewLeaveBean.RowsDTO> searchPatientList = new ArrayList<>(); // 随访计划搜索数据
 
 
     private int cureentPage = 0;
@@ -291,7 +291,7 @@ public class VisitPlanFragment extends BaseFragment<VisitPlanPersenter> implemen
 //        showLoading();
         allocatedPatientRequest.userName = name;
         if (!EmptyUtil.isEmpty(name)) {
-            allocatedPatientRequest.pageNo = searchPageNo;
+            allocatedPatientRequest.pageNo = 1;
         } else {
             allocatedPatientRequest.pageNo = pageNo;
         }

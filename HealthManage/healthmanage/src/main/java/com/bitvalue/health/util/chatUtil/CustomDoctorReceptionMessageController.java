@@ -18,6 +18,8 @@ import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 /**
  * @author created by bitvalue
  * @data : 05/07
+ *
+ * 医生接诊
  */
 public class CustomDoctorReceptionMessageController {
   public static void onDraw(ICustomMessageViewGroup parent, final CustomDoctorReceptionMessage data, final int position, final MessageLayout.OnItemLongClickListener onItemLongClickListener, final MessageInfo info) {

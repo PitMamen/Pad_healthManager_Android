@@ -317,7 +317,7 @@
                 android:visibility="gone"
                 android:id="@+id/ll_right_record"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/qb_px_80"
                 android:layout_below="@+id/ll_view_"
                 android:orientation="horizontal">
 

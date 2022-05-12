@@ -20,7 +20,8 @@
             android:layout_marginLeft="@dimen/qb_px_10"
             android:background="@null"
             android:text="快捷回复用语"
-            android:singleLine="true"
+            android:singleLine="false"
+            android:imeOptions="actionSend"
             android:textColor="@color/text_black"
             android:textSize="@dimen/qb_px_8" />
 

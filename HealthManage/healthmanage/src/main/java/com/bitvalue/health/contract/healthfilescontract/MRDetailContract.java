@@ -10,7 +10,7 @@ public class MRDetailContract {
         /**
          * @param sourceEntityJsonStr 病历详情的json字符串，解密后的明文
          */
-        void refreshMRDetail(String sourceEntityJsonStr,String medicalMainStr);
+        void refreshMRDetail(String sourceEntityJsonStr,String medicalMainStr,String hospitalName);
 
         void showLoadDialog();
         void dismissLoadDialog();

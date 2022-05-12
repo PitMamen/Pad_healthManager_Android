@@ -1,5 +1,9 @@
 package com.bitvalue.health.util;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Constants {
 
     //公司的  腾讯IM SDKAppID和秘钥
@@ -7,14 +11,14 @@ public class Constants {
     public static final String USER_ID = "user_id";
     public static final String IDCARD_NUMBER = "idcard_number";
     public static final String NEED_TOAST = "need_toast";
-//    public static final String HOST_URL = "http://manager.mclouds.org.cn:8008";    //http://192.168.1.122/
-    public static final String HOST_URL = "http://hmg.mclouds.org.cn";
+    public static final String HOST_URL = "http://manager.mclouds.org.cn:8008";    //http://192.168.1.122/
+//        public static final String HOST_URL = "http://hmg.mclouds.org.cn";
     public static int screenWidth, screenHeight;
     public static final String KEY_REMEMBER_PSD = "key_remember_psd";
     public static final String KEY_TOKEN = "Authorization";
     public static final String KYE_USER_BEAN = "kye_user_bean";
-    public static  String ROLE_TYPE = "casemanager"; //默认角色是个案管理师
-    public static  String DEPT_CODE = "dept_code"; //科室代码
+    public static String ROLE_TYPE = "casemanager"; //默认角色是个案管理师
+    public static String DEPT_CODE = "dept_code"; //科室代码
     public static final String KEY_PSD = "key_psd";
     public static final String MESSAGEINFO = "messageinfo";
     public static final String KEY_ACCOUNT = "key_account";
@@ -119,8 +123,9 @@ public class Constants {
     public static final String CHAT_INFO = "chatInfo";
     public static final String CALL_MODEL = "callModel";
     public static final String IS_OFFLINE_PUSH_JUMP = "is_offline_push";
-    public static final String LOCAL_PUBLIC_KEY="publicKey";
-    public static final String LOCAL_PRIVATER_KEY="privateKey";
+    public static final String LOCAL_PUBLIC_KEY = "publicKey";
+    public static final String LOCAL_PRIVATER_KEY = "privateKey";
+    public static final String GOODS_SERVICE_TYPE = "GOODS_SERVICE_TYPE";
 
     public static final String IM_PRIVACY_PROTECTION = "https://web.sdk.qcloud.com/document/Tencent-IM-Privacy-Protection-Guidelines.html";
     public static final String IM_USER_AGREEMENT = "https://web.sdk.qcloud.com/document/Tencent-IM-User-Agreement.html";

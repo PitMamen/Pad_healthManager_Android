@@ -19,7 +19,7 @@ public class LoginModel extends BaseModel implements LoginContract.loginModel {
     @Override
     public void login(LoginReqBean loginReqBean, Callback callback) {
         mApi.login(loginReqBean).subscribeOn(Schedulers.io()).subscribe(result -> {
-            if (!EmptyUtil.isEmpty(result)){
+            if (!EmptyUtil.isEmpty(result)) {
                 if (result.getCode() == 0) {
                     LoginResBean resBean = result.getData();
                     if (!EmptyUtil.isEmpty(resBean))
@@ -29,8 +29,28 @@ public class LoginModel extends BaseModel implements LoginContract.loginModel {
                 }
             }
 
-        },error->{
-            callback.onFailedLog("登录失败!"+error.getMessage(),1001);
+        }, error -> {
+            callback.onFailedLog("登录失败!" + error.getMessage(), 1001);
         });
+    }
+
+    @Override
+    public void qryCodeValue(String codeGroup, Callback callback) {
+        if (!EmptyUtil.isEmpty(codeGroup)) {
+            mApi.qryCodeValue(codeGroup).subscribeOn(Schedulers.io()).subscribe(result -> {
+                if (!EmptyUtil.isEmpty(result)) {
+                    Log.e(TAG, "qryCodeValue: " + result.toString());
+                    if (result.getCode() == 0) {
+                        if (!EmptyUtil.isEmpty(result.getData())) {
+                            callback.onSuccess(result.getData(), 1000);
+                        }
+                    } else {
+                        callback.onFailedLog(result.getMessage(), 1001);
+                    }
+                }
+            }, error -> {
+                callback.onFailedLog(error.getMessage(), 1001);
+            });
+        }
     }
 }

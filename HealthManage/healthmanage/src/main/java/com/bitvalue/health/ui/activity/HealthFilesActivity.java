@@ -94,12 +94,12 @@ public class HealthFilesActivity extends AppActivity {
 
     private HealthLogsAdapter mAdapter;
     private ArrayList<GetLogsApi.LogBean> logBeans = new ArrayList<>();
-    private GetLogsApi getLogsApi;
+    private GetLogsApi getLogsApi = new GetLogsApi();
     private int total;
     private String userId;
     private String idcardNum;//身份证号码
     private PatientDataMoreApi.PatientDataMoreResponse patientDataMoreResponse;
-    private final String defaultmouth = "48";
+    private final String defaultmouth = "60";
     private LoginBean loginBean;
 
     @Override
@@ -111,7 +111,7 @@ public class HealthFilesActivity extends AppActivity {
     protected void initView() {
         loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, this);
         userId = getIntent().getStringExtra(Constants.USER_ID);
-        Log.e("TAG", "传过来的ID: " + userId + " docId: " + loginBean.getUser().user.userId);
+//        Log.e("TAG", "传过来的ID: " + userId + " docId: " + loginBean.getUser().user.userId);
         initList(); //初始化各控件
         getPersonalData(); //加载患者详细数据
         getLogsData(); //获取病历列表
@@ -240,14 +240,12 @@ public class HealthFilesActivity extends AppActivity {
      * 网络请求 获取患者看诊记录
      */
     private void getLogsData() {
-        Log.e("TAG", "患者ID: " + userId + " 医生ID： " + loginBean.getUser().user.userId);
-        getLogsApi = new GetLogsApi();
+//        Log.e("TAG", "患者ID: " + userId + " 医生ID： " + loginBean.getUser().user.userId);
         getLogsApi.pastMonths = defaultmouth;
+//        getLogsApi.dataUserId = "293"; //293  调试参数
+//        getLogsApi.dataOwnerId = "353";
+        getLogsApi.dataOwnerId = userId;
         getLogsApi.dataUserId = loginBean.getUser().user.userId + ""; //293  调试参数
-        getLogsApi.dataOwnerId = "353";
-        getLogsApi.recordType = "zhuyuan";
-//        getLogsApi.dataOwnerId = "347";
-//        getLogsApi.dataUserId = "347"; //249  调试参数
         EasyHttp.post(this).api(getLogsApi).request(new HttpCallback<ApiResult<ArrayList<GetLogsApi.LogBean>>>(this) {
             @Override
             public void onStart(Call call) {
@@ -275,13 +273,19 @@ public class HealthFilesActivity extends AppActivity {
                     String str = "共<font color='#398CF7'>" + logBeans.size() + "</font>条";
                     tv_total.setText(Html.fromHtml(str));
                 } else {
-                    ToastUtil.toastShortMessage(result.getMessage());
+//                    ToastUtil.toastShortMessage(result.getMessage());
                 }
             }
 
             @Override
             public void onFail(Exception e) {
                 super.onFail(e);
+            }
+
+
+            @Override
+            public void onEnd(Call call) {
+                super.onEnd(call);
             }
         });
     }

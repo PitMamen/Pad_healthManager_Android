@@ -27,40 +27,8 @@ public class RightUseTimeRecordAdapter extends BaseQuickAdapter<MyRightBean.User
         if (item == null) {
             return;
         }
-        String attrName = "";
-        switch (item.getAttrName()) {
-            case "videoNum":
-                attrName = "视频咨询";
-                break;
-            case "textNum":
-                attrName = "图文咨询";
-                break;
-            case "appointBedNum":
-                attrName = "床位预约";
-                break;
-            case "appointNum":
-                attrName = "复诊预约";
-                break;
-            case "ICUConsultNum":
-                attrName = "重症会诊";
-                break;
-            case "telNum":
-                attrName = "电话咨询";
-                break;
-            case "telVisitNum":
-                attrName = "电话追踪随访";
-                break;
-            case "eatEvaluateNum":
-                attrName = "膳食点评";
-                break;
-            case "sportEvaluateNum":
-                attrName = "身体活动情况点评";
-                break;
-            case "mailNum":
-                attrName = "邮寄服务";
-                break;
-        }
-        holder.setText(R.id.tv_video, attrName);
+
+        holder.setText(R.id.tv_video, item.getAttrDesc());
         holder.setText(R.id.tv_surplustimes, Integer.valueOf(item.getAttrValue()) - Integer.valueOf(item.getUsedValue()) + "");
         holder.setText(R.id.tv_totaltimes, item.getAttrValue());
     }

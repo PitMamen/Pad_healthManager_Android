@@ -46,7 +46,7 @@ public class ExceptionInterceptor implements Interceptor {
         Response response = chain.proceed(request);
 
         if (response.code() != 200) {
-            ToastUtils.show("服务器异常，请稍后再试");
+//            ToastUtils.show("服务器异常,请稍后再试!");
         }
 
         ResponseBody responseBody = response.body();
