@@ -3,7 +3,6 @@ package com.bitvalue.health.ui.fragment.chat;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-import static com.bitvalue.health.util.Constants.FRAGEMNT_PHONE_CONSULTATION;
 import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_PAPER;
 import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_QUESTION;
 import static com.bitvalue.health.util.Constants.FRAGMENT_QUICKREPLY;
@@ -28,13 +27,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.ApiResult;
-import com.bitvalue.health.api.eventbusbean.MainRefreshObj;
 import com.bitvalue.health.api.eventbusbean.NotiflyUIObj;
 import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
@@ -60,13 +57,12 @@ import com.bitvalue.health.presenter.healthmanager.InterestsUseApplyByDocPresent
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.DialogItemAdapter;
 import com.bitvalue.health.ui.adapter.DialogItemAnswerAdapter;
-import com.bitvalue.health.ui.adapter.PopWindorAdapter;
+import com.bitvalue.health.ui.adapter.MedicalRecordAdapter;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.GsonUtils;
-import com.bitvalue.health.util.InputMethodUtils;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.chatUtil.CustomAnalyseMessage;
@@ -74,6 +70,9 @@ import com.bitvalue.health.util.chatUtil.CustomDoctorReceptionMessage;
 import com.bitvalue.health.util.chatUtil.CustomRefuseVisitMessage;
 import com.bitvalue.health.util.chatUtil.CustomVideoCallMessageController;
 import com.bitvalue.health.util.chatUtil.CustomWenJuanMessage;
+import com.bitvalue.health.util.customview.dialog.MedicalRecordFolderDialog;
+import com.bitvalue.health.util.customview.dialog.PrePiagnosisCollectionDialog;
+import com.bitvalue.health.util.customview.dialog.PrediagnosisDataDialog;
 import com.bitvalue.health.util.customview.dialog.RefusalDiagnosisDialog;
 import com.bitvalue.health.util.customview.dialog.SummaryDialog;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
@@ -360,6 +359,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         homeActivity.runOnUiThread(() -> {
             if (null != summaryDialog) {
                 summaryDialog.dismiss();
+
             }
         });
     }
@@ -383,11 +383,20 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     public void getSummaryListSuucess(List<DataReViewRecordResponse> reViewRecordResponse) {
         homeActivity.runOnUiThread(() -> {
             if (reViewRecordResponse != null && reViewRecordResponse.size() > 0) {
-                popData = reViewRecordResponse;
+                MedicalRecordFolderDialog dialog = new MedicalRecordFolderDialog(homeActivity);
+                dialog.setItemClickLisenner(position -> {
+                    DataReViewRecordResponse summaBean = position;
+                    summaryDialog = new SummaryDialog(homeActivity);
+                    summaryDialog.setCanceledOnTouchOutside(true);
+                    summaryDialog.show();
+                    summaryDialog.setVisibleBotomButton(false);
+                    summaryDialog.setEditeTextString(summaBean.getDealDetail());
+                    summaryDialog.setDocNameAndSummaryTime(summaBean.getDealUserName(), TimeUtils.getTimeToDay(Long.parseLong(summaBean.getCreateTime())));
+                }).show();
+                dialog.setData(reViewRecordResponse);
             } else {
-                popData = null;
+                ToastUtils.show("暂无问诊小结");
             }
-            popDataAdapter.setNewData(popData);
         });
 
 
@@ -457,25 +466,39 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                         }
                         if (!EmptyUtil.isEmpty(result.getData()) && !EmptyUtil.isEmpty(result.getData().list)) {
                             List<QuestionResultBean.ListDTO> list = result.getData().list;
-                            DialogItemAdapter adapter = new DialogItemAdapter(homeActivity, list);
-                            AlertDialog alertDialog = new AlertDialog
-                                    .Builder(homeActivity)
-                                    .setSingleChoiceItems((ListAdapter) adapter, 0, (dialog, position) -> {
-                                        dialog.dismiss();
-                                        QuestionResultBean.ListDTO questionBean = list.get(position);
-                                        CustomWenJuanMessage questionMessage = new CustomWenJuanMessage();
-                                        questionMessage.name = questionBean.name;
-                                        questionMessage.url = questionBean.questUrl;
-                                        questionMessage.id = questionBean.id;
-                                        questionMessage.userId = planId;
-                                        questionMessage.setType("CustomYuWenZhenMessage");
-                                        questionMessage.setDescription("问卷");
-                                        MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(questionMessage), questionMessage.description, null);
-                                        mChatLayout.sendMessage(info, false);   //发送点中的问卷
-                                        Log.e(TAG, "问卷: " + questionBean.name);
-                                    }).create();
-                            alertDialog.show();
-                            alertDialog.getWindow().setLayout(DensityUtil.dip2px(homeActivity, 400), LinearLayout.LayoutParams.WRAP_CONTENT);
+                            PrePiagnosisCollectionDialog prePiagnosisCollectionDialog = new PrePiagnosisCollectionDialog(homeActivity);
+                            prePiagnosisCollectionDialog.setItemClickLisenner(position -> {
+                                QuestionResultBean.ListDTO questionBean = position;
+                                    CustomWenJuanMessage questionMessage = new CustomWenJuanMessage();
+                                    questionMessage.name = questionBean.name;
+                                    questionMessage.url = questionBean.questUrl;
+                                    questionMessage.id = questionBean.id;
+                                    questionMessage.userId = planId;
+                                    questionMessage.setType("CustomYuWenZhenMessage");
+                                    questionMessage.setDescription("问卷");
+                                    MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(questionMessage), questionMessage.description, null);
+                                    mChatLayout.sendMessage(info, false);   //发送点中的问卷
+                            }).show();
+                            prePiagnosisCollectionDialog.setData(list);
+//                            DialogItemAdapter adapter = new DialogItemAdapter(homeActivity, list);
+//                            AlertDialog alertDialog = new AlertDialog
+//                                    .Builder(homeActivity)
+//                                    .setSingleChoiceItems((ListAdapter) adapter, 0, (dialog, position) -> {
+//                                        dialog.dismiss();
+//                                        QuestionResultBean.ListDTO questionBean = list.get(position);
+//                                        CustomWenJuanMessage questionMessage = new CustomWenJuanMessage();
+//                                        questionMessage.name = questionBean.name;
+//                                        questionMessage.url = questionBean.questUrl;
+//                                        questionMessage.id = questionBean.id;
+//                                        questionMessage.userId = planId;
+//                                        questionMessage.setType("CustomYuWenZhenMessage");
+//                                        questionMessage.setDescription("问卷");
+//                                        MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(questionMessage), questionMessage.description, null);
+//                                        mChatLayout.sendMessage(info, false);   //发送点中的问卷
+//                                        Log.e(TAG, "问卷: " + questionBean.name);
+//                                    }).create();
+//                            alertDialog.show();
+//                            alertDialog.getWindow().setLayout(DensityUtil.dip2px(homeActivity, 400), LinearLayout.LayoutParams.WRAP_CONTENT);
                         } else {
                             ToastUtils.show("患者所属科室无相关问卷列表!");
                         }
@@ -512,20 +535,14 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                         }
                         if (!EmptyUtil.isEmpty(result.getData()) && !EmptyUtil.isEmpty(result.getData().getRecords())) {
                             List<AnswerResultBean.RecordsDTO> records = result.getData().getRecords();
-                            DialogItemAnswerAdapter adapter = new DialogItemAnswerAdapter(homeActivity, records);
-                            AlertDialog alertDialog = new AlertDialog
-                                    .Builder(homeActivity)
-                                    .setSingleChoiceItems((ListAdapter) adapter, 0, (dialog, position) -> {
-                                        dialog.dismiss();
-                                        AnswerResultBean.RecordsDTO questionBean = records.get(position);
-                                        // TODO: 2022/3/26 点击 进入详情界面 预览   是个链接
-                                        QuestionResultBean.ListDTO answerBean = new QuestionResultBean.ListDTO();
-                                        answerBean.questUrl = Constants.HOST_URL + "/r/" + questionBean.getProjectKey() + "?userId=" + questionBean.getUserId();  //自己拼接一个链接 跳转至答卷详情界面
-                                        homeActivity.switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL, answerBean);
-                                    }).create();
-                            alertDialog.show();
-                            alertDialog.getWindow().setLayout(DensityUtil.dip2px(homeActivity, 400), LinearLayout.LayoutParams.WRAP_CONTENT);
-
+                            PrediagnosisDataDialog prediagnosisDataDialog = new PrediagnosisDataDialog(homeActivity);
+                            prediagnosisDataDialog.setItemClickLisenner(recordsDTO -> {
+                                AnswerResultBean.RecordsDTO item = recordsDTO;
+                                QuestionResultBean.ListDTO answerBean = new QuestionResultBean.ListDTO();
+                                answerBean.questUrl = Constants.HOST_URL + "/r/" + item.getProjectKey() + "?userId=" + item.getUserId();  //自己拼接一个链接 跳转至答卷详情界面
+                                    homeActivity.switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL, answerBean);
+                            }).show();
+                            prediagnosisDataDialog.setData(records);
                         } else {
                             ToastUtils.show("该患者暂无预诊资料!");
                         }
@@ -549,11 +566,11 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         mChatLayout.getInputLayout().tv_medicalfolder.setVisibility(!loginBean.getAccount().roleName.equals("casemanager") ? VISIBLE : GONE);
         mChatLayout.getInputLayout().tv_datacollection.setVisibility(isShowdataCollection ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示预诊收集信息控件
         mChatLayout.getInputLayout().tv_sendremind.setVisibility(isShowSendRemind ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示 预诊收集信息 和 上线提醒控件
-        mChatLayout.getInputLayout().tv_datacollection.setOnClickListener(v -> {
+        mChatLayout.getInputLayout().tv_datacollection.setOnClickListener(v -> {   //   预诊资料
             getQuestionListByKeyWord(deptName, loginBean.getAccount().roleName);   //点击获取问卷列表(根据科室名称模糊查询)
         });
 
-        mChatLayout.getInputLayout().tv_sendremind.setOnClickListener(v -> {
+        mChatLayout.getInputLayout().tv_sendremind.setOnClickListener(v -> {   //上线提醒
             if (EmptyUtil.isEmpty(taskDeatailBean) || EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail())) {
                 Log.e(TAG, "医生发送提醒 taskDeatailBean.getTaskDetail() == null");
                 return;
@@ -564,21 +581,20 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             sendSystemRemind(jsonString);
         });
 
-        mChatLayout.getInputLayout().tv_sendquestion.setOnClickListener(v -> {
+        mChatLayout.getInputLayout().tv_sendquestion.setOnClickListener(v -> {    //发送问卷
             homeActivity.switchSecondFragment(FRAGMENT_ADD_QUESTION, planId);
         });
 
-        mChatLayout.getInputLayout().tv_sendarticle.setOnClickListener(v -> {
+        mChatLayout.getInputLayout().tv_sendarticle.setOnClickListener(v -> {     //发送文章
             homeActivity.switchSecondFragment(FRAGMENT_ADD_PAPER, "");
         });
-        mChatLayout.getInputLayout().tv_sendshortcut.setOnClickListener(v -> {
+        mChatLayout.getInputLayout().tv_sendshortcut.setOnClickListener(v -> {   //  快捷回复
             homeActivity.switchSecondFragment(FRAGMENT_QUICKREPLY, String.valueOf(loginBean.getUser().user.userId));
 
         });
 
         mChatLayout.getInputLayout().tv_medicalfolder.setOnClickListener(v -> {  //病历夹
             mPresenter.getsummary_resultList(planId);  //获取问诊小结 列表
-            initPop();
 
         });
     }
@@ -739,10 +755,10 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                                             return;
                                         }
                                         reason = inputReason;
-                                    }else {
+                                    } else {
                                         reason = selectReason;
                                     }
-                                    Log.e(TAG, "拒绝原因: "+reason );
+                                    Log.e(TAG, "拒绝原因: " + reason);
                                     SaveRightsUseBean saveRightsUseBean = new SaveRightsUseBean();
                                     saveRightsUseBean.deptName = loginBean.getUser().user.departmentName;
                                     saveRightsUseBean.execDept = String.valueOf(loginBean.getUser().user.departmentId); //这里传科室代码
@@ -1024,18 +1040,18 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         //获取单聊面板的标题栏
         mTitleBar = mChatLayout.getTitleBar();
         mTitleBar.getEndVisitText().setVisibility(patientinfo.isConsultation ? VISIBLE : GONE); //如果是 问诊 顶部显示 “结束问诊” 字样 反之不显示
-        mTitleBar.getEndVisitText().setText(taskDeatailBean!=null&&taskDeatailBean.getTaskDetail()!=null&&taskDeatailBean.getTaskDetail().getExecFlag() == 0 ? "拒绝问诊" : "结束问诊");
+        mTitleBar.getEndVisitText().setText(taskDeatailBean != null && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getExecFlag() == 0 ? "拒绝问诊" : "结束问诊");
         mTitleBar.getLeftGroup().setVisibility(VISIBLE);//bug 381，隐藏返回键
         mTitleBar.getRightIcon().setVisibility(GONE);//沒有好友详情页面，隐藏
 
-        mTitleBar.getAcceptdiagnosisText().setVisibility(taskDeatailBean!=null&&taskDeatailBean.getTaskDetail()!=null&&taskDeatailBean.getTaskDetail().getExecFlag() == 0 && taskDeatailBean.getTaskDetail().getRightsType().equals("textNum") ? VISIBLE : GONE);  //接诊按钮  只有图文咨询权益并且是还未确认时间的 才显示
+        mTitleBar.getAcceptdiagnosisText().setVisibility(taskDeatailBean != null && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getExecFlag() == 0 && taskDeatailBean.getTaskDetail().getRightsType().equals("textNum") ? VISIBLE : GONE);  //接诊按钮  只有图文咨询权益并且是还未确认时间的 才显示
 
         //单聊面板标记栏返回按钮点击事件，这里需要开发者自行控制
         mTitleBar.setOnLeftClickListener(v -> {
             //如果是  图文咨询 并且还未确认接诊的 点击返回 不再返回上一个fragment
-            if (taskDeatailBean!=null&&taskDeatailBean.getTaskDetail().getRightsType().equals("textNum")&&taskDeatailBean.getTaskDetail().getExecFlag()==0){
+            if (taskDeatailBean != null && taskDeatailBean.getTaskDetail().getRightsType().equals("textNum") && taskDeatailBean.getTaskDetail().getExecFlag() == 0) {
                 getFragmentManager().beginTransaction().remove(ChatFragment.this).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit(); //退出fragment  不返回上一个界面
-            }else {
+            } else {
                 //正常返回上一个界面
                 if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                     homeActivity.getSupportFragmentManager().popBackStack();
@@ -1129,51 +1145,6 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             });
         }
     }
-
-
-    private PopupWindow popupWindow;
-    private WrapRecyclerView mlistView; //pop里面列表
-    private PopWindorAdapter popDataAdapter;
-    private List<DataReViewRecordResponse> popData = new ArrayList<>();
-
-    /**
-     * 初始化popupwindow
-     */
-    private void initPop() {
-        popDataAdapter = new PopWindorAdapter(R.layout.popup_text_item, popData);
-        mlistView = new WrapRecyclerView(homeActivity);
-        LinearLayoutManager datareviewrecordlayoutManager = new LinearLayoutManager(homeActivity);
-        mlistView.setLayoutManager(datareviewrecordlayoutManager);
-        mlistView.setAdapter(popDataAdapter);
-        popDataAdapter.setOnItemClickListener((adapter, view, position) -> {  //点击查看
-            DataReViewRecordResponse summaBean = popData.get(position);
-            popupWindow.dismiss();
-            summaryDialog = new SummaryDialog(homeActivity);
-            summaryDialog.setCanceledOnTouchOutside(true);
-            summaryDialog.show();
-            summaryDialog.setVisibleBotomButton(false);
-            summaryDialog.setEditeTextString(summaBean.getDealDetail());
-            summaryDialog.setDocNameAndSummaryTime(summaBean.getDealUserName(), TimeUtils.getTimeToDay(Long.parseLong(summaBean.getCreateTime())));
-        });
-        popupWindow = new PopupWindow(mlistView, 400, ActionBar.LayoutParams.WRAP_CONTENT, true);
-        View view = popupWindow.getContentView();
-        int popupWidth = view.getMeasuredWidth();  //获取popwindow 测量后的宽度
-        int popupHeight = view.getMeasuredHeight();//获取popwindow 测量后的高度
-        popupWindow.setOnDismissListener(() -> popupWindow.dismiss());
-        ColorDrawable colorDrawable = new ColorDrawable(homeActivity.getColor(R.color.white_FFFFFF));
-        popupWindow.setBackgroundDrawable(colorDrawable);
-        popupWindow.setAnimationStyle(R.style.popmenu_animation); //动画
-        popupWindow.setFocusable(true);
-        popupWindow.setOutsideTouchable(true); //点击pop外消失
-
-        if (popupWindow != null & !popupWindow.isShowing()) {
-            TextView targetView = mChatLayout.getInputLayout().tv_medicalfolder;
-            targetView.getLocationOnScreen(location);
-            popupWindow.showAtLocation(targetView, Gravity.NO_GRAVITY, (location[0] + targetView.getWidth() / 2) - popupWidth / 2, location[1] - popupHeight);
-        }
-
-    }
-
 
     public static class NewMsgData implements Serializable {
         public ArrayList<String> userIds;

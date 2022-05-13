@@ -28,6 +28,7 @@ import butterknife.BindView;
 /**
  * @author created by bitvalue
  * @data : 05/06
+ * 病情概述 界面
  */
 public class ConditionoverViewFragment extends BaseFragment {
     private HomeActivity homeActivity;

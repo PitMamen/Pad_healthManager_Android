@@ -4,6 +4,7 @@ import static com.bitvalue.health.util.Constants.PREVIEWTARGET_HEIGHT;
 import static com.bitvalue.health.util.Constants.PREVIEWTARGET_WIDTH;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
@@ -40,6 +41,7 @@ public class ConditionOverViewAdapter extends BaseQuickAdapter<String, BaseViewH
         if (EmptyUtil.isEmpty(item)) {
             return;
         }
+        Log.e(TAG, "病情概述 url: "+item );
         ImageView imageView = holder.getView(R.id.iv_pic);
         int position = holder.getAdapterPosition();
         Picasso.with(mContext).load(item.trim()).error(R.drawable.image_error_bg).resize(PREVIEWTARGET_WIDTH, PREVIEWTARGET_HEIGHT).onlyScaleDown().into(imageView);

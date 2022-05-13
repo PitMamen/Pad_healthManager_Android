@@ -15,8 +15,8 @@ import java.util.List;
  * @author created by bitvalue
  * @data : 04/27
  */
-public class PopWindorAdapter extends BaseQuickAdapter<DataReViewRecordResponse, BaseViewHolder> {
-    public PopWindorAdapter(int layoutResId, @Nullable List<DataReViewRecordResponse> data) {
+public class MedicalRecordAdapter extends BaseQuickAdapter<DataReViewRecordResponse, BaseViewHolder> {
+    public MedicalRecordAdapter(int layoutResId, @Nullable List<DataReViewRecordResponse> data) {
         super(layoutResId, data);
     }
 
@@ -26,5 +26,6 @@ public class PopWindorAdapter extends BaseQuickAdapter<DataReViewRecordResponse,
             return;
         }
         helper.setText(R.id.tv_time, TimeUtils.getTimeToDay(Long.parseLong(item.getCreateTime())));
+        helper.setText(R.id.tv_right_name,item.getRightsName());
     }
 }
