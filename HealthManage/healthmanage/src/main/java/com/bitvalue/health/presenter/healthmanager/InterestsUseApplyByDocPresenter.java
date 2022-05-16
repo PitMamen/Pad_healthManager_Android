@@ -193,5 +193,30 @@ public class InterestsUseApplyByDocPresenter extends BasePresenter<InterestsUseA
         }
     }
 
+    @Override
+    public void qryRightsUserLog(String tradedId, String userId) {
+        if (mModel!=null){
+            mModel.qryRightsUserLog(tradedId,userId,new CallBackAdapter(){
+                @Override
+                public void onSuccess(Object o, int what) {
+                    super.onSuccess(o, what);
+                    if (isViewAttach()){
+                        getView().qryRightsUserLogSuccess((List<DataReViewRecordResponse>) o);
+                    }
+
+                }
+
+                @Override
+                public void onFailedLog(String str, int what) {
+                    super.onFailedLog(str, what);
+                    if (isViewAttach()){
+                        getView().qryRightsUserLogFail(str);
+                    }
+
+                }
+            });
+        }
+    }
+
 
 }

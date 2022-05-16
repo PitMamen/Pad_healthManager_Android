@@ -6,6 +6,8 @@ import android.util.Log;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * TimeUtils
@@ -26,6 +28,7 @@ public class TimeUtils {
     @SuppressLint("NewApi")
 //    public static final SimpleDateFormat YY_MM_DD_FORMAT_5 = new SimpleDateFormat("YYYYMMddhhmmss");
     public static final SimpleDateFormat YY_MM_DD_FORMAT_6 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
 
     /**
      * long time to string
@@ -76,10 +79,9 @@ public class TimeUtils {
     }
 
 
-    public static String getTimeToDay(long timeInMillis_){
+    public static String getTimeToDay(long timeInMillis_) {
         return getTime(timeInMillis_, YY_MM_DD_FORMAT_3);
     }
-
 
 
     /**
@@ -106,10 +108,9 @@ public class TimeUtils {
     }
 
 
-    public static String getCurrentTimeMinute(){
+    public static String getCurrentTimeMinute() {
         return YY_MM_DD_FORMAT_4.format(new Date());
     }
-
 
 
     /**
@@ -164,7 +165,7 @@ public class TimeUtils {
         try {
             date = YY_MM_DD_FORMAT_3.parse(dateString);
         } catch (ParseException e) {
-            Log.e("TTT", "日期转换异常---" );
+            Log.e("TTT", "日期转换异常---");
             return dateString;
         }
         return YY_MM_DD_FORMAT_3.format(date);
@@ -173,13 +174,14 @@ public class TimeUtils {
     public static long formatTimeToLong(String dateString) {
 
         try {
-            Date  date = YY_MM_DD_FORMAT_3.parse(dateString);
+            Date date = YY_MM_DD_FORMAT_3.parse(dateString);
             return date.getTime();
         } catch (ParseException e) {
-            Log.e("TTT", "日期转换异常---" );
+            Log.e("TTT", "日期转换异常---");
             return 0;
         }
     }
+
     /**
      * @param mss 要转换的毫秒数
      * @return 该毫秒数转换为 * days * hours * minutes * seconds 后的格式
@@ -215,6 +217,153 @@ public class TimeUtils {
         return time;
     }
 
+
+    /**
+     * 秒转换小时-分-秒analytics/util/DateUtil.java
+     *
+     * @param seconds 秒为单位 比如..600秒
+     * @return 比如...2小时3分钟52秒
+     */
+
+    public static String secToTime(int seconds) {
+
+        int hour = seconds / 3600;
+
+        int minute = (seconds - hour * 3600) / 60;
+
+        int second = (seconds - hour * 3600 - minute * 60);
+
+        StringBuffer sb = new StringBuffer();
+
+        if (hour > 0) {
+
+            sb.append(hour + ":");
+
+        }
+
+        if (minute > 0) {
+
+            sb.append(minute + ":");
+
+        }
+
+        if (second > 0) {
+
+            sb.append(second + ":");
+
+        }
+
+        if (second == 0) {
+
+            sb.append("<1秒");
+
+        }
+
+        return sb.toString();
+
+    }
+
+
+    /**
+     * 将int类型数字转换成时分秒毫秒的格式数据
+     *
+     * @param time long类型的数据
+     * @return HH:mm:ss.SSS
+     * @author zero 2019/04/11
+     */
+
+    public static String msecToTime(int time) {
+
+        String timeStr = null;
+
+        int hour = 0;
+
+        int minute = 0;
+
+        int second = 0;
+
+        int millisecond = 0;
+
+        if (time <= 0)
+
+            return "00:00:00";
+
+        else {
+
+            second = time / 1000;
+
+            minute = second / 60;
+
+            millisecond = time % 1000;
+
+            if (second < 60) {
+
+                timeStr = "00:00:" + unitFormat(second) + "." + unitFormat2(millisecond);
+
+            } else if (minute < 60) {
+
+                second = second % 60;
+
+                timeStr = "00:" + unitFormat(minute) + ":" + unitFormat(second);
+
+            } else {// 数字>=3600 000的时候
+
+                hour = minute / 60;
+
+                minute = minute % 60;
+
+                second = second - hour * 3600 - minute * 60;
+
+                timeStr = unitFormat(hour) + ":" + unitFormat(minute) + ":" + unitFormat(second) + "."
+
+                        + unitFormat2(millisecond);
+
+            }
+
+        }
+
+        return timeStr;
+
+    }
+
+
+    public static String unitFormat(int i) {// 时分秒的格式转换
+
+        String retStr = null;
+
+        if (i >= 0 && i < 10)
+
+            retStr = "0" + Integer.toString(i);
+
+        else
+
+            retStr = "" + i;
+
+        return retStr;
+
+    }
+
+
+    public static String unitFormat2(int i) {// 毫秒的格式转换
+
+        String retStr = null;
+
+        if (i >= 0 && i < 10)
+
+            retStr = "00" + Integer.toString(i);
+
+        else if (i >= 10 && i < 100) {
+
+            retStr = "0" + Integer.toString(i);
+
+        } else
+
+            retStr = "" + i;
+
+        return retStr;
+    }
+
+
     /**
      * @param begin 时间段的开始
      * @param end   时间段的结束
@@ -224,4 +373,30 @@ public class TimeUtils {
     public static String formatDuring(Date begin, Date end) {
         return formatDuring(end.getTime() - begin.getTime());
     }
+
+
+    public static void timeDownCount(int time) {
+        //min 5分钟
+        int min = time;
+        long start = System.currentTimeMillis();
+        //end 计算结束时间
+        final long end = start + min * 60 * 1000;
+
+        final Timer timer = new Timer();
+        //延迟0毫秒（即立即执行）开始，每隔1000毫秒执行一次
+        timer.schedule(new TimerTask() {
+            public void run() {
+                //show是剩余时间，即要显示的时间
+                long show = end - System.currentTimeMillis();
+                long h = show / 1000 / 60 / 60;//时
+                long m = show / 1000 / 60 % 60;//分
+                long s = show / 1000 % 60;//秒
+                String currentDownTime = TimeUtils.unitFormat((int) h) + ":" + TimeUtils.unitFormat((int) m) + ":" + TimeUtils.unitFormat((int) s);
+                Log.e("TAG", "现在时间：" + currentDownTime);
+            }
+        }, 0, 1000);
+
+    }
+
+
 }

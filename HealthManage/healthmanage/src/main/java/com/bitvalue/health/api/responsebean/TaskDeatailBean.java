@@ -1,6 +1,7 @@
 package com.bitvalue.health.api.responsebean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author created by bitvalue
@@ -124,6 +125,7 @@ public class TaskDeatailBean implements Serializable {
         private String deptName;
         private String rightsName;
         private UserInfoDTO userInfo;
+        private RightsUseLog userGoodsAttrInfo;
         private String rightsType;
         private int rightsId;
         private String statusDescribe;
@@ -136,6 +138,15 @@ public class TaskDeatailBean implements Serializable {
         private String tradeId;
         private String execName;
         private int uploadDocFlag; //是否上传资料  1 = 上传   其他 不上传
+
+
+        public RightsUseLog getUserGoodsAttrInfo() {
+            return userGoodsAttrInfo;
+        }
+
+        public void setUserGoodsAttrInfo(RightsUseLog userGoodsAttrInfo) {
+            this.userGoodsAttrInfo = userGoodsAttrInfo;
+        }
 
         public int getUploadDocFlag() {
             return uploadDocFlag;
@@ -356,6 +367,71 @@ public class TaskDeatailBean implements Serializable {
                 this.userAge = userAge;
             }
         }
+
+
+
+        public static class RightsUseLog implements Serializable{
+            public String timeLimit; //通话时长 (分钟)  15  20
+            public int caseFlag;
+            public String uploadDocFlag;
+            public String docId;
+            public int serviceExpire;  //时效 (小时)
+            public int textNumLimit;  //条数
+
+            public String getTimeLimit() {
+                return timeLimit;
+            }
+
+            public void setTimeLimit(String timeLimit) {
+                timeLimit = timeLimit;
+            }
+
+            public int getCaseFlag() {
+                return caseFlag;
+            }
+
+            public void setCaseFlag(int caseFlag) {
+                this.caseFlag = caseFlag;
+            }
+
+            public String getUploadDocFlag() {
+                return uploadDocFlag;
+            }
+
+            public void setUploadDocFlag(String uploadDocFlag) {
+                this.uploadDocFlag = uploadDocFlag;
+            }
+
+            public String getDocId() {
+                return docId;
+            }
+
+            public void setDocId(String docId) {
+                this.docId = docId;
+            }
+
+            public int getServiceExpire() {
+                return serviceExpire;
+            }
+
+            public void setServiceExpire(int serviceExpire) {
+                serviceExpire = serviceExpire;
+            }
+
+            public int getTextNumLimit() {
+                return textNumLimit;
+            }
+
+            public void setTextNumLimit(int textNumLimit) {
+                this.textNumLimit = textNumLimit;
+            }
+        }
+
+
+
+
+
+
 
         @Override
         public String toString() {

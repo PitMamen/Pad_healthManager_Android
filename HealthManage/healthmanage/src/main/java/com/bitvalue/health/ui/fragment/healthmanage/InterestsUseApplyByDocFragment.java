@@ -442,4 +442,19 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
     }
 
 
+    /**
+     * 查询 患者权益 条文限制 这里不需要实现
+     * @param listData
+     */
+    @Override
+    public void qryRightsUserLogSuccess(List<DataReViewRecordResponse> listData) {
+
+    }
+
+    @Override
+    public void qryRightsUserLogFail(String failMessage) {
+
+    }
+
+
 }

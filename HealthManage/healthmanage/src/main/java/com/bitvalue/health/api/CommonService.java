@@ -71,6 +71,7 @@ public interface CommonService {
 
     /**
      * 根据类别查询枚举值
+     *
      * @param GOODS_SERVICE_TYPE
      * @return
      */
@@ -409,6 +410,12 @@ public interface CommonService {
      */
     @POST("health-api/patient/updateRightsRequestTime")
     Observable<ApiResult<Boolean>> updateRightsRequestTime(@Body UpdateRightsRequestTimeRequestBean request);
+
+    /***
+     * 查询工单处理日志记录
+     */
+    @GET("health-api/patient/qryRightsUserLog")
+    Observable<ApiResult<List<DataReViewRecordResponse>>> qryRightsUserLog(@Query("tradeId") String tradeid, @Query("userId") String userId,@Query("dealType") String dealType);
 
 
 }

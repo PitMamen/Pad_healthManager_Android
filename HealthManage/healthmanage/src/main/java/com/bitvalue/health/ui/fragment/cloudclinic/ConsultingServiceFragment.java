@@ -125,7 +125,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
         super.initView(rootView);
         EventBus.getDefault().register(this);
         mPresenter.getConversationList(0, GET_CONVERSATION_COUNT);  // 获取聊天对话框
-        mPresenter.listennerIMNewMessage();//监听IM新消息
+//        mPresenter.listennerIMNewMessage();//监听IM新消息
 
         smartRefreshLayout.setVisibility(View.GONE);
         initAllPatientList();

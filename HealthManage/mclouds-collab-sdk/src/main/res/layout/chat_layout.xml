@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/status_bar_color"
-    >
+    android:background="@color/status_bar_color">
 
     <com.bitvalue.sdk.collab.component.TitleBarLayout
         android:id="@+id/chat_title_bar"
@@ -12,66 +11,72 @@
         android:layout_height="wrap_content" />
 
 
+<!--    <FrameLayout-->
+<!--        android:visibility="visible"-->
+<!--        android:background="@color/white"-->
+<!--        android:id="@+id/framelayout_tipmessage"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/chat_title_bar"-->
+<!--        android:layout_marginRight="@dimen/qb_px_100"-->
+<!--        android:layout_marginLeft="@dimen/qb_px_75">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="center"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="@dimen/qb_px_5"-->
+<!--                android:layout_height="@dimen/qb_px_5"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_toLeftOf="@+id/tv_message"-->
+<!--                android:src="@drawable/shape_boll_green"></ImageView>-->
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_message"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:paddingHorizontal="@dimen/qb_px_5"-->
+<!--                android:text="@string/you_has_entered"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="8sp"></TextView>-->
+<!--        </LinearLayout>-->
+
+
+<!--        <LinearLayout-->
+<!--            android:layout_marginTop="@dimen/qb_px_9"-->
+<!--            android:gravity="center"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_numberofarticles"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/tv_message"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:paddingHorizontal="@dimen/qb_px_3"-->
+<!--                android:text="sssssssss"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="8sp"></TextView>-->
+
+<!--        </LinearLayout>-->
 
 
 
-    <FrameLayout
-        android:visibility="gone"
-        android:id="@+id/framelayout_tipmessage"
-        android:layout_below="@+id/chat_title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
-            android:background="@color/white"
-            android:layout_marginEnd="@dimen/qb_px_50"
-            android:layout_marginStart="@dimen/qb_px_50"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-            <ImageView
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/tv_message"
-                android:src="@drawable/shape_boll_green"
-                android:layout_width="@dimen/qb_px_5"
-                android:layout_height="@dimen/qb_px_5">
-
-
-            </ImageView>
-
-
-
-            <TextView
-                android:id="@+id/tv_message"
-                android:textSize="8sp"
-                android:paddingHorizontal="@dimen/qb_px_3"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/black"
-                android:text="@string/you_has_entered"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></TextView>
-
-        </RelativeLayout>
-
-
-    </FrameLayout>
-
-
-
-
-
-
-
+<!--    </FrameLayout>-->
 
 
     <View
         android:id="@+id/view_line"
-        android:layout_below="@+id/chat_title_bar"
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
+        android:layout_below="@+id/chat_title_bar"
         android:background="@color/status_bar_color" />
 
     <com.bitvalue.sdk.collab.component.NoticeLayout
@@ -99,17 +104,81 @@
         android:clickable="false"
         android:descendantFocusability="blocksDescendants" />
 
+
+    <FrameLayout
+        android:visibility="visible"
+        android:background="@color/white"
+        android:id="@+id/framelayout_tipmessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chat_title_bar"
+        android:layout_marginRight="@dimen/qb_px_100"
+        android:layout_marginLeft="@dimen/qb_px_75">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/qb_px_5"
+                android:layout_height="@dimen/qb_px_5"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/tv_message"
+                android:src="@drawable/shape_boll_green"></ImageView>
+
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:paddingHorizontal="@dimen/qb_px_5"
+                android:text="@string/you_has_entered"
+                android:textColor="@color/black"
+                android:textSize="8sp"></TextView>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/qb_px_9"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/tv_numberofarticles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_message"
+                android:layout_centerInParent="true"
+                android:paddingHorizontal="@dimen/qb_px_3"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="8sp"></TextView>
+
+        </LinearLayout>
+
+
+
+    </FrameLayout>
+
+
+
+
     <TextView
         android:id="@+id/chat_at_text_view"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:text="@string/ui_at_me"
-        android:visibility="gone"
         android:layout_above="@+id/chat_input_layout"
-        android:textColor="@color/read_dot_bg"
-        android:background="@color/list_bottom_text_bg"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="@dimen/btn_margin_right"
+        android:background="@color/list_bottom_text_bg"
+        android:text="@string/ui_at_me"
+        android:textColor="@color/read_dot_bg"
+        android:visibility="gone"
         tools:ignore="RtlCompat" />
 
 
@@ -139,18 +208,19 @@
                 android:id="@+id/recording_icon"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp" />
 
 
             <TextView
                 android:id="@+id/recording_tips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:textSize="12sp" />
 
         </LinearLayout>
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/forward_layout"
         android:layout_width="match_parent"
@@ -167,8 +237,8 @@
             android:layout_height="70dp"
             android:layout_weight="1"
             android:background="@color/navigation_bar_color"
-            android:textColor="@color/black_font_color"
-            android:text="@string/forward_button" />
+            android:text="@string/forward_button"
+            android:textColor="@color/black_font_color" />
 
 
         <Button
@@ -177,8 +247,8 @@
             android:layout_height="70dp"
             android:layout_weight="1"
             android:background="@color/navigation_bar_color"
-            android:textColor="@color/black_font_color"
-            android:text="@string/delete_button" />
+            android:text="@string/delete_button"
+            android:textColor="@color/black_font_color" />
 
     </LinearLayout>
 </RelativeLayout>

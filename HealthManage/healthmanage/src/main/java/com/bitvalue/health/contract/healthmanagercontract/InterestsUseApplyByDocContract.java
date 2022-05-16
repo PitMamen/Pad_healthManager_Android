@@ -54,6 +54,9 @@ public interface InterestsUseApplyByDocContract {
 
         void updateRightsRequestTimeFail(String failMessage);
 
+        void qryRightsUserLogSuccess(List<DataReViewRecordResponse> listData);
+
+        void qryRightsUserLogFail(String failMessage);
     }
 
     interface Model extends IModel {
@@ -73,6 +76,8 @@ public interface InterestsUseApplyByDocContract {
         void queryRightsRecord(int pageNo, int pageSize, int rightsId, String userId, String id, Callback callback);
 
         void updateRightsRequestTime(UpdateRightsRequestTimeRequestBean requestTimeRequestBean, Callback callback);
+
+        void qryRightsUserLog(String tradedId,String userId,Callback callback);
     }
 
     interface Presenter {
@@ -99,7 +104,11 @@ public interface InterestsUseApplyByDocContract {
         void queryRightsRecord(int pageNo, int pageSize, int rightsId, String userId, String id);//权益使用记录
 
 
+        //更新权益状态 医生确认接诊后调用
         void updateRightsRequestTime(UpdateRightsRequestTimeRequestBean requestTimeRequestBean);
+
+
+        void qryRightsUserLog(String tradedId,String userId);
 
     }
 

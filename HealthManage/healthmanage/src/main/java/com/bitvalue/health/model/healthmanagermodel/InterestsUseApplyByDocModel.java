@@ -95,7 +95,7 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
     public void callPhone(CallRequest callRequest, Callback callback) {
         mApi.callPhone(callRequest).subscribeOn(Schedulers.io()).subscribe(result -> {
             if (!EmptyUtil.isEmpty(result)) {
-                Log.e(TAG, "callPhone: "+result.toString() );
+                Log.e(TAG, "callPhone: " + result.toString());
                 if (result.getCode() == 0) {
                     callback.onSuccess(result.getData(), 1000);
                 } else {
@@ -109,9 +109,9 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
 
 
     @Override
-    public void queryRightsRecord(int pageNo, int pageSize, int rightsId, String userId,String id, Callback callback) {
+    public void queryRightsRecord(int pageNo, int pageSize, int rightsId, String userId, String id, Callback callback) {
         if (!EmptyUtil.isEmpty(userId)) {
-            mApi.queryRightsUserRecord(pageNo, pageSize, userId,rightsId,id).subscribeOn(Schedulers.io()).subscribe(result -> {
+            mApi.queryRightsUserRecord(pageNo, pageSize, userId, rightsId, id).subscribeOn(Schedulers.io()).subscribe(result -> {
                 if (!EmptyUtil.isEmpty(result)) {
                     if (result.getCode() == 0) {
                         if (!EmptyUtil.isEmpty(result.getData())) {
@@ -125,7 +125,7 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
                     }
                 }
             }, error -> {
-                Log.e(TAG, "queryRightsRecord: "+error.getMessage() );
+                Log.e(TAG, "queryRightsRecord: " + error.getMessage());
                 callback.onFailedLog(error.getMessage(), 1001);
             });
         }
@@ -133,17 +133,36 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
 
     @Override
     public void updateRightsRequestTime(UpdateRightsRequestTimeRequestBean requestTimeRequestBean, Callback callback) {
-        if (!EmptyUtil.isEmpty(requestTimeRequestBean)){
-            mApi.updateRightsRequestTime(requestTimeRequestBean).subscribeOn(Schedulers.io()).subscribe(reuslt->{
-                if (!EmptyUtil.isEmpty(reuslt)){
-                    if (reuslt.getCode()==0){
-                        callback.onSuccess(reuslt.getData(),1000);
-                    }else {
-                        callback.onFailedLog(reuslt.getMessage(),1001);
+        if (!EmptyUtil.isEmpty(requestTimeRequestBean)) {
+            mApi.updateRightsRequestTime(requestTimeRequestBean).subscribeOn(Schedulers.io()).subscribe(reuslt -> {
+                if (!EmptyUtil.isEmpty(reuslt)) {
+                    if (reuslt.getCode() == 0) {
+                        callback.onSuccess(reuslt.getData(), 1000);
+                    } else {
+                        callback.onFailedLog(reuslt.getMessage(), 1001);
                     }
                 }
             }, error -> {
-                Log.e(TAG, "updateRightsRequestTime: "+error.getMessage() );
+                Log.e(TAG, "updateRightsRequestTime: " + error.getMessage());
+                callback.onFailedLog(error.getMessage(), 1001);
+            });
+        }
+    }
+
+    @Override
+    public void qryRightsUserLog(String tradedId, String userId, Callback callback) {
+        if (!EmptyUtil.isEmpty(tradedId) && !EmptyUtil.isEmpty(userId)) {
+            mApi.qryRightsUserLog(tradedId, userId,"USED_TEXTNUM").subscribeOn(Schedulers.io()).subscribe(result -> {
+                if (!EmptyUtil.isEmpty(result)) {
+                    Log.e(TAG, "qryRightsUserLog: " + result.toString());
+                    if (result.getCode() == 0) {
+                        callback.onSuccess(result.getData(), 1000);
+                    } else {
+                        callback.onFailedLog(result.getMessage(), 1001);
+                    }
+                }
+            }, error -> {
+                Log.e(TAG, "qryRightsUserLogerror: " + error.getMessage());
                 callback.onFailedLog(error.getMessage(), 1001);
             });
         }
