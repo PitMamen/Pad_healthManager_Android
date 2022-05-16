@@ -10,6 +10,6 @@
         android:id="@+id/chat_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/qb_px_5" />
+         />
 
 </RelativeLayout>

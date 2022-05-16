@@ -1,6 +1,10 @@
 package com.bitvalue.health.util;
 
 
+import static com.bitvalue.health.util.Constants.PREVIEWTARGET_HEIGH1;
+import static com.bitvalue.health.util.Constants.PREVIEWTARGET_HEIGHT;
+import static com.bitvalue.health.util.Constants.PREVIEWTARGET_WIDTH;
+import static com.bitvalue.health.util.Constants.PREVIEWTARGET_WIDTH1;
 import static com.bitvalue.health.util.Constants.TARGET_HEIGHT;
 import static com.bitvalue.health.util.Constants.TARGET_WIDTH;
 import static com.tencent.liteav.demo.beauty.utils.ResourceUtils.getResources;
@@ -23,7 +27,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.bitvalue.health.Application;
 import com.bitvalue.health.util.photopreview.PhotoView;
 import com.bitvalue.healthmanage.R;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -91,27 +97,15 @@ public class PhotoDialog extends Dialog {
             }
 
             @Override
-            public Object instantiateItem(ViewGroup container,  int position) {
+            public Object instantiateItem(ViewGroup container, int position) {
                 PhotoView photoView = new PhotoView(mContext);
                 photoView.setImageResource(R.drawable.image_error_bg);
                 photoView.enable();
                 photoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-//                Log.e("TAG", "ViewPagerPosition: " + position + " indePosition : " + index_position);
-                Picasso.with(mContext).load(index_position >= 0 ? resource_list.get(index_position).trim() : resource_list.get(position).trim()).error(R.drawable.image_error_bg).resize(TARGET_WIDTH,TARGET_HEIGHT).onlyScaleDown().into(photoView);
+//                Picasso.with(mContext).load(index_position >= 0 ? resource_list.get(index_position).trim() : resource_list.get(position).trim()).error(R.drawable.image_error_bg).resize(TARGET_WIDTH, TARGET_HEIGHT).into(photoView);
+                Picasso.with(mContext).load(index_position >= 0 ? resource_list.get(index_position).trim() : resource_list.get(position).trim()).config(Bitmap.Config.RGB_565).memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE).fit().error(R.drawable.image_error_bg).into(photoView);
                 container.addView(photoView);
                 index_position = -1;
-//                position = index_position;
-
-//                Observable.just(0).subscribeOn(Schedulers.io()).subscribe(r -> {
-//                    Bitmap bitmap = Picasso.with(mContext).load(index_position >= 0 ? resource_list.get(index_position).trim() : resource_list.get(position).trim()).error(R.drawable.image_error_bg).get();
-//                    if (bitmap != null) {
-//                        Application.instance().getHomeActivity().runOnUiThread(() -> {
-//                            index_position = -1;
-//                            photoView.setImageBitmap(bitmap);
-//                            container.addView(photoView);
-//                        });
-//                    }
-//                });
                 return photoView;
             }
 
@@ -122,6 +116,8 @@ public class PhotoDialog extends Dialog {
         };
 
         viewPager.setAdapter(pagerAdapter);
+
+
     }
 
     public synchronized void updateData(List<String> data) {
@@ -134,7 +130,7 @@ public class PhotoDialog extends Dialog {
 
     public void onClickPosition(int position) {
         this.index_position = position;
-        Log.e("TAG", "onClickPosition: " + position);
+//        Log.e("TAG", "onClickPosition: " + position);
     }
 
 

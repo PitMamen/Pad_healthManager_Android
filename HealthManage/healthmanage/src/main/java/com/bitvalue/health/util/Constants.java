@@ -173,6 +173,12 @@ public class Constants {
     public static final int PREVIEWTARGET_HEIGHT = 1440;  //缩略图 最大高度
 
 
+    public static final int PREVIEWTARGET_WIDTH1 = 3456;  //缩略图 最大宽度
+    public static final int PREVIEWTARGET_HEIGH1 = 4608;  //缩略图 最大高度
+
+
+
+
 //    //自己的
 //    public static final int IM_APPId =1400548652;
 //    public static final String IM_PRIVATE_KEY ="e3f3f2db3fa1ebb73d1fa009f774c668e93577ce8f15492409582cd041b6e712";

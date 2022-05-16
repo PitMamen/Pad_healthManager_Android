@@ -1,9 +1,13 @@
 package com.bitvalue.health.ui.adapter;
 
+import static com.bitvalue.health.util.Constants.PREVIEWTARGET_HEIGH1;
 import static com.bitvalue.health.util.Constants.PREVIEWTARGET_HEIGHT;
 import static com.bitvalue.health.util.Constants.PREVIEWTARGET_WIDTH;
+import static com.bitvalue.health.util.Constants.PREVIEWTARGET_WIDTH1;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -11,10 +15,14 @@ import androidx.annotation.Nullable;
 
 import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.util.EmptyUtil;
+import com.bitvalue.health.util.GlideApp;
 import com.bitvalue.health.util.PhotoDialog;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.component.picture.imageEngine.impl.GlideEngine;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,10 +49,10 @@ public class ConditionOverViewAdapter extends BaseQuickAdapter<String, BaseViewH
         if (EmptyUtil.isEmpty(item)) {
             return;
         }
-        Log.e(TAG, "病情概述 url: "+item );
         ImageView imageView = holder.getView(R.id.iv_pic);
         int position = holder.getAdapterPosition();
-        Picasso.with(mContext).load(item.trim()).error(R.drawable.image_error_bg).resize(PREVIEWTARGET_WIDTH, PREVIEWTARGET_HEIGHT).onlyScaleDown().into(imageView);
+        Picasso.with(mContext).setLoggingEnabled(true);
+        Picasso.with(mContext).load(item.trim()).config(Bitmap.Config.RGB_565).memoryPolicy(MemoryPolicy.NO_CACHE,MemoryPolicy.NO_STORE).fit().error(R.drawable.image_error_bg).into(imageView);
 
         //点击查看大图 事件
         imageView.setOnClickListener(v -> {

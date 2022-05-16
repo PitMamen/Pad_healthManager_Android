@@ -252,8 +252,7 @@ dependencies {
   implementation 'com.github.bingoogolapple:BGABaseAdapter-Android:2.0.1'
   implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 //    implementation 'org.greenrobot:eventbus:3.2.0'
-//    compileOnly 'com.squareup.picasso:picasso:2.5.2'
-  implementation 'com.squareup.picasso:picasso:2.5.2'
+  implementation 'com.squareup.picasso:picasso:2.6.0-SNAPSHOT'
   implementation 'org.xutils:xutils:3.5.0'
   implementation project(':videocall:Source')
   implementation 'top.zibin:Luban:1.1.8'

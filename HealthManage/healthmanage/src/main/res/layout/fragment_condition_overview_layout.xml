@@ -7,24 +7,24 @@
     tools:ignore="MissingDefaultResource">
 
     <RelativeLayout
-        android:background="@color/main_blue"
         android:layout_width="match_parent"
         android:layout_height="@dimen/qb_px_35">
 
 
         <ImageView
             android:id="@+id/back_btn"
-            android:layout_width="@dimen/qb_px_20"
-            android:layout_height="@dimen/qb_px_20"
+            android:layout_width="@dimen/qb_px_15"
+            android:layout_height="@dimen/qb_px_15"
             android:layout_centerVertical="true"
-            android:src="@drawable/left_aco"></ImageView>
+            android:layout_marginStart="@dimen/qb_px_8"
+            android:src="@mipmap/icon_fanhui"></ImageView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="病情概述"
-            android:textColor="@color/white"
+            android:textColor="@color/text_black"
             android:textSize="@dimen/qb_px_12"></TextView>
 
     </RelativeLayout>

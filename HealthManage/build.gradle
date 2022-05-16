@@ -10,6 +10,7 @@ buildscript {
 //        mavenCentral()
 
         // 阿里云云效仓库，提升编译速度：https://maven.aliyun.com/mvn/guide
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }
@@ -17,8 +18,8 @@ buildscript {
         maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
         // 友盟仓库：https://bintray.com/umsdk/release
         maven { url 'https://dl.bintray.com/umsdk/release' }
-        jcenter()
         google()
+        jcenter()
         mavenCentral()
 
     }
@@ -38,6 +39,7 @@ buildscript {
 allprojects {
     repositories {
         // 阿里云云效仓库，提升编译速度：https://maven.aliyun.com/mvn/guide
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url 'https://maven.aliyun.com/repository/jcenter' }
         maven { url 'https://maven.aliyun.com/repository/public' }
         maven { url 'https://maven.aliyun.com/repository/google' }

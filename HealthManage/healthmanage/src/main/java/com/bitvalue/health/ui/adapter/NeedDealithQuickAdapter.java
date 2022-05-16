@@ -2,8 +2,10 @@ package com.bitvalue.health.ui.adapter;
 
 
 import android.widget.ImageView;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.callback.OnRightClickCallBack;
@@ -12,6 +14,7 @@ import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.healthmanage.R;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+
 import java.util.List;
 
 /**
@@ -26,9 +29,10 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
         super(layoutResId, data);
         this.onRightClickCallBack = callBack;
     }
+
     @Override
     protected void convert(BaseViewHolder holder, TaskDeatailBean taskdeatailBean) {
-        if (null == taskdeatailBean || null == taskdeatailBean.getTaskDetail()) {
+        if (null == taskdeatailBean || null == taskdeatailBean.getTaskDetail() || taskdeatailBean.getTaskDetail().getUserInfo() == null) {
             return;
         }
         ImageView img_head = holder.getView(R.id.img_head);

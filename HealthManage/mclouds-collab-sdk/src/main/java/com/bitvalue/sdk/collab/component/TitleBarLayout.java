@@ -24,7 +24,6 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
     private TextView mRightTitle;
     private ImageView mLeftIcon;
     private ImageView mRightIcon;
-    private RelativeLayout mTitleLayout;
     private TextView tv_endVisit;
     private TextView tv_accept_diagnosis;
 
@@ -46,7 +45,6 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
 
     private void init() {
         inflate(getContext(), R.layout.title_bar_layout, this);
-        mTitleLayout = findViewById(R.id.page_title_layout);
         tv_endVisit = findViewById(R.id.tv_end_visit);
         tv_accept_diagnosis = findViewById(R.id.tv_accept_diagnosis);
         mLeftGroup = findViewById(R.id.page_title_left_group);
@@ -56,9 +54,6 @@ public class TitleBarLayout extends LinearLayout implements ITitleBarLayout {
         mCenterTitle = findViewById(R.id.page_title);
         mLeftIcon = findViewById(R.id.page_title_left_icon);
         mRightIcon = findViewById(R.id.page_title_right_icon);
-        LayoutParams params = (LayoutParams) mTitleLayout.getLayoutParams();
-        params.height = ScreenUtil.getPxByDp(40);
-        mTitleLayout.setLayoutParams(params);
         setBackgroundColor(getResources().getColor(R.color.status_bar_color));
     }
 

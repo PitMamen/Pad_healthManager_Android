@@ -41,7 +41,7 @@
 
 
     <LinearLayout
-        android:layout_marginTop="@dimen/qb_px_10"
+        android:layout_marginTop="@dimen/qb_px_5"
         android:layout_marginStart="@dimen/qb_px_6"
         android:layout_marginEnd="@dimen/qb_px_5"
         android:background="@drawable/shape_item_select_patie"
