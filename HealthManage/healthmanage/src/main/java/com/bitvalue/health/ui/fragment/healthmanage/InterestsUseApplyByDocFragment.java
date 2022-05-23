@@ -15,6 +15,7 @@ import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.requestbean.SummaryBean;
 import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
 import com.bitvalue.health.api.responsebean.CallResultBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
@@ -333,7 +334,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
 
     //发送问诊小结 成功回调
     @Override
-    public void sendsummary_resultSuucess(DataReViewRecordResponse reViewRecordResponse) {
+    public void sendsummary_resultSuucess(boolean reViewRecordResponse) {
 
     }
 
@@ -354,7 +355,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
      * @param reViewRecordResponse
      */
     @Override
-    public void getSummaryListSuucess(List<DataReViewRecordResponse> reViewRecordResponse) {
+    public void getSummaryListSuucess(List<SummaryBean> reViewRecordResponse) {
 
     }
 
@@ -388,7 +389,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
      * @param resultBean
      */
     @Override
-    public void callSuccess(CallResultBean resultBean) {
+    public void callSuccess(boolean resultBean) {
 
     }
 

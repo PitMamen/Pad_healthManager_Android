@@ -30,12 +30,13 @@ public class PrePiagnosisCollectionAdapter extends BaseQuickAdapter<QuestionResu
 
     helper.getView(R.id.tv_time).setVisibility(View.GONE);
     helper.getView(R.id.tv_status).setVisibility(View.GONE);
-    if (item.name.contains("-")) {
-      String[] name = item.name.split("-");
-      helper.setText(R.id.tv_right_name,  name[1] );
-    } else {
-      helper.setText(R.id.tv_right_name, item.name);
-    }
+//    if (item.name.contains("-")) {
+//      String[] name = item.name.split("-");
+//      helper.setText(R.id.tv_right_name,  name[1] );
+//    } else {
+//      helper.setText(R.id.tv_right_name, item.name);
+//    }
+    helper.setText(R.id.tv_right_name, item.name);
 
   }
 }

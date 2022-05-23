@@ -49,12 +49,15 @@
 
     <TextView
         android:id="@+id/tv_detail_query"
-        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/qb_px_20"
-        android:text="详情:点击查看问卷详情"
-        android:textSize="8sp"
-        android:textColor="@color/main_blue" />
+        android:layout_marginTop="@dimen/qb_px_5"
+        android:inputType="textMultiLine"
+        android:maxLines="3"
+        android:singleLine="false"
+        android:ellipsize="none"
+        android:text="建议:"
+        android:textSize="@dimen/qb_px_7"
+        android:textColor="@color/black" />
 
 </LinearLayout>

@@ -1206,6 +1206,7 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         sll_detail_item_3_jianyanjiance.scrollTo(0, offset);
         mYqjcAndSysjcCombineDataMap = new TreeMap<String, YqjcAndSysjcCombineData>(Comparator.reverseOrder());
         if (null == mHisDataCommon) {
+            dismissLoadDialog();   //这里需要dissmiss
             return;
         }
         List<HisDataSysjc> listSysjc = mHisDataCommon.getSysjc();
@@ -1230,7 +1231,6 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
                     mYqjcAndSysjcCombineDataMap.put(time, combineData);
                 }
             }
-            Log.d(TAG, "MAP SIZE *************" + mYqjcAndSysjcCombineDataMap.size());
             //将keySet转换为数组，方便使用使用position获取对应位置的值
             mYqjcAndSysjcCombineData_keyArray = new String[mYqjcAndSysjcCombineDataMap.size()];
             mYqjcAndSysjcCombineDataMap.keySet().toArray(mYqjcAndSysjcCombineData_keyArray);
@@ -1632,7 +1632,6 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
             if (mYqjcAndSysjcCombineDataMap == null) {
                 return 0;
             }
-            Log.d(TAG, "SIZE:" + mYqjcAndSysjcCombineDataMap.size());
             return mYqjcAndSysjcCombineDataMap.size();
         }
 
@@ -1691,7 +1690,8 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
         public void onClick(View view) {
             MyAPHolder holder = (MyAPHolder) view.getTag();
             switch (view.getId()) {
-                case R.id.item_mr_detail_jcjy_timeline:  //点击整个item                    I
+                case R.id.item_mr_detail_jcjy_timeline:  //点击整个item
+                    Log.e(TAG, "治疗时间 拿药: "+holder.tv_jcjy_timeline_text.getText().toString() );//               I
                     previous_iv_jcjy_timeline_bg.setBackgroundResource(R.drawable.shape_circle_solid_gray);
                     previous_tv_jcjy_timeline_text.setTextColor(ContextCompat.getColor(MRDetailActivity.this, R.color.text_desc_dark));
                     holder.dot_v.setBackgroundResource(R.drawable.shape_circle_solid_blue);
@@ -1708,6 +1708,11 @@ public class MRDetailActivity extends AppActivity implements View.OnClickListene
             }
         }
 
+        /**
+         * 治疗时间轴 item
+         * @param position
+         * @param holder
+         */
         private void bindViewHolder(int position, MyAPHolder holder) {
             holder.item_mr_detail_jcjy_timeline.setOnClickListener(this);
             holder.item_mr_detail_jcjy_timeline.setTag(holder);

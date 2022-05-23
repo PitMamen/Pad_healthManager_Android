@@ -37,6 +37,7 @@
 
         <TextView
             android:id="@+id/tv_sendremind"
+            android:visibility="gone"
             android:layout_marginStart="@dimen/qb_px_15"
             android:layout_gravity="center_vertical"
             android:text="上线提醒"
@@ -181,6 +182,17 @@
             android:layout_margin="5dp"
             android:scaleType="fitXY"
             android:src="@drawable/action_face_selector" />
+
+
+        <ImageView
+            android:id="@+id/remind"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/lingdang" />
+
+
 
         <ImageView
             android:id="@+id/more_btn"

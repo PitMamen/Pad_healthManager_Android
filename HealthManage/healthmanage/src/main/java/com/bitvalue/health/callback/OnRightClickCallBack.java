@@ -10,4 +10,6 @@ public interface OnRightClickCallBack {
 
     void OnItemClick(TaskDeatailBean taskDeatailBean);
 
+    void OnRemindClick(TaskDeatailBean taskDeatailBean);
+
 }

@@ -180,7 +180,7 @@ public class HealthFilesActivity extends AppActivity {
                 finish();
                 break;
             case R.id.layout_all:
-                getLogsApi.recordType = "all";
+                getLogsApi.recordType = "";
                 setNavUI(getLogsApi.recordType);
                 getLogsData();
                 break;
@@ -203,7 +203,7 @@ public class HealthFilesActivity extends AppActivity {
         tv_inside.setTextColor(getColor(R.color.text_desc_dark));
 
         switch (recordType) {
-            case "all":
+            case "":
                 tv_all.setTextColor(getColor(R.color.main_blue));
                 break;
             case "menzhen":
@@ -226,7 +226,7 @@ public class HealthFilesActivity extends AppActivity {
         mAdapter.setOnItemClickListener((recyclerView, itemView, position) -> {
             Intent intent = new Intent(HealthFilesActivity.this, MRDetailActivity.class);
             intent.putExtra(Constants.DOC_ID, String.valueOf(loginBean.getUser().user.userId));    //医生ID
-            intent.putExtra(Constants.USER_ID, "347");                                      //患者ID
+            intent.putExtra(Constants.USER_ID, userId);                                      //患者ID
             intent.putExtra(Constants.INDEX_NAME, logBeans.get(position).getRecordType());                                      //类型
             intent.putExtra(Constants.HOSPITALCODE, logBeans.get(position).getHospitalCode());
             intent.putExtra(Constants.SERIALNUMBER, logBeans.get(position).getSerialNumber());

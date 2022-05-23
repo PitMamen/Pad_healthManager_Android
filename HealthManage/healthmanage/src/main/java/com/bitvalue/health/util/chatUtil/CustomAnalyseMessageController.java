@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bitvalue.health.Application;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.customview.dialog.SummaryDialog;
 import com.bitvalue.sdk.collab.R;
 import com.bitvalue.sdk.collab.TUIKitImpl;
@@ -25,6 +26,7 @@ public class CustomAnalyseMessageController {
         // 自定义消息view的实现，这里仅仅展示文本信息，并且实现超链接跳转
         TextView tv_title = view.findViewById(R.id.tv_title);
         TextView tv_content = view.findViewById(R.id.tv_content);
+        TextView tv_proposal = view.findViewById(R.id.tv_detail_query);
         final String text = TUIKitImpl.getAppContext().getString(R.string.no_support_msg);
         if (tv_content == null || tv_title == null) {
             return;
@@ -32,13 +34,19 @@ public class CustomAnalyseMessageController {
 
         tv_title.setText(data == null ? text : data.title);
         tv_content.setText("内容:" + data.content);
+        if (EmptyUtil.isEmpty(data.msgDetailId)) {
+            tv_proposal.setText("建议:" + data.msgDetailId);
+        } else {
+            tv_proposal.setVisibility(View.GONE);
+        }
         view.setClickable(true);
         view.setOnClickListener(v -> {
             SummaryDialog summaryDialog = new SummaryDialog(application.getHomeActivity());
+            summaryDialog.setHideSoftInput();
             summaryDialog.setCanceledOnTouchOutside(true);
             summaryDialog.show();
             summaryDialog.setVisibleBotomButton(false);
-            summaryDialog.setEditeTextString(data.content);
+            summaryDialog.setEditeTextString(data.content, data.msgDetailId);
             summaryDialog.setDocNameAndSummaryTime(data.dealName, data.time);
         });
 //        view.setOnLongClickListener(v -> {

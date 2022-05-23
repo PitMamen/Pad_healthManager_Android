@@ -16,6 +16,7 @@ import com.bitvalue.health.api.requestbean.RequestPlanPatientListBean;
 import com.bitvalue.health.api.requestbean.ResetPasswordRequestBean;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
 import com.bitvalue.health.api.requestbean.SendUserRemind;
+import com.bitvalue.health.api.requestbean.SummaryBean;
 import com.bitvalue.health.api.requestbean.UpdateRightsRequestTimeRequestBean;
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
@@ -223,13 +224,14 @@ public interface CommonService {
      * 添加文章中获取文章数据
      */
     @GET("health-api/health/patient/allArticlesPage")
-    Observable<ApiResult<ArticleByDeptCodeBean>> getUsefullArticle(@Query("pageSize") int pageSize, @Query("start") int start, @Query("deptCode") String deptCode);
+    //status
+    Observable<ApiResult<ArticleByDeptCodeBean>> getUsefullArticle(@Query("pageSize") int pageSize, @Query("start") int start, @Query("deptCode") String deptCode, @Query("status") String status);
 
     /**
      * 根据关键字搜索文章
      */
     @GET("health-api/health/patient/articleByTitle")
-    Observable<ApiResult<SearchArticleResult>> qryarticleByTitle(@Query("pageSize") int pageSize, @Query("start") int start, @Query("title") String title);
+    Observable<ApiResult<SearchArticleResult>> qryarticleByTitle(@Query("pageSize") int pageSize, @Query("start") int start, @Query("title") String title, @Query("status") String status);
 
 
     /**
@@ -363,12 +365,12 @@ public interface CommonService {
     @GET("health-api/patient/qryRightsUserLog")
     Observable<ApiResult<List<DataReViewRecordResponse>>> getDataReviewRecord(@Query("tradeId") String tardeid, @Query("userId") String userId, @Query("dealType") String dealType);  //dealType String
 
-    /**
-     * 保存审核记录
-     */
-    @POST("health-api/patient/saveRightsUserLog")
-    Observable<ApiResult<DataReViewRecordResponse>> saveDataReviewRecord(@Body DataReViewRecordResponse saveReViewRecordRequest);
 
+    /**
+     * 保存问诊小结
+     */
+    @POST("health-api/patient/saveSummary")
+    Observable<ApiResult<Boolean>> saveSummary(@Body SummaryBean summaryBean);
 
     /**
      * 获取问诊小结
@@ -376,7 +378,14 @@ public interface CommonService {
      * @return
      */
     @GET("health-api/patient/qryRightsUserSummary")
-    Observable<ApiResult<List<DataReViewRecordResponse>>> qryRightsUserSummary(@Query("userId") String userID);
+    Observable<ApiResult<List<SummaryBean>>> qryRightsUserSummary(@Query("userId") String userID);
+
+
+    /**
+     * 保存审核记录
+     */
+    @POST("health-api/patient/saveRightsUserLog")
+    Observable<ApiResult<DataReViewRecordResponse>> saveDataReviewRecord(@Body DataReViewRecordResponse saveReViewRecordRequest);
 
 
     /**
@@ -402,8 +411,8 @@ public interface CommonService {
     /**
      * 手动呼叫
      */
-    @POST("tc-api/phoneBind/getPrivateCallNumber")
-    Observable<ApiResult<CallResultBean>> callPhone(@Body CallRequest request);
+    @POST("tc-api/phoneBind/addAutoCall")
+    Observable<ApiResult> callPhone(@Body CallRequest request);
 
     /**
      * 更新权益 确认时间
@@ -415,7 +424,7 @@ public interface CommonService {
      * 查询工单处理日志记录
      */
     @GET("health-api/patient/qryRightsUserLog")
-    Observable<ApiResult<List<DataReViewRecordResponse>>> qryRightsUserLog(@Query("tradeId") String tradeid, @Query("userId") String userId,@Query("dealType") String dealType);
+    Observable<ApiResult<List<DataReViewRecordResponse>>> qryRightsUserLog(@Query("tradeId") String tradeid, @Query("userId") String userId, @Query("dealType") String dealType);
 
 
 }

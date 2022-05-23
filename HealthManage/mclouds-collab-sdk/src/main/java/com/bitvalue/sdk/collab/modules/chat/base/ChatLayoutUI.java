@@ -32,6 +32,7 @@ public abstract class ChatLayoutUI extends LinearLayout implements IChatLayout {
     protected ChatInfo mChatInfo;
     private TextView mChatAtInfoLayout;
     public TextView tv_numberofarticles;  //剩余条数
+    public TextView tv_duration;  //剩余时长
 
     private LinearLayout mForwardLayout;
     private Button mForwardButton;
@@ -58,6 +59,7 @@ public abstract class ChatLayoutUI extends LinearLayout implements IChatLayout {
 
         mTitleBar = findViewById(R.id.chat_title_bar);
         tv_numberofarticles = findViewById(R.id.tv_numberofarticles);
+        tv_duration = findViewById(R.id.tv_duration);
         flayout_tipmessage = findViewById(R.id.framelayout_tipmessage);
         mMessageLayout = findViewById(R.id.chat_message_layout);
         mInputLayout = findViewById(R.id.chat_input_layout);
@@ -80,6 +82,12 @@ public abstract class ChatLayoutUI extends LinearLayout implements IChatLayout {
     public TextView gettv_numberofarticles() {
         return tv_numberofarticles;
     }
+
+
+    public TextView gettv_duration(){
+        return tv_duration;
+    }
+
 
     protected void init() {
 

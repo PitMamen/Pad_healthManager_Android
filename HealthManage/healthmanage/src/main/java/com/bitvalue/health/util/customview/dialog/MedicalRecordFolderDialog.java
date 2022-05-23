@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bitvalue.health.api.requestbean.SummaryBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.ui.adapter.MedicalRecordAdapter;
 import com.bitvalue.health.util.InputMethodUtils;
@@ -22,7 +23,7 @@ import java.util.List;
 public class MedicalRecordFolderDialog extends Dialog {
     private Context mcontext;
     private WrapRecyclerView wrapRecyclerViewList;
-    private List<DataReViewRecordResponse> datas;
+    private List<SummaryBean> datas;
     private MedicalRecordAdapter adapter;
 
     public MedicalRecordFolderDialog(@NonNull Context context) {
@@ -67,7 +68,7 @@ public class MedicalRecordFolderDialog extends Dialog {
         });
     }
 
-    public void setData(List<DataReViewRecordResponse> listData) {
+    public void setData(List<SummaryBean> listData) {
         datas = listData;
         if (datas != null && datas.size() > 0) {
             adapter.setNewData(datas);
@@ -83,7 +84,7 @@ public class MedicalRecordFolderDialog extends Dialog {
 
 
     public interface OnItemClickLisenner {
-        void OnClickPosition(DataReViewRecordResponse position);
+        void OnClickPosition(SummaryBean position);
     }
 
 }

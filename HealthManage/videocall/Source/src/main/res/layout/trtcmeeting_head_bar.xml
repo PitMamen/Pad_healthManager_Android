@@ -28,6 +28,20 @@
         android:layout_toRightOf="@id/img_headset"
         android:src="@drawable/trtcmeeting_ic_camera_switch" />
 
+
+    <!--    ADD-->
+    <TextView
+        android:id="@+id/tv_time_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/beauty_h2"
+        android:layout_toRightOf="@+id/img_camera_switch"
+        android:text="倒计时: 00:00:00"
+        android:textColor="@color/trtcmeeting_color_white"
+        android:textSize="18sp" />
+
+
     <ImageView
         android:id="@+id/img_uvccamera"
         android:layout_width="32dp"

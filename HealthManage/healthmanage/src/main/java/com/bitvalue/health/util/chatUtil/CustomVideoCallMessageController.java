@@ -10,6 +10,7 @@ import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.callback.CallBackAdapter;
 import com.bitvalue.health.net.NetEngine;
+import com.bitvalue.health.ui.activity.MeetingMainActivity;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.sdk.collab.R;
@@ -20,7 +21,6 @@ import com.bitvalue.sdk.collab.modules.chat.layout.message.holder.ICustomMessage
 import com.bitvalue.sdk.collab.modules.message.MessageInfo;
 import com.hjq.toast.ToastUtils;
 import com.tencent.liteav.debug.GenerateTestUserSig;
-import com.tencent.liteav.meeting.ui.MeetingMainActivity;
 
 /***
  * 自定义视频界面
@@ -64,6 +64,7 @@ public class CustomVideoCallMessageController {
 
     /**
      * 根据预约id获取患者的一行预约信息
+     *
      * @param data
      * @param ifClick
      */
@@ -74,35 +75,23 @@ public class CustomVideoCallMessageController {
                 public void onSuccess(Object o, int what) {
                     super.onSuccess(o, what);
                     videoPatientStatusBean = (VideoPatientStatusBean) o;
-//                    if (videoPatientStatusBean == null) {
-//                        return;
-//                    }
-//                    if (videoPatientStatusBean.attendanceStatus.equals("4")) {
-//                        tv_content.setText("视频看诊已结束");
-//                    }
 
                     if (ifClick) {
-//                        if (videoPatientStatusBean.attendanceStatus.equals("4")) {
-//                            tv_content.setText("视频看诊已结束");
-//                            ToastUtils.show("视频看诊已结束");
-//                        } else {
-
-                            LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, Application.instance());
-                            if (loginBean == null) {
-                                Log.e(TAG, "Failed to get login bean.");
-                                return;
-                            }
-
-                            MeetingMainActivity.enterRoom(Application.instance().getApplicationContext(),
-                                    data.msgDetailId, // room_id
-                                    String.valueOf(loginBean.getUser().user.userId),
-                                    loginBean.getUser().user.userName,
-                                    loginBean.getUser().user.avatarUrl,
-                                    GenerateTestUserSig.SDKAPPID,
-                                    loginBean.getUserSig(),
-                                    true, // 是否默认打开摄像头
-                                    true, // 是否默认打开麦克风
-                                    true); // 是否支持USB摄像头/视频采集盒
+                        LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, Application.instance());
+                        if (loginBean == null) {
+                            Log.e(TAG, "Failed to get login bean.");
+                            return;
+                        }
+                        MeetingMainActivity.enterRoom(Application.instance().getApplicationContext(),
+                                data.msgDetailId, // room_id
+                                String.valueOf(loginBean.getUser().user.userId),
+                                loginBean.getUser().user.userName,
+                                loginBean.getUser().user.avatarUrl,
+                                GenerateTestUserSig.SDKAPPID,
+                                loginBean.getUserSig(),
+                                true, // 是否默认打开摄像头
+                                true, // 是否默认打开麦克风
+                                true); // 是否支持USB摄像头/视频采集盒
 //                        }
                     }
                 }
@@ -113,7 +102,7 @@ public class CustomVideoCallMessageController {
                 }
             });
         } catch (Throwable throwable) {
-            Log.e(TAG, "视频异常: "+throwable.getMessage() );
+            Log.e(TAG, "视频异常: " + throwable.getMessage());
             throwable.printStackTrace();
         }
     }

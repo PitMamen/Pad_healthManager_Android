@@ -52,6 +52,11 @@ public class PermissionUtil {
                 permissions.add(Manifest.permission.READ_PHONE_NUMBERS);
             }
 
+            if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(Application.instance(), Manifest.permission.CALL_PHONE)) {
+                permissions.add(Manifest.permission.CALL_PHONE);
+            }
+
+
             if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(Application.instance(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
             }

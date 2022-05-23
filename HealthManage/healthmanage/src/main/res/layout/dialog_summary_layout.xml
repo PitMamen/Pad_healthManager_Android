@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_white_bg_"
-    >
+    android:background="@drawable/shape_white_bg_">
 
 
     <TextView
@@ -20,40 +19,51 @@
         android:id="@+id/ll_view"
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
-        android:layout_marginTop="@dimen/qb_px_8"
         android:layout_below="@+id/tv_dialog_title"
+        android:layout_marginTop="@dimen/qb_px_8"
         android:background="#E6E6E6"></View>
+
+
+    <TextView
+        android:id="@+id/tv_bqms"
+        android:layout_marginLeft="@dimen/qb_px_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_view"
+        android:text="病情描述:">
+
+    </TextView>
 
 
     <RelativeLayout
         android:id="@+id/ed_inout"
-        android:layout_marginStart="@dimen/qb_px_5"
-        android:layout_marginEnd="@dimen/qb_px_5"
-        android:layout_below="@+id/ll_view"
-        android:layout_marginTop="@dimen/qb_px_4"
-        android:orientation="vertical"
         android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_below="@+id/tv_bqms"
+        android:layout_marginStart="@dimen/qb_px_5"
+        android:layout_marginTop="@dimen/qb_px_4"
+        android:layout_marginEnd="@dimen/qb_px_5"
         android:background="@drawable/shape_bg_gray"
-        android:layout_height="130dp">
+        android:orientation="vertical">
 
 
         <EditText
-            android:hint="请输入小结..."
             android:id="@+id/ed_input"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/qb_px_5"
             android:background="@null"
             android:gravity="top"
+            android:hint="请输入小结..."
             android:singleLine="false"></EditText>
 
 
         <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="@dimen/qb_px_20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_marginEnd="@dimen/qb_px_20">
 
             <TextView
                 android:id="@+id/tv_docname"
@@ -64,44 +74,115 @@
 
             <TextView
                 android:id="@+id/tv_summray_time"
-                android:textSize="@dimen/qb_px_10"
-                android:text=""
-                android:layout_below="@+id/tv_docname"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></TextView>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_docname"
+                android:text=""
+                android:textSize="@dimen/qb_px_10"></TextView>
 
         </RelativeLayout>
-
-
 
 
     </RelativeLayout>
 
 
+    <TextView
+        android:text="处置建议:"
+        android:id="@+id/tv_czjy"
+        android:layout_marginLeft="@dimen/qb_px_10"
+        android:layout_below="@+id/ed_inout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </TextView>
 
+<!--add-->
+    <RelativeLayout
+        android:id="@+id/ed_jy"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_below="@+id/tv_czjy"
+        android:layout_marginStart="@dimen/qb_px_5"
+        android:layout_marginTop="@dimen/qb_px_4"
+        android:layout_marginEnd="@dimen/qb_px_5"
+        android:background="@drawable/shape_bg_gray"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/ed_czjy_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/qb_px_5"
+            android:background="@null"
+            android:gravity="top"
+            android:hint="请为患者输入您的宝贵意见或建议..."
+            android:singleLine="false"></EditText>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="@dimen/qb_px_20">
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_docname"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text=""-->
+<!--                android:textSize="@dimen/qb_px_10"></TextView>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_summray_time"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/tv_docname"-->
+<!--                android:text=""-->
+<!--                android:textSize="@dimen/qb_px_10"></TextView>-->
+
+        </RelativeLayout>
+    </RelativeLayout>
 
 
     <LinearLayout
         android:id="@+id/ll_bottom_button"
-        android:visibility="visible"
-        android:layout_below="@+id/ed_inout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/qb_px_50"
+        android:layout_below="@+id/ed_jy"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/qb_px_50">
-
+        android:visibility="visible">
 
 
         <TextView
-            android:id="@+id/btn_comfirm"
-            android:background="@drawable/shape_comfirm_sele"
-            android:paddingHorizontal="@dimen/qb_px_8"
-            android:paddingVertical="@dimen/qb_px_5"
-            android:gravity="center_horizontal"
+            android:id="@+id/btn_save"
             android:layout_width="@dimen/qb_px_60"
             android:layout_height="34dp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/qb_px_15"
+            android:background="@drawable/shape_comfirm_sele"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="@dimen/qb_px_8"
+            android:paddingVertical="@dimen/qb_px_5"
+            android:text="保存"
+            android:textColor="@color/white"
+            android:textSize="15sp">
+
+        </TextView>
+
+
+        <TextView
+            android:id="@+id/btn_comfirm"
+            android:layout_width="@dimen/qb_px_60"
+            android:layout_height="34dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_comfirm_sele"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="@dimen/qb_px_8"
+            android:paddingVertical="@dimen/qb_px_5"
             android:text="发送"
             android:textColor="@color/white"
             android:textSize="15sp">
@@ -109,18 +190,17 @@
         </TextView>
 
 
-
         <TextView
             android:id="@+id/btn_cancel"
-            android:background="@drawable/shape_cancel_"
-            android:paddingHorizontal="@dimen/qb_px_8"
-            android:paddingVertical="@dimen/qb_px_5"
-            android:gravity="center_horizontal"
             android:layout_width="@dimen/qb_px_60"
             android:layout_height="34dp"
-            android:layout_marginStart="@dimen/qb_px_15"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/qb_px_15"
+            android:background="@drawable/shape_cancel_"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="@dimen/qb_px_8"
+            android:paddingVertical="@dimen/qb_px_5"
             android:text="取消"
             android:textColor="#666666"
             android:textSize="15sp">
@@ -128,12 +208,7 @@
         </TextView>
 
 
-
     </LinearLayout>
-
-
-
-
 
 
 </RelativeLayout>

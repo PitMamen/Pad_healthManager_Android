@@ -55,7 +55,7 @@ public class AlreadyDealithAdapter extends BaseQuickAdapter<TaskDeatailBean, Bas
         holder.setText(R.id.tv_name, videoClientsResultBean.getTaskDetail().getUserInfo().getUserName());
         holder.setText(R.id.tv_patient_sex, videoClientsResultBean.getTaskDetail().getUserInfo().getUserSex());
         holder.setText(R.id.tv_patient_age, videoClientsResultBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
-        holder.setText(R.id.tv_equity_use, videoClientsResultBean.getTaskName());
+        holder.setText(R.id.tv_equity_use, "已结束");
         holder.setText(R.id.tv_time, TimeUtils.getTime_(videoClientsResultBean.getExecTime()));
         holder.itemView.setOnClickListener(v -> {
             if (onRightClickCallBack != null) {

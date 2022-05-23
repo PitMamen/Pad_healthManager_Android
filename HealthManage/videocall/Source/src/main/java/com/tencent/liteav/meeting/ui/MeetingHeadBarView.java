@@ -1,14 +1,22 @@
 package com.tencent.liteav.meeting.ui;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
+
+import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tencent.liteav.demo.trtc.R;
+import com.tencent.liteav.meeting.ui.utils.TimeUtils;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 头部view
@@ -16,11 +24,12 @@ import com.tencent.liteav.demo.trtc.R;
  * @author guanyifeng
  */
 public class MeetingHeadBarView extends RelativeLayout {
-    private ImageView       mHeadsetImg;
-    private ImageView       mCameraSwitchImg;
-    private ImageView       mUVCCameraImg;
-    private TextView        mTitleTv;
-    private TextView        mExitTv;
+    private ImageView mHeadsetImg;
+    private ImageView mCameraSwitchImg;
+    private ImageView mUVCCameraImg;
+    private TextView mTitleTv;
+    private TextView mExitTv;
+    private TextView mtv_time_down;
     private HeadBarCallback mHeadBarCallback;
 
     public MeetingHeadBarView(Context context) {
@@ -39,6 +48,7 @@ public class MeetingHeadBarView extends RelativeLayout {
         mUVCCameraImg = (ImageView) itemView.findViewById(R.id.img_uvccamera);
         mTitleTv = (TextView) itemView.findViewById(R.id.tv_title);
         mExitTv = (TextView) itemView.findViewById(R.id.tv_exit);
+        mtv_time_down = (TextView) itemView.findViewById(R.id.tv_time_down);
 
         mHeadsetImg.setOnClickListener(new OnClickListener() {
             @Override
@@ -83,6 +93,16 @@ public class MeetingHeadBarView extends RelativeLayout {
         }
     }
 
+
+    //倒计时显示
+    public void setTimeDownCount(String time, boolean isRigthOnTimeOut) {
+        if (mtv_time_down != null) {
+            mtv_time_down.setText(time);
+            mtv_time_down.setTextColor(getResources().getColor(isRigthOnTimeOut ? R.color.beauty_color_red : R.color.trtcmeeting_color_white));
+        }
+    }
+
+
     public void setHeadsetImg(boolean useSpeaker) {
         if (mHeadsetImg != null) {
             mHeadsetImg.setImageResource(useSpeaker ? R.drawable.trtcmeeting_ic_speaker : R.drawable.trtcmeeting_ic_headset);
@@ -98,6 +118,7 @@ public class MeetingHeadBarView extends RelativeLayout {
     public void setHeadBarCallback(HeadBarCallback headBarCallback) {
         mHeadBarCallback = headBarCallback;
     }
+
 
     public interface HeadBarCallback {
         void onHeadSetClick();

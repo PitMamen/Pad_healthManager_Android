@@ -1,6 +1,9 @@
 package com.bitvalue.health.ui.adapter;
 
 
+import android.text.format.DateUtils;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.LayoutRes;
@@ -15,6 +18,8 @@ import com.bitvalue.healthmanage.R;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,10 +29,12 @@ import java.util.List;
 public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, BaseViewHolder> {
 
     private OnRightClickCallBack onRightClickCallBack;
+    private boolean isCasemanagerAcount = true; // 是否是 个案师账号
 
-    public NeedDealithQuickAdapter(@LayoutRes int layoutResId, @Nullable List<TaskDeatailBean> data, OnRightClickCallBack callBack) {
+    public NeedDealithQuickAdapter(@LayoutRes int layoutResId, @Nullable List<TaskDeatailBean> data, boolean isisCasemanagerAcount, OnRightClickCallBack callBack) {
         super(layoutResId, data);
         this.onRightClickCallBack = callBack;
+        this.isCasemanagerAcount = isisCasemanagerAcount;
     }
 
     @Override
@@ -46,8 +53,46 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
         holder.setText(R.id.tv_video_visit, taskdeatailBean.getTaskDetail().getRightsName());
         holder.setText(R.id.tv_patient_sex, taskdeatailBean.getTaskDetail().getUserInfo().getUserSex());
         holder.setText(R.id.tv_patient_age, taskdeatailBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
-        holder.setText(R.id.tv_equity_use, taskdeatailBean.getTaskName());
-        holder.setText(R.id.tv_time, TimeUtils.getTime_(taskdeatailBean.getExecTime()));
+        //如果是个案师账号 界面 正常显示
+        if (isCasemanagerAcount) {
+            holder.setText(R.id.tv_equity_use, taskdeatailBean.getTaskName());
+            holder.setText(R.id.tv_time, TimeUtils.getTime_(taskdeatailBean.getExecTime()));
+        } else {
+            //医生账号 需显示 服务时效 以及 服务状态  如果当前时间  大于 服务执行时间  则是就诊中
+//            Log.e(TAG, "权益执行时间: "+TimeUtils.getTime_tosecond(taskdeatailBean.getExecTime()) );
+            if (System.currentTimeMillis() - taskdeatailBean.getExecTime() > 0) {
+                holder.setText(R.id.tv_equity_use, "就诊中");
+                if (taskdeatailBean.getTaskDetail() != null
+                        && !EmptyUtil.isEmpty(taskdeatailBean.getTaskDetail().getUserGoodsAttrInfo())
+                        && !EmptyUtil.isEmpty(taskdeatailBean.getTaskDetail().getUserGoodsAttrInfo().getServiceExpire())) {  //如果没有服务时效  就不显示
+                    int serviceContinueTime = taskdeatailBean.getTaskDetail().getUserGoodsAttrInfo().getServiceExpire();
+                    long excetime = taskdeatailBean.getExecTime();  //执行时间
+
+                    String addAfterTime = TimeUtils.AddDataMinut(TimeUtils.getTime_tosecond(excetime), serviceContinueTime); //剩余时间=申请时间+服务时效-当前时间
+                    long resultTime = TimeUtils.dateDiff(addAfterTime);
+                    if (resultTime <= 0) {
+                        resultTime = 0;
+                    }
+//                    Log.e(TAG, "convert: " + resultTime);
+//                    Log.e(TAG, "添加后时间: " + addAfterTime + " 需添加时间：" + serviceContinueTime + "  添加前时间：" + TimeUtils.getTime_tosecond(excetime) + " 姓名：" + taskdeatailBean.getTaskDetail().getUserInfo().getUserName());
+                    holder.setText(R.id.tv_time, String.format("服务时效:剩余 %s 小时", resultTime));
+                } else {
+                    holder.getView(R.id.tv_time).setVisibility(View.GONE);
+                }
+            } else {
+                holder.getView(R.id.tv_remind).setVisibility(View.VISIBLE);
+                holder.setText(R.id.tv_equity_use, "待就诊");
+                holder.setText(R.id.tv_time, "预约时间:" + TimeUtils.getTime_tosecond(taskdeatailBean.getExecTime()));
+                //发送上线提醒
+                holder.getView(R.id.tv_remind).setOnClickListener(v -> {
+                    if (onRightClickCallBack != null) {
+                        onRightClickCallBack.OnRemindClick(taskdeatailBean);
+                    }
+                });
+
+            }
+        }
+
         holder.itemView.setOnClickListener(v -> {
             if (onRightClickCallBack != null) {
                 onRightClickCallBack.OnItemClick(taskdeatailBean);

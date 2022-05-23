@@ -3,6 +3,7 @@ package com.bitvalue.health.presenter.healthmanager;
 import com.bitvalue.health.api.requestbean.CallRequest;
 import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.requestbean.SummaryBean;
 import com.bitvalue.health.api.requestbean.UpdateRightsRequestTimeRequestBean;
 import com.bitvalue.health.api.responsebean.CallResultBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
@@ -50,14 +51,14 @@ public class InterestsUseApplyByDocPresenter extends BasePresenter<InterestsUseA
     }
 
     @Override
-    public void sendsummary_result(DataReViewRecordResponse request) {
+    public void sendsummary_result(SummaryBean request) {
         if (mModel != null) {
             mModel.sendsummary_result(request, new CallBackAdapter() {
                 @Override
                 public void onSuccess(Object o, int what) {
                     super.onSuccess(o, what);
                     if (isViewAttach()) {
-                        getView().sendsummary_resultSuucess((DataReViewRecordResponse) o);
+                        getView().sendsummary_resultSuucess((boolean) o);
                     }
                 }
 
@@ -80,7 +81,7 @@ public class InterestsUseApplyByDocPresenter extends BasePresenter<InterestsUseA
                 public void onSuccess(Object o, int what) {
                     super.onSuccess(o, what);
                     if (isViewAttach()) {
-                        getView().getSummaryListSuucess((List<DataReViewRecordResponse>) o);
+                        getView().getSummaryListSuucess((List<SummaryBean>) o);
                     }
                 }
 
@@ -126,7 +127,7 @@ public class InterestsUseApplyByDocPresenter extends BasePresenter<InterestsUseA
                 public void onSuccess(Object o, int what) {
                     super.onSuccess(o, what);
                     if (isViewAttach()) {
-                        getView().callSuccess((CallResultBean) o);
+                        getView().callSuccess((boolean) o);
                     }
                 }
 
@@ -194,13 +195,13 @@ public class InterestsUseApplyByDocPresenter extends BasePresenter<InterestsUseA
     }
 
     @Override
-    public void qryRightsUserLog(String tradedId, String userId) {
-        if (mModel!=null){
-            mModel.qryRightsUserLog(tradedId,userId,new CallBackAdapter(){
+    public void qryRightsUserLog(String tradedId, String userId, String dealType) {
+        if (mModel != null) {
+            mModel.qryRightsUserLog(tradedId, userId, dealType, new CallBackAdapter() {
                 @Override
                 public void onSuccess(Object o, int what) {
                     super.onSuccess(o, what);
-                    if (isViewAttach()){
+                    if (isViewAttach()) {
                         getView().qryRightsUserLogSuccess((List<DataReViewRecordResponse>) o);
                     }
 
@@ -209,7 +210,7 @@ public class InterestsUseApplyByDocPresenter extends BasePresenter<InterestsUseA
                 @Override
                 public void onFailedLog(String str, int what) {
                     super.onFailedLog(str, what);
-                    if (isViewAttach()){
+                    if (isViewAttach()) {
                         getView().qryRightsUserLogFail(str);
                     }
 

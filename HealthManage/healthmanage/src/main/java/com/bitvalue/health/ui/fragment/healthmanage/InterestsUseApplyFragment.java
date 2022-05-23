@@ -386,8 +386,8 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                 MyRightBean myRightBean = rightBeanList.get(0);
                 rigthDepatCode = myRightBean.getBelong();
                 mPresenter.getDocList(myRightBean.getBelong()); //请求获取医生
-                tv_tcmc.setText(myRightBean.getGoodsName());
-                tv_serName.setText(myRightBean.getGoodsSpec());
+                tv_tcmc.setText(myRightBean.getGoodsName()); //套餐名称
+                tv_serName.setText(myRightBean.getGoodsSpec()); //服务名称
                 tv_validTime.setText(TimeUtils.getTime_(myRightBean.getEndTime()));
                 if ((myRightBean.getUserGoodsAttr() == null || myRightBean.getUserGoodsAttr().size() == 0)) {
                     ll_right_record.setVisibility(View.GONE);

@@ -142,6 +142,7 @@
 
 
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_marginTop="@dimen/qb_px_9"
             android:gravity="center"
             android:layout_width="match_parent"
@@ -150,6 +151,19 @@
 
             <TextView
                 android:id="@+id/tv_numberofarticles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_message"
+                android:layout_centerInParent="true"
+                android:paddingHorizontal="@dimen/qb_px_3"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="8sp"></TextView>
+
+
+
+            <TextView
+                android:id="@+id/tv_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_message"

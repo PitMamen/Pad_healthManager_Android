@@ -3,14 +3,18 @@ package com.bitvalue.health.util.customview.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.bitvalue.health.ui.adapter.SetTimeDialogAdapter;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
+import com.hjq.toast.ToastUtils;
+import com.tencent.liteav.meeting.ui.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,20 +74,29 @@ public class SetConsultionTimeDialog extends Dialog {
         time_list.add("20:00-21:00");
         time_list.add("21:00-22:00");
         time_list.add("22:00-23:00");
-        time_list.add("23:00-00:00");
+        time_list.add("23:00-23:59");
     }
 
 
     private void initView() {
         wrapRecyclerView_time = findViewById(R.id.list_time);
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 2);
-        setTimeDialogAdapter = new SetTimeDialogAdapter(R.layout.item_settime_dialog_layout, time_list);
+        setTimeDialogAdapter = new SetTimeDialogAdapter(R.layout.item_settime_dialog_layout, time_list, mContext);
         wrapRecyclerView_time.setLayoutManager(layoutManager);
         wrapRecyclerView_time.setAdapter(setTimeDialogAdapter);
         setTimeDialogAdapter.setOnItemClickListener((adapter, view, position) -> {
             if (itemClickListener != null) {
                 selectTime = time_list.get(position);
-                itemClickListener.onPositiveClick();
+                if (!EmptyUtil.isEmpty(selectTime) && selectTime.contains("-")) {
+                    String[] time_paragraph = selectTime.split("-"); // 07:00-08:00
+                    String currentTime = TimeUtils.getCurrentTimeMinute();
+                    if (currentTime.compareTo(time_paragraph[1]) > 0) {
+                        ToastUtils.show("该时间段不可选");
+                        return;
+                    }
+                    itemClickListener.onPositiveClick();
+                }
+
             }
 
         });

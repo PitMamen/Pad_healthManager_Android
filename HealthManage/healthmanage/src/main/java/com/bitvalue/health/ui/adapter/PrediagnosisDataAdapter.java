@@ -29,12 +29,13 @@ public class PrediagnosisDataAdapter extends BaseQuickAdapter<AnswerResultBean.R
         }
         helper.setText(R.id.tv_time, item.getCreateTime().length() > 10 ? item.getCreateTime().substring(0, 10) : item.getCreateTime());
         int position = helper.getPosition();
-        if (item.getName().contains("-")) {
-            String[] name = item.getName().split("-");
-            helper.setText(R.id.tv_right_name, position == 0 ? name[1] + "(最新)" : name[1]);
-        } else {
-            helper.setText(R.id.tv_right_name, position == 0 ? item.getName() + "(最新)" : item.getName());
-        }
+//        if (item.getName().contains("-")) {
+//            String[] name = item.getName().split("-");
+//            helper.setText(R.id.tv_right_name, position == 0 ? name[1] + "(最新)" : name[1]);
+//        } else {
+//            helper.setText(R.id.tv_right_name, position == 0 ? item.getName() + "(最新)" : item.getName());
+//        }
+        helper.setText(R.id.tv_right_name, position == 0 ? item.getName() + "(最新)" : item.getName());
 
     }
 }

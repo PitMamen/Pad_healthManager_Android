@@ -4,6 +4,7 @@ import com.bitvalue.health.api.requestbean.CallRequest;
 import com.bitvalue.health.api.requestbean.FinshMidRequestBean;
 import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.requestbean.SummaryBean;
 import com.bitvalue.health.api.requestbean.UpdateRightsRequestTimeRequestBean;
 import com.bitvalue.health.api.responsebean.CallResultBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
@@ -28,12 +29,12 @@ public interface InterestsUseApplyByDocContract {
         void saveRightsUseRecordFail(String failMessage);
 
 
-        void sendsummary_resultSuucess(DataReViewRecordResponse reViewRecordResponse);
+        void sendsummary_resultSuucess(boolean reViewRecordResponse);
 
         void sendsummary_resultFail(String messageFail);
 
 
-        void getSummaryListSuucess(List<DataReViewRecordResponse> reViewRecordResponse);
+        void getSummaryListSuucess(List<SummaryBean> reViewRecordResponse);
 
         void getSummaryListFail(String messageFail);
 
@@ -42,7 +43,7 @@ public interface InterestsUseApplyByDocContract {
 
         void saveCaseCommonWordsFail(String failMessage);
 
-        void callSuccess(CallResultBean resultBean);
+        void callSuccess(boolean isSuccess);
 
         void callFail(String failMessage);
 
@@ -63,7 +64,7 @@ public interface InterestsUseApplyByDocContract {
         void saveRightsUseRecord(SaveRightsUseBean bean, Callback callback);
 
 
-        void sendsummary_result(DataReViewRecordResponse request, Callback callback);
+        void sendsummary_result(SummaryBean request, Callback callback);
 
 
         void getsummary_resultList(String userId, Callback callback);
@@ -77,7 +78,7 @@ public interface InterestsUseApplyByDocContract {
 
         void updateRightsRequestTime(UpdateRightsRequestTimeRequestBean requestTimeRequestBean, Callback callback);
 
-        void qryRightsUserLog(String tradedId,String userId,Callback callback);
+        void qryRightsUserLog(String tradedId,String userId,String dealType,Callback callback);
     }
 
     interface Presenter {
@@ -86,7 +87,7 @@ public interface InterestsUseApplyByDocContract {
 
 
         //保存问诊小结
-        void sendsummary_result(DataReViewRecordResponse request);
+        void sendsummary_result(SummaryBean request);
 
 
         //获取问诊小结
@@ -108,7 +109,7 @@ public interface InterestsUseApplyByDocContract {
         void updateRightsRequestTime(UpdateRightsRequestTimeRequestBean requestTimeRequestBean);
 
 
-        void qryRightsUserLog(String tradedId,String userId);
+        void qryRightsUserLog(String tradedId,String userId,String dealType);
 
     }
 

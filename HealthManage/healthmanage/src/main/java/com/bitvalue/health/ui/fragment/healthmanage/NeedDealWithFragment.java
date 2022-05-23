@@ -15,8 +15,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.NotifyactionObj;
 import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
+import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
 import com.bitvalue.health.base.BaseFragment;
@@ -29,12 +31,16 @@ import com.bitvalue.health.ui.adapter.NeedDealithQuickAdapter;
 import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DensityUtil;
+import com.bitvalue.health.util.EmptyUtil;
+import com.bitvalue.health.util.GsonUtils;
 import com.bitvalue.health.util.MUtils;
 import com.bitvalue.health.util.RSAEncrypt;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.modules.search.SearchMoreMsgListActivity;
+import com.hjq.http.EasyHttp;
+import com.hjq.http.listener.OnHttpListener;
 import com.hjq.toast.ToastUtils;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 
@@ -47,6 +53,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -119,6 +127,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     private AlreadyDealithAdapter AlreadyDealithAdapter;
     private LoginBean loginBean;
     private boolean isNeedbuttonClick = true;
+    private Timer timer;
 
     @Override
     protected DocFrienPersenter createPresenter() {
@@ -149,9 +158,9 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     @Override
     public void initView(View rootView) {
         super.initView(rootView);
+        loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
         initListView();
         EventBus.getDefault().register(this);
-        loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
     }
 
 
@@ -160,6 +169,14 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     public void initData() {
         super.initData();
         getNeedDealWithData();
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                getNeedDealWithData();
+            }
+        }, 0, 1 * 60 * 1000);  //一分钟执行一次
+
     }
 
 
@@ -177,6 +194,10 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (timer!=null){
+            timer.cancel();
+            timer.purge();
+        }
         EventBus.getDefault().unregister(this);
     }
 
@@ -245,7 +266,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     private void initListView() {
         list_allneeddealwith.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getActivity())));
         list_allneeddealwith.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
-        needDealWithQuickAdapter = new NeedDealithQuickAdapter(R.layout.item_need_dealwith_layout, NeedDealWithList, this);
+        needDealWithQuickAdapter = new NeedDealithQuickAdapter(R.layout.item_need_dealwith_layout, NeedDealWithList, loginBean.getAccount().roleName.equals("casemanager"), this);
         list_allneeddealwith.setAdapter(needDealWithQuickAdapter);
 
 
@@ -340,6 +361,44 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
         if (loginBean != null) {
             homeActivity.switchSecondFragment(loginBean.getAccount().roleName.equals("casemanager") ? FRAGMENT_INTERESTSUSER_APPLY : FRAGMENT_INTERESTSUSER_APPLY_BYDOC, taskDeatailBean);  //个案师
         }
+    }
+
+
+    /**
+     * 发送提醒
+     *
+     * @param taskDeatailBean
+     */
+    @Override
+    public void OnRemindClick(TaskDeatailBean taskDeatailBean) {
+        if (EmptyUtil.isEmpty(taskDeatailBean) || EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail()) || taskDeatailBean.getTaskDetail().getUserInfo() == null) {
+            Log.e(TAG, "医生发送提醒 taskDeatailBean.getTaskDetail() == null");
+            return;
+        }
+        ToastUtils.show("操作成功!");
+        String jsonString = GsonUtils.ModelToJson(taskDeatailBean.getTaskDetail());
+        sendSystemRemind(jsonString, String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+    }
+
+
+    //发送通知
+    private void sendSystemRemind(String jsonString, String userID) {
+        SystemRemindObj systemRemindObj = new SystemRemindObj();
+        systemRemindObj.remindType = "videoRemind";
+        systemRemindObj.userId = userID;
+        systemRemindObj.eventType = 5;
+        systemRemindObj.infoDetail = jsonString;
+        EasyHttp.post(homeActivity).api(systemRemindObj).request(new OnHttpListener<ApiResult<String>>() {
+            @Override
+            public void onSucceed(ApiResult<String> result) {
+//                Log.e(TAG, "通知请求: " + result.getMessage());
+            }
+
+            @Override
+            public void onFail(Exception e) {
+
+            }
+        });
     }
 
 

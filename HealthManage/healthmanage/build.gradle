@@ -62,7 +62,7 @@ android {
       // 测试包下的 BuglyId
       buildConfigField('String', 'BUGLY_ID', '"811f8ffd4f"')
       // 测试服务器的主机地址
-      buildConfigField('String', 'HOST_URL', '"http://manager.mclouds.org.cn:8008"')//测试环境    //http://192.168.1.122
+      buildConfigField('String', 'HOST_URL', '"http://develop.mclouds.org.cn:8008"')//测试环境    //http://192.168.1.122
 //            buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
 
       // 设置清单占位符
@@ -233,6 +233,8 @@ dependencies {
 
   implementation 'androidx.multidex:multidex:2.0.1'
   implementation project(':mclouds-collab-sdk')
+  implementation project(':videocall:Source')
+  implementation project(':videocall:UVCCamera')
   implementation 'com.thoughtbot:expandablerecyclerview:1.0'
   implementation 'com.android.support.constraint:constraint-layout:1.0.2'
   implementation 'com.contrarywind:Android-PickerView:4.1.9'//时间选择控件
@@ -254,7 +256,6 @@ dependencies {
 //    implementation 'org.greenrobot:eventbus:3.2.0'
   implementation 'com.squareup.picasso:picasso:2.6.0-SNAPSHOT'
   implementation 'org.xutils:xutils:3.5.0'
-  implementation project(':videocall:Source')
   implementation 'top.zibin:Luban:1.1.8'
 //图表控件
   implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'

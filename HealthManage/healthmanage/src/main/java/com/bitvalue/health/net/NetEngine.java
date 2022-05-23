@@ -79,11 +79,11 @@ public class NetEngine {
                 .build();
     }
 
-    private String HOST_URL_LIST = "http://36.158.225.181:24702/ehr/v1/list";   //获取病历列表  正式
-    private String HOST_URL_LIST_RECORD = "http://36.158.225.181:24702/ehr/v1/getRecord";   //获取病历详情 正式
-
-    private String HOST_URL_LIST1 = "http://192.168.1.120:24702/ehr/v1/list";   //获取病历列表  正式
-    private String HOST_URL_LIST_RECORD1 = "http://192.168.1.120:24702/ehr/v1/getRecord";   //获取病历详情 正式
+//    private String HOST_URL_LIST = "http://36.158.225.181:24702/ehr/v1/list";   //获取病历列表  正式
+//    private String HOST_URL_LIST_RECORD = "http://36.158.225.181:24702/ehr/v1/getRecord";   //获取病历详情 正式
+//
+    private String HOST_URL_LIST = "http://192.168.1.120:24702/ehr/v1/list";   //获取病历列表  测试
+    private String HOST_URL_LIST_RECORD = "http://192.168.1.120:24702/ehr/v1/getRecord";   //获取病历详情 测试
 
     private Interceptor reInterceptor = new Interceptor() {
         @Override
@@ -94,9 +94,9 @@ public class NetEngine {
 //            Log.e(TAG, "oldHttpUrl000: " + oldHttpUrl.url());
             HttpUrl newBaseUrl = HttpUrl.parse(Constants.HOST_URL);
             if (oldHttpUrl.url().toString().contains("/ehr/v1/list")) {
-                newBaseUrl = HttpUrl.parse(HOST_URL_LIST1);
+                newBaseUrl = HttpUrl.parse(HOST_URL_LIST);
             }else if (oldHttpUrl.url().toString().contains("/ehr/v1/getRecord")){
-                newBaseUrl = HttpUrl.parse(HOST_URL_LIST_RECORD1);
+                newBaseUrl = HttpUrl.parse(HOST_URL_LIST_RECORD);
             }
             //重建新的HttpUrl，配置成我们需要的
             HttpUrl newFullUrl = oldHttpUrl

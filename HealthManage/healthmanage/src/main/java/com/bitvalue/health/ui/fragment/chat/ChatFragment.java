@@ -6,6 +6,9 @@ import static android.view.View.VISIBLE;
 import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_PAPER;
 import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_QUESTION;
 import static com.bitvalue.health.util.Constants.FRAGMENT_QUICKREPLY;
+import static com.bitvalue.health.util.Constants.QUERY_DEALTPE_OF_TEXTNUM;
+import static com.bitvalue.health.util.Constants.QUERY_DEALTPE_OF_VIDEONUM;
+import static com.bitvalue.health.util.Constants.VIDEO_SURPLUS_TIME;
 import static com.tencent.imsdk.v2.V2TIMConversation.V2TIM_C2C;
 
 import android.Manifest;
@@ -35,10 +38,12 @@ import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.NotiflyUIObj;
 import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
+import com.bitvalue.health.api.eventbusbean.TimeOutObj;
 import com.bitvalue.health.api.requestbean.CallRequest;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.requestbean.SummaryBean;
 import com.bitvalue.health.api.requestbean.UpdateRightsRequestTimeRequestBean;
 import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
 import com.bitvalue.health.api.responsebean.CallResultBean;
@@ -96,6 +101,7 @@ import com.bitvalue.sdk.collab.modules.message.MessageInfoUtil;
 import com.bitvalue.sdk.collab.utils.PermissionUtils;
 import com.bitvalue.sdk.collab.utils.TUIKitConstants;
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.hjq.http.EasyHttp;
 import com.hjq.http.listener.HttpCallback;
 import com.hjq.http.listener.OnHttpListener;
@@ -111,7 +117,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -144,8 +152,9 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
 
     private TextView tv_numberofarticles;
+    private TextView gettv_duration;
     private int textNumLimit = 0;  //图文咨询 患者的条文次数
-    private String timeLimit;  //通话时长
+    private String timeLimit = "0";  //通话时长
     private int serviceExpire;  // 有效时长
     private String rightName; //权益名称
 
@@ -324,8 +333,21 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventHandler(MessageInfo message) {//不用区分类型，全部直接转换成json发送消息出去
         mChatLayout.sendMessage(message, false);
-
     }
+
+    /**
+     * 视频通话 已挂断电话 或者 超时 通知
+     *
+     * @param
+     * @param
+     * @param
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventHandler(TimeOutObj timeOutObj) {//不用区分类型，全部直接转换成json发送消息出去
+        Log.e(TAG, "离开房间通知--------");
+        qryRightsUserLog(QUERY_DEALTPE_OF_VIDEONUM); //查时长
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -367,11 +389,10 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
     //保存问诊小结 结果成功回调
     @Override
-    public void sendsummary_resultSuucess(DataReViewRecordResponse reViewRecordResponse) {
+    public void sendsummary_resultSuucess(boolean isSuccess) {
         homeActivity.runOnUiThread(() -> {
             if (null != summaryDialog) {
                 summaryDialog.dismiss();
-
             }
         });
     }
@@ -392,17 +413,27 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
      * @param reViewRecordResponse
      */
     @Override
-    public void getSummaryListSuucess(List<DataReViewRecordResponse> reViewRecordResponse) {
+    public void getSummaryListSuucess(List<SummaryBean> reViewRecordResponse) {
         homeActivity.runOnUiThread(() -> {
             if (reViewRecordResponse != null && reViewRecordResponse.size() > 0) {
                 MedicalRecordFolderDialog dialog = new MedicalRecordFolderDialog(homeActivity);
                 dialog.setItemClickLisenner(position -> {
-                    DataReViewRecordResponse summaBean = position;
                     summaryDialog = new SummaryDialog(homeActivity);
+                    summaryDialog.setHideSoftInput();  //隐藏软键盘
+                    SummaryBean summaBean = position;
+                    Object object = summaBean.getDealDetail();
                     summaryDialog.setCanceledOnTouchOutside(true);
                     summaryDialog.show();
+                    if (object instanceof LinkedTreeMap) {
+                        LinkedTreeMap<String, String> stringStringLinkedTreeMap = (LinkedTreeMap<String, String>) object;
+                        String treatment = stringStringLinkedTreeMap.get("treatment");
+                        String chiefComplaint = stringStringLinkedTreeMap.get("chiefComplaint");
+                        summaryDialog.setEditeTextString(treatment,chiefComplaint);
+                    } else if (object instanceof String) {
+                        String dealDetail = (String) object;
+                        summaryDialog.setEditeTextString(dealDetail, "");
+                    }
                     summaryDialog.setVisibleBotomButton(false);
-                    summaryDialog.setEditeTextString(summaBean.getDealDetail());
                     summaryDialog.setDocNameAndSummaryTime(summaBean.getDealUserName(), TimeUtils.getTimeToDay(Long.parseLong(summaBean.getCreateTime())));
                 }).show();
                 dialog.setData(reViewRecordResponse);
@@ -437,16 +468,18 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     /**
      * 拨打电话成功回调
      *
-     * @param resultBean
+     * @param
      */
     @Override
-    public void callSuccess(CallResultBean resultBean) {
-        if (!EmptyUtil.isEmpty(resultBean)) {
-            homeActivity.runOnUiThread(() -> {
-                callPhone(resultBean.telX); //拨号  号码是接口返回的 虚拟号码
-            });
+    public void callSuccess(boolean isSuccess) {
+        Log.e(TAG, "callSuccess: " + isSuccess);
 
-        }
+//        if (!EmptyUtil.isEmpty(resultBean)) {
+//            homeActivity.runOnUiThread(() -> {
+//                callPhone(resultBean.telX); //拨号  号码是接口返回的 虚拟号码
+//            });
+//
+//        }
     }
 
     /**
@@ -558,22 +591,35 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         mChatLayout.getInputLayout().tv_datacollection.setText(loginBean.getAccount().roleName.equals("casemanager") ? getString(R.string.pre_diagnosis_collection) : getString(R.string.pre_diagnosis_data));
         mChatLayout.getInputLayout().tv_medicalfolder.setVisibility(!loginBean.getAccount().roleName.equals("casemanager") ? VISIBLE : GONE);
         mChatLayout.getInputLayout().tv_datacollection.setVisibility(isShowdataCollection ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示预诊收集信息控件
-        mChatLayout.getInputLayout().tv_sendremind.setVisibility(isShowSendRemind ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示 预诊收集信息 和 上线提醒控件
+        mChatLayout.getInputLayout().btn_lingdang.setVisibility(isShowdataCollection ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示铃铛标识
+//        mChatLayout.getInputLayout().tv_sendremind.setVisibility(isShowSendRemind ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示 预诊收集信息 和 上线提醒控件
 
         mChatLayout.getInputLayout().tv_datacollection.setOnClickListener(v -> {   //   预诊资料
             getQuestionListByKeyWord(deptName, loginBean.getAccount().roleName);   //点击获取问卷列表(根据科室名称模糊查询)
         });
 
-        mChatLayout.getInputLayout().tv_sendremind.setOnClickListener(v -> {   //上线提醒
+        mChatLayout.getInputLayout().btn_lingdang.setOnClickListener(v -> {     //铃铛提醒
             if (EmptyUtil.isEmpty(taskDeatailBean) || EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail())) {
-                Log.e(TAG, "医生发送提醒 taskDeatailBean.getTaskDetail() == null");
+                Log.e(TAG, "铃铛提醒 taskDeatailBean.getTaskDetail() == null");
                 return;
             }
             ToastUtils.show("操作成功!");
-            eventType = 5;  //开始问诊 提醒上线
+            eventType = 1;  //铃铛 提醒上线
             String jsonString = GsonUtils.ModelToJson(taskDeatailBean.getTaskDetail());
             sendSystemRemind(jsonString);
         });
+
+
+//        mChatLayout.getInputLayout().tv_sendremind.setOnClickListener(v -> {   //上线提醒
+//            if (EmptyUtil.isEmpty(taskDeatailBean) || EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail())) {
+//                Log.e(TAG, "医生发送提醒 taskDeatailBean.getTaskDetail() == null");
+//                return;
+//            }
+//            ToastUtils.show("操作成功!");
+//            eventType = 5;  //开始问诊 提醒上线
+//            String jsonString = GsonUtils.ModelToJson(taskDeatailBean.getTaskDetail());
+//            sendSystemRemind(jsonString);
+//        });
 
         mChatLayout.getInputLayout().tv_sendquestion.setOnClickListener(v -> {    //发送问卷
             homeActivity.switchSecondFragment(FRAGMENT_ADD_QUESTION, planId);
@@ -606,30 +652,12 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                 summaryDialog.setOnclickListener(new SummaryDialog.OnButtonClickListener() {
                     @Override
                     public void onPositiveClick() {
-                        String inputString = summaryDialog.getInputString();
-                        if (EmptyUtil.isEmpty(inputString)) {
-                            ToastUtils.show("问诊小结不能为空!");
-                            return;
-                        }
-                        CustomAnalyseMessage customAnalyseMessage = new CustomAnalyseMessage();
-                        customAnalyseMessage.title = "问诊小结";
-                        customAnalyseMessage.content = inputString;
-                        customAnalyseMessage.contentId = planId;
-                        customAnalyseMessage.dealName = loginBean.getUser().user.userName;
-                        customAnalyseMessage.time = TimeUtils.getCurrenTimeYMDHMS();
-                        customAnalyseMessage.setType("CustomAnalyseMessage");
-                        customAnalyseMessage.setDescription("问诊小结");
-                        MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(customAnalyseMessage), customAnalyseMessage.description, null);
-                        mChatLayout.sendMessage(info, false);  //医生填写的 问诊小结 需要发送给患者
-                        sendSummaryResult(inputString);  //问诊小结
-                        endConsultation();//结束问诊
-                        if (EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail())) {
-                            Log.e(TAG, "聊天结束问诊 taskDeatailBean.getTaskDetail() == null");
-                            return;
-                        }
-                        eventType = 6; //结束问诊
-                        String jsonString = GsonUtils.ModelToJson(taskDeatailBean.getTaskDetail());
-                        sendSystemRemind(jsonString);  //发送短信通知
+                        operationData(true, summaryDialog.getInputString(), summaryDialog.getCzJyInputString());
+                    }
+
+                    @Override
+                    public void onSave() {
+                        operationData(false, summaryDialog.getInputString(), summaryDialog.getCzJyInputString());
                     }
 
                     @Override
@@ -640,6 +668,38 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                 summaryDialog.setDocNameAndSummaryTime(loginBean.getUser().user.userName, TimeUtils.getCurrenTimeYMDHMS());
             }
         });
+    }
+
+    private void operationData(boolean isSend, String inputStringData, String proposal) {
+        String inputString = inputStringData;
+        String proposal_string = proposal;
+        if (EmptyUtil.isEmpty(inputString)) {
+            ToastUtils.show("问诊小结不能为空!");
+            return;
+        }
+        if (isSend) {  //只有点击了发送按钮 才发送问诊小结给患者
+            CustomAnalyseMessage customAnalyseMessage = new CustomAnalyseMessage();
+            customAnalyseMessage.title = "问诊小结";
+            customAnalyseMessage.content = inputString;
+            customAnalyseMessage.msgDetailId = proposal_string;
+            customAnalyseMessage.contentId = planId;
+            customAnalyseMessage.dealName = loginBean.getUser().user.userName;
+            customAnalyseMessage.time = TimeUtils.getCurrenTimeYMDHMS();
+            customAnalyseMessage.setType("CustomAnalyseMessage");
+            customAnalyseMessage.setDescription("问诊小结");
+            MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(customAnalyseMessage), customAnalyseMessage.description, null);
+            mChatLayout.sendMessage(info, false);  //医生填写的 问诊小结 需要发送给患者
+        }
+
+        sendSummaryResult(inputString, proposal_string);  //问诊小结
+        endConsultation();//结束问诊
+        if (EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail())) {
+            Log.e(TAG, "聊天结束问诊 taskDeatailBean.getTaskDetail() == null");
+            return;
+        }
+        eventType = 6; //结束问诊
+        String jsonString = GsonUtils.ModelToJson(taskDeatailBean.getTaskDetail());
+        sendSystemRemind(jsonString);  //发送短信通知
     }
 
     /**
@@ -689,9 +749,12 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
 
     //发送问诊小结
-    private void sendSummaryResult(String inputString) {
-        DataReViewRecordResponse request = new DataReViewRecordResponse();
-        request.setDealDetail(inputString);
+    private void sendSummaryResult(String inputString, String doc_proposal_string) {
+        SummaryBean request = new SummaryBean();
+        SummaryBean.DealDetail dealDetail = new SummaryBean.DealDetail();
+        dealDetail.setTreatment(inputString);
+        dealDetail.setChiefComplaint(doc_proposal_string);
+        request.setDealDetail(dealDetail);
         request.setDealResult("问诊小结");
         request.setDealType("SUMMARY");
         request.setUserId(taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "");
@@ -873,6 +936,8 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
     }
 
+    int TemptextAlreadSendCount = 0;  //用来临时存储 视频咨询权益时 查询的图文条数
+
     /**
      * 查询条文限制条数 这里需要更新 剩余条数 做计算
      *
@@ -882,18 +947,38 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     public void qryRightsUserLogSuccess(List<DataReViewRecordResponse> listData) {
         homeActivity.runOnUiThread(() -> {
             if (listData != null && listData.size() > 0) {
-                Log.e(TAG, "qryRightsUserLogSuccess1111: " + listData.get(0).toString());
+//                Log.e(TAG, "qryRightsUserLogSuccess: " + listData.get(0).toString());
                 String alreadySendCount = listData.get(0).getDealResult();  // 已经使用的条数
-                int surplusCount = textNumLimit - Integer.valueOf(alreadySendCount);  //总条数 -  已发送的
-                if (surplusCount <= 0) {
-                    surplusCount = 0;
+                if (listData.get(0).getDealType().equals(QUERY_DEALTPE_OF_TEXTNUM)) {
+                    int textAlreadSendCount = textNumLimit - Integer.valueOf(alreadySendCount);  //总条数 -  已发送的
+                    TemptextAlreadSendCount = textAlreadSendCount;
+//                    Log.e(TAG, "剩余条数: " + TemptextAlreadSendCount + " 总条数：" + textNumLimit+"  已使用条数："+alreadySendCount);
+                    if (textAlreadSendCount <= 0) {
+                        textAlreadSendCount = 0;
+                    }
+                    tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + textAlreadSendCount + " 条");
+                } else if (listData.get(0).getDealType().equals(QUERY_DEALTPE_OF_VIDEONUM)) {
+//                    Log.e(TAG, "已经使用时长: " + Integer.valueOf(alreadySendCount));
+                    int videoAlreadUse = Integer.valueOf(timeLimit) * 60 - (Integer.valueOf(alreadySendCount));     //时间单位秒
+//                    Log.e(TAG, "剩余视频时长: " + videoAlreadUse + " 秒");
+//                    videoAlreadUse = (int) Math.rint(videoAlreadUse);  //取整
+//                    Log.e(TAG, "总时长： " + timeLimit + "  剩余时长：" + videoAlreadUse);
+                    if (videoAlreadUse <= 0) {
+                        videoAlreadUse = 0;
+                    }
+//                    Log.e(TAG, "临时剩余条数: " + TemptextAlreadSendCount + "  剩余时长： " + videoAlreadUse);
+                    SharedPreManager.putInt(VIDEO_SURPLUS_TIME, videoAlreadUse, homeActivity); //剩余时长 保存下来
+                    tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + TemptextAlreadSendCount + " 条");
+                    gettv_duration.setText("剩余通话时长 " + videoAlreadUse / 60 + "分钟");
                 }
+            } else {
+                // TODO: 2022/5/17  返回是空的 可能是 还未使用该权益
                 if (rightName.contains("图文")) {
-                    tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + surplusCount + " 条");
+                    tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + textNumLimit + " 条");
                 } else {
-                    tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + surplusCount + " 条," + "剩余通话时长 " + timeLimit + " 分钟");
+                    gettv_duration.setText("剩余通话时长 " + timeLimit + " 分钟");
+                    SharedPreManager.putInt(VIDEO_SURPLUS_TIME, Integer.valueOf(timeLimit) * 60, homeActivity); //剩余时长 保存下来
                 }
-
             }
         });
     }
@@ -1004,9 +1089,12 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                     String patientPhone = taskDeatailBean.getTaskDetail().getUserInfo().getPhone();
                     if (!EmptyUtil.isEmpty(patientPhone) && !EmptyUtil.isEmpty(local_phone)) {
                         if (local_phone.length() > 10) {
-                            local_phone = local_phone.substring(3);
+                            local_phone = local_phone.substring(3);  //去除  +86标识
                         }
                         CallRequest callRequest = new CallRequest();
+                        long limitTime = Long.parseLong(timeLimit) * 60; //换位秒 单位  时长
+//                        long currentTime = System.currentTimeMillis()/1000; //当前时间 秒
+                        callRequest.continueTime = limitTime;
                         callRequest.distPhone = patientPhone;
                         callRequest.sourcePhone = local_phone;
                         mPresenter.callPhone(callRequest);
@@ -1016,7 +1104,6 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                     Log.e(TAG, "患者phone: " + patientPhone + " 本机号码： " + local_phone);
 //                    callPhone(patientPhone);  //测试拨号
                 }
-
             }
         });
 
@@ -1025,7 +1112,11 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
     //拨号
     private void callPhone(String phoneNum) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
+        if (!PermissionUtils.checkPermission(homeActivity, Manifest.permission.CALL_PHONE)) {
+            Log.e(TAG, "手动添加电话权限----");
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_CALL);
         Uri data = Uri.parse("tel:" + phoneNum);
         intent.setData(data);
         startActivity(intent);
@@ -1096,17 +1187,27 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         mChatLayout.getInputLayout().setShowCallButton(!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean.getTaskDetail().getRightsType().equals("telNum")); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
         mChatLayout.getInputLayout().setShowVedioButton(!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean.getTaskDetail().getRightsType().equals("videoNum")); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
         tv_numberofarticles = mChatLayout.gettv_numberofarticles();
+        gettv_duration = mChatLayout.gettv_duration();
         if (!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean != null && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo() != null) {
-            textNumLimit = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTextNumLimit();  //患者条文限制
+            //患者条文限制
+            textNumLimit = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTextNumLimit();
             //通话时长
-            timeLimit = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTimeLimit();
+            if (!EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTimeLimit())) {
+                timeLimit = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTimeLimit();
+            }
             //时效
             serviceExpire = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getServiceExpire();
             //权益名称
             rightName = taskDeatailBean.getTaskDetail().getRightsName();
+
+            if (rightName.contains("图文")) {
+                qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 一进来首先调用一次 患者发送的条数
+            } else {
+                qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 如果是 视频咨询 查询 图文条数 再查时长
+                qryRightsUserLog(QUERY_DEALTPE_OF_VIDEONUM); //查时长
+            }
             Log.e(TAG, "条文限制: " + textNumLimit + " 通话时长：" + timeLimit + " 时效： " + serviceExpire);
 
-            qryRightsUserLog(); // 一进来首先调用一次 患者发送的条数
         }
         //长按信息 添加信息 至快捷用语 回调  拿到需添加的信息后  请求接口
         mChatLayout.setAddQuickwordsListener(message -> {
@@ -1184,17 +1285,22 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     }
 
     //查询 患者已发送的条数
-    private void qryRightsUserLog() {
-        mPresenter.qryRightsUserLog(taskDeatailBean.getTaskDetail().getTradeId(), String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+    private void qryRightsUserLog(String querydealType) {
+        mPresenter.qryRightsUserLog(taskDeatailBean.getTaskDetail().getTradeId(), String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()), querydealType);
     }
 
 
+    //每接收到一条对方发送的消息 调用一次接口 查询对方已发送的条数
     private IMEventListener ImNewMessageListenner = new IMEventListener() {
         @Override
         public void onNewMessage(V2TIMMessage v2TIMMessage) {
             super.onNewMessage(v2TIMMessage);
-            mPresenter.qryRightsUserLog(taskDeatailBean.getTaskDetail().getTradeId(), String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
-            qryRightsUserLog();  //查询 患者已发送的条数
+            if (rightName.contains("图文")) {
+                qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 一进来首先调用一次 患者发送的条数
+            } else {
+                qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 如果是 视频咨询 查询 图文条数 再查时长
+                qryRightsUserLog(QUERY_DEALTPE_OF_VIDEONUM); //查时长
+            }
         }
     };
 

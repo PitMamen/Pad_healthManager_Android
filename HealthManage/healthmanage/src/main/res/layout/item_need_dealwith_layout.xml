@@ -63,7 +63,7 @@
             android:layout_marginTop="@dimen/qb_px_7"
             android:text="2021-11-24"
             android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="10sp"
             app:layout_constraintLeft_toRightOf="@id/img_head"
             app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
@@ -71,7 +71,7 @@
             android:id="@+id/tv_patient_sex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/qb_px_8"
+            android:layout_marginLeft="@dimen/qb_px_3"
             android:layout_marginTop="@dimen/qb_px_5"
             android:layout_toRightOf="@+id/tv_name"
             android:text="男"
@@ -132,6 +132,25 @@
             android:textColor="@color/text_qingse"
             android:textSize="12sp"></TextView>
 
+
+
+
+        <TextView
+            android:id="@+id/tv_remind"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/qb_px_15"
+            android:layout_below="@id/tv_name"
+            android:layout_marginLeft="@dimen/qb_px_10"
+            android:layout_marginTop="@dimen/qb_px_5"
+            android:layout_toRightOf="@+id/tv_video_visit"
+            android:background="@drawable/shape_remind_visit"
+            android:gravity="center"
+            android:paddingLeft="@dimen/qb_px_8"
+            android:paddingRight="@dimen/qb_px_8"
+            android:text="提醒上线"
+            android:textColor="@color/main_blue"
+            android:textSize="12sp"></TextView>
 
 
 

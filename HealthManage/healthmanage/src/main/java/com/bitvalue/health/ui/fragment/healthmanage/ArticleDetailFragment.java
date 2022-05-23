@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
@@ -156,11 +157,11 @@ public class ArticleDetailFragment extends BaseFragment {
                         String title = articleBean.title;
                         String htmlText1 = articleBean.content;
                         String htmlText2 = articleBean.categoryName;
-                        String htmlText3 = articleBean.categoryName;
+                        String htmlText3 = articleBean.articleType;
                         tv_title.setText(title);
                         tv_keshi.setText("所属科室:" + htmlText2);
-                        tv_bingzhong.setText("所属科室:" + htmlText3);
-                        tv_author.setText("作者:" + articleBean.author);
+                        tv_bingzhong.setText("所属病种:" + htmlText3);
+                        tv_author.setText("作者:" + (EmptyUtil.isEmpty(articleBean.author) ? "不详" : articleBean.author));
                         tv_creatTime.setText("创建时间:" + articleBean.createTime);
                         setActivityContent(htmlText1, handler);
                     }

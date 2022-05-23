@@ -72,6 +72,11 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
      */
     public TIMMentionEditText mTextInput;
 
+    /**
+     * 铃铛图标 提醒
+     */
+    public ImageView btn_lingdang;
+
 
     /***
      * 发送快捷消息     预诊收集          发送提醒       发送问卷        发送文章       快捷回复    病历夹
@@ -162,6 +167,7 @@ public abstract class InputLayoutUI extends LinearLayout implements IInputLayout
         mMoreInputButton = findViewById(R.id.more_btn);
         mSendTextButton = findViewById(R.id.send_btn);
         mTextInput = findViewById(R.id.chat_message_input);
+        btn_lingdang = findViewById(R.id.remind);
 
         // 子类实现所有的事件处理
         init();

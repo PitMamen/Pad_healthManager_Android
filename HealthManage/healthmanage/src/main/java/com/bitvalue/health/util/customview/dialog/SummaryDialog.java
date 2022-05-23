@@ -3,7 +3,9 @@ package com.bitvalue.health.util.customview.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.InputMethodUtils;
 import com.bitvalue.healthmanage.R;
 
@@ -22,11 +25,12 @@ import com.bitvalue.healthmanage.R;
  * 问诊小结 dialog
  */
 public class SummaryDialog extends Dialog {
-    public EditText ed_input;
+    public EditText ed_input, ed_czjy_input;
     private TextView btn_comfirm;
     private TextView btn_cancel;
     private TextView tv_docName;
     private TextView tv_summary_time;
+    private TextView tv_save;
     private LinearLayout ll_bottom_button;
     private OnButtonClickListener onClickBottomListener;
     private Context mContext;
@@ -53,10 +57,10 @@ public class SummaryDialog extends Dialog {
         setCanceledOnTouchOutside(true);
         initView();
         initClicklisenter();
-        this.setOnDismissListener(dialog -> {    //当前dialog 一旦隐藏 则隐藏键盘
-            // TODO Auto-generated method stub
-            InputMethodUtils.hideSoftInput(mContext);
-        });
+//        this.setOnDismissListener(dialog -> {    //当前dialog 一旦隐藏 则隐藏键盘
+//            // TODO Auto-generated method stub
+//            InputMethodUtils.hideSoftInput(mContext);
+//        });
     }
 
 
@@ -65,16 +69,30 @@ public class SummaryDialog extends Dialog {
         this.tv_summary_time.setText(time);
     }
 
-    public void setEditeTextString(String data) {
+    public void setEditeTextString(String data, String data2) {
+        if (EmptyUtil.isEmpty(data)) {
+            ed_input.setHint("");
+        }
+        if (EmptyUtil.isEmpty(data2)) {
+            ed_czjy_input.setHint("");
+        }
         ed_input.setText(String.valueOf(data));
         ed_input.setTextColor(mContext.getColor(R.color.black60));
         ed_input.setEnabled(false); //不可编辑
-        ed_input.setFocusableInTouchMode(false);
+        ed_czjy_input.setText(String.valueOf(data2));
+        ed_czjy_input.setTextColor(mContext.getColor(R.color.black60));
+        ed_czjy_input.setEnabled(false);
     }
 
     public void setVisibleBotomButton(boolean show) {
         ll_bottom_button.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
     }
+
+
+    public void setHideSoftInput(){
+        InputMethodUtils.hideSoftInput(mContext);
+    }
+
 
 
     public void showKeyboard() {
@@ -99,6 +117,8 @@ public class SummaryDialog extends Dialog {
         tv_docName = findViewById(R.id.tv_docname);
         tv_summary_time = findViewById(R.id.tv_summray_time);
         ll_bottom_button = findViewById(R.id.ll_bottom_button);
+        tv_save = findViewById(R.id.btn_save);
+        ed_czjy_input = findViewById(R.id.ed_czjy_input);
     }
 
     private void initClicklisenter() {
@@ -113,10 +133,20 @@ public class SummaryDialog extends Dialog {
                 onClickBottomListener.onNegtiveClick();
             }
         });
+
+        tv_save.setOnClickListener(v -> {
+            if (onClickBottomListener != null) {
+                onClickBottomListener.onSave();
+            }
+        });
     }
 
     public String getInputString() {
         return ed_input.getText().toString();
+    }
+
+    public String getCzJyInputString() {
+        return ed_czjy_input.getText().toString();
     }
 
 
@@ -136,6 +166,12 @@ public class SummaryDialog extends Dialog {
          * 点击取消按钮事件
          */
         void onNegtiveClick();
+
+
+        /**
+         * 保存
+         */
+        void onSave();
     }
 
 }

@@ -2,6 +2,7 @@ package com.bitvalue.health.ui.adapter;
 
 import androidx.annotation.Nullable;
 
+import com.bitvalue.health.api.requestbean.SummaryBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.util.TimeUtils;
@@ -15,13 +16,13 @@ import java.util.List;
  * @author created by bitvalue
  * @data : 04/27
  */
-public class MedicalRecordAdapter extends BaseQuickAdapter<DataReViewRecordResponse, BaseViewHolder> {
-    public MedicalRecordAdapter(int layoutResId, @Nullable List<DataReViewRecordResponse> data) {
+public class MedicalRecordAdapter extends BaseQuickAdapter<SummaryBean, BaseViewHolder> {
+    public MedicalRecordAdapter(int layoutResId, @Nullable List<SummaryBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, DataReViewRecordResponse item) {
+    protected void convert(BaseViewHolder helper, SummaryBean item) {
         if (item == null) {
             return;
         }

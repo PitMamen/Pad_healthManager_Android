@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 public class AddArticleModel extends BaseModel implements AddArticleContract.Model {
     @Override
     public void getUsefulArticle(int pageSize, int startPage, String deptCode, Callback callback) {
-        mApi.getUsefullArticle(pageSize, startPage, deptCode).subscribeOn(Schedulers.io()).subscribe(result -> {
+        mApi.getUsefullArticle(pageSize, startPage, deptCode,"2").subscribeOn(Schedulers.io()).subscribe(result -> {
             if (!EmptyUtil.isEmpty(result)) {
                 if (result.getCode() == 0) {
                     if (!EmptyUtil.isEmpty(result.getData())) {
@@ -37,7 +37,7 @@ public class AddArticleModel extends BaseModel implements AddArticleContract.Mod
 
     @Override
     public void qryArticleByTitle(int pageSize, int start, String title, Callback callback) {
-        mApi.qryarticleByTitle(pageSize, start, title).subscribeOn(Schedulers.io()).subscribe(result -> {
+        mApi.qryarticleByTitle(pageSize, start, title,"2").subscribeOn(Schedulers.io()).subscribe(result -> {
             if (!EmptyUtil.isEmpty(result)) {
                 if (result.getCode() == 0) {
                     if (!EmptyUtil.isEmpty(result.getData())) {

@@ -111,7 +111,7 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
                 String userId = et_work_no.getText().toString();
                 String passWord = et_psd.getText().toString();
                 if (userId.isEmpty()) {
-                    Toast.makeText(this, "请输入工号", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "请输入账号", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (passWord.isEmpty()) {

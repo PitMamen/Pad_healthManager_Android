@@ -11,7 +11,7 @@ public class Constants {
     public static final String USER_ID = "user_id";
     public static final String IDCARD_NUMBER = "idcard_number";
     public static final String NEED_TOAST = "need_toast";
-    public static final String HOST_URL = "http://manager.mclouds.org.cn:8008";    //http://192.168.1.122/
+    public static final String HOST_URL = "http://develop.mclouds.org.cn:8008";    //http://192.168.1.122/
 //        public static final String HOST_URL = "http://hmg.mclouds.org.cn";
     public static int screenWidth, screenHeight;
     public static final String KEY_REMEMBER_PSD = "key_remember_psd";
@@ -175,6 +175,11 @@ public class Constants {
 
     public static final int PREVIEWTARGET_WIDTH1 = 3456;  //缩略图 最大宽度
     public static final int PREVIEWTARGET_HEIGH1 = 4608;  //缩略图 最大高度
+
+
+    public static final String QUERY_DEALTPE_OF_TEXTNUM = "USED_TEXTNUM";  //图文咨询的查询 条数
+    public static final String QUERY_DEALTPE_OF_VIDEONUM = "USED_VIDEONUM";  //视频咨询的查询时长
+    public static final String VIDEO_SURPLUS_TIME = "surplus_time";  //视频通话剩余时长
 
 
 

@@ -5,12 +5,15 @@ import android.util.Log;
 import com.bitvalue.health.api.requestbean.CallRequest;
 import com.bitvalue.health.api.requestbean.QuickReplyRequest;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
+import com.bitvalue.health.api.requestbean.SummaryBean;
 import com.bitvalue.health.api.requestbean.UpdateRightsRequestTimeRequestBean;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
 import com.bitvalue.health.base.model.BaseModel;
 import com.bitvalue.health.callback.Callback;
 import com.bitvalue.health.contract.healthmanagercontract.InterestsUseApplyByDocContract;
 import com.bitvalue.health.util.EmptyUtil;
+
+import java.util.List;
 
 import io.reactivex.schedulers.Schedulers;
 
@@ -40,10 +43,10 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
     }
 
     @Override
-    public void sendsummary_result(DataReViewRecordResponse request, Callback callback) {
-        mApi.saveDataReviewRecord(request).subscribeOn(Schedulers.io()).subscribe(result -> {
+    public void sendsummary_result(SummaryBean request, Callback callback) {
+        mApi.saveSummary(request).subscribeOn(Schedulers.io()).subscribe(result -> {
             if (!EmptyUtil.isEmpty(result)) {
-//                Log.e(TAG, "sendsummary_result: "+result.toString() );
+                Log.e(TAG, "sendsummary_result: " + result.toString());
                 if (result.getCode() == 0) {
                     if (!EmptyUtil.isEmpty(result.getData())) {
                         callback.onSuccess(result.getData(), 1000);
@@ -54,6 +57,7 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
 
             }
         }, error -> {
+            Log.e(TAG, "sendsummary_result111: " + error.getMessage());
             callback.onFailedLog(error.getMessage(), 1001);
         });
     }
@@ -96,8 +100,8 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
         mApi.callPhone(callRequest).subscribeOn(Schedulers.io()).subscribe(result -> {
             if (!EmptyUtil.isEmpty(result)) {
                 Log.e(TAG, "callPhone: " + result.toString());
-                if (result.getCode() == 0) {
-                    callback.onSuccess(result.getData(), 1000);
+                if (result.getCode() == 0 && result.getSuccess()) {
+                    callback.onSuccess(result.getSuccess(), 1000);
                 } else {
                     callback.onFailedLog(result.getMessage(), 1001);
                 }
@@ -150,9 +154,9 @@ public class InterestsUseApplyByDocModel extends BaseModel implements InterestsU
     }
 
     @Override
-    public void qryRightsUserLog(String tradedId, String userId, Callback callback) {
+    public void qryRightsUserLog(String tradedId, String userId, String dealType, Callback callback) {
         if (!EmptyUtil.isEmpty(tradedId) && !EmptyUtil.isEmpty(userId)) {
-            mApi.qryRightsUserLog(tradedId, userId,"USED_TEXTNUM").subscribeOn(Schedulers.io()).subscribe(result -> {
+            mApi.qryRightsUserLog(tradedId, userId, dealType).subscribeOn(Schedulers.io()).subscribe(result -> {
                 if (!EmptyUtil.isEmpty(result)) {
                     Log.e(TAG, "qryRightsUserLog: " + result.toString());
                     if (result.getCode() == 0) {

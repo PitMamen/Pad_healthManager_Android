@@ -1,15 +1,13 @@
-package com.bitvalue.health.util;
+package com.tencent.liteav.meeting.ui.utils;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.bitvalue.health.api.eventbusbean.TimeOutObj;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,6 +28,7 @@ public class TimeUtils {
     public static final SimpleDateFormat YY_MM_DD_FORMAT_5 = new SimpleDateFormat("yyyy");
     public static final SimpleDateFormat YY_MM_DD_FORMAT_7 = new SimpleDateFormat("MM-dd HH:mm");
     public static final SimpleDateFormat YY_MM_DD_FORMAT_8 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    public static final SimpleDateFormat YY_MM_DD_FORMAT_9 = new SimpleDateFormat("HH:mm");
     @SuppressLint("NewApi")
 //    public static final SimpleDateFormat YY_MM_DD_FORMAT_5 = new SimpleDateFormat("YYYYMMddhhmmss");
     public static final SimpleDateFormat YY_MM_DD_FORMAT_6 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -114,69 +113,7 @@ public class TimeUtils {
 
 
     public static String getCurrentTimeMinute() {
-        return YY_MM_DD_FORMAT_4.format(new Date());
-    }
-
-
-    public static long getTimeStamp(String time) throws ParseException {
-        return YY_MM_DD_FORMAT_4.parse(time).getTime();
-    }
-
-
-    /**
-     * 给指定时间基础上添加 指定小时
-     */
-
-
-    public static String AddDataMinut(String day, int hour) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = null;
-        try {
-            date = simpleDateFormat.parse(day);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Log.e("TAG", "转换时间异常11111 " + e.getMessage());
-        }
-        if (date == null) {
-            return "";
-        }
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.HOUR, hour);
-        date = calendar.getTime();
-        calendar = null;
-        return simpleDateFormat.format(date);
-    }
-
-
-    /***
-     * 计算时间差值
-     */
-    public static long dateDiff(String endTime) {
-        long strTime = 0;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long nd = 1000 * 24 * 60 * 60;
-        long nh = 1000 * 60 * 60;
-        long nm = 1000 * 60;
-        long ns = 1000;
-        long diff = 0;
-        long day = 0;
-        Date curDate = new Date(System.currentTimeMillis());
-        String nowTime = simpleDateFormat.format(curDate);
-        try {
-            diff = simpleDateFormat.parse(endTime).getTime() - simpleDateFormat.parse(nowTime).getTime();
-            day = diff / nd;
-            long hour = diff % nd / nh;
-            long min = diff % nd / nh / nm;
-            long sec = diff % nd / nh / nm / ns;
-            strTime = hour;
-            return strTime;
-
-        } catch (Exception e) {
-            Log.e("TAG", "dateDiff: " + e.getMessage());
-        }
-        return strTime;
-
+        return YY_MM_DD_FORMAT_9.format(new Date());
     }
 
 
@@ -467,7 +404,6 @@ public class TimeUtils {
                 String currentDownTime = TimeUtils.unitFormat((int) h) + ":" + TimeUtils.unitFormat((int) m) + ":" + TimeUtils.unitFormat((int) s);
                 Log.e("TAG", "现在时间：" + currentDownTime);
                 if (currentDownTime.equals("00:00:00")) {
-                    EventBus.getDefault().post(new TimeOutObj());
                     timer.cancel();
                     timer.purge();
                 }
