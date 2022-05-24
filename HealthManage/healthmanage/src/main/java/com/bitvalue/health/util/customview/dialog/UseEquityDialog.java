@@ -46,6 +46,7 @@ public class UseEquityDialog extends Dialog {
 
     //    private ImageView sp_select_time;
     LinearLayout ll_select_time;
+    private LinearLayout ll_continue_time;
     private TextView tv_selected_time;
 
     private Spinner sp_continuedtime;
@@ -113,6 +114,7 @@ public class UseEquityDialog extends Dialog {
         sp_continuedtime = findViewById(R.id.sp_continuedtime_select);
         rl_comfrm = findViewById(R.id.rl_confrm);
         rl_cancel = findViewById(R.id.rl_cancel);
+        ll_continue_time = findViewById(R.id.ll_continue_time);
         selectTakeTime = TimeUtils.getCurrenTime_Second();
         tv_selected_time.setText(TimeUtils.getCurrenTime_Second() + ":00");//这里默认一个当前时间
 
@@ -220,6 +222,9 @@ public class UseEquityDialog extends Dialog {
         tv_visit_type.setText(!EmptyUtil.isEmpty(visitType) ? visitType : "");
         tv_patient_name.setText(!EmptyUtil.isEmpty(visitName) ? visitName : "");
         tv_department.setText(!EmptyUtil.isEmpty(departmentname) ? departmentname : "");
+        if (visitType.equals("textNum") || visitType.contains("ICU")) {
+            ll_continue_time.setVisibility(View.GONE);
+        }
     }
 
 

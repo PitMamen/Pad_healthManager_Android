@@ -10,10 +10,14 @@ import androidx.annotation.NonNull;
 
 import com.bitvalue.health.base.BaseActivity;
 import com.bitvalue.health.base.presenter.BasePresenter;
+import com.bitvalue.health.service.DownApkService;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.MLog;
+import com.bitvalue.health.util.MessageDialog;
 import com.bitvalue.health.util.PermissionUtil;
 import com.bitvalue.health.util.SharedPreManager;
+import com.bitvalue.health.util.VersionUtils;
 import com.bitvalue.healthmanage.R;
 
 
@@ -36,6 +40,7 @@ public class SplashActivity extends BaseActivity {
 
     private int recLen = 3;
     private Disposable subscription;
+    private MessageDialog messageDialog;
 
     //初始化权限
     @Override
@@ -44,6 +49,25 @@ public class SplashActivity extends BaseActivity {
         if (ifPermit) {
             startSubscribe();
         }
+        int code = VersionUtils.getVersionCode(this);
+        String name = VersionUtils.getPackgeVersion(this);
+        String apkid = VersionUtils.getPackgeAppId(this);
+        Log.e(TAG, "code: " + code + "  name:" + name+ " app id: "+apkid);
+
+        messageDialog = DataUtil.showNormalDialog_(this, "温馨提示", "检测到新版本,是否更新?", "升级", "忽略", new DataUtil.OnNormalDialogClicker() {
+            @Override
+            public void onPositive() {
+                Intent intent = new Intent(SplashActivity.this, DownApkService.class);
+                intent.putExtra("apk_url", "http://192.168.1.122:8124/appManager/downloadApp/HealthManage_v1.2.2_debug.apk");
+                SplashActivity.this.startService(intent);
+                Log.e(TAG, "更新----");
+            }
+
+            @Override
+            public void onNegative() {
+                Log.e(TAG, "忽略 ");
+            }
+        });
     }
 
     //“跳过”按钮的点击事件
@@ -84,7 +108,7 @@ public class SplashActivity extends BaseActivity {
 
     //右下角倒计时显示
     private void startSubscribe() {
-        subscription =  Observable.interval(0, 1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+        subscription = Observable.interval(0, 1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
                 .take(4)
                 .subscribe(aLong -> {
                             tv_jump.setText("跳过 " + (3 - aLong));
@@ -100,6 +124,10 @@ public class SplashActivity extends BaseActivity {
 
     //根据用户是否处于登录状态 的界面跳转方法  跳转至主界面
     private void jumpActivity() {
+        if (messageDialog != null && messageDialog.isShowing()) {
+            messageDialog.dismiss();
+        }
+
         if (!SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty()) {
             startActivity(new Intent(SplashActivity.this, HomeActivity.class));
             finish();

@@ -61,7 +61,7 @@
         <!-- 适配 Android 7.0 文件意图 -->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
 
@@ -154,6 +154,8 @@
 
         <!--        </activity>-->
 
+        <service android:name="com.bitvalue.health.service.DownApkService"></service>
+        
 
         <activity
             android:name="com.bitvalue.health.ui.activity.SplashActivity"

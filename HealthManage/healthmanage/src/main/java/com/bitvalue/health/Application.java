@@ -51,6 +51,8 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.liteav.debug.GenerateTestUserSig;
 
+import org.xutils.x;
+
 /**
  * author : pxk
  * time   : 2021/10/27
@@ -194,6 +196,7 @@ public final class Application extends android.app.Application {
 
         iniEasyHttp(); // 暂时顶用一下，后面改成Retrofit
         initTencentIM(instance());
+        x.Ext.init(this);  //初始化 xUtils 框架
 
 
         initWidthAndHeight();

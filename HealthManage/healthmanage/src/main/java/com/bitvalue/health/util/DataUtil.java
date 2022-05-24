@@ -215,6 +215,55 @@ public class DataUtil {
         }
     }
 
+
+
+
+    public static MessageDialog showNormalDialog_(Context context, String title, String message, String positive, String negative, OnNormalDialogClicker onNormalDialogClicker) {
+        MessageDialog messageDialog = new MessageDialog(context);
+        messageDialog.setOnExecuteClickListener(new MessageDialog.OnExecuteClickListener() {
+            @Override
+            public void onNegativeClick() {
+                messageDialog.dismiss();
+                if (onNormalDialogClicker != null) {
+                    onNormalDialogClicker.onNegative();
+                }
+            }
+
+            @Override
+            public void onPositiveClick() {
+                messageDialog.dismiss();
+                if (onNormalDialogClicker != null) {
+                    onNormalDialogClicker.onPositive();
+                }
+            }
+        });
+        messageDialog.setTitle(title);
+        messageDialog.setMessage(message);
+        messageDialog.setNegativeTxt(negative);
+        messageDialog.setPositiveTxt(positive);
+
+        if (messageDialog != null && !messageDialog.isShowing()) {
+            messageDialog.show();
+        }
+
+        return messageDialog;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //    @RequiresApi(api = Build.VERSION_CODES.N)
 //    public static void showSignDialog(Activity activity){
 //        SignDialog signDialog = new SignDialog(activity);
