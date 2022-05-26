@@ -17,6 +17,8 @@ public interface Callback {
      */
     void onFailedLog(String str, int what);
 
+    void onFailed(Object o,int what);
+
     void onSuccessLog(String str, int what);
 
     /**

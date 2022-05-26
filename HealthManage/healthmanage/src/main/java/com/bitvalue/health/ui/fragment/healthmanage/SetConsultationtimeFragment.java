@@ -145,29 +145,6 @@ public class SetConsultationtimeFragment extends BaseFragment {
 
     }
 
-    private boolean showSetConfirmDialog() {
-        if (tv_timeone.getText().toString().contains("-") && tv_timetwo.getText().toString().contains("-") && tv_timethree.getText().toString().contains("-")) {
-            // TODO: 2022/5/4 弹框 选一个
-            if (getTv_docconfirmtime.getVisibility() == View.GONE && tv_docconfirmtime.getVisibility() == View.GONE) {
-                List<String> sorcrListTime = new ArrayList<>();
-                sorcrListTime.add(tv_timeone.getText().toString());
-                sorcrListTime.add(tv_timetwo.getText().toString());
-                sorcrListTime.add(tv_timethree.getText().toString());
-                ConfirmTimeDialog confirmTimeDialog = new ConfirmTimeDialog(homeActivity, sorcrListTime);
-                confirmTimeDialog.setOnClickListener(() -> {
-                    tv_docconfirmtime.setVisibility(View.VISIBLE);
-                    getTv_docconfirmtime.setVisibility(View.VISIBLE);
-                    String confirmedTime = confirmTimeDialog.getconfirmedTime();
-                    getTv_docconfirmtime.setText(confirmedTime);
-                    confirmTimeDialog.dismiss();
-                    // TODO: 2022/5/4 提交
-
-                }).show();
-                return true;
-            }
-        }
-        return false;
-    }
 
 
     private String time1 = "";

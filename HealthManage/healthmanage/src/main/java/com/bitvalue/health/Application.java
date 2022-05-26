@@ -26,6 +26,7 @@ import com.bitvalue.health.net.RequestServer;
 import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.util.ActivityManager;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.CrashHandler;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.SmartBallPulseFooter;
 import com.bitvalue.health.util.chatUtil.HelloChatController;
@@ -197,6 +198,7 @@ public final class Application extends android.app.Application {
         iniEasyHttp(); // 暂时顶用一下，后面改成Retrofit
         initTencentIM(instance());
         x.Ext.init(this);  //初始化 xUtils 框架
+        CrashHandler.getInstance().init(this);
 
 
         initWidthAndHeight();

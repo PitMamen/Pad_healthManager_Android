@@ -222,7 +222,7 @@ public class UseEquityDialog extends Dialog {
         tv_visit_type.setText(!EmptyUtil.isEmpty(visitType) ? visitType : "");
         tv_patient_name.setText(!EmptyUtil.isEmpty(visitName) ? visitName : "");
         tv_department.setText(!EmptyUtil.isEmpty(departmentname) ? departmentname : "");
-        if (visitType.equals("textNum") || visitType.contains("ICU")) {
+        if (visitType.contains("图文") || visitType.contains("重症")) {
             ll_continue_time.setVisibility(View.GONE);
         }
     }

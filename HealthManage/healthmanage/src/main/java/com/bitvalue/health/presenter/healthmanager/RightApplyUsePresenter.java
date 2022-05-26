@@ -95,12 +95,12 @@ public class RightApplyUsePresenter extends BasePresenter<RightApplyUseContract.
 
     @Override
     public void getDocList(String departId) {
-        if (mModel!=null){
-            mModel.getDocList(departId,new CallBackAdapter(){
+        if (mModel != null) {
+            mModel.getDocList(departId, new CallBackAdapter() {
                 @Override
                 public void onSuccess(Object o, int what) {
                     super.onSuccess(o, what);
-                    if (isViewAttach()){
+                    if (isViewAttach()) {
                         getView().getDocListSuccess((List<DocListBean>) o);
                     }
                 }
@@ -109,7 +109,7 @@ public class RightApplyUsePresenter extends BasePresenter<RightApplyUseContract.
                 @Override
                 public void onFailedLog(String str, int what) {
                     super.onFailedLog(str, what);
-                    if (isViewAttach()){
+                    if (isViewAttach()) {
                         getView().getDocListFail(str);
                     }
                 }

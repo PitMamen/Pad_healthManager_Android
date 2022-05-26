@@ -243,12 +243,16 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                     String selectDoctor = useEquityDialog.getSelectDoc();
                     String selectContinueTime = useEquityDialog.getSelectContinueTime();
                     String selectTakeTime = useEquityDialog.getSelectTakeTime() + ":00";
+                    if (selectTakeTime.compareTo(TimeUtils.getCurrentTimeMinute())<0){  //执行时间 必须 大于 当前时间
+                      ToastUtils.show("执行时间不能小于当前时间");
+                        return;
+                    }
                     int docUserId = useEquityDialog.getDocUserId();
-//                    finshMidRequestBean.deptName = loginBean.getUser().user.departmentName;
-//                    finshMidRequestBean.execDept = loginBean.getUser().user.departmentCode; //这里传科室代码
                     finshMidRequestBean.execDept = rigthDepatCode; //这里传权益中的科室代码
                     finshMidRequestBean.deptName = taskDeatailBean.getTaskDetail().getDeptName(); //这里传 该权益所属科室名称 之前是传个案师所在的科室
-                    finshMidRequestBean.lastTime = Integer.valueOf(selectContinueTime);
+                    if (!EmptyUtil.isEmpty(selectContinueTime)){
+                        finshMidRequestBean.lastTime = Integer.valueOf(selectContinueTime);  //持续时间
+                    }
                     finshMidRequestBean.execFlag = 2;
                     finshMidRequestBean.execTime = selectTakeTime;
                     finshMidRequestBean.execUser = String.valueOf(docUserId);    //这里要传医生ID

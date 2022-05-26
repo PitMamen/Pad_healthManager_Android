@@ -1,5 +1,10 @@
 package com.bitvalue.health.service;
 
+import static com.bitvalue.health.util.Constants.APK_LOCAL_PATH;
+import static com.bitvalue.health.util.Constants.APK_URL;
+import static com.bitvalue.health.util.Constants.LOG_FAIL;
+import static com.bitvalue.health.util.Constants.LOG_RECORD;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,9 +25,13 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.FileProvider;
 
+import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.CrashHandler;
+import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.SlientInstall;
 import com.bitvalue.health.util.VersionUtils;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.component.photoview.Util;
 import com.bitvalue.sdk.collab.utils.FileUtil;
 import com.hjq.toast.ToastUtils;
 
@@ -47,7 +56,6 @@ public class DownApkService extends Service {
 
     // 文件保存路径(如果有SD卡就保存SD卡,如果没有SD卡就保存到手机包名下的路径)
     private String APK_dir = "";
-    private String apkPath = null;
 
 
     @Nullable
@@ -74,10 +82,15 @@ public class DownApkService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         // 接收Intent传来的参数:
         // 文件下载路径
-        String APK_URL = intent.getStringExtra("apk_url");
-        Log.d(TAG, "DownAPKService:url=" + APK_URL);
+        String apk_url = intent.getStringExtra(APK_URL);
+        if (apk_url.substring(apk_url.length() - 3).equals("apk")) {
+            Log.d(TAG, "DownAPKService:url=" + apk_url);
+            DownFile(apk_url, APK_dir + "HealthManage.apk");
+        } else {
+            ToastUtils.show("更新失败,目标文件非apk文件");
+            CrashHandler.getInstance().handleException("更新失败,目标文件非apk文件", LOG_FAIL);
+        }
 
-        DownFile(APK_URL, APK_dir + "HealthManage.apk");
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -96,6 +109,7 @@ public class DownApkService extends Service {
             Log.e(TAG, "无 sd 卡");
         }
         Log.e(TAG, "文件将下载至: " + APK_dir);
+        CrashHandler.getInstance().handleException("文件将下载至:" + APK_dir + " 位置", LOG_RECORD);
         File destDir = new File(APK_dir);
         if (!destDir.exists()) {// 判断文件夹是否存在
             destDir.mkdirs();
@@ -127,7 +141,7 @@ public class DownApkService extends Service {
         x.http().get(params, new Callback.ProgressCallback<File>() {
             @Override
             public void onSuccess(File result) {
-                apkPath = result.getPath();
+                SharedPreManager.putString(APK_LOCAL_PATH, result.getPath());
 //                Intent installIntent = new Intent(Intent.ACTION_VIEW);
 //                PendingIntent mPendingIntent = PendingIntent.getActivity(DownApkService.this, 0, installIntent, 0);
 //                builder.setContentIntent(mPendingIntent);
@@ -140,7 +154,7 @@ public class DownApkService extends Service {
             public void onError(Throwable ex, boolean isOnCallback) {
                 System.out.println("文件下载失败");
                 mNotificationManager.cancel(NotificationID);
-                Log.e(TAG, "下载失败，请检查网络!");
+                CrashHandler.getInstance().handleException("下载失败:" + ex.getMessage(), Constants.LOG_ERROR);
             }
 
             @Override
@@ -151,6 +165,7 @@ public class DownApkService extends Service {
             @Override
             public void onFinished() {
                 Log.e(TAG, "文件下载完成");
+                CrashHandler.getInstance().handleException("下载成功,即将安装应用", Constants.LOG_LOG);
                 builder.setContentText("下载完成");
                 mNotificationManager.notify(NotificationID, builder.build());
                 mNotificationManager.cancel(NotificationID);
@@ -165,6 +180,7 @@ public class DownApkService extends Service {
             @Override
             public void onStarted() {
                 ToastUtils.show("开始下载更新文件...");
+                CrashHandler.getInstance().handleException("开始下载文件", Constants.LOG_LOG);
                 String id = "my_channel_01";
                 String name = "我是渠道名字";
                 mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

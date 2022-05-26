@@ -43,7 +43,9 @@ public class FileUtil {
     public static final int SIZETYPE_KB = 2;//获取文件大小单位为KB的double值
     public static final int SIZETYPE_MB = 3;//获取文件大小单位为MB的double值
     public static final int SIZETYPE_GB = 4;//获取文件大小单位为GB的double值
-
+    private static String DST_FOLDER_NAME = "bitvalue";
+    private static String storagePath = "";
+    private static final File parentPath = Environment.getExternalStorageDirectory();
     public static void initPath() {
 
         File f = new File(TUIKitConstants.MEDIA_DIR);
@@ -105,6 +107,17 @@ public class FileUtil {
             result = file.delete();
         }
         return result;
+    }
+
+    public static String initPath_log_save() {
+        if (storagePath.equals("")) {
+            storagePath = parentPath.getAbsolutePath() + File.separator + DST_FOLDER_NAME;
+            File f = new File(storagePath);
+            if (!f.exists()) {
+                f.mkdir();
+            }
+        }
+        return storagePath;
     }
 
     public static boolean isExternalStorageWritable() {

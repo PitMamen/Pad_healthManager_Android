@@ -126,6 +126,8 @@ public class Constants {
     public static final String LOCAL_PUBLIC_KEY = "publicKey";
     public static final String LOCAL_PRIVATER_KEY = "privateKey";
     public static final String GOODS_SERVICE_TYPE = "GOODS_SERVICE_TYPE";
+    public static final String APK_LOCAL_PATH = "apk_local_path";
+    public static final String APK_URL = "apk_url";
 
     public static final String IM_PRIVACY_PROTECTION = "https://web.sdk.qcloud.com/document/Tencent-IM-Privacy-Protection-Guidelines.html";
     public static final String IM_USER_AGREEMENT = "https://web.sdk.qcloud.com/document/Tencent-IM-User-Agreement.html";
@@ -180,6 +182,20 @@ public class Constants {
     public static final String QUERY_DEALTPE_OF_TEXTNUM = "USED_TEXTNUM";  //图文咨询的查询 条数
     public static final String QUERY_DEALTPE_OF_VIDEONUM = "USED_VIDEONUM";  //视频咨询的查询时长
     public static final String VIDEO_SURPLUS_TIME = "surplus_time";  //视频通话剩余时长
+
+
+    /**
+     * 日志 类型
+     */
+    public static final int LOG_ERROR = 1;
+    public static final int LOG_LOG = 2;
+    public static final int LOG_RECORD = 3;
+    public static final int LOG_FAIL = 4;
+    public static final int LOG_OPENRECOD = 5;
+    public static final int LOG_FATAL = 6;
+    public static final int LOG_ALLEVENT = 7;
+
+
 
 
 

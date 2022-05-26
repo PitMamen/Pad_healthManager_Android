@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.NotiflyUIObj;
+import com.bitvalue.health.api.eventbusbean.NotifyactionObj;
 import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
 import com.bitvalue.health.api.eventbusbean.TimeOutObj;
@@ -349,6 +350,9 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     }
 
 
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -428,7 +432,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                         LinkedTreeMap<String, String> stringStringLinkedTreeMap = (LinkedTreeMap<String, String>) object;
                         String treatment = stringStringLinkedTreeMap.get("treatment");
                         String chiefComplaint = stringStringLinkedTreeMap.get("chiefComplaint");
-                        summaryDialog.setEditeTextString(treatment,chiefComplaint);
+                        summaryDialog.setEditeTextString(treatment, chiefComplaint);
                     } else if (object instanceof String) {
                         String dealDetail = (String) object;
                         summaryDialog.setEditeTextString(dealDetail, "");
@@ -677,6 +681,12 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             ToastUtils.show("问诊小结不能为空!");
             return;
         }
+        if (EmptyUtil.isEmpty(proposal_string)) {
+            ToastUtils.show("请输入处置建议!");
+            return;
+        }
+
+
         if (isSend) {  //只有点击了发送按钮 才发送问诊小结给患者
             CustomAnalyseMessage customAnalyseMessage = new CustomAnalyseMessage();
             customAnalyseMessage.title = "问诊小结";
@@ -710,11 +720,8 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             @Override
             public void onPositive() {
                 //确定 请求接口 更新权益状态   并发送卡片给患者(自定义消息)
-                UpdateRightsRequestTimeRequestBean updateRightsRequestTimeRequestBean = new UpdateRightsRequestTimeRequestBean();
-                updateRightsRequestTimeRequestBean.execTime = TimeUtils.getCurrentTimeMinute();
-                updateRightsRequestTimeRequestBean.tradeId = taskDeatailBean.getTaskDetail().getTradeId();
-                updateRightsRequestTimeRequestBean.userId = String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId());
-                mPresenter.updateRightsRequestTime(updateRightsRequestTimeRequestBean);
+                updateRightsRequestTime();
+
             }
 
             @Override
@@ -722,6 +729,21 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
             }
         }));
+    }
+
+    /**
+     * 更新权益状态
+     */
+    private void updateRightsRequestTime() {
+        UpdateRightsRequestTimeRequestBean updateRightsRequestTimeRequestBean = new UpdateRightsRequestTimeRequestBean();
+        updateRightsRequestTimeRequestBean.execTime = TimeUtils.getCurrentTimeMinute();
+        if (!EmptyUtil.isEmpty(taskDeatailBean) && !EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail()) && !EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail().getUserInfo())) {
+            updateRightsRequestTimeRequestBean.tradeId = taskDeatailBean.getTaskDetail().getTradeId();
+            updateRightsRequestTimeRequestBean.userId = String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId());
+            mPresenter.updateRightsRequestTime(updateRightsRequestTimeRequestBean);
+        } else {
+            ToastUtils.show("权益为空!");
+        }
     }
 
 
@@ -908,7 +930,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         homeActivity.runOnUiThread(() -> {
             if (isSuccess) {
                 mTitleBar.getAcceptdiagnosisText().setVisibility(GONE);
-                mTitleBar.getEndVisitText().setText("结束问诊");
+                mTitleBar.getEndVisitText().setText("结束问诊"); //确认接诊 变为 结束问诊 字样
                 //需要发送一条自定义消息给患者
                 CustomDoctorReceptionMessage customDoctorReceptionMessage = new CustomDoctorReceptionMessage();
                 customDoctorReceptionMessage.description = "医生接诊";
@@ -921,7 +943,8 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                 customDoctorReceptionMessage.type = "CustomDoctorReceptionMessage";
                 MessageInfo info = MessageInfoUtil.buildCustomMessage(new Gson().toJson(customDoctorReceptionMessage), customDoctorReceptionMessage.description, null);
                 mChatLayout.sendMessage(info, false);
-                EventBus.getDefault().post(new NotifycationAlardyObj()); //通知更新最新数据  接诊成功后 需更新待办列表
+                EventBus.getDefault().post(new NotifyactionObj());//更新待办列表
+//                EventBus.getDefault().post(new NotifycationAlardyObj()); //通知更新最新数据  接诊成功后 需更新待办列表
             }
         });
     }

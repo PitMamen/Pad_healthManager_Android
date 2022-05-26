@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     app:cardBackgroundColor="@color/white"
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="30dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="15dp"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -40,14 +40,25 @@
                     android:textSize="22sp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_update_name"
+                    android:id="@+id/tv_update_version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    tools:text="3.2.1" />
+                    android:textSize="@dimen/qb_px_10"
+                    tools:text="1.2.3" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_issue_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/qb_px_10"
+                    tools:text="发布时间:2022-05-25" />
+
 
             </LinearLayout>
 
@@ -80,6 +91,7 @@
                 tools:text="6\n66\n666\n6666" />
 
             <ProgressBar
+
                 android:id="@+id/pb_update_progress"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
@@ -90,7 +102,7 @@
                 android:indeterminate="false"
                 android:visibility="gone"
                 tools:progress="50"
-                tools:visibility="visible" />
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -120,7 +132,7 @@
                     android:gravity="center"
                     android:paddingVertical="15dp"
                     android:text="@string/update_yes"
-                    android:textColor="@color/black60"
+                    android:textColor="@color/main_blue"
                     android:textSize="15sp" />
             </LinearLayout>
 

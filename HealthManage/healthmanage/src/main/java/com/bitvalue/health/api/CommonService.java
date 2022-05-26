@@ -52,6 +52,7 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /***
@@ -425,6 +426,12 @@ public interface CommonService {
      */
     @GET("health-api/patient/qryRightsUserLog")
     Observable<ApiResult<List<DataReViewRecordResponse>>> qryRightsUserLog(@Query("tradeId") String tradeid, @Query("userId") String userId, @Query("dealType") String dealType);
+
+    /***
+     * 获取app 下载地址
+     */
+    @GET("health-api/appManager/downloadApp/{path}")
+    Observable<ApiResult<String>> getAppDownUrl(@Path("path") String load_id);
 
 
 }

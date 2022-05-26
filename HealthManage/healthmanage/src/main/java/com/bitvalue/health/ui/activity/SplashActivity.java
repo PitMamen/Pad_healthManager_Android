@@ -1,5 +1,8 @@
 package com.bitvalue.health.ui.activity;
 
+import static com.bitvalue.health.util.Constants.APK_LOCAL_PATH;
+import static com.bitvalue.health.util.Constants.APK_URL;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.util.Log;
@@ -10,15 +13,20 @@ import androidx.annotation.NonNull;
 
 import com.bitvalue.health.base.BaseActivity;
 import com.bitvalue.health.base.presenter.BasePresenter;
+import com.bitvalue.health.contract.healthmanagercontract.AppUpdateContract;
+import com.bitvalue.health.presenter.homepersenter.AppUpdatePersenter;
 import com.bitvalue.health.service.DownApkService;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.CrashHandler;
 import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.MLog;
 import com.bitvalue.health.util.MessageDialog;
 import com.bitvalue.health.util.PermissionUtil;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.VersionUtils;
+import com.bitvalue.health.util.customview.dialog.AppUpdateDialog;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.utils.FileUtil;
 
 
 import java.util.concurrent.TimeUnit;
@@ -33,14 +41,14 @@ import io.reactivex.disposables.Disposable;
 /**
  * 欢迎界面
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity<AppUpdatePersenter> implements AppUpdateContract.View {
 
     @BindView(R.id.tv_jump)
     TextView tv_jump;
 
     private int recLen = 3;
     private Disposable subscription;
-    private MessageDialog messageDialog;
+    private AppUpdateDialog appUpdateDialog;
 
     //初始化权限
     @Override
@@ -52,22 +60,29 @@ public class SplashActivity extends BaseActivity {
         int code = VersionUtils.getVersionCode(this);
         String name = VersionUtils.getPackgeVersion(this);
         String apkid = VersionUtils.getPackgeAppId(this);
-        Log.e(TAG, "code: " + code + "  name:" + name+ " app id: "+apkid);
-
-        messageDialog = DataUtil.showNormalDialog_(this, "温馨提示", "检测到新版本,是否更新?", "升级", "忽略", new DataUtil.OnNormalDialogClicker() {
-            @Override
-            public void onPositive() {
-                Intent intent = new Intent(SplashActivity.this, DownApkService.class);
-                intent.putExtra("apk_url", "http://192.168.1.122:8124/appManager/downloadApp/HealthManage_v1.2.2_debug.apk");
-                SplashActivity.this.startService(intent);
-                Log.e(TAG, "更新----");
-            }
-
-            @Override
-            public void onNegative() {
-                Log.e(TAG, "忽略 ");
-            }
-        });
+        String old_apk_path = SharedPreManager.getString(APK_LOCAL_PATH, this);
+        boolean isDeleted = FileUtil.deleteFile(old_apk_path);
+//        CrashHandler.getInstance().handleException("删除旧安装包:" + isDeleted, Constants.LOG_LOG);
+//        mPresenter.getAppDownUrl("HealthManage_v1.2.2_debug.apk");
+//        Log.e(TAG, "code: " + code + "  name:" + name + " app id: " + apkid + " 是否删除旧文件：" + isDeleted);
+//        appUpdateDialog = new AppUpdateDialog(this).setOnExecuteClickListener(new AppUpdateDialog.OnExecuteClickListener() {
+//            @Override
+//            public void onPositiveClick() {
+//                Intent intent = new Intent(SplashActivity.this, DownApkService.class);
+//                intent.putExtra(APK_URL, "http://192.168.1.122:8124/appManager/downloadApp/HealthManage_v1.2.2_debug.apk"); //url
+//                SplashActivity.this.startService(intent);
+//                Log.e(TAG, "更新----");
+//                CrashHandler.getInstance().handleException("用户选择更新应用", Constants.LOG_LOG);
+//            }
+//
+//            @Override
+//            public void onNegativeClick() {
+//                Log.e(TAG, "忽略----");
+//                CrashHandler.getInstance().handleException("用户选择忽略更新", Constants.LOG_LOG);
+//            }
+//        });
+//        appUpdateDialog.show();
+//        appUpdateDialog.setUpdateImformation("1.2.3", "2022-05-25", "修复已知bug");
     }
 
     //“跳过”按钮的点击事件
@@ -124,8 +139,8 @@ public class SplashActivity extends BaseActivity {
 
     //根据用户是否处于登录状态 的界面跳转方法  跳转至主界面
     private void jumpActivity() {
-        if (messageDialog != null && messageDialog.isShowing()) {
-            messageDialog.dismiss();
+        if (appUpdateDialog != null && appUpdateDialog.isShowing()) {
+            appUpdateDialog.dismiss();
         }
 
         if (!SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty()) {
@@ -150,12 +165,22 @@ public class SplashActivity extends BaseActivity {
     }
 
     @Override
-    protected BasePresenter createPresenter() {
-        return null;
+    protected AppUpdatePersenter createPresenter() {
+        return new AppUpdatePersenter();
     }
 
     @Override
     protected int getLayoutID() {
         return R.layout.activity_splash;
+    }
+
+    @Override
+    public void getAppDownUrlSuccess(String url) {
+
+    }
+
+    @Override
+    public void getAppDownUrlFaile(String messageFail) {
+
     }
 }

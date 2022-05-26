@@ -21,7 +21,7 @@ public class TaskDeatailBean implements Serializable {
     private long execTime;
     private String finishRate;
     private String updateTime;
-    private int execFlag;  // 1 = 已执行  其他 未执行
+    private int execFlag;  // 1 = 已执行  其他 未执行     0 申请 待确认   2  已分配
     private int noticeFlag;
     public boolean isShowBottomBuntton = true; //自定义字段 用来区分底部是否显示按钮 标识
 

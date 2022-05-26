@@ -35,6 +35,11 @@ public class CallBackAdapter implements Callback {
         Log.i("onFailedLog", "----" + str + "-----" + what);
     }
 
+    @Override
+    public void onFailed(Object o, int what) {
+
+    }
+
 
     @Override
     public void onSuccessLog(String str, int what) {

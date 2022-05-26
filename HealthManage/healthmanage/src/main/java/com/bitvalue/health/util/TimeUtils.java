@@ -7,6 +7,7 @@ import com.bitvalue.health.api.eventbusbean.TimeOutObj;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -152,13 +153,13 @@ public class TimeUtils {
     /***
      * 计算时间差值
      */
-    public static long dateDiff(String endTime) {
-        long strTime = 0;
+    public static float dateDiff(String endTime) {
+        float strTime = 0;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long nd = 1000 * 24 * 60 * 60;
-        long nh = 1000 * 60 * 60;
-        long nm = 1000 * 60;
-        long ns = 1000;
+        long nd = 1000 * 60 * 60 * 24;  //天
+        long nh = 1000 * 60 * 60; //小时
+        long nm = 1000 * 60;  //分钟
+        long ns = 1000;  //秒
         long diff = 0;
         long day = 0;
         Date curDate = new Date(System.currentTimeMillis());
@@ -167,9 +168,12 @@ public class TimeUtils {
             diff = simpleDateFormat.parse(endTime).getTime() - simpleDateFormat.parse(nowTime).getTime();
             day = diff / nd;
             long hour = diff % nd / nh;
-            long min = diff % nd / nh / nm;
+//            long min = diff % nd / nh / nm;
+            long min = diff / (1000 * 60);
             long sec = diff % nd / nh / nm / ns;
-            strTime = hour;
+//            strTime = hour;
+            strTime = (float) min / 60;    //需要保留 后两位   小时单位
+//            Log.e("TAG", hour + "小时   " + min + " 分钟" + "  strTime: " + strTime);
             return strTime;
 
         } catch (Exception e) {
