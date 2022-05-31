@@ -34,4 +34,21 @@ public class AppUpdateModel extends BaseModel implements AppUpdateContract.Model
             });
         }
     }
+
+    @Override
+    public void checkNewAppVersion(Callback callback) {
+        mApi.checkNewAppVersion().subscribeOn(Schedulers.io()).subscribe(result -> {
+            if (!EmptyUtil.isEmpty(result)) {
+                Log.e(TAG, "checkNewAppVersion: "+result.toString() );
+                if (result.getCode() == 0) {
+                    callback.onSuccess(result.getData(), 1000);
+                } else {
+                    callback.onFailed(result.getMessage(), 1001);
+                }
+            }
+        }, error -> {
+            Log.e(TAG, "查询APP新版本接口出错:" + error.getMessage());
+            callback.onFailed(error.getMessage(), 1001);
+        });
+    }
 }

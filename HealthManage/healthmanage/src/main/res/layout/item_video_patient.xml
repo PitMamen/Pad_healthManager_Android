@@ -2,15 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_plans"
-    android:elevation="3dp"
-    android:translationZ="3dp"
+    android:background="@drawable/item_select_"
+    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/divider" />
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1px"-->
+<!--        android:background="@color/divider" />-->
 
     <RelativeLayout
         android:id="@+id/layout_item"

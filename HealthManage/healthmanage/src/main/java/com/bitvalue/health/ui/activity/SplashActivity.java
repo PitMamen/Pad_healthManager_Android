@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bitvalue.health.api.responsebean.CheckNewVersionBean;
 import com.bitvalue.health.base.BaseActivity;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.contract.healthmanagercontract.AppUpdateContract;
@@ -19,16 +20,19 @@ import com.bitvalue.health.service.DownApkService;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.CrashHandler;
 import com.bitvalue.health.util.DataUtil;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.MLog;
 import com.bitvalue.health.util.MessageDialog;
 import com.bitvalue.health.util.PermissionUtil;
 import com.bitvalue.health.util.SharedPreManager;
+import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.VersionUtils;
 import com.bitvalue.health.util.customview.dialog.AppUpdateDialog;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.utils.FileUtil;
 
 
+import java.math.BigDecimal;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -45,10 +49,14 @@ public class SplashActivity extends BaseActivity<AppUpdatePersenter> implements 
 
     @BindView(R.id.tv_jump)
     TextView tv_jump;
+    @BindView(R.id.tv_copyright)
+    TextView tv_tv_copyright_show;
 
-    private int recLen = 3;
     private Disposable subscription;
     private AppUpdateDialog appUpdateDialog;
+    private String packgeAppId;
+    private String cureentVersionname;
+    private int cureentVersioncode;
 
     //初始化权限
     @Override
@@ -57,32 +65,15 @@ public class SplashActivity extends BaseActivity<AppUpdatePersenter> implements 
         if (ifPermit) {
             startSubscribe();
         }
-        int code = VersionUtils.getVersionCode(this);
-        String name = VersionUtils.getPackgeVersion(this);
-        String apkid = VersionUtils.getPackgeAppId(this);
+        cureentVersioncode = VersionUtils.getVersionCode(this);
+        cureentVersionname = VersionUtils.getPackgeVersion(this);
+        packgeAppId = VersionUtils.getPackgeAppId(this);
+        tv_tv_copyright_show.setText(String.format("Copyright ©2016-2022 bitValue.All Rights Reserved \r\r\rv_%s",cureentVersionname));
         String old_apk_path = SharedPreManager.getString(APK_LOCAL_PATH, this);
         boolean isDeleted = FileUtil.deleteFile(old_apk_path);
-//        CrashHandler.getInstance().handleException("删除旧安装包:" + isDeleted, Constants.LOG_LOG);
-//        mPresenter.getAppDownUrl("HealthManage_v1.2.2_debug.apk");
-//        Log.e(TAG, "code: " + code + "  name:" + name + " app id: " + apkid + " 是否删除旧文件：" + isDeleted);
-//        appUpdateDialog = new AppUpdateDialog(this).setOnExecuteClickListener(new AppUpdateDialog.OnExecuteClickListener() {
-//            @Override
-//            public void onPositiveClick() {
-//                Intent intent = new Intent(SplashActivity.this, DownApkService.class);
-//                intent.putExtra(APK_URL, "http://192.168.1.122:8124/appManager/downloadApp/HealthManage_v1.2.2_debug.apk"); //url
-//                SplashActivity.this.startService(intent);
-//                Log.e(TAG, "更新----");
-//                CrashHandler.getInstance().handleException("用户选择更新应用", Constants.LOG_LOG);
-//            }
-//
-//            @Override
-//            public void onNegativeClick() {
-//                Log.e(TAG, "忽略----");
-//                CrashHandler.getInstance().handleException("用户选择忽略更新", Constants.LOG_LOG);
-//            }
-//        });
-//        appUpdateDialog.show();
-//        appUpdateDialog.setUpdateImformation("1.2.3", "2022-05-25", "修复已知bug");
+        mPresenter.checkNewAppVersion();
+        CrashHandler.getInstance().handleException("删除旧安装包:" + isDeleted, Constants.LOG_LOG);
+
     }
 
     //“跳过”按钮的点击事件
@@ -181,6 +172,64 @@ public class SplashActivity extends BaseActivity<AppUpdatePersenter> implements 
 
     @Override
     public void getAppDownUrlFaile(String messageFail) {
+
+    }
+
+    /**
+     * 检测app 新版本成功回调
+     *
+     * @param newVersionBean
+     */
+    @Override
+    public void checkNewAppVersionSuccess(CheckNewVersionBean newVersionBean) {
+        runOnUiThread(() -> {
+            if (!EmptyUtil.isEmpty(newVersionBean)) {
+                String updateTime = TimeUtils.getTimeToDay(newVersionBean.getUpdatedTime());
+                String newVersionName = newVersionBean.getVersionCode();
+                newVersionName = newVersionName.contains("v") ? newVersionName.replace("v", "") : newVersionName;
+                String newVersionCode = newVersionBean.getVersionNumber();
+                String updateContent = newVersionBean.getVersionDescription();
+                String apkDownLoadUrl = newVersionBean.getDownloadUrl();
+//                int newVersion = Integer.parseInt(newVersionName.contains(".") ? newVersionName.replace(".", "") : newVersionName);
+//                int localVersion = Integer.parseInt(cureentVersionname.contains(".") ? cureentVersionname.replace(".", "") : cureentVersionname);
+//                Log.e(TAG, "当前VersionCode: " + cureentVersioncode + "  最新versionCode:" + newVersionCode + " 当前版本: " + localVersion + " 最新版本：" + newVersion + "  apkDownLoadUrl:" + apkDownLoadUrl + "  更新内容:" +
+//                        updateContent);
+//                newVersion = 123;
+                if (Integer.parseInt(newVersionCode) > cureentVersioncode) {   //  版本 大于  当前版本
+                    Log.e(TAG, "大于当前版本");
+                    appUpdateDialog = new AppUpdateDialog(this).setOnExecuteClickListener(new AppUpdateDialog.OnExecuteClickListener() {
+                        @Override
+                        public void onPositiveClick() {
+                            Intent intent = new Intent(SplashActivity.this, DownApkService.class);
+                            intent.putExtra(APK_URL, apkDownLoadUrl); //url
+                            SplashActivity.this.startService(intent);
+                            Log.e(TAG, "更新----");
+                            CrashHandler.getInstance().handleException("用户选择更新应用", Constants.LOG_LOG);
+                        }
+
+                        @Override
+                        public void onNegativeClick() {
+                            Log.e(TAG, "忽略----");
+                            CrashHandler.getInstance().handleException("用户选择忽略更新", Constants.LOG_LOG);
+                        }
+                    });
+                    appUpdateDialog.show();
+                    appUpdateDialog.setUpdateImformation(newVersionName, updateTime, !EmptyUtil.isEmpty(updateContent) ? updateContent : "");
+                } else {
+                    Log.e(TAG, "小于当前版本");
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 检测app 新版本失败回调
+     *
+     * @param failMessage
+     */
+    @Override
+    public void checkNewAppVersionFail(String failMessage) {
 
     }
 }

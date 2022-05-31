@@ -351,7 +351,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     public void onEventHandler(RefreshViewUseApply updateView) {//不用区分类型，全部直接转换成json发送消息出去
         isDistributable = true;
         taskDeatailBean.isShowBottomBuntton = false;   //已经审核过了  重新再点进去界面 不需再显示下面的 按钮
-        btn_processing_complete.setBackground(homeActivity.getDrawable(R.drawable.shape_button_select));
+        btn_processing_complete.setBackground(homeActivity.getDrawable(R.drawable.shape_comfirm_sele));
     }
 
 

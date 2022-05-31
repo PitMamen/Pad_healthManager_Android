@@ -83,11 +83,12 @@ public class DownApkService extends Service {
         // 接收Intent传来的参数:
         // 文件下载路径
         String apk_url = intent.getStringExtra(APK_URL);
-        if (apk_url.substring(apk_url.length() - 3).equals("apk")) {
-            Log.d(TAG, "DownAPKService:url=" + apk_url);
+        if (apk_url.endsWith("apk")) {
+//            Log.d(TAG, "DownAPKService:url=" + apk_url);
             DownFile(apk_url, APK_dir + "HealthManage.apk");
         } else {
             ToastUtils.show("更新失败,目标文件非apk文件");
+            stopSelf();
             CrashHandler.getInstance().handleException("更新失败,目标文件非apk文件", LOG_FAIL);
         }
 
@@ -152,7 +153,7 @@ public class DownApkService extends Service {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                System.out.println("文件下载失败");
+                Log.e(TAG, "文件下载失败");
                 mNotificationManager.cancel(NotificationID);
                 CrashHandler.getInstance().handleException("下载失败:" + ex.getMessage(), Constants.LOG_ERROR);
             }
@@ -169,7 +170,6 @@ public class DownApkService extends Service {
                 builder.setContentText("下载完成");
                 mNotificationManager.notify(NotificationID, builder.build());
                 mNotificationManager.cancel(NotificationID);
-//                installApk(DownApkService.this);
             }
 
             @Override

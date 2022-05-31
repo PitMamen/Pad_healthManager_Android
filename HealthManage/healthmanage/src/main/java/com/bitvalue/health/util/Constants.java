@@ -7,12 +7,12 @@ import java.util.Map;
 public class Constants {
 
     //公司的  腾讯IM SDKAppID和秘钥
-    public static final String ROOM_ID = "room_id";
     public static final String USER_ID = "user_id";
     public static final String IDCARD_NUMBER = "idcard_number";
     public static final String NEED_TOAST = "need_toast";
-    public static final String HOST_URL = "http://develop.mclouds.org.cn:8008";    //http://192.168.1.122/
-//        public static final String HOST_URL = "http://hmg.mclouds.org.cn";
+    public static final String HOST_URL = "https://develop.mclouds.org.cn";    //http://192.168.1.122/  测试环境
+//        public static final String HOST_URL = "http://hmg.mclouds.org.cn";       //正式环境
+//        public static final String HOST_URL = "http://ys.mclouds.org.cn:8088";       //演示环境
     public static int screenWidth, screenHeight;
     public static final String KEY_REMEMBER_PSD = "key_remember_psd";
     public static final String KEY_TOKEN = "Authorization";
@@ -67,15 +67,12 @@ public class Constants {
     public static final String API_ORDER = "/order-api";
     public static final String DATA_MSG = "data_msg";
     public static final String MSG_SINGLE = "msg_single";
-    public static final String MSG_MULTI = "msg_multi";
     public static final String MSG_TYPE = "msg_type";
     public static final String MSG_IDS = "msg_ids";//要发送消息到患者的userId
     public static final String IMG_ADD = "img_add";
     public static final int MAX_IMG = 9;
     public static final String MSG_CUSTOM_ID = "msg_custom_id";
     public static final String PLAN_LIST_BEAN = "plan_list_bean";
-    public static final String PLAN_LIST = "planList";
-    public static final String GET_MISSION_OBJ = "get_mission_obj";
     public static String VIDEO_FOR_MSG = "video_for_msg";
     public static final String PLAN_MSG = "plan_msg";
     public static final String PLAN_PREVIEW = "plan_preview";
@@ -92,45 +89,15 @@ public class Constants {
 
     // 存储
     public static final String USERINFO = "userInfo";
-    public static final String ACCOUNT = "account";
-    public static final String PWD = "password";
-    public static final String ROOM = "room";
-    public static final String AUTO_LOGIN = "auto_login";
-    public static final String LOGOUT = "logout";
-    public static final String ICON_URL = "icon_url";
 
-    public static final String ACTION_ARTICLE = "goto_articledisplay";
     public static final String ACTION_ARTICLE_DETAIL = "goto_articleDetail";
-    public static final String ARTICLE_LIST = "article_list";
     public static final String ARTICLEDETAIL = "articleDetail";
-    public static final String ARTICLEBEAN = "articleBean";
-    public static final String ARTICLETITLE = "articleTitle";
-    public static final String SHOWBOTTOM_LAYOUT = "isShowBottomLayout";
-
-    public static final String ACTION_QUESTION = "goto_questiondisplay";
-    public static final String ACTION_QUESTION_DETAIL = "goto_questionDetail";
-    public static final String QUESTIONDETAIL = "questionDetail";
-    public static final String QUESTIONLIST = "question_list";
-    public static final String QUESTIONBEAN = "bean";
-    public static final String BED_RESERVATION = "bedreservation";
-    public static final String BED_RESERVATION_VALUE = "isbedreservation_activity";
-
-    public static final String CHAT_TYPE = "chat_type";
-    public static final String SINGLECHAT = "singlechat";
-    public static final String MASSCHAT = "msg_multi";
-    public static final String USER_IDS = "userIDs";
-    public static final String GOOD_IDS = "goodIDS";
     public static final String CHAT_INFO = "chatInfo";
-    public static final String CALL_MODEL = "callModel";
-    public static final String IS_OFFLINE_PUSH_JUMP = "is_offline_push";
     public static final String LOCAL_PUBLIC_KEY = "publicKey";
     public static final String LOCAL_PRIVATER_KEY = "privateKey";
-    public static final String GOODS_SERVICE_TYPE = "GOODS_SERVICE_TYPE";
     public static final String APK_LOCAL_PATH = "apk_local_path";
     public static final String APK_URL = "apk_url";
 
-    public static final String IM_PRIVACY_PROTECTION = "https://web.sdk.qcloud.com/document/Tencent-IM-Privacy-Protection-Guidelines.html";
-    public static final String IM_USER_AGREEMENT = "https://web.sdk.qcloud.com/document/Tencent-IM-User-Agreement.html";
     /**
      * 索引
      */
@@ -156,7 +123,6 @@ public class Constants {
     public static final String VIDEO = "video";
 
 
-    public static final String HOSPITAL_CODE = "444885559";//线上环境
 
     /**
      * Eventbus 消息类型  TYPE = 2  云门诊   TYPE=1  健康管理
@@ -195,12 +161,4 @@ public class Constants {
     public static final int LOG_FATAL = 6;
     public static final int LOG_ALLEVENT = 7;
 
-
-
-
-
-
-//    //自己的
-//    public static final int IM_APPId =1400548652;
-//    public static final String IM_PRIVATE_KEY ="e3f3f2db3fa1ebb73d1fa009f774c668e93577ce8f15492409582cd041b6e712";
 }

@@ -178,8 +178,8 @@ public class AllocatedPatientAdapter extends RecyclerView.Adapter<RecyclerView.V
         View view_line;
 
 
-        @BindView(R.id.rl_pay_patient)
-        RelativeLayout pay_patient; //付费患者
+//        @BindView(R.id.rl_pay_patient)
+//        RelativeLayout pay_patient; //付费患者
 
 
         public PatientViewHodler(@NonNull View itemView) {

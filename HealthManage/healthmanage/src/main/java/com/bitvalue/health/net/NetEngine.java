@@ -45,7 +45,7 @@ public class NetEngine {
     private static volatile NetEngine mInstance;
 
     // 使用https
-    private static final boolean useHttps = false; // 生产环境只有https.仅针对commonservice
+    private static final boolean useHttps = true; // 生产环境只有https.仅针对commonservice
     private static SSLSocketFactory sslSocketFactory = null;
     private static X509TrustManager trustManager = null;
 
@@ -67,7 +67,8 @@ public class NetEngine {
      */
     public OkHttpClient getOkHttpClient() {
         // 网络请求框架初始化
-        return new OkHttpClient.Builder()
+        httpsInit();
+        return new OkHttpClient.Builder().sslSocketFactory(sslSocketFactory,trustManager)
                 .connectTimeout(30 * 1000L, TimeUnit.MILLISECONDS)
                 .readTimeout(30 * 1000L, TimeUnit.MILLISECONDS)
                 .addNetworkInterceptor(new NetInterceptor())
@@ -85,29 +86,25 @@ public class NetEngine {
     private String HOST_URL_LIST = "http://192.168.1.120:24702/ehr/v1/list";   //获取病历列表  测试
     private String HOST_URL_LIST_RECORD = "http://192.168.1.120:24702/ehr/v1/getRecord";   //获取病历详情 测试
 
-    private Interceptor reInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            Request.Builder builder = request.newBuilder();
-            HttpUrl oldHttpUrl = request.url();   //从request中获取原有的HttpUrl实例oldHttpUrl
-//            Log.e(TAG, "oldHttpUrl000: " + oldHttpUrl.url());
-            HttpUrl newBaseUrl = HttpUrl.parse(Constants.HOST_URL);
-            if (oldHttpUrl.url().toString().contains("/ehr/v1/list")) {
-                newBaseUrl = HttpUrl.parse(HOST_URL_LIST);
-            }else if (oldHttpUrl.url().toString().contains("/ehr/v1/getRecord")){
-                newBaseUrl = HttpUrl.parse(HOST_URL_LIST_RECORD);
-            }
-            //重建新的HttpUrl，配置成我们需要的
-            HttpUrl newFullUrl = oldHttpUrl
-                    .newBuilder()
-                    .scheme(newBaseUrl.scheme())
-                    .host(newBaseUrl.host())    //新的url的域名
-                    .port(newBaseUrl.port())
-                    .build();
-            Log.e(TAG, "intercept111: "+newFullUrl );
-            return chain.proceed(builder.url(newFullUrl).build());
+    private Interceptor reInterceptor = chain -> {
+        Request request = chain.request();
+        Request.Builder builder = request.newBuilder();
+        HttpUrl oldHttpUrl = request.url();   //从request中获取原有的HttpUrl实例oldHttpUrl
+        HttpUrl newBaseUrl = HttpUrl.parse(Constants.HOST_URL);
+        if (oldHttpUrl.url().toString().contains("/ehr/v1/list")) {
+            newBaseUrl = HttpUrl.parse(HOST_URL_LIST);
+        }else if (oldHttpUrl.url().toString().contains("/ehr/v1/getRecord")){
+            newBaseUrl = HttpUrl.parse(HOST_URL_LIST_RECORD);
         }
+        //重建新的HttpUrl，配置成我们需要的
+        HttpUrl newFullUrl = oldHttpUrl
+                .newBuilder()
+                .scheme(newBaseUrl.scheme())
+                .host(newBaseUrl.host())    //新的url的域名
+                .port(newBaseUrl.port())
+                .build();
+        Log.e(TAG, "intercept111: "+newFullUrl );
+        return chain.proceed(builder.url(newFullUrl).build());
     };
 
 

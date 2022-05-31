@@ -102,7 +102,7 @@ public class AllPatientAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO, Ba
         holder.setText(R.id.tv_type_one_pa, videoClientsResultBean.getDiagnosis());
 
 
-        holder.setBackgroundColor(R.id.layout_item, videoClientsResultBean.isChecked ? mContext.getResources().getColor(R.color.bg_gray_light) : mContext.getResources().getColor(R.color.white));
+//        holder.setBackgroundColor(R.id.layout_item, videoClientsResultBean.isChecked ? mContext.getResources().getColor(R.color.bg_gray_light) : mContext.getResources().getColor(R.color.white));
 
 
         //就诊状态（1：待就诊 2：就诊中 3：已完成）

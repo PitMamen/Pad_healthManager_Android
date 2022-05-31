@@ -34,7 +34,7 @@ public class AppUpdateDialog extends Dialog {
     public void setUpdateImformation(String newVersion, String issueTime, String update_content) {
         tv_issuetime.setText("发布时间:" + issueTime);
         tv_update_content.setText(update_content);
-        tv_newVersion.setText(newVersion);
+        tv_newVersion.setText("新版本:" + newVersion);
     }
 
 
@@ -61,7 +61,7 @@ public class AppUpdateDialog extends Dialog {
         Window dialogWindow = this.getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         dialogWindow.setGravity(Gravity.CENTER);
-//        dialogWindow.setWindowAnimations(R.style.aniFallStyle);  //添加动画
+//        dialogWindow.setWindowAnimations(R.style.dialog_style);  //添加动画
         lp.width = Constants.screenWidth * 2 / 5; // 宽度
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         dialogWindow.setAttributes(lp);

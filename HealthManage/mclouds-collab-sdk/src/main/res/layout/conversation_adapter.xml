@@ -3,7 +3,8 @@
     android:id="@+id/item_left"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF"
+    android:background="@drawable/item_select_"
+    android:clickable="true"
     android:paddingTop="12dp"
     android:paddingLeft="14.85dp"
     android:orientation="horizontal">

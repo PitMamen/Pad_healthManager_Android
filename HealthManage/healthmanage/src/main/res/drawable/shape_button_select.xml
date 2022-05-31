@@ -14,7 +14,7 @@
         android:width="@dimen/qb_px_1"
         android:color="@color/cal_days_title" />
     <!-- 内部填充背景色 -->
-        <solid android:color="#0088F4" />
+        <solid android:color="@color/home_blue" />
 <!--    <solid android:color="#F5F5F5" />-->
 
 

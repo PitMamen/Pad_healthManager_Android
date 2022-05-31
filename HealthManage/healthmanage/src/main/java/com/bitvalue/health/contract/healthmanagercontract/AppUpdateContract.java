@@ -1,6 +1,7 @@
 package com.bitvalue.health.contract.healthmanagercontract;
 
 import com.bitvalue.health.api.responsebean.ArticleBean;
+import com.bitvalue.health.api.responsebean.CheckNewVersionBean;
 import com.bitvalue.health.api.responsebean.SearchArticleResult;
 import com.bitvalue.health.base.model.IModel;
 import com.bitvalue.health.base.view.IView;
@@ -14,20 +15,31 @@ import java.util.List;
  */
 public interface AppUpdateContract {
 
-  interface Model extends IModel {
-    void getAppDownUrl(String id,Callback callback);
-  }
+    interface Model extends IModel {
+        void getAppDownUrl(String id, Callback callback);
 
-  interface View extends IView {
+        void checkNewAppVersion(Callback callback);
+    }
 
-    void getAppDownUrlSuccess(String url);
+    interface View extends IView {
 
-    void getAppDownUrlFaile(String messageFail);
+        void getAppDownUrlSuccess(String url);
 
-  }
+        void getAppDownUrlFaile(String messageFail);
 
-  interface Presenter {
 
-    void getAppDownUrl(String id);
-  }
+        void checkNewAppVersionSuccess(CheckNewVersionBean newVersionBean);
+
+        void checkNewAppVersionFail(String failMessage);
+
+
+    }
+
+    interface Presenter {
+
+        void getAppDownUrl(String id);
+
+        void checkNewAppVersion();
+
+    }
 }

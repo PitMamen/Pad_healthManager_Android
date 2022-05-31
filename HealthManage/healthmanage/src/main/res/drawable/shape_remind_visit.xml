@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <corners
         android:bottomLeftRadius="@dimen/qb_px_4"
@@ -9,12 +9,28 @@
         android:topRightRadius="@dimen/qb_px_4" />
 
 
-    <stroke
-        android:width="0.5dp"
-        android:color="@color/main_blue" />
-    <!-- 背景色 -->
-    <solid android:color="@color/beauty_color_white" />
+    <item android:state_pressed="false">
+        <shape>
+            <stroke
+                android:width="0.5dp"
+                android:color="@color/main_blue" />
+            <!-- 背景色 -->
+            <solid android:color="@color/beauty_color_white" />
+        </shape>
+    </item>
 
 
-</shape>
+    <item android:state_pressed="true">
+        <shape>
+            <stroke
+                android:width="0.5dp"
+                android:color="@color/white" />
+            <!-- 背景色 -->
+            <solid android:color="@color/main_blue" />
+        </shape>
+    </item>
+
+
+
+</selector>
 

@@ -66,10 +66,12 @@ public class ConversationCommonHolder extends ConversationBaseHolder {
             }
         }
 
+        // 这里去除 置顶 效果
         if (conversation.isTop()) {
             leftItemLayout.setBackgroundColor(rootView.getResources().getColor(R.color.conversation_top_color));
         } else {
-            leftItemLayout.setBackgroundColor(Color.WHITE);
+            leftItemLayout.setBackground(rootView.getResources().getDrawable(R.drawable.item_select_));
+//            leftItemLayout.setBackgroundColor(Color.WHITE);
         }
 
         titleText.setText(conversation.getTitle());

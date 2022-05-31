@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/item_select_"
+    android:clickable="true"
+    android:id="@+id/rl_items"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="3dp"
-    android:translationZ="3dp"
-    tools:ignore="MissingDefaultResource,Orientation">
+    >
+
 
 
     <RelativeLayout
@@ -15,7 +16,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingVertical="@dimen/qb_px_8"
-        tools:ignore="MissingConstraints">
+      >
 
 
         <RelativeLayout
@@ -33,7 +34,7 @@
                 android:layout_centerVertical="true"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
-                tools:ignore="MissingConstraints"></CheckBox>
+               ></CheckBox>
 
         </RelativeLayout>
 
@@ -158,8 +159,7 @@
             android:layout_marginBottom="@dimen/qb_px_15"
             android:text="2021-11-25"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:ignore="MissingConstraints">
+            app:layout_constraintRight_toRightOf="parent">
 
         </TextView>
 
@@ -199,33 +199,6 @@
             android:textColor="@color/text_desc_dark"
             android:textSize="12sp" />
 
-
-        <!--        <RelativeLayout-->
-        <!--            android:id="@+id/rl_pay_patient"-->
-        <!--            android:layout_width="@dimen/qb_px_37"-->
-        <!--            android:layout_height="@dimen/qb_px_10"-->
-        <!--            android:layout_marginLeft="@dimen/qb_px_10"-->
-        <!--            android:layout_marginTop="@dimen/qb_px_5"-->
-        <!--            android:layout_marginEnd="@dimen/qb_px_10"-->
-        <!--            android:layout_toRightOf="@+id/tv_patient_age"-->
-        <!--            android:background="@color/text_green">-->
-
-
-        <!--            <TextView-->
-        <!--                android:layout_width="wrap_content"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:layout_centerInParent="true"-->
-        <!--                android:text="付费患者"-->
-        <!--                android:textColor="@color/white"-->
-        <!--                android:textSize="10sp">-->
-
-
-        <!--            </TextView>-->
-
-
-        <!--        </RelativeLayout>-->
-
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -254,12 +227,12 @@
 
 
 
-    <View
-        android:background="#E6E6E6"
-        android:layout_marginTop="@dimen/qb_px_55"
-        android:layout_width="match_parent"
-        android:layout_height="1dp">
-    </View>
+<!--    <View-->
+<!--        android:background="#E6E6E6"-->
+<!--        android:layout_marginTop="@dimen/qb_px_55"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp">-->
+<!--    </View>-->
 
 
 

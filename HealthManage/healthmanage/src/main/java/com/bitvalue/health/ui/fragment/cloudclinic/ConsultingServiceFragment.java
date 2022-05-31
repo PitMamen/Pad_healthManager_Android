@@ -134,8 +134,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
 
     private void initAllPatientList() {
         contact_list.setLayoutManager(new LinearLayoutManager(homeActivity));
-        contact_list.addItemDecoration(MUtils.spaceDivider(
-                DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
+//        contact_list.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
         allPatientAdapter = new AllPatientAdapter(R.layout.item_video_patient, patientList, this);
         contact_list.setAdapter(allPatientAdapter);
         allPatientAdapter.setOnItemClickListener((adapter, view, position) -> {

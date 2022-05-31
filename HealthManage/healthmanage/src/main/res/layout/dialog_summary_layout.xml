@@ -163,11 +163,11 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/qb_px_15"
             android:background="@drawable/shape_comfirm_sele"
+            android:textColor="@drawable/unpress_select"
             android:gravity="center_horizontal"
             android:paddingHorizontal="@dimen/qb_px_8"
             android:paddingVertical="@dimen/qb_px_5"
             android:text="保存"
-            android:textColor="@color/white"
             android:textSize="15sp">
 
         </TextView>
@@ -180,11 +180,11 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@drawable/shape_comfirm_sele"
+            android:textColor="@drawable/unpress_select"
             android:gravity="center_horizontal"
             android:paddingHorizontal="@dimen/qb_px_8"
             android:paddingVertical="@dimen/qb_px_5"
             android:text="发送"
-            android:textColor="@color/white"
             android:textSize="15sp">
 
         </TextView>

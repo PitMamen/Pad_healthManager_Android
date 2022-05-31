@@ -227,7 +227,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="确认分配"
-                android:textColor="@color/white">
+                android:textColor="@drawable/unpress_select">
 
             </TextView>
 

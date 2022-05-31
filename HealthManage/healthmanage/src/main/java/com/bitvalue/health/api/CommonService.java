@@ -22,6 +22,7 @@ import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.requestbean.VideoPatientStatusBean;
 import com.bitvalue.health.api.responsebean.ArticleByDeptCodeBean;
 import com.bitvalue.health.api.responsebean.CallResultBean;
+import com.bitvalue.health.api.responsebean.CheckNewVersionBean;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
 import com.bitvalue.health.api.responsebean.CodeValueResopnse;
 import com.bitvalue.health.api.responsebean.DataReViewRecordResponse;
@@ -432,6 +433,12 @@ public interface CommonService {
      */
     @GET("health-api/appManager/downloadApp/{path}")
     Observable<ApiResult<String>> getAppDownUrl(@Path("path") String load_id);
+
+    /**
+     * 检测APP最新版本
+     */
+    @GET("health-api/appManager/getLatestAppVersion")
+    Observable<ApiResult<CheckNewVersionBean>> checkNewAppVersion();
 
 
 }

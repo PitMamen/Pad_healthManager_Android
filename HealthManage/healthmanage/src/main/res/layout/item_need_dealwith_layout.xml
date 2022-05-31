@@ -2,10 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_plans"
-    android:elevation="3dp"
-    android:translationZ="3dp"
+    android:background="@drawable/item_select_"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+
+
 
     <View
         android:layout_width="match_parent"
@@ -132,9 +134,6 @@
             android:textColor="@color/text_qingse"
             android:textSize="12sp"></TextView>
 
-
-
-
         <TextView
             android:id="@+id/tv_remind"
             android:visibility="gone"
@@ -145,15 +144,12 @@
             android:layout_marginTop="@dimen/qb_px_5"
             android:layout_toRightOf="@+id/tv_video_visit"
             android:background="@drawable/shape_remind_visit"
+            android:textColor="@drawable/remind_press_select"
             android:gravity="center"
             android:paddingLeft="@dimen/qb_px_8"
             android:paddingRight="@dimen/qb_px_8"
             android:text="提醒上线"
-            android:textColor="@color/main_blue"
             android:textSize="12sp"></TextView>
-
-
-
     </RelativeLayout>
 
 

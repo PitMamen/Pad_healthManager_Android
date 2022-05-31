@@ -369,11 +369,11 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/qb_px_110"
                 android:background="@drawable/shape_comfirm_sele"
+                android:textColor="@drawable/unpress_select"
                 android:gravity="center_horizontal"
                 android:paddingHorizontal="@dimen/qb_px_8"
                 android:paddingVertical="@dimen/qb_px_5"
                 android:text="资料审核"
-                android:textColor="@color/white"
                 android:textSize="15sp"
                 android:visibility="invisible"></TextView>
 
@@ -386,11 +386,11 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/qb_px_15"
                 android:background="@drawable/shape_comfirm_sele"
+                android:textColor="@drawable/unpress_select"
                 android:gravity="center_horizontal"
                 android:paddingHorizontal="@dimen/qb_px_8"
                 android:paddingVertical="@dimen/qb_px_5"
                 android:text="进入聊天"
-                android:textColor="@color/white"
                 android:textSize="15sp"></TextView>
 
 
@@ -403,11 +403,11 @@
                 android:layout_marginLeft="@dimen/qb_px_15"
                 android:layout_marginEnd="@dimen/qb_px_10"
                 android:background="@drawable/shape_comfirm_sele"
+                android:textColor="@drawable/unpress_select"
                 android:gravity="center_horizontal"
                 android:paddingHorizontal="@dimen/qb_px_8"
                 android:paddingVertical="@dimen/qb_px_5"
                 android:text="任务分派"
-                android:textColor="@color/white"
                 android:textSize="15sp"></TextView>
 
 
@@ -427,7 +427,7 @@
                 android:paddingHorizontal="@dimen/qb_px_8"
                 android:paddingVertical="@dimen/qb_px_5"
                 android:text="重新设置"
-                android:textColor="@color/white"
+                android:textColor="@drawable/unpress_select"
                 android:textSize="15sp"></TextView>
 
 

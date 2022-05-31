@@ -180,6 +180,9 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     }
 
 
+
+
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -192,12 +195,17 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
 
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         if (timer!=null){
             timer.cancel();
             timer.purge();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
 
@@ -265,13 +273,13 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     //初始化listView 及设置 Adapter
     private void initListView() {
         list_allneeddealwith.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getActivity())));
-        list_allneeddealwith.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
+//        list_allneeddealwith.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
         needDealWithQuickAdapter = new NeedDealithQuickAdapter(R.layout.item_need_dealwith_layout, NeedDealWithList, loginBean.getAccount().roleName.equals("casemanager"), this);
         list_allneeddealwith.setAdapter(needDealWithQuickAdapter);
 
 
         list_alreadyPatient.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getActivity())));
-        list_alreadyPatient.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
+//        list_alreadyPatient.addItemDecoration(MUtils.spaceDivider(DensityUtil.dip2px(homeActivity, homeActivity.getResources().getDimension(R.dimen.qb_px_3)), false));
         AlreadyDealithAdapter = new AlreadyDealithAdapter(R.layout.item_need_dealwith_layout, AlradDealWithList, this);
         list_alreadyPatient.setAdapter(AlreadyDealithAdapter);
     }
@@ -375,7 +383,6 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
             Log.e(TAG, "医生发送提醒 taskDeatailBean.getTaskDetail() == null");
             return;
         }
-        ToastUtils.show("操作成功!");
         String jsonString = GsonUtils.ModelToJson(taskDeatailBean.getTaskDetail());
         sendSystemRemind(jsonString, String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
     }
@@ -391,7 +398,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
         EasyHttp.post(homeActivity).api(systemRemindObj).request(new OnHttpListener<ApiResult<String>>() {
             @Override
             public void onSucceed(ApiResult<String> result) {
-//                Log.e(TAG, "通知请求: " + result.getMessage());
+                ToastUtils.show("操作成功!");
             }
 
             @Override
