@@ -1,5 +1,6 @@
 package com.bitvalue.health.presenter.homepersenter;
 
+import com.bitvalue.health.api.responsebean.CheckNewVersionBean;
 import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.callback.CallBackAdapter;
 import com.bitvalue.health.contract.homecontract.HomeContract;
@@ -32,5 +33,29 @@ public class HomePersenter extends BasePresenter<HomeContract.TUIKitView,HomeCon
                     getView().LoginFail(module,code,desc);
             }
         });
+    }
+
+
+    @Override
+    public void checkNewAppVersion() {
+        if (mModel != null) {
+            mModel.checkNewAppVersion(new CallBackAdapter() {
+                @Override
+                public void onSuccess(Object o, int what) {
+                    super.onSuccess(o, what);
+                    if (isViewAttach()) {
+                        getView().checkNewAppVersionSuccess((CheckNewVersionBean) o);
+                    }
+                }
+
+                @Override
+                public void onFailedLog(String str, int what) {
+                    super.onFailedLog(str, what);
+                    if (isViewAttach()) {
+                        getView().checkNewAppVersionFail(str);
+                    }
+                }
+            });
+        }
     }
 }

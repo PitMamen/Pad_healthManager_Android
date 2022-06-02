@@ -1,6 +1,7 @@
 package com.bitvalue.health.ui.activity;
 
 
+import static com.bitvalue.health.util.Constants.APK_URL;
 import static com.bitvalue.health.util.Constants.DATA_REVIEW;
 import static com.bitvalue.health.util.Constants.FRAGEMNT_CONDITONOVERVIEW;
 import static com.bitvalue.health.util.Constants.FRAGEMNT_PHONE_CONSULTATION;
@@ -9,6 +10,7 @@ import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY_BYDOC;
 import static com.bitvalue.health.util.Constants.FRAGMENT_MORE_DATA;
 import static com.bitvalue.health.util.Constants.FRAGMENT_PLAN_LIST;
+import static com.bitvalue.health.util.Constants.ISCLICKUPDATE;
 import static com.bitvalue.health.util.Constants.MORE_DATA;
 import static com.bitvalue.health.util.Constants.PATIENT_EXPECTTIME;
 import static com.bitvalue.health.util.Constants.PATIENT_TRADEID;
@@ -16,6 +18,7 @@ import static com.bitvalue.health.util.Constants.TASKDETAIL;
 import static com.bitvalue.health.util.Constants.USER_ID;
 import static com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI.CHAT_TYPE_VIDEO;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +37,7 @@ import com.bitvalue.health.api.eventbusbean.VideoRefreshObj;
 import com.bitvalue.health.api.requestbean.QueryPlanDetailApi;
 import com.bitvalue.health.api.requestbean.QuestionResultBean;
 import com.bitvalue.health.api.responsebean.ArticleBean;
+import com.bitvalue.health.api.responsebean.CheckNewVersionBean;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.MessageInfoData;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
@@ -45,6 +49,7 @@ import com.bitvalue.health.base.BaseActivity;
 import com.bitvalue.health.callback.OnTouchListener;
 import com.bitvalue.health.contract.homecontract.HomeContract;
 import com.bitvalue.health.presenter.homepersenter.HomePersenter;
+import com.bitvalue.health.service.DownApkService;
 import com.bitvalue.health.ui.fragment.chat.ChatFragment;
 import com.bitvalue.health.ui.fragment.chat.ChatRecordFragment;
 import com.bitvalue.health.ui.fragment.cloudclinic.ConsultingServiceFragment;
@@ -86,7 +91,12 @@ import com.bitvalue.health.ui.fragment.workbench.HealthPlanTaskDetailFragment;
 import com.bitvalue.health.ui.fragment.workbench.VisitPlanFragment;
 import com.bitvalue.health.ui.fragment.workbench.SendMessageFragment;
 import com.bitvalue.health.util.Constants;
+import com.bitvalue.health.util.CrashHandler;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.SharedPreManager;
+import com.bitvalue.health.util.TimeUtils;
+import com.bitvalue.health.util.VersionUtils;
+import com.bitvalue.health.util.customview.dialog.AppUpdateDialog;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
@@ -208,8 +218,11 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     private NeedDealWithFragment needDealWithFragment; //待办
     private VisitPlanFragment workbenchFragment;   //随访计划
     private ScheduleFragment scheduleFragment;
+    private OnTouchListener onTouchListener;
     private LoginBean loginBean;
-
+    private AppUpdateDialog appUpdateDialog;
+    private String cureentVersionname;
+    private int cureentVersioncode;
 
     @Override
     protected HomePersenter createPresenter() {
@@ -254,6 +267,21 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     protected void onResume() {
         super.onResume();
         Application.instance().setHomeActivity(this);
+        cureentVersioncode = VersionUtils.getVersionCode(this);
+        cureentVersionname = VersionUtils.getPackgeVersion(this);
+        boolean isClickUpdate = SharedPreManager.getBoolean(ISCLICKUPDATE, false, this); //如果 用户在欢迎界面中 点了升级 那么这个界面不再检查版本
+        Log.e(TAG, "用户是否点击升级：" + isClickUpdate);
+        if (!isClickUpdate)
+            mPresenter.checkNewAppVersion();
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (appUpdateDialog != null && appUpdateDialog.isShowing()) {
+            appUpdateDialog.dismiss();
+        }
     }
 
     /**
@@ -797,14 +825,14 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
                 mapFragments.put(FRAGEMNT_PHONE_CONSULTATION, setConsultationtimeFragment);
                 break;
 
-                //病情概述界面
+            //病情概述界面
             case FRAGEMNT_CONDITONOVERVIEW:
                 MessageInfoData messageInfo = (MessageInfoData) object;
                 Bundle bundle_conditionoverview = new Bundle();
-                bundle_conditionoverview.putSerializable(Constants.MESSAGEINFO,messageInfo);
+                bundle_conditionoverview.putSerializable(Constants.MESSAGEINFO, messageInfo);
                 ConditionoverViewFragment conditionoverViewFragment = new ConditionoverViewFragment();
                 conditionoverViewFragment.setArguments(bundle_conditionoverview);
-                mapFragments.put(FRAGEMNT_CONDITONOVERVIEW,conditionoverViewFragment);
+                mapFragments.put(FRAGEMNT_CONDITONOVERVIEW, conditionoverViewFragment);
                 break;
 
 
@@ -1002,10 +1030,57 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
     }
 
 
-    private OnTouchListener onTouchListener;
+    /**
+     * 检测app 新版本成功回调
+     *
+     * @param newVersionBean
+     */
+    @Override
+    public void checkNewAppVersionSuccess(CheckNewVersionBean newVersionBean) {
+        runOnUiThread(() -> {
+            if (!EmptyUtil.isEmpty(newVersionBean)) {
+                String updateTime = TimeUtils.getTimeToDay(newVersionBean.getUpdatedTime());
+                String newVersionName = newVersionBean.getVersionCode();
+                newVersionName = newVersionName.contains("v") ? newVersionName.replace("v", "") : newVersionName;
+                int newVersionCode = newVersionBean.getVersionNumber();
+                String updateContent = newVersionBean.getVersionDescription();
+                String apkDownLoadUrl = newVersionBean.getDownloadUrl();
+                if (newVersionCode > cureentVersioncode) {   //  版本 大于  当前版本
+                    Log.e(TAG, "大于当前版本");
+                    appUpdateDialog = new AppUpdateDialog(this).setOnExecuteClickListener(new AppUpdateDialog.OnExecuteClickListener() {
+                        @Override
+                        public void onPositiveClick() {
+                            Intent intent = new Intent(HomeActivity.this, DownApkService.class);
+                            intent.putExtra(APK_URL, apkDownLoadUrl); //url
+                            HomeActivity.this.startService(intent);
+                            Log.e(TAG, "更新----");
+                            CrashHandler.getInstance().handleException("用户选择更新应用", Constants.LOG_LOG);
+                        }
 
-    public void setOnTouchListener(OnTouchListener listener) {
-        onTouchListener = listener;
+                        @Override
+                        public void onNegativeClick() {
+                            Log.e(TAG, "忽略----");
+                            CrashHandler.getInstance().handleException("用户选择忽略更新", Constants.LOG_LOG);
+                        }
+                    });
+                    appUpdateDialog.show();
+                    appUpdateDialog.setUpdateImformation(newVersionName, updateTime, !EmptyUtil.isEmpty(updateContent) ? updateContent : "");
+                } else {
+                    Log.e(TAG, "小于当前版本");
+                }
+            }
+        });
+    }
+
+
+    /**
+     * 检测app 新版本失败回调
+     *
+     * @param failMessage
+     */
+    @Override
+    public void checkNewAppVersionFail(String failMessage) {
+
     }
 
 

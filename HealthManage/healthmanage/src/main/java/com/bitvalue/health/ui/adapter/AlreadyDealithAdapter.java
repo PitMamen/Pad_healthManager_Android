@@ -6,6 +6,7 @@ package com.bitvalue.health.ui.adapter;
  */
 
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.LayoutRes;
@@ -57,6 +58,7 @@ public class AlreadyDealithAdapter extends BaseQuickAdapter<TaskDeatailBean, Bas
         holder.setText(R.id.tv_patient_age, videoClientsResultBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
         holder.setText(R.id.tv_equity_use, "已结束");
         holder.setText(R.id.tv_time, TimeUtils.getTime_(videoClientsResultBean.getExecTime()));
+        holder.getView(R.id.tv_remind).setVisibility(View.GONE);  //隐藏 提醒上线通知
         holder.itemView.setOnClickListener(v -> {
             if (onRightClickCallBack != null) {
                 onRightClickCallBack.OnItemClick(videoClientsResultBean);

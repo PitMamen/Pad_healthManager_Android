@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class CheckNewVersionBean implements Serializable {
   private int id;
   private String versionCode;
-  private String versionNumber;
+  private int versionNumber;
   private String versionDescription;
   private int state;
   private String downloadUrl;
@@ -38,11 +38,11 @@ public class CheckNewVersionBean implements Serializable {
     this.versionCode = versionCode;
   }
 
-  public String getVersionNumber() {
+  public int getVersionNumber() {
     return versionNumber;
   }
 
-  public void setVersionNumber(String versionNumber) {
+  public void setVersionNumber(int versionNumber) {
     this.versionNumber = versionNumber;
   }
 

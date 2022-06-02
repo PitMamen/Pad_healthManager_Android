@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.bitvalue.health.api.ApiResult;
-import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
+import com.bitvalue.health.api.eventbusbean.NotifyactionObj;
 import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
 import com.bitvalue.health.api.requestbean.SaveRightsUseBean;
 import com.bitvalue.health.api.requestbean.SummaryBean;
@@ -118,7 +118,6 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
 
 
     private void initCompView() {
-        Log.e(TAG, "initCompView: " + taskDeatailBean.toString());
         if (taskDeatailBean.getExecFlag() != 1
                 && taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE)) {
             iv_endConsultationButton.setVisibility(View.VISIBLE);
@@ -309,7 +308,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
         homeActivity.runOnUiThread(() -> {
 //            Log.e(TAG, "成功---------------" + bean.execFlag);
             refreshView();
-            EventBus.getDefault().post(new NotifycationAlardyObj());
+            EventBus.getDefault().post(new NotifyactionObj());
             ToastUtils.show("结束问诊处理成功!");
         });
     }

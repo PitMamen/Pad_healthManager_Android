@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    app:cardBackgroundColor="@color/white"
+    app:cardBackgroundColor="@color/transparent"
     app:cardCornerRadius="5dp"
     app:cardElevation="0px"
     tools:context=".ui.dialog.UpdateDialog">
@@ -65,6 +65,7 @@
         </FrameLayout>
 
         <LinearLayout
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -85,7 +86,7 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginVertical="10dp"
                 android:lineSpacingExtra="5dp"
-                android:minLines="3"
+                android:minLines="5"
                 android:textColor="@color/black60"
                 android:textSize="15sp"
                 tools:text="6\n66\n666\n6666" />

@@ -168,9 +168,7 @@ public class TimeUtils {
             diff = simpleDateFormat.parse(endTime).getTime() - simpleDateFormat.parse(nowTime).getTime();
             day = diff / nd;
             long hour = diff % nd / nh;
-//            long min = diff % nd / nh / nm;
             long min = diff / (1000 * 60);
-            long sec = diff % nd / nh / nm / ns;
 //            strTime = hour;
             strTime = (float) min / 60;    //需要保留 后两位   小时单位
 //            Log.e("TAG", hour + "小时   " + min + " 分钟" + "  strTime: " + strTime);

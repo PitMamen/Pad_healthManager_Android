@@ -15,6 +15,7 @@ import com.bitvalue.healthmanage.R;
 /**
  * @author created by bitvalue
  * @data : 05/24
+ *  app升级提醒dialog
  */
 public class AppUpdateDialog extends Dialog {
     protected Context context;

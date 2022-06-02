@@ -1,5 +1,6 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.http.SslError;
 import android.os.Build;
@@ -127,6 +128,7 @@ public class QuestionDetailFragment extends BaseFragment {
     }
 
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void initWebView(String url) {
 
         // 设置web模式
@@ -169,6 +171,7 @@ public class QuestionDetailFragment extends BaseFragment {
 
             }
 
+            @SuppressLint("WebViewClientOnReceivedSslError")
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
 //                super.onReceivedSslError(view, handler, error);
@@ -176,6 +179,7 @@ public class QuestionDetailFragment extends BaseFragment {
             }
         });
 
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(url);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override

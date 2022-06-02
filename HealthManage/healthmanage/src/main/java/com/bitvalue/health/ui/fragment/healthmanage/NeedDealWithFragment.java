@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.NotifyactionObj;
-import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.requestbean.filemodel.SystemRemindObj;
 import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.TaskDeatailBean;
@@ -421,16 +420,6 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     }
 
 
-    /**
-     * 更新已办数据 重新请求接口
-     *
-     * @param notifyactionObj
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void updateAlradyData(NotifycationAlardyObj notifyactionObj) {
-        Log.e(TAG, "更新已办处理----");
-        getNeedDealWithData();
-    }
 
 
 }

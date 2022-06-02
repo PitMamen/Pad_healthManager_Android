@@ -37,7 +37,6 @@ import com.bitvalue.health.Application;
 import com.bitvalue.health.api.ApiResult;
 import com.bitvalue.health.api.eventbusbean.NotiflyUIObj;
 import com.bitvalue.health.api.eventbusbean.NotifyactionObj;
-import com.bitvalue.health.api.eventbusbean.NotifycationAlardyObj;
 import com.bitvalue.health.api.eventbusbean.RefreshDataViewObj;
 import com.bitvalue.health.api.eventbusbean.TimeOutObj;
 import com.bitvalue.health.api.requestbean.CallRequest;
@@ -350,9 +349,6 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     }
 
 
-
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -368,7 +364,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     public void saveRightsUseRecordSuccess(SaveRightsUseBean bean) {
         homeActivity.runOnUiThread(() -> {
             ToastUtils.show("已结束问诊!");
-            EventBus.getDefault().post(new NotifycationAlardyObj()); //通知更新最新数据
+            EventBus.getDefault().post(new NotifyactionObj()); //通知更新最新数据
             EventBus.getDefault().post(new RefreshDataViewObj());  //通知医生端界面 更新 已结束 字样和 隐藏开始问诊控件
             if (homeActivity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 homeActivity.getSupportFragmentManager().popBackStack();
@@ -595,7 +591,8 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         mChatLayout.getInputLayout().tv_datacollection.setText(loginBean.getAccount().roleName.equals("casemanager") ? getString(R.string.pre_diagnosis_collection) : getString(R.string.pre_diagnosis_data));
         mChatLayout.getInputLayout().tv_medicalfolder.setVisibility(!loginBean.getAccount().roleName.equals("casemanager") ? VISIBLE : GONE);
         mChatLayout.getInputLayout().tv_datacollection.setVisibility(isShowdataCollection ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示预诊收集信息控件
-        mChatLayout.getInputLayout().btn_lingdang.setVisibility(isShowdataCollection ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示铃铛标识
+//        mChatLayout.getInputLayout().btn_lingdang.setVisibility(isShowdataCollection ? VISIBLE : GONE); // 如果是从咨询界面跳转过来的 则不显示铃铛标识
+        mChatLayout.getInputLayout().btn_lingdang.setVisibility(GONE); //需求更改  不显示铃铛标识
 //        mChatLayout.getInputLayout().tv_sendremind.setVisibility(isShowSendRemind ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示 预诊收集信息 和 上线提醒控件
 
         mChatLayout.getInputLayout().tv_datacollection.setOnClickListener(v -> {   //   预诊资料

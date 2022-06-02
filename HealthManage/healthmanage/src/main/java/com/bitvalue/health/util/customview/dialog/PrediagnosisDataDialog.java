@@ -59,7 +59,7 @@ public class PrediagnosisDataDialog extends Dialog {
     private void initView() {
         wrapRecyclerViewList = findViewById(R.id.list_medicalfolder);
         tv_dialog_title = findViewById(R.id.tv_dialog_title);
-        tv_dialog_title.setText("问诊小结");
+        tv_dialog_title.setText("预诊资料");
         LinearLayoutManager datareviewrecordlayoutManager = new LinearLayoutManager(mcontext);
         wrapRecyclerViewList.setLayoutManager(datareviewrecordlayoutManager);
         adapter = new PrediagnosisDataAdapter(R.layout.item_medicalrecord_folder_layout, datas);

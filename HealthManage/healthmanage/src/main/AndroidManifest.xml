@@ -38,7 +38,7 @@
     <!-- 定位权限（用于 WebView 定位）-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <!-- Application 节点详解：https://developer.android.google.cn/guide/topics/manifest/application-element -->
     <!-- Activity 节点详解：https://developer.android.google.cn/guide/topics/manifest/activity-element -->
     <application
@@ -88,11 +88,21 @@
             android:screenOrientation="landscape" />
 
 
+
+
         <activity
             android:name="com.bitvalue.health.ui.activity.LoginHealthActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:theme="@style/SplashTheme" />
+
+
+        <activity
+            android:name="com.bitvalue.health.ui.activity.AppUpdateDialog"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+        android:theme="@android:style/Theme.Translucent" />
+
 
         <!--        <activity-->
         <!--            android:name=".ui.activity.main.NewMsgActivity"-->

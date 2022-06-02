@@ -56,6 +56,7 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
         holder.setText(R.id.tv_patient_age, taskdeatailBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
         //如果是个案师账号 界面 正常显示
         if (isCasemanagerAcount) {
+            holder.getView(R.id.tv_remind).setVisibility(View.GONE);  //隐藏 提醒上线通知
             holder.setText(R.id.tv_equity_use, taskdeatailBean.getTaskName());
             holder.setText(R.id.tv_time, TimeUtils.getTime_(taskdeatailBean.getExecTime()));
         } else {
@@ -88,24 +89,25 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
                 } else {
                     holder.getView(R.id.tv_time).setVisibility(View.GONE);
                 }
-                holder.getView(R.id.tv_remind).setVisibility(View.GONE);  //隐藏 提醒上线通知
+//                holder.getView(R.id.tv_remind).setVisibility(View.GONE);  //隐藏 提醒上线通知
             } else {
-                holder.getView(R.id.tv_remind).setVisibility(View.VISIBLE);
+//                holder.getView(R.id.tv_remind).setVisibility(View.VISIBLE);
                 holder.setText(R.id.tv_equity_use, "待就诊");
                 if (taskdeatailBean.getTaskDetail().getExecFlag() == 0) {
                     holder.getView(R.id.tv_time).setVisibility(View.GONE);
                 } else {
                     holder.setText(R.id.tv_time, "预约时间:" + TimeUtils.getTime_tosecond(taskdeatailBean.getExecTime()));
                 }
-                //发送上线提醒
-                holder.getView(R.id.tv_remind).setOnClickListener(v -> {
-                    if (onRightClickCallBack != null) {
-                        onRightClickCallBack.OnRemindClick(taskdeatailBean);
-                    }
-                });
 
             }
         }
+
+        //发送上线提醒
+        holder.getView(R.id.tv_remind).setOnClickListener(v -> {
+            if (onRightClickCallBack != null) {
+                onRightClickCallBack.OnRemindClick(taskdeatailBean);
+            }
+        });
 
         holder.itemView.setOnClickListener(v -> {
             if (onRightClickCallBack != null) {

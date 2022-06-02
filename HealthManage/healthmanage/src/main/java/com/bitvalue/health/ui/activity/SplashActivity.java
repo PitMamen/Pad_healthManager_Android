@@ -2,11 +2,15 @@ package com.bitvalue.health.ui.activity;
 
 import static com.bitvalue.health.util.Constants.APK_LOCAL_PATH;
 import static com.bitvalue.health.util.Constants.APK_URL;
+import static com.bitvalue.health.util.Constants.ISCLICKUPDATE;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,9 +58,9 @@ public class SplashActivity extends BaseActivity<AppUpdatePersenter> implements 
 
     private Disposable subscription;
     private AppUpdateDialog appUpdateDialog;
-    private String packgeAppId;
     private String cureentVersionname;
     private int cureentVersioncode;
+    private String packgeAppId;
 
     //初始化权限
     @Override
@@ -68,7 +72,7 @@ public class SplashActivity extends BaseActivity<AppUpdatePersenter> implements 
         cureentVersioncode = VersionUtils.getVersionCode(this);
         cureentVersionname = VersionUtils.getPackgeVersion(this);
         packgeAppId = VersionUtils.getPackgeAppId(this);
-        tv_tv_copyright_show.setText(String.format("Copyright ©2016-2022 bitValue.All Rights Reserved \r\r\rv_%s",cureentVersionname));
+        tv_tv_copyright_show.setText(String.format("Copyright ©2016-2022 bitValue.All Rights Reserved \r\r\rv_%s", cureentVersionname));
         String old_apk_path = SharedPreManager.getString(APK_LOCAL_PATH, this);
         boolean isDeleted = FileUtil.deleteFile(old_apk_path);
         mPresenter.checkNewAppVersion();
@@ -115,9 +119,9 @@ public class SplashActivity extends BaseActivity<AppUpdatePersenter> implements 
     //右下角倒计时显示
     private void startSubscribe() {
         subscription = Observable.interval(0, 1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-                .take(4)
+                .take(5)
                 .subscribe(aLong -> {
-                            tv_jump.setText("跳过 " + (3 - aLong));
+                            tv_jump.setText("跳过 " + (4 - aLong));
                             tv_jump.setOnClickListener(v -> jumpActivity());
 
                         },
@@ -130,18 +134,17 @@ public class SplashActivity extends BaseActivity<AppUpdatePersenter> implements 
 
     //根据用户是否处于登录状态 的界面跳转方法  跳转至主界面
     private void jumpActivity() {
-        if (appUpdateDialog != null && appUpdateDialog.isShowing()) {
-            appUpdateDialog.dismiss();
-        }
-
         if (!SharedPreManager.getString(Constants.KEY_TOKEN).isEmpty()) {
             startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-            finish();
+            this.finish();
         } else {
             //从闪屏界面跳转到登录界面
             Intent intent = new Intent(SplashActivity.this, LoginHealthActivity.class);
             startActivity(intent);
-            finish();
+            this.finish();
+        }
+        if (appUpdateDialog != null && appUpdateDialog.isShowing()) {
+            appUpdateDialog.dismiss();
         }
 
     }
@@ -187,19 +190,18 @@ public class SplashActivity extends BaseActivity<AppUpdatePersenter> implements 
                 String updateTime = TimeUtils.getTimeToDay(newVersionBean.getUpdatedTime());
                 String newVersionName = newVersionBean.getVersionCode();
                 newVersionName = newVersionName.contains("v") ? newVersionName.replace("v", "") : newVersionName;
-                String newVersionCode = newVersionBean.getVersionNumber();
+                int newVersionCode = newVersionBean.getVersionNumber();
                 String updateContent = newVersionBean.getVersionDescription();
                 String apkDownLoadUrl = newVersionBean.getDownloadUrl();
 //                int newVersion = Integer.parseInt(newVersionName.contains(".") ? newVersionName.replace(".", "") : newVersionName);
 //                int localVersion = Integer.parseInt(cureentVersionname.contains(".") ? cureentVersionname.replace(".", "") : cureentVersionname);
-//                Log.e(TAG, "当前VersionCode: " + cureentVersioncode + "  最新versionCode:" + newVersionCode + " 当前版本: " + localVersion + " 最新版本：" + newVersion + "  apkDownLoadUrl:" + apkDownLoadUrl + "  更新内容:" +
-//                        updateContent);
-//                newVersion = 123;
-                if (Integer.parseInt(newVersionCode) > cureentVersioncode) {   //  版本 大于  当前版本
+//                Log.e(TAG, "当前VersionCode: " + cureentVersioncode + "  最新versionCode:" + newVersionCode + " 当前版本: " + localVersion + " 最新版本：" + newVersion + "  apkDownLoadUrl:" + apkDownLoadUrl + "  更新内容:" +updateContent);
+                if (newVersionCode > cureentVersioncode) {   //  版本 大于  当前版本
                     Log.e(TAG, "大于当前版本");
                     appUpdateDialog = new AppUpdateDialog(this).setOnExecuteClickListener(new AppUpdateDialog.OnExecuteClickListener() {
                         @Override
                         public void onPositiveClick() {
+                            SharedPreManager.putBoolean(ISCLICKUPDATE,true,SplashActivity.this); //用户点击操作保存下来 HomeActivity中所用
                             Intent intent = new Intent(SplashActivity.this, DownApkService.class);
                             intent.putExtra(APK_URL, apkDownLoadUrl); //url
                             SplashActivity.this.startService(intent);
@@ -210,6 +212,7 @@ public class SplashActivity extends BaseActivity<AppUpdatePersenter> implements 
                         @Override
                         public void onNegativeClick() {
                             Log.e(TAG, "忽略----");
+                            SharedPreManager.putBoolean(ISCLICKUPDATE,false,SplashActivity.this);
                             CrashHandler.getInstance().handleException("用户选择忽略更新", Constants.LOG_LOG);
                         }
                     });

@@ -5,6 +5,7 @@ import static com.bitvalue.health.util.Constants.APK_URL;
 import static com.bitvalue.health.util.Constants.LOG_FAIL;
 import static com.bitvalue.health.util.Constants.LOG_RECORD;
 
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,13 +21,18 @@ import android.os.IBinder;
 import android.os.Process;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.FileProvider;
 
+import com.bitvalue.health.ui.activity.AppUpdateDialog;
+import com.bitvalue.health.ui.activity.SplashActivity;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.CrashHandler;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.SlientInstall;
 import com.bitvalue.health.util.VersionUtils;
@@ -84,7 +90,6 @@ public class DownApkService extends Service {
         // 文件下载路径
         String apk_url = intent.getStringExtra(APK_URL);
         if (apk_url.endsWith("apk")) {
-//            Log.d(TAG, "DownAPKService:url=" + apk_url);
             DownFile(apk_url, APK_dir + "HealthManage.apk");
         } else {
             ToastUtils.show("更新失败,目标文件非apk文件");
@@ -182,7 +187,7 @@ public class DownApkService extends Service {
                 ToastUtils.show("开始下载更新文件...");
                 CrashHandler.getInstance().handleException("开始下载文件", Constants.LOG_LOG);
                 String id = "my_channel_01";
-                String name = "我是渠道名字";
+                String name = "应用更新";
                 mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 // 针对Android 8.0版本对于消息栏的限制，需要加入channel渠道这一概念
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {  //Android 8.0以上

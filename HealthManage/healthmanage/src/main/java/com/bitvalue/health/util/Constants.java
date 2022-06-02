@@ -97,6 +97,7 @@ public class Constants {
     public static final String LOCAL_PRIVATER_KEY = "privateKey";
     public static final String APK_LOCAL_PATH = "apk_local_path";
     public static final String APK_URL = "apk_url";
+    public static final String ISCLICKUPDATE = "clicl_update";
 
     /**
      * 索引

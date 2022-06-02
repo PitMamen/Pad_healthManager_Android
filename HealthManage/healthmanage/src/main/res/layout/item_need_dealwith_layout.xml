@@ -123,33 +123,34 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/qb_px_15"
             android:layout_below="@id/tv_name"
-            android:layout_marginLeft="@dimen/qb_px_10"
+            android:layout_marginLeft="@dimen/qb_px_8"
             android:layout_marginTop="@dimen/qb_px_5"
             android:layout_toRightOf="@+id/tv_equity_use"
             android:background="@drawable/shape_video_visit"
             android:gravity="center"
-            android:paddingLeft="@dimen/qb_px_8"
-            android:paddingRight="@dimen/qb_px_8"
+            android:paddingLeft="@dimen/qb_px_5"
+            android:paddingRight="@dimen/qb_px_5"
             android:text="视频问诊"
+            android:singleLine="false"
             android:textColor="@color/text_qingse"
             android:textSize="12sp"></TextView>
 
         <TextView
             android:id="@+id/tv_remind"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/qb_px_15"
             android:layout_below="@id/tv_name"
-            android:layout_marginLeft="@dimen/qb_px_10"
+            android:layout_marginLeft="@dimen/qb_px_5"
             android:layout_marginTop="@dimen/qb_px_5"
             android:layout_toRightOf="@+id/tv_video_visit"
             android:background="@drawable/shape_remind_visit"
-            android:textColor="@drawable/remind_press_select"
             android:gravity="center"
-            android:paddingLeft="@dimen/qb_px_8"
-            android:paddingRight="@dimen/qb_px_8"
+            android:paddingLeft="@dimen/qb_px_4"
+            android:paddingRight="@dimen/qb_px_4"
             android:text="提醒上线"
-            android:textSize="12sp"></TextView>
+            android:textColor="@drawable/remind_press_select"
+            android:textSize="12sp"
+            android:visibility="visible"></TextView>
     </RelativeLayout>
 
 
