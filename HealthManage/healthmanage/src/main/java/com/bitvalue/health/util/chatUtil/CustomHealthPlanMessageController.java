@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.eventbusbean.NotiflyUIObj;
+import com.bitvalue.health.api.eventbusbean.NotifyactionObj;
 import com.bitvalue.health.api.responsebean.MessageInfoData;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.sdk.collab.R;
@@ -58,11 +59,9 @@ public class CustomHealthPlanMessageController {
             }
         }
         if (!info.isSelf()&&data.description.equals("确认时间")){
-            EventBus.getDefault().post(new NotiflyUIObj(data.tradeId));
+            EventBus.getDefault().post(new NotiflyUIObj(data.tradeId)); //聊天界面顶部 "确认问诊" 变成 "结束问诊"
+            EventBus.getDefault().post(new NotifyactionObj());//更新待办列表 请求接口 立即显示预约时间
         }
-
-
-
         view.setClickable(true);
         view.setOnClickListener(v -> {
             if (!info.isSelf()) {
@@ -74,12 +73,9 @@ public class CustomHealthPlanMessageController {
                 } else {
                     ToastUtils.show("已确认过时间,无需再次选择!");
                 }
-
             } else {
                 Log.e("TAG", "非登录用户!!!");
             }
-
-
         });
     }
 }

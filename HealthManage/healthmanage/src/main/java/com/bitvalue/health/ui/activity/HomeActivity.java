@@ -1041,7 +1041,9 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             if (!EmptyUtil.isEmpty(newVersionBean)) {
                 String updateTime = TimeUtils.getTimeToDay(newVersionBean.getUpdatedTime());
                 String newVersionName = newVersionBean.getVersionCode();
-                newVersionName = newVersionName.contains("v") ? newVersionName.replace("v", "") : newVersionName;
+                if (!EmptyUtil.isEmpty(newVersionName)){
+                    newVersionName = newVersionName.contains("v") ? newVersionName.replace("v", "") : newVersionName;
+                }
                 int newVersionCode = newVersionBean.getVersionNumber();
                 String updateContent = newVersionBean.getVersionDescription();
                 String apkDownLoadUrl = newVersionBean.getDownloadUrl();

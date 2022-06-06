@@ -189,13 +189,12 @@ public class SplashActivity extends BaseActivity<AppUpdatePersenter> implements 
             if (!EmptyUtil.isEmpty(newVersionBean)) {
                 String updateTime = TimeUtils.getTimeToDay(newVersionBean.getUpdatedTime());
                 String newVersionName = newVersionBean.getVersionCode();
-                newVersionName = newVersionName.contains("v") ? newVersionName.replace("v", "") : newVersionName;
+                if (!EmptyUtil.isEmpty(newVersionName)){
+                    newVersionName = newVersionName.contains("v") ? newVersionName.replace("v", "") : newVersionName;
+                }
                 int newVersionCode = newVersionBean.getVersionNumber();
                 String updateContent = newVersionBean.getVersionDescription();
                 String apkDownLoadUrl = newVersionBean.getDownloadUrl();
-//                int newVersion = Integer.parseInt(newVersionName.contains(".") ? newVersionName.replace(".", "") : newVersionName);
-//                int localVersion = Integer.parseInt(cureentVersionname.contains(".") ? cureentVersionname.replace(".", "") : cureentVersionname);
-//                Log.e(TAG, "当前VersionCode: " + cureentVersioncode + "  最新versionCode:" + newVersionCode + " 当前版本: " + localVersion + " 最新版本：" + newVersion + "  apkDownLoadUrl:" + apkDownLoadUrl + "  更新内容:" +updateContent);
                 if (newVersionCode > cureentVersioncode) {   //  版本 大于  当前版本
                     Log.e(TAG, "大于当前版本");
                     appUpdateDialog = new AppUpdateDialog(this).setOnExecuteClickListener(new AppUpdateDialog.OnExecuteClickListener() {

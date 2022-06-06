@@ -1,8 +1,4 @@
 package com.bitvalue.health.ui.adapter;
-
-
-import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -17,10 +13,6 @@ import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.healthmanage.R;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,10 +24,10 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
     private OnRightClickCallBack onRightClickCallBack;
     private boolean isCasemanagerAcount = true; // 是否是 个案师账号
 
-    public NeedDealithQuickAdapter(@LayoutRes int layoutResId, @Nullable List<TaskDeatailBean> data, boolean isisCasemanagerAcount, OnRightClickCallBack callBack) {
+    public NeedDealithQuickAdapter(@LayoutRes int layoutResId, @Nullable List<TaskDeatailBean> data, boolean isCasemanagerAcount, OnRightClickCallBack callBack) {
         super(layoutResId, data);
         this.onRightClickCallBack = callBack;
-        this.isCasemanagerAcount = isisCasemanagerAcount;
+        this.isCasemanagerAcount = isCasemanagerAcount;
     }
 
     @Override
@@ -69,34 +61,33 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
                         && !EmptyUtil.isEmpty(taskdeatailBean.getTaskDetail().getUserGoodsAttrInfo().getServiceExpire())) {  //如果没有服务时效  就不显示
                     int serviceContinueTime = taskdeatailBean.getTaskDetail().getUserGoodsAttrInfo().getServiceExpire();
                     long excetime = taskdeatailBean.getExecTime();  //执行时间
-
                     String addAfterTime = TimeUtils.AddDataMinut(TimeUtils.getTime_tosecond(excetime), serviceContinueTime);
 //                    Log.e(TAG, "convert111 最后确认时间: " + addAfterTime);
-                    float resultTime = TimeUtils.dateDiff(addAfterTime); //剩余时间=申请时间+服务时效-当前时间
-                    DecimalFormat decimalFormat = new DecimalFormat("0.00");
-                    String time = decimalFormat.format(resultTime);
-                    try {
-                        if (Float.parseFloat(time) <= 0) {
-                            time = "0.0";
-                        }
-                    } catch (Exception e) {
-                        time = "0.0";
-                        Log.e(TAG, "Float.parseFloat error-> ");
+                    long resultTime = TimeUtils.dateDiff(addAfterTime); //剩余时间=申请时间+服务时效-当前时间
+                    int hours = (int) resultTime / 3600;  //小时
+                    int temp = (int) resultTime - hours * 3600;
+                    int mins = temp / 60; //分钟
+                    if (hours <= 0) {
+                        hours = 0;
                     }
-                    holder.setText(R.id.tv_time, String.format("服务时效:剩余 %s 小时", time));
+                    if (mins <= 0) {
+                        mins = 0;
+                    }
+                    holder.setText(R.id.tv_time, String.format("服务时效:剩余 %s 小时 %s分钟", hours, mins));
 //                    Log.e(TAG, "添加后时间: " + addAfterTime + " 需添加时间：" + serviceContinueTime + "  添加前时间：" + TimeUtils.getTime_tosecond(excetime) + " 姓名：" + taskdeatailBean.getTaskDetail().getUserInfo().getUserName());
                     holder.getView(R.id.tv_time).setVisibility(View.VISIBLE);
                 } else {
                     holder.getView(R.id.tv_time).setVisibility(View.GONE);
                 }
-//                holder.getView(R.id.tv_remind).setVisibility(View.GONE);  //隐藏 提醒上线通知
             } else {
-//                holder.getView(R.id.tv_remind).setVisibility(View.VISIBLE);
                 holder.setText(R.id.tv_equity_use, "待就诊");
                 if (taskdeatailBean.getTaskDetail().getExecFlag() == 0) {
                     holder.getView(R.id.tv_time).setVisibility(View.GONE);
                 } else {
-                    holder.setText(R.id.tv_time, "预约时间:" + TimeUtils.getTime_tosecond(taskdeatailBean.getExecTime()));
+                    if (taskdeatailBean.getTaskDetail().getExecFlag() == 2) {
+                        holder.getView(R.id.tv_time).setVisibility(View.VISIBLE);
+                        holder.setText(R.id.tv_time, "预约时间:" + TimeUtils.getTime_tosecond(taskdeatailBean.getExecTime()));
+                    }
                 }
 
             }

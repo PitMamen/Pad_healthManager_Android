@@ -151,10 +151,11 @@ public class TimeUtils {
 
 
     /***
-     * 计算时间差值
+     * 计算时间差值  返回 秒 单位
      */
-    public static float dateDiff(String endTime) {
-        float strTime = 0;
+    public static long dateDiff(String endTime) {
+        long second=0; //秒
+        long strTime=0;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         long nd = 1000 * 60 * 60 * 24;  //天
         long nh = 1000 * 60 * 60; //小时
@@ -169,15 +170,14 @@ public class TimeUtils {
             day = diff / nd;
             long hour = diff % nd / nh;
             long min = diff / (1000 * 60);
-//            strTime = hour;
-            strTime = (float) min / 60;    //需要保留 后两位   小时单位
-//            Log.e("TAG", hour + "小时   " + min + " 分钟" + "  strTime: " + strTime);
-            return strTime;
+             second = diff/1000; //秒
+            strTime = (long) min / 60;    //需要保留 后两位   小时单位
+            return second;
 
         } catch (Exception e) {
             Log.e("TAG", "dateDiff: " + e.getMessage());
         }
-        return strTime;
+        return second;
 
     }
 

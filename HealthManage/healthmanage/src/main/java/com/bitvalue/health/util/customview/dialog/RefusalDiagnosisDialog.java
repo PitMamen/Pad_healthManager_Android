@@ -56,10 +56,10 @@ public class RefusalDiagnosisDialog extends Dialog {
     initView();
     initClicklisenter();
     initSpinnerSpecial();
-    this.setOnDismissListener(dialog -> {    //当前dialog 一旦隐藏 则隐藏键盘
-      // TODO Auto-generated method stub
-      InputMethodUtils.hideSoftInput(mContext);
-    });
+//    this.setOnDismissListener(dialog -> {    //当前dialog 一旦隐藏 则隐藏键盘
+//      // TODO Auto-generated method stub
+//      InputMethodUtils.hideSoftInput(mContext);
+//    });
   }
 
 

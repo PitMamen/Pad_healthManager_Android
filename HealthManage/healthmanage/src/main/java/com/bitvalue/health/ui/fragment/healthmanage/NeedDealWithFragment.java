@@ -313,7 +313,6 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
                 rl_default_layout.setVisibility(View.VISIBLE);
             }
         });
-
     }
 
     /**

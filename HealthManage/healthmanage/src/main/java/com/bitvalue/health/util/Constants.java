@@ -10,8 +10,8 @@ public class Constants {
     public static final String USER_ID = "user_id";
     public static final String IDCARD_NUMBER = "idcard_number";
     public static final String NEED_TOAST = "need_toast";
-    public static final String HOST_URL = "https://develop.mclouds.org.cn";    //http://192.168.1.122/  测试环境
-//        public static final String HOST_URL = "http://hmg.mclouds.org.cn";       //正式环境
+//    public static final String HOST_URL = "https://develop.mclouds.org.cn";    //http://192.168.1.122/  测试环境
+        public static final String HOST_URL = "http://hmg.mclouds.org.cn";       //正式环境
 //        public static final String HOST_URL = "http://ys.mclouds.org.cn:8088";       //演示环境
     public static int screenWidth, screenHeight;
     public static final String KEY_REMEMBER_PSD = "key_remember_psd";
