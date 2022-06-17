@@ -200,7 +200,7 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
             public void onSucceed(ApiResult<List<GoodListBean>> result) {
                 super.onSucceed(result);
                 if (!EmptyUtil.isEmpty(result)) {
-                    default_view.setVisibility(result.getData().size() == 0 ? View.VISIBLE : View.GONE);
+                    default_view.setVisibility(result.getData() != null && result.getData().size() == 0 ? View.VISIBLE : View.GONE);
                     planListBeans = result.getData();
                     plansAdapter.updateList(planListBeans);
                     plansAdapter.setNewData(planListBeans);

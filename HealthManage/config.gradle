@@ -9,7 +9,7 @@ android {
         // 目标适配版本
         targetSdkVersion 30
         versionName '1.2.3'
-        versionCode 24
+        versionCode 32
         //versionCode new Date().format("yyyyMMdd") as int
     }
 

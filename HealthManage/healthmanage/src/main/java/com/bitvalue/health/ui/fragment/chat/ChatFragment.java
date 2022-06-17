@@ -63,6 +63,7 @@ import com.bitvalue.health.ui.activity.HomeActivity;
 import com.bitvalue.health.ui.adapter.DialogItemAdapter;
 import com.bitvalue.health.ui.adapter.DialogItemAnswerAdapter;
 import com.bitvalue.health.ui.adapter.MedicalRecordAdapter;
+import com.bitvalue.health.util.ClickUtils;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.DensityUtil;
@@ -153,7 +154,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
     private TextView tv_numberofarticles;
     private TextView gettv_duration;
-    private int textNumLimit = 0;  //图文咨询 患者的条文次数
+    private String textNumLimit = "0";  //图文咨询 患者的条文次数
     private String timeLimit = "0";  //通话时长
     private int serviceExpire;  // 有效时长
     private String rightName; //权益名称
@@ -646,28 +647,34 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     private void EndVisit() {
         //结束问诊  如果是直接传给医生的权益任务 结束任务时需判断当前的权益是否已经开始生效,获取权益最新的状态
         mTitleBar.getEndVisitText().setOnClickListener(v -> {
-            if (mTitleBar.getEndVisitText().getText().toString().equals("拒绝问诊")) {  //如果是拒绝问诊字眼 请求接口获取最新的权益状态 再根据返回的权益状态 弹框
-                mPresenter.queryRightsRecord(1, 1000, taskDeatailBean.getTaskDetail().getRightsId(), String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()), String.valueOf(taskDeatailBean.getTaskDetail().getId()));  //点击之前获取一下最新的权益状态
-            } else {  // 直接结束问诊 弹问诊小结窗口
-                summaryDialog = new SummaryDialog(homeActivity);
-                summaryDialog.setOnclickListener(new SummaryDialog.OnButtonClickListener() {
-                    @Override
-                    public void onPositiveClick() {
-                        operationData(true, summaryDialog.getInputString(), summaryDialog.getCzJyInputString());
-                    }
+            if (!ClickUtils.isFastClick()) {
+                if (mTitleBar.getEndVisitText().getText().toString().equals("拒绝问诊")) {  //如果是拒绝问诊字眼 请求接口获取最新的权益状态 再根据返回的权益状态 弹框
+                    mPresenter.queryRightsRecord(1, 1000, taskDeatailBean.getTaskDetail().getRightsId(), String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()), String.valueOf(taskDeatailBean.getTaskDetail().getId()));  //点击之前获取一下最新的权益状态
+                } else {  // 直接结束问诊 弹问诊小结窗口
+                    summaryDialog = new SummaryDialog(homeActivity);
+                    summaryDialog.setOnclickListener(new SummaryDialog.OnButtonClickListener() {
+                        @Override
+                        public void onPositiveClick() {
+                            operationData(true, summaryDialog.getInputString(), summaryDialog.getCzJyInputString());
+                        }
 
-                    @Override
-                    public void onSave() {
-                        operationData(false, summaryDialog.getInputString(), summaryDialog.getCzJyInputString());
-                    }
+                        @Override
+                        public void onSave() {
+                            operationData(false, summaryDialog.getInputString(), summaryDialog.getCzJyInputString());
+                        }
 
-                    @Override
-                    public void onNegtiveClick() {
-                        summaryDialog.dismiss();
-                    }
-                }).show();
-                summaryDialog.setDocNameAndSummaryTime(loginBean.getUser().user.userName, TimeUtils.getCurrenTimeYMDHMS());
+                        @Override
+                        public void onNegtiveClick() {
+                            summaryDialog.dismiss();
+                        }
+                    }).show();
+                    summaryDialog.setDocNameAndSummaryTime(loginBean.getUser().user.userName, TimeUtils.getCurrenTimeYMDHMS());
+                }
+            } else {
+                ToastUtils.show("请勿频繁操作");
             }
+
+
         });
     }
 
@@ -967,10 +974,9 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     public void qryRightsUserLogSuccess(List<DataReViewRecordResponse> listData) {
         homeActivity.runOnUiThread(() -> {
             if (listData != null && listData.size() > 0) {
-//                Log.e(TAG, "qryRightsUserLogSuccess: " + listData.get(0).toString());
                 String alreadySendCount = listData.get(0).getDealResult();  // 已经使用的条数
                 if (listData.get(0).getDealType().equals(QUERY_DEALTPE_OF_TEXTNUM)) {
-                    int textAlreadSendCount = textNumLimit - Integer.valueOf(alreadySendCount);  //总条数 -  已发送的
+                    int textAlreadSendCount = Integer.parseInt(textNumLimit) - Integer.parseInt(alreadySendCount);  //总条数 -  已发送的
                     TemptextAlreadSendCount = textAlreadSendCount;
 //                    Log.e(TAG, "剩余条数: " + TemptextAlreadSendCount + " 总条数：" + textNumLimit+"  已使用条数："+alreadySendCount);
                     if (textAlreadSendCount <= 0) {
@@ -1104,13 +1110,15 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                     Log.e(TAG, "手动添加权限----");
                     return;
                 }
-                String local_phone = telephonyManager.getLine1Number();
+//                String local_phone = telephonyManager.getLine1Number();
+                String local_phone = loginBean.getUser().user.phone;
+//                Log.e(TAG, "onCallPhone1111: "+local_phone );
                 if (taskDeatailBean != null && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserInfo() != null) {
                     String patientPhone = taskDeatailBean.getTaskDetail().getUserInfo().getPhone();
                     if (!EmptyUtil.isEmpty(patientPhone) && !EmptyUtil.isEmpty(local_phone)) {
-                        if (local_phone.length() > 10) {
-                            local_phone = local_phone.substring(3);  //去除  +86标识
-                        }
+//                        if (local_phone.length() > 10) {
+//                            local_phone = local_phone.substring(3);  //去除  +86标识
+//                        }
                         CallRequest callRequest = new CallRequest();
                         long limitTime = Long.parseLong(timeLimit) * 60; //换位秒 单位  时长
 //                        long currentTime = System.currentTimeMillis()/1000; //当前时间 秒
@@ -1210,7 +1218,10 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         gettv_duration = mChatLayout.gettv_duration();
         if (!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean != null && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo() != null) {
             //患者条文限制
-            textNumLimit = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTextNumLimit();
+            textNumLimit = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTextNumLimit();  //如果取的是null   则表示后台没有配置,前端不显示条文限制
+            if (EmptyUtil.isEmpty(textNumLimit)) {
+                tv_numberofarticles.setVisibility(GONE);
+            }
             //通话时长
             if (!EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTimeLimit())) {
                 timeLimit = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTimeLimit();
@@ -1226,7 +1237,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                 qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 如果是 视频咨询 查询 图文条数 再查时长
                 qryRightsUserLog(QUERY_DEALTPE_OF_VIDEONUM); //查时长
             }
-            Log.e(TAG, "条文限制: " + textNumLimit + " 通话时长：" + timeLimit + " 时效： " + serviceExpire);
+//            Log.e(TAG, "条文限制: " + textNumLimit + " 通话时长：" + timeLimit + " 时效： " + serviceExpire);
 
         }
         //长按信息 添加信息 至快捷用语 回调  拿到需添加的信息后  请求接口

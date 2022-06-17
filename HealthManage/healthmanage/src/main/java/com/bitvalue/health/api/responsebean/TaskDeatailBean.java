@@ -376,7 +376,17 @@ public class TaskDeatailBean implements Serializable {
             public String uploadDocFlag;
             public String docId;
             public int serviceExpire;  //时效 (小时)
-            public int textNumLimit;  //条数
+            public String textNumLimit;  //条数
+            public String whoDeal; //由谁处理 医生/护士
+
+
+            public String getWhoDeal() {
+                return whoDeal;
+            }
+
+            public void setWhoDeal(String whoDeal) {
+                this.whoDeal = whoDeal;
+            }
 
             public String getTimeLimit() {
                 return timeLimit;
@@ -418,11 +428,11 @@ public class TaskDeatailBean implements Serializable {
                 serviceExpire = serviceExpire;
             }
 
-            public int getTextNumLimit() {
+            public String getTextNumLimit() {
                 return textNumLimit;
             }
 
-            public void setTextNumLimit(int textNumLimit) {
+            public void setTextNumLimit(String textNumLimit) {
                 this.textNumLimit = textNumLimit;
             }
         }

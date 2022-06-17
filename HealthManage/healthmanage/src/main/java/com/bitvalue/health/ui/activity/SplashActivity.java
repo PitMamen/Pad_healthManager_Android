@@ -74,6 +74,7 @@ public class SplashActivity extends BaseActivity<AppUpdatePersenter> implements 
         packgeAppId = VersionUtils.getPackgeAppId(this);
         tv_tv_copyright_show.setText(String.format("Copyright ©2016-2022 bitValue.All Rights Reserved \r\r\rv_%s", cureentVersionname));
         String old_apk_path = SharedPreManager.getString(APK_LOCAL_PATH, this);
+        Log.e(TAG, "旧包地址: "+old_apk_path );
         boolean isDeleted = FileUtil.deleteFile(old_apk_path);
         mPresenter.checkNewAppVersion();
         CrashHandler.getInstance().handleException("删除旧安装包:" + isDeleted, Constants.LOG_LOG);

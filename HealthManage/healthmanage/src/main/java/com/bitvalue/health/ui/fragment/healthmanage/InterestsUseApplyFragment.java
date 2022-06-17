@@ -126,6 +126,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
     private LoginBean loginBean;
     private boolean isDistributable = false;  //是否可 分配任务
     private String rigthDepatCode; //权益中科室代码
+    private String rolyType = "doctor";
 
     @Override
     protected RightApplyUsePresenter createPresenter() {
@@ -160,10 +161,13 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
             Log.e(TAG, "taskDeatailBean.getTaskDetail() == null");
             return;
         }
+        if (!EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo())) {
+            rolyType = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getWhoDeal();
+        }
+
         //先获取一下审核记录
         mPresenter.getDataReviewRecord(taskDeatailBean.getTaskDetail().getTradeId(), taskDeatailBean.getTaskDetail().getUserInfo().getUserId() + "");
         loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
-
         initrightUseTimeRecord();
         initRightsRecord();
         initCompView();
@@ -188,13 +192,13 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                 break;
             //进入聊天
             case R.id.tv_gochat:
-                    // TODO: 2022/3/25 进入聊天界面
-                    NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
-                    info.setUserName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
-                    info.setUserId(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
-                    info.setKsmc(taskDeatailBean.getTaskDetail().getDeptName());
-                    info.isShowSendRemind = false;  //进入咨询 不需要显示底部 发送提醒 按钮
-                    homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
+                // TODO: 2022/3/25 进入聊天界面
+                NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
+                info.setUserName(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
+                info.setUserId(String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId()));
+                info.setKsmc(taskDeatailBean.getTaskDetail().getDeptName());
+                info.isShowSendRemind = false;  //进入咨询 不需要显示底部 发送提醒 按钮
+                homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
                 break;
             //资料审核
             case R.id.tv_data_review:
@@ -243,14 +247,14 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                     String selectDoctor = useEquityDialog.getSelectDoc();
                     String selectContinueTime = useEquityDialog.getSelectContinueTime();
                     String selectTakeTime = useEquityDialog.getSelectTakeTime() + ":00";
-                    if (selectTakeTime.compareTo(TimeUtils.getCurrentTimeMinute())<0){  //执行时间 必须 大于 当前时间
-                      ToastUtils.show("执行时间不能小于当前时间");
+                    if (selectTakeTime.compareTo(TimeUtils.getCurrentTimeMinute()) < 0) {  //执行时间 必须 大于 当前时间
+                        ToastUtils.show("执行时间不能小于当前时间");
                         return;
                     }
                     int docUserId = useEquityDialog.getDocUserId();
                     finshMidRequestBean.execDept = rigthDepatCode; //这里传权益中的科室代码
                     finshMidRequestBean.deptName = taskDeatailBean.getTaskDetail().getDeptName(); //这里传 该权益所属科室名称 之前是传个案师所在的科室
-                    if (!EmptyUtil.isEmpty(selectContinueTime)){
+                    if (!EmptyUtil.isEmpty(selectContinueTime)) {
                         finshMidRequestBean.lastTime = Integer.valueOf(selectContinueTime);  //持续时间
                     }
                     finshMidRequestBean.execFlag = 2;
@@ -265,10 +269,22 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                         finshMidRequestBean.id = useRecordId;
                     }
                     if (selectDoctor.contains("请选择医生")) {
-                        ToastUtils.show("请选择医生!");
+                        ToastUtils.show("请选择医护人员!");
                         return;
                     }
-                    finshMidRequestBean.statusDescribe = "个案管理师已完成处理 分配给" + taskDeatailBean.getTaskDetail().getDeptName() + selectDoctor + "医生,开始时间:" + selectTakeTime + ",持续时间:" + selectContinueTime + "分钟";  //描述 添加上科室和医生
+                    if (!EmptyUtil.isEmpty(rolyType)) {
+                        switch (rolyType) {
+                            case "nurse":
+                                rolyType = " 护士";
+                                break;
+                            case "doctor":
+                                rolyType = " 医生";
+                                break;
+                        }
+                    } else {
+                        rolyType = "医生";
+                    }
+                    finshMidRequestBean.statusDescribe = "个案管理师已完成处理 分配给" + taskDeatailBean.getTaskDetail().getDeptName() + selectDoctor + rolyType + ",开始时间:" + selectTakeTime + ",持续时间:" + selectContinueTime + "分钟";  //描述 添加上科室和医生
                     finshMidRequestBean.taskId = String.valueOf(taskDeatailBean.getId());
                     finshMidRequestBean.userId = String.valueOf(taskDeatailBean.getTaskDetail().getUserInfo().getUserId());
                     finshMidRequestBean.tradeId = taskDeatailBean.getTaskDetail().getTradeId();
@@ -389,7 +405,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
                 rightBeanList = myRightBeanList;
                 MyRightBean myRightBean = rightBeanList.get(0);
                 rigthDepatCode = myRightBean.getBelong();
-                mPresenter.getDocList(myRightBean.getBelong()); //请求获取医生
+                mPresenter.getDocList(myRightBean.getBelong(), !EmptyUtil.isEmpty(rolyType) ? rolyType : "doctor"); //请求获取医生/护士列表  角色类型 根据套餐里面字段来填写
                 tv_tcmc.setText(myRightBean.getGoodsName()); //套餐名称
                 tv_serName.setText(myRightBean.getGoodsSpec()); //服务名称
                 tv_validTime.setText(TimeUtils.getTime_(myRightBean.getEndTime()));
@@ -539,7 +555,7 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
         homeActivity.runOnUiThread(() -> {
             if (responseList != null && responseList.size() > 0) {
                 //如果最新的 审核记录 是通过 则任务分配按钮可点击
-                if (!EmptyUtil.isEmpty(responseList.get(0).getDealResult())){
+                if (!EmptyUtil.isEmpty(responseList.get(0).getDealResult())) {
                     if (responseList.get(0).getDealResult().equals("审核通过")) {
                         isDistributable = true;
                         taskDeatailBean.isShowBottomBuntton = false;  //不显示底部 按钮

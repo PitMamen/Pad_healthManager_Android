@@ -353,7 +353,7 @@ public interface CommonService {
      * 根据科室ID查询 该科室下的所有医师
      */
     @GET("account-api/businessManagement/getDoctorList")
-    Observable<ApiResult<List<DocListBean>>> getDoctorList(@Query("departmentId") String departmentId);
+    Observable<ApiResult<List<DocListBean>>> getDoctorList(@Query("departmentId") String departmentId,@Query("userType")String userType);
 
     /**
      * 根据患者 ID  查询更多和基本信息

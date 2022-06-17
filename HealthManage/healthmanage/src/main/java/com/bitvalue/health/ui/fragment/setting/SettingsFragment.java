@@ -104,12 +104,13 @@ public class SettingsFragment extends BaseFragment<PersonalDataPersenter> implem
             tv_name.setText("设置");
         } else {
             tv_name.setText(loginBean.getUser().user.userName);
-            tv_type.setText(loginBean.getAccount().roleName.equals("casemanager") ? "个案管理师" : "医生");
+            tv_type.setText(loginBean.getAccount().roleName.equals("casemanager") ? "个案管理师" : "医护");
         }
         ed_name.setText(loginBean.getUser().user.userName);
         ed_phoneNumber.setText(loginBean.getUser().user.phone);
         tv_acount.setText(loginBean.getUser().userName);
     }
+
 
 
     @OnClick({R.id.layout_personal_data, R.id.layout_fix_pwd, R.id.layout_plans, R.id.tv_commit, R.id.img_reset_back})

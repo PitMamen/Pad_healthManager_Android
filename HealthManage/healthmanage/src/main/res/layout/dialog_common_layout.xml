@@ -215,6 +215,7 @@
 
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/ll_continue_time"
             android:layout_marginTop="@dimen/qb_px_3"
             android:orientation="horizontal"

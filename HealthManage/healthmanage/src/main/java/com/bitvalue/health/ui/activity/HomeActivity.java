@@ -1,6 +1,7 @@
 package com.bitvalue.health.ui.activity;
 
 
+import static com.bitvalue.health.util.Constants.APK_LOCAL_PATH;
 import static com.bitvalue.health.util.Constants.APK_URL;
 import static com.bitvalue.health.util.Constants.DATA_REVIEW;
 import static com.bitvalue.health.util.Constants.FRAGEMNT_CONDITONOVERVIEW;
@@ -100,6 +101,7 @@ import com.bitvalue.health.util.customview.dialog.AppUpdateDialog;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
+import com.bitvalue.sdk.collab.utils.FileUtil;
 import com.hjq.http.listener.OnHttpListener;
 import com.tencent.imsdk.v2.V2TIMConversation;
 
@@ -270,7 +272,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         cureentVersioncode = VersionUtils.getVersionCode(this);
         cureentVersionname = VersionUtils.getPackgeVersion(this);
         boolean isClickUpdate = SharedPreManager.getBoolean(ISCLICKUPDATE, false, this); //如果 用户在欢迎界面中 点了升级 那么这个界面不再检查版本
-        Log.e(TAG, "用户是否点击升级：" + isClickUpdate);
+        String old_apk_path = SharedPreManager.getString(APK_LOCAL_PATH, this);
+        FileUtil.deleteFile(old_apk_path);
         if (!isClickUpdate)
             mPresenter.checkNewAppVersion();
     }

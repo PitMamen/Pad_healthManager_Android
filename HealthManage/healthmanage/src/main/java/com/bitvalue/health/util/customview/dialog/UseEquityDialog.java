@@ -67,6 +67,7 @@ public class UseEquityDialog extends Dialog {
     private String selectTakeTime;
     private List<DocListBean> listbean;
     private int DocUserId; //医生Userid
+    private String mRoleType = "casemanager";
     private String[] inpatientAreaList = {"请选择医生"};  // 先写死
     private String[] time = {"5分钟", "10分钟", "20分钟", "30分钟", "120分钟"};  //时间 先写死
 
@@ -222,9 +223,6 @@ public class UseEquityDialog extends Dialog {
         tv_visit_type.setText(!EmptyUtil.isEmpty(visitType) ? visitType : "");
         tv_patient_name.setText(!EmptyUtil.isEmpty(visitName) ? visitName : "");
         tv_department.setText(!EmptyUtil.isEmpty(departmentname) ? departmentname : "");
-        if (visitType.contains("图文") || visitType.contains("重症")) {
-            ll_continue_time.setVisibility(View.GONE);
-        }
     }
 
 
@@ -240,6 +238,12 @@ public class UseEquityDialog extends Dialog {
 
     public UseEquityDialog setDepartment(String department) {
         this.departmentname = department;
+        return this;
+    }
+
+
+    public UseEquityDialog setRoleType(String roleType) {
+        this.mRoleType = roleType;
         return this;
     }
 

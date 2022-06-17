@@ -49,7 +49,7 @@ public interface RightApplyUseContract {
 
         void finishMidRequest(FinshMidRequestBean finshMidRequestBean,Callback callback);
 
-        void getDocList(String departId,Callback callback);
+        void getDocList(String departId,String userType,Callback callback);
 
 
         void getDataReviewRecord(String tradedID,String userID,Callback callback);
@@ -64,7 +64,7 @@ public interface RightApplyUseContract {
 
         void finishMidRequest(FinshMidRequestBean finshMidRequestBean);
 
-        void getDocList(String departId);
+        void getDocList(String departId,String userType);
 
         //获取审核记录
         void getDataReviewRecord(String tradedID,String userID);
