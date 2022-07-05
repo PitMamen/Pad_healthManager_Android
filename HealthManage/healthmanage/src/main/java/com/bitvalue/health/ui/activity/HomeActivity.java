@@ -133,6 +133,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
     @BindView(R.id.ll_patient_report)
     LinearLayout ll_patient_report;
+    @BindView(R.id.ll_sfjh_layout)
+    LinearLayout ll_sfjh_layout;
 
     @BindView(R.id.layout_workbench)
     RelativeLayout layout_workbench;
@@ -163,6 +165,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
     @BindView(R.id.layout_pot_video)
     LinearLayout layout_pot_video;
+    @BindView(R.id.ll_need_deallayout)
+    LinearLayout ll_need_deallayout;
 
     @BindView(R.id.tv_new_count_video)
     TextView tv_new_count_video;
@@ -253,8 +257,23 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         frameLayout_full.setVisibility(View.GONE);
         layout_group.setVisibility(loginBean.getAccount().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示咨询模块
         ll_patient_report.setVisibility(loginBean.getAccount().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示患者报道模块
-        initFragments(loginBean.getAccount().roleName.equals("casemanager") ? PATIENT_REPORT : FOLLOWUP_PLAN);  //如果是个案师账号默认首页工作台界面 否则默认随访计划首页
+//            layout_group.setVisibility(View.VISIBLE);
+        if (loginBean.getAccount().roleName.equals("servicer")) {
+            layout_group.setVisibility(View.VISIBLE);
+            ll_patient_report.setVisibility(View.GONE);
+            ll_sfjh_layout.setVisibility(View.GONE);
+            ll_need_deallayout.setVisibility(View.GONE);
+        }
+
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig);
+//        initFragments(PATIENT_REPORT);  //如果是个案师账号默认首页待办工作台界面
+        if (loginBean.getAccount().roleName.equals("casemanager")) {
+            initFragments(PATIENT_REPORT);  //如果是个案师账号默认首页待办工作台界面
+        } else if (loginBean.getAccount().roleName.equals("doctor")) {
+            initFragments(FOLLOWUP_PLAN);  //如果是个医生账号默认随访工作台界面
+        } else {
+            initFragments(CONSULTING_SERVICE);  //如果客服案师账号默认咨询工作台界面
+        }
 
 
     }
@@ -956,12 +975,14 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             //咨询按钮点击事件
             case R.id.layout_group:
                 if (tabPosition != CONSULTING_SERVICE) {
+                    Log.e(TAG, "1111111111111" );
                     backAllThirdAct();
                 } else {   //add
+                    Log.e(TAG, "22222222222222" );
                     return;
                 }
-                frameLayout_full.setVisibility(View.GONE);
                 EventBus.getDefault().post(new VideoRefreshObj());
+                frameLayout_full.setVisibility(View.GONE);
                 afterTabSelect(CONSULTING_SERVICE);
 
                 //点击之后隐藏红点
@@ -1044,7 +1065,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             if (!EmptyUtil.isEmpty(newVersionBean)) {
                 String updateTime = TimeUtils.getTimeToDay(newVersionBean.getUpdatedTime());
                 String newVersionName = newVersionBean.getVersionCode();
-                if (!EmptyUtil.isEmpty(newVersionName)){
+                if (!EmptyUtil.isEmpty(newVersionName)) {
                     newVersionName = newVersionName.contains("v") ? newVersionName.replace("v", "") : newVersionName;
                 }
                 int newVersionCode = newVersionBean.getVersionNumber();

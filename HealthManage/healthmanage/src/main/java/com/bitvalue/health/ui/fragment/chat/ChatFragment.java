@@ -589,8 +589,9 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
      * 聊天面板 底部5个小控件
      */
     private void initbootomTipButton(String deptName, boolean isShowdataCollection, boolean isShowSendRemind) {
+        mChatLayout.getInputLayout().tv_datacollection.setVisibility(loginBean.getAccount().roleName.equals("servicer")?GONE:VISIBLE);
         mChatLayout.getInputLayout().tv_datacollection.setText(loginBean.getAccount().roleName.equals("casemanager") ? getString(R.string.pre_diagnosis_collection) : getString(R.string.pre_diagnosis_data));
-        mChatLayout.getInputLayout().tv_medicalfolder.setVisibility(!loginBean.getAccount().roleName.equals("casemanager") ? VISIBLE : GONE);
+        mChatLayout.getInputLayout().tv_medicalfolder.setVisibility(loginBean.getAccount().roleName.equals("doctor") ? VISIBLE : GONE);
         mChatLayout.getInputLayout().tv_datacollection.setVisibility(isShowdataCollection ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示预诊收集信息控件
 //        mChatLayout.getInputLayout().btn_lingdang.setVisibility(isShowdataCollection ? VISIBLE : GONE); // 如果是从咨询界面跳转过来的 则不显示铃铛标识
         mChatLayout.getInputLayout().btn_lingdang.setVisibility(GONE); //需求更改  不显示铃铛标识
@@ -1212,107 +1213,112 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         mChatInfo.setChatName(mChatInfo.getChatName());
         mChatLayout.getFlayout_tipmessage().setVisibility(patientinfo.isConsultation ? VISIBLE : GONE);  //如果是 问诊 顶部显示 “您已进入...” 字样  反之不显示
         mChatLayout.getInputLayout().ll_shortCutlayout.setVisibility(mChatInfo.isShowShortCut ? VISIBLE : GONE); //底部快捷回复布局
-        mChatLayout.getInputLayout().setShowCallButton(!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean.getTaskDetail().getRightsType().equals("telNum")); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
-        mChatLayout.getInputLayout().setShowVedioButton(!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean.getTaskDetail().getRightsType().equals("videoNum")); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
-        tv_numberofarticles = mChatLayout.gettv_numberofarticles();
-        gettv_duration = mChatLayout.gettv_duration();
-        if (!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean != null && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo() != null) {
-            //患者条文限制
-            textNumLimit = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTextNumLimit();  //如果取的是null   则表示后台没有配置,前端不显示条文限制
-            if (EmptyUtil.isEmpty(textNumLimit)) {
-                tv_numberofarticles.setVisibility(GONE);
-            }
-            //通话时长
-            if (!EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTimeLimit())) {
-                timeLimit = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTimeLimit();
-            }
-            //时效
-            serviceExpire = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getServiceExpire();
-            //权益名称
-            rightName = taskDeatailBean.getTaskDetail().getRightsName();
+        if (!loginBean.getAccount().roleName.equals("servicer")){
+            mChatLayout.getInputLayout().setShowCallButton(!loginBean.getAccount().roleName.equals("casemanager") && (taskDeatailBean.getTaskDetail()!=null&&taskDeatailBean.getTaskDetail().getRightsType().equals("telNum"))); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
+            mChatLayout.getInputLayout().setShowVedioButton(!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean.getTaskDetail()!=null&&taskDeatailBean.getTaskDetail().getRightsType().equals("videoNum")); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
+            tv_numberofarticles = mChatLayout.gettv_numberofarticles();
+            gettv_duration = mChatLayout.gettv_duration();
+            if (!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean != null && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo() != null) {
+                //患者条文限制
+                textNumLimit = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTextNumLimit();  //如果取的是null   则表示后台没有配置,前端不显示条文限制
+                if (EmptyUtil.isEmpty(textNumLimit)) {
+                    tv_numberofarticles.setVisibility(GONE);
+                }
+                //通话时长
+                if (!EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTimeLimit())) {
+                    timeLimit = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTimeLimit();
+                }
+                //时效
+                serviceExpire = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getServiceExpire();
+                //权益名称
+                rightName = taskDeatailBean.getTaskDetail().getRightsName();
 
-            if (rightName.contains("图文")) {
-                qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 一进来首先调用一次 患者发送的条数
-            } else {
-                qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 如果是 视频咨询 查询 图文条数 再查时长
-                qryRightsUserLog(QUERY_DEALTPE_OF_VIDEONUM); //查时长
-            }
+                if (rightName.contains("图文")) {
+                    qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 一进来首先调用一次 患者发送的条数
+                } else {
+                    qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 如果是 视频咨询 查询 图文条数 再查时长
+                    qryRightsUserLog(QUERY_DEALTPE_OF_VIDEONUM); //查时长
+                }
 //            Log.e(TAG, "条文限制: " + textNumLimit + " 通话时长：" + timeLimit + " 时效： " + serviceExpire);
 
-        }
-        //长按信息 添加信息 至快捷用语 回调  拿到需添加的信息后  请求接口
-        mChatLayout.setAddQuickwordsListener(message -> {
-            QuickReplyRequest request = new QuickReplyRequest();
-            if (message.length() <= 70) {
-                request.content = message;
-                request.userId = String.valueOf(loginBean.getUser().user.userId);
-                mPresenter.saveCaseCommonWords(request);
-            } else {
-                ToastUtils.show("操作失败!超出字数限制");
             }
-        });
-        mChatLayout.setForwardSelectActivityListener((mode, msgIds) -> {
-            mForwardMode = mode;
-            Intent intent = new Intent(Application.instance(), ForwardSelectActivity.class);
-            intent.putExtra(ForwardSelectActivity.FORWARD_MODE, mode);
-            startActivityForResult(intent, TUIKitConstants.FORWARD_SELECT_ACTIVTY_CODE);
-        });
-        mChatLayout.getInputLayout().setStartActivityListener(() -> {
-            Intent intent = new Intent(Application.instance(), StartGroupMemberSelectActivity.class);
-            GroupInfo groupInfo = new GroupInfo();
-            groupInfo.setId(mChatInfo.getId());
-            groupInfo.setChatName(mChatInfo.getChatName());
-            intent.putExtra(TUIKitConstants.Group.GROUP_INFO, groupInfo);
-            startActivityForResult(intent, 1);
-        });
-        mChatLayout.getInputLayout().setGoneInputMore(patientinfo.rightsType.equals("videoNum") || patientinfo.rightsType.equals("telNum"));  //如果是图文咨询的 聊天界面点击更多不显示视频问诊控件
-        mChatLayout.getInputLayout().hideMoreShowSendbutton(patientinfo.rightsType.equals("videoNum") || patientinfo.rightsType.equals("telNum"));//如果是图文咨询 进入聊天界面 输入界面右端不显示加号按钮  直接显示发送字样
-        mChatLayout.getInputLayout().setVisibility(VISIBLE);
-        mChatLayout.getInputLayout().setChatType(mChatInfo.chatType);
-        if (mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP) {
-            V2TIMManager.getConversationManager().getConversation(mChatInfo.getId(), new V2TIMValueCallback<V2TIMConversation>() {
-                @Override
-                public void onError(int code, String desc) {
-                }
-
-                @Override
-                public void onSuccess(V2TIMConversation v2TIMConversation) {
-                    if (v2TIMConversation == null) {
-                        return;
-                    }
-                    mChatInfo.setAtInfoList(v2TIMConversation.getGroupAtInfoList());
-
-                    final V2TIMMessage lastMessage = v2TIMConversation.getLastMessage();
-
-                    updateAtInfoLayout();
-                    mChatLayout.getAtInfoLayout().setOnClickListener(v -> {
-                        final List<V2TIMGroupAtInfo> atInfoList = mChatInfo.getAtInfoList();
-                        if (atInfoList == null || atInfoList.isEmpty()) {
-                            mChatLayout.getAtInfoLayout().setVisibility(GONE);
-                            return;
-                        } else {
-                            mChatLayout.getChatManager().getAtInfoChatMessages(atInfoList.get(atInfoList.size() - 1).getSeq(), lastMessage, new IUIKitCallBack() {
-                                @Override
-                                public void onSuccess(Object data) {
-                                    mChatLayout.getMessageLayout().scrollToPosition((int) atInfoList.get(atInfoList.size() - 1).getSeq());
-                                    LinearLayoutManager mLayoutManager = (LinearLayoutManager) mChatLayout.getMessageLayout().getLayoutManager();
-                                    mLayoutManager.scrollToPositionWithOffset((int) atInfoList.get(atInfoList.size() - 1).getSeq(), 0);
-
-                                    atInfoList.remove(atInfoList.size() - 1);
-                                    mChatInfo.setAtInfoList(atInfoList);
-
-                                    updateAtInfoLayout();
-                                }
-
-                                @Override
-                                public void onError(String module, int errCode, String errMsg) {
-                                }
-                            });
-                        }
-                    });
+            //长按信息 添加信息 至快捷用语 回调  拿到需添加的信息后  请求接口
+            mChatLayout.setAddQuickwordsListener(message -> {
+                QuickReplyRequest request = new QuickReplyRequest();
+                if (message.length() <= 70) {
+                    request.content = message;
+                    request.userId = String.valueOf(loginBean.getUser().user.userId);
+                    mPresenter.saveCaseCommonWords(request);
+                } else {
+                    ToastUtils.show("操作失败!超出字数限制");
                 }
             });
+            mChatLayout.setForwardSelectActivityListener((mode, msgIds) -> {
+                mForwardMode = mode;
+                Intent intent = new Intent(Application.instance(), ForwardSelectActivity.class);
+                intent.putExtra(ForwardSelectActivity.FORWARD_MODE, mode);
+                startActivityForResult(intent, TUIKitConstants.FORWARD_SELECT_ACTIVTY_CODE);
+            });
+            mChatLayout.getInputLayout().setStartActivityListener(() -> {
+                Intent intent = new Intent(Application.instance(), StartGroupMemberSelectActivity.class);
+                GroupInfo groupInfo = new GroupInfo();
+                groupInfo.setId(mChatInfo.getId());
+                groupInfo.setChatName(mChatInfo.getChatName());
+                intent.putExtra(TUIKitConstants.Group.GROUP_INFO, groupInfo);
+                startActivityForResult(intent, 1);
+            });
+            mChatLayout.getInputLayout().setGoneInputMore(patientinfo.rightsType.equals("videoNum") || patientinfo.rightsType.equals("telNum"));  //如果是图文咨询的 聊天界面点击更多不显示视频问诊控件
+            mChatLayout.getInputLayout().hideMoreShowSendbutton(patientinfo.rightsType.equals("videoNum") || patientinfo.rightsType.equals("telNum"));//如果是图文咨询 进入聊天界面 输入界面右端不显示加号按钮  直接显示发送字样
+            mChatLayout.getInputLayout().setVisibility(VISIBLE);
+            mChatLayout.getInputLayout().setChatType(mChatInfo.chatType);
+            if (mChatInfo.getType() == V2TIMConversation.V2TIM_GROUP) {
+                V2TIMManager.getConversationManager().getConversation(mChatInfo.getId(), new V2TIMValueCallback<V2TIMConversation>() {
+                    @Override
+                    public void onError(int code, String desc) {
+                    }
+
+                    @Override
+                    public void onSuccess(V2TIMConversation v2TIMConversation) {
+                        if (v2TIMConversation == null) {
+                            return;
+                        }
+                        mChatInfo.setAtInfoList(v2TIMConversation.getGroupAtInfoList());
+
+                        final V2TIMMessage lastMessage = v2TIMConversation.getLastMessage();
+
+                        updateAtInfoLayout();
+                        mChatLayout.getAtInfoLayout().setOnClickListener(v -> {
+                            final List<V2TIMGroupAtInfo> atInfoList = mChatInfo.getAtInfoList();
+                            if (atInfoList == null || atInfoList.isEmpty()) {
+                                mChatLayout.getAtInfoLayout().setVisibility(GONE);
+                                return;
+                            } else {
+                                mChatLayout.getChatManager().getAtInfoChatMessages(atInfoList.get(atInfoList.size() - 1).getSeq(), lastMessage, new IUIKitCallBack() {
+                                    @Override
+                                    public void onSuccess(Object data) {
+                                        mChatLayout.getMessageLayout().scrollToPosition((int) atInfoList.get(atInfoList.size() - 1).getSeq());
+                                        LinearLayoutManager mLayoutManager = (LinearLayoutManager) mChatLayout.getMessageLayout().getLayoutManager();
+                                        mLayoutManager.scrollToPositionWithOffset((int) atInfoList.get(atInfoList.size() - 1).getSeq(), 0);
+
+                                        atInfoList.remove(atInfoList.size() - 1);
+                                        mChatInfo.setAtInfoList(atInfoList);
+
+                                        updateAtInfoLayout();
+                                    }
+
+                                    @Override
+                                    public void onError(String module, int errCode, String errMsg) {
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
         }
+
+
+
     }
 
     //查询 患者已发送的条数
@@ -1326,12 +1332,15 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         @Override
         public void onNewMessage(V2TIMMessage v2TIMMessage) {
             super.onNewMessage(v2TIMMessage);
-            if (rightName.contains("图文")) {
-                qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 一进来首先调用一次 患者发送的条数
-            } else {
-                qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 如果是 视频咨询 查询 图文条数 再查时长
-                qryRightsUserLog(QUERY_DEALTPE_OF_VIDEONUM); //查时长
+            if (!loginBean.getAccount().roleName.equals("servicer")){
+                if (rightName.contains("图文")) {
+                    qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 一进来首先调用一次 患者发送的条数
+                } else {
+                    qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 如果是 视频咨询 查询 图文条数 再查时长
+                    qryRightsUserLog(QUERY_DEALTPE_OF_VIDEONUM); //查时长
+                }
             }
+
         }
     };
 

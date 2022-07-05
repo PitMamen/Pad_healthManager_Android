@@ -179,9 +179,6 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     }
 
 
-
-
-
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -196,7 +193,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (timer!=null){
+        if (timer != null) {
             timer.cancel();
             timer.purge();
         }
@@ -322,7 +319,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
      */
     @Override
     public void getMyTaskDetailFail(String failMessage) {
-        homeActivity.runOnUiThread(() -> ToastUtils.show("获取待办列表失败!"));
+//        homeActivity.runOnUiThread(() -> ToastUtils.show("获取待办列表失败!"));
     }
 
 
@@ -417,8 +414,6 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
         Log.e(TAG, "更新待办处理----");
         getNeedDealWithData();
     }
-
-
 
 
 }

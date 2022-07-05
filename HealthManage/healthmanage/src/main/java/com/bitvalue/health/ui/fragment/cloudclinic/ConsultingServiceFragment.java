@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bitvalue.health.api.eventbusbean.VideoRefreshObj;
 import com.bitvalue.health.api.requestbean.AllocatedPatientRequest;
 import com.bitvalue.health.api.requestbean.RequestNewLeaveBean;
+import com.bitvalue.health.api.responsebean.LoginBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.base.BaseFragment;
 import com.bitvalue.health.callback.OnItemClick;
@@ -26,11 +27,13 @@ import com.bitvalue.health.ui.adapter.AllPatientAdapter;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.DensityUtil;
 import com.bitvalue.health.util.MUtils;
+import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
 import com.bitvalue.sdk.collab.modules.conversation.ConversationLayout;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
+import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.imsdk.v2.V2TIMConversationResult;
 import com.tencent.imsdk.v2.V2TIMMessage;
 
@@ -86,6 +89,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
     private List<NewLeaveBean.RowsDTO> patientList = new ArrayList<>();  //所有患者列表
     List<NewLeaveBean.RowsDTO> tempPatientList = new ArrayList<>();
     private boolean convasersionInited = false;
+    LoginBean loginBean;
 
     @Override
     protected CloudClinicPersenter createPresenter() {
@@ -113,6 +117,33 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
         convasersionInited = false;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (loginBean != null) {
+            if (loginBean.getAccount().roleName.equals("servicer")) {
+                initConversation();
+            }
+        }
+    }
+
+    private void initConversation() {
+        requestNewLeaveBean.pageNo = pageNo;
+        requestNewLeaveBean.pageSize = pageSize;
+        conversationLayout.initDefault();
+        mPresenter.qryMedicalPatients(requestNewLeaveBean);
+        conversationLayout.getConversationList().setOnItemClickListener((view12, position, messageInfo) -> {
+            NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
+            info.setUserName(messageInfo.getTitle());
+            info.setUserId(messageInfo.getId());
+            info.isShowCollection = false;  //咨询界面跳转过去  聊天界面底部不显示 预诊收集 按钮
+            info.isShowSendRemind = false;
+            homeActivity.switchSecondFragment(Constants.FRAGMENT_CHAT, info);
+        });
+        conversationLayout.setVisibility(smartRefreshLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+    }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -124,6 +155,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
     public void initView(View rootView) {
         super.initView(rootView);
         EventBus.getDefault().register(this);
+        loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
         mPresenter.getConversationList(0, GET_CONVERSATION_COUNT);  // 获取聊天对话框
 //        mPresenter.listennerIMNewMessage();//监听IM新消息
 
@@ -192,8 +224,8 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
     public void onEventMessage(VideoRefreshObj mainRefreshObj) {
         requestNewLeaveBean.pageNo = pageNo;
         requestNewLeaveBean.pageSize = pageSize;
-        mPresenter.qryMedicalPatients(requestNewLeaveBean);
         conversationLayout.initDefault();
+        mPresenter.qryMedicalPatients(requestNewLeaveBean);
         conversationLayout.getConversationList().setOnItemClickListener((view12, position, messageInfo) -> {
             NewLeaveBean.RowsDTO info = new NewLeaveBean.RowsDTO();
             info.setUserName(messageInfo.getTitle());
@@ -239,7 +271,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
                 tv_wait.setTextColor(homeActivity.getResources().getColor(R.color.main_blue));
                 tv_wait.setBackgroundResource(R.drawable.shape_bg_white_solid_1);
                 if (allPatientAdapter != null) {
-                    if (tempPatientList.size() == patientList.size()) {
+                    if (tempPatientList.size() != 0 && (tempPatientList.size() == patientList.size())) {
                         allPatientAdapter.setNewData(tempPatientList);
                     } else {
                         requestNewLeaveBean.pageNo = pageNo;
@@ -263,7 +295,11 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
     @Override
     public void getConversationSuccess(V2TIMConversationResult v2TIMConversationResult) {
         Log.e(TAG, "getConversationSuccess--------------- ");
-//        TIMConversationList = v2TIMConversationResult.getConversationList();
+//        List<V2TIMConversation> list = v2TIMConversationResult.getConversationList();
+//        if (list!=null){
+//            Log.e(TAG, "getConversationSuccess: "+list.size() );
+//
+//        }
     }
 
     @Override

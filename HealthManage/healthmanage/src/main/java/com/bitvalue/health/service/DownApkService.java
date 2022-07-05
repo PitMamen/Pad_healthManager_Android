@@ -2,6 +2,7 @@ package com.bitvalue.health.service;
 
 import static com.bitvalue.health.util.Constants.APK_LOCAL_PATH;
 import static com.bitvalue.health.util.Constants.APK_URL;
+import static com.bitvalue.health.util.Constants.ISCLICKUPDATE;
 import static com.bitvalue.health.util.Constants.LOG_FAIL;
 import static com.bitvalue.health.util.Constants.LOG_RECORD;
 
@@ -171,6 +172,7 @@ public class DownApkService extends Service {
             @Override
             public void onFinished() {
                 Log.e(TAG, "文件下载完成");
+                SharedPreManager.putBoolean(ISCLICKUPDATE,false,DownApkService.this);  //更新完毕后 重置点击状态
                 CrashHandler.getInstance().handleException("下载成功,即将安装应用", Constants.LOG_LOG);
                 builder.setContentText("下载完成");
                 mNotificationManager.notify(NotificationID, builder.build());

@@ -57,6 +57,7 @@ public class CloudClinicModel extends BaseModel implements CloudClinicContract.C
         if (null!=requestNewLeaveBean){
             mApi.qryallAllocatedPatientList(requestNewLeaveBean).subscribeOn(Schedulers.io()).subscribe(listApiResult -> {
                 if (!EmptyUtil.isEmpty(listApiResult)) {
+                    Log.e(TAG, "qryMedicalPatients: "+listApiResult.toString() );
                     if (listApiResult.getCode() == 0) {
                         NewLeaveBean resultData = listApiResult.getData();
                         Log.e(TAG, "qryPatientList1111: " + resultData.getRows().size());

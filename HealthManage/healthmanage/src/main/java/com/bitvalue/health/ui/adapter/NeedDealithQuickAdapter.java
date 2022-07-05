@@ -48,7 +48,6 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
         holder.setText(R.id.tv_patient_age, taskdeatailBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
         //如果是个案师账号 界面 正常显示
         if (isCasemanagerAcount) {
-            holder.getView(R.id.tv_remind).setVisibility(View.GONE);  //隐藏 提醒上线通知
             holder.setText(R.id.tv_equity_use, taskdeatailBean.getTaskName());
             holder.setText(R.id.tv_time, TimeUtils.getTime_(taskdeatailBean.getExecTime()));
         } else {

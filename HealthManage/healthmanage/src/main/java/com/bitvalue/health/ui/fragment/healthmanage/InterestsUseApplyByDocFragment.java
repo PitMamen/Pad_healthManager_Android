@@ -131,7 +131,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
             //  如果是 ICU的 是线下会诊 不需要进入聊天接诊
             start_consultation.setVisibility(taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) ? View.INVISIBLE : View.VISIBLE);
 //            tv_startwenzhen.setText(taskDeatailBean.getTaskDetail().getExecFlag() == 0&&(taskDeatailBean.getTaskDetail().getRightsType().equals("telNum")||taskDeatailBean.getTaskDetail().getRightsType().equals("videoNum"))? getString(R.string.confirmtime) : getString(R.string.startconsultation));
-            tv_startwenzhen.setText(taskDeatailBean.getTaskDetail().getExecFlag() == 0? getString(R.string.confirmtime) : getString(R.string.startconsultation));
+            tv_startwenzhen.setText(taskDeatailBean.getTaskDetail().getExecFlag() == 0 ? getString(R.string.confirmtime) : getString(R.string.startconsultation));
         }
 
         //如果已经执行完毕 是重症医学科下面的 ICU权益 并且是线上会诊的 不显示问诊记录按钮 其他的都显示
@@ -148,7 +148,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
         tv_department.setText(taskDeatailBean.getTaskDetail().getDeptName()); //科室名称
         tv_start_time.setText(TimeUtils.getTime_tosecond(taskDeatailBean.getTaskDetail().getExecTime())); //执行时间
         tv_patientName.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName()); //就诊人
-        tv_continue_time.setText(EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail().getRemark()) ? "待确认" : taskDeatailBean.getTaskDetail().getRemark() + "分钟");  //持续时间
+        tv_continue_time.setText(taskDeatailBean.getTaskDetail().getExecFlag() == 0 ? "待确认" : !EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail().getRemark())?taskDeatailBean.getTaskDetail().getRemark()+"分钟":"无限制");  //持续时间
         tv_applyType.setText(taskDeatailBean.getTaskDetail().getRightsName() + "申请:");  //权益申请类型 (图文咨询,视频咨询,重症会诊)
     }
 
@@ -403,7 +403,6 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
     }
 
 
-
     /***
      * 查询权益使用记录 成功回调
      * @param queryRightsRecordBean
@@ -426,9 +425,9 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
     }
 
 
-
     /**
      * 医生接诊 更新权益时间  回调
+     *
      * @param isSuccess
      */
     @Override
@@ -444,6 +443,7 @@ public class InterestsUseApplyByDocFragment extends BaseFragment<InterestsUseApp
 
     /**
      * 查询 患者权益 条文限制 这里不需要实现
+     *
      * @param listData
      */
     @Override

@@ -103,10 +103,10 @@ public class SettingsFragment extends BaseFragment<PersonalDataPersenter> implem
         if (loginBean == null) {
             tv_name.setText("设置");
         } else {
-            tv_name.setText(loginBean.getUser().user.userName);
+            tv_name.setText(!EmptyUtil.isEmpty(loginBean.getUser().user.userName)?loginBean.getUser().user.userName:loginBean.getAccount().userName);
             tv_type.setText(loginBean.getAccount().roleName.equals("casemanager") ? "个案管理师" : "医护");
         }
-        ed_name.setText(loginBean.getUser().user.userName);
+        ed_name.setText(!EmptyUtil.isEmpty(loginBean.getUser().user.userName)?loginBean.getUser().user.userName:loginBean.getAccount().userName);
         ed_phoneNumber.setText(loginBean.getUser().user.phone);
         tv_acount.setText(loginBean.getUser().userName);
     }
@@ -150,7 +150,7 @@ public class SettingsFragment extends BaseFragment<PersonalDataPersenter> implem
 
             //提交修改密码
             case R.id.tv_commit:
-                if (EmptyUtil.isEmpty(ed_phoneNumber.getText().toString().trim())) {
+                if (EmptyUtil.isEmpty(ed_name.getText().toString().trim())) {
                     ToastUtils.show("姓名不能为空!");
                     return;
                 }
