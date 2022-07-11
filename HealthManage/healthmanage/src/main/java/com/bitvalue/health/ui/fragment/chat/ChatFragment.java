@@ -977,13 +977,16 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             if (listData != null && listData.size() > 0) {
                 String alreadySendCount = listData.get(0).getDealResult();  // 已经使用的条数
                 if (listData.get(0).getDealType().equals(QUERY_DEALTPE_OF_TEXTNUM)) {
-                    int textAlreadSendCount = Integer.parseInt(textNumLimit) - Integer.parseInt(alreadySendCount);  //总条数 -  已发送的
-                    TemptextAlreadSendCount = textAlreadSendCount;
+                    if (textNumLimit!=null){
+                        int textAlreadSendCount = Integer.parseInt(textNumLimit) - Integer.parseInt(alreadySendCount);  //总条数 -  已发送的
+                        TemptextAlreadSendCount = textAlreadSendCount;
 //                    Log.e(TAG, "剩余条数: " + TemptextAlreadSendCount + " 总条数：" + textNumLimit+"  已使用条数："+alreadySendCount);
-                    if (textAlreadSendCount <= 0) {
-                        textAlreadSendCount = 0;
+                        if (textAlreadSendCount <= 0) {
+                            textAlreadSendCount = 0;
+                        }
+                        tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + textAlreadSendCount + " 条");
                     }
-                    tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + textAlreadSendCount + " 条");
+
                 } else if (listData.get(0).getDealType().equals(QUERY_DEALTPE_OF_VIDEONUM)) {
 //                    Log.e(TAG, "已经使用时长: " + Integer.valueOf(alreadySendCount));
                     int videoAlreadUse = Integer.valueOf(timeLimit) * 60 - (Integer.valueOf(alreadySendCount));     //时间单位秒
@@ -1001,7 +1004,10 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             } else {
                 // TODO: 2022/5/17  返回是空的 可能是 还未使用该权益
                 if (rightName.contains("图文")) {
-                    tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + textNumLimit + " 条");
+                    if (!EmptyUtil.isEmpty(textNumLimit)){
+                        tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + textNumLimit + " 条");
+                    }
+                    tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + 0 + " 条");
                 } else {
                     gettv_duration.setText("剩余通话时长 " + timeLimit + " 分钟");
                     SharedPreManager.putInt(VIDEO_SURPLUS_TIME, Integer.valueOf(timeLimit) * 60, homeActivity); //剩余时长 保存下来
