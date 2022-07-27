@@ -19,6 +19,7 @@ import static com.bitvalue.health.util.Constants.TASKDETAIL;
 import static com.bitvalue.health.util.Constants.USER_ID;
 import static com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayoutUI.CHAT_TYPE_VIDEO;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -97,13 +98,18 @@ import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.VersionUtils;
+import com.bitvalue.health.util.chatUtil.HelloChatController;
 import com.bitvalue.health.util.customview.dialog.AppUpdateDialog;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.TUIKit;
+import com.bitvalue.sdk.collab.base.TUIKitListenerManager;
+import com.bitvalue.sdk.collab.config.ConfigHelper;
 import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.bitvalue.sdk.collab.utils.FileUtil;
 import com.hjq.http.listener.OnHttpListener;
 import com.tencent.imsdk.v2.V2TIMConversation;
+import com.tencent.liteav.debug.GenerateTestUserSig;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -264,9 +270,8 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             ll_sfjh_layout.setVisibility(View.GONE);
             ll_need_deallayout.setVisibility(View.GONE);
         }
-
-        mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig);
-//        initFragments(PATIENT_REPORT);  //如果是个案师账号默认首页待办工作台界面
+        initTencentIM(this);  //先初始化 IM SDK  再Login
+        mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig); // Login
         if (loginBean.getAccount().roleName.equals("casemanager")) {
             initFragments(PATIENT_REPORT);  //如果是个案师账号默认首页待办工作台界面
         } else if (loginBean.getAccount().roleName.equals("doctor")) {
@@ -276,6 +281,18 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         }
 
 
+    }
+
+
+
+    private void initTencentIM(Context context){
+        TUIKit.init(context, GenerateTestUserSig.SDKAPPID, new ConfigHelper().getConfigs(context));
+        registerCustomListeners();
+    }
+
+    private  void registerCustomListeners() {
+        TUIKitListenerManager.getInstance().addChatListener(new HelloChatController());
+        TUIKitListenerManager.getInstance().addConversationListener(new HelloChatController.HelloConversationController());
     }
 
 

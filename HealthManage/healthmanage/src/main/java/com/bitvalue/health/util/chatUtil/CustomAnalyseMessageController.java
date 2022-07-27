@@ -42,7 +42,6 @@ public class CustomAnalyseMessageController {
         view.setClickable(true);
         view.setOnClickListener(v -> {
             SummaryDialog summaryDialog = new SummaryDialog(application.getHomeActivity());
-            summaryDialog.setHideSoftInput();
             summaryDialog.setCanceledOnTouchOutside(true);
             summaryDialog.show();
             summaryDialog.setVisibleBotomButton(false);

@@ -29,8 +29,10 @@ import com.bitvalue.health.util.DataUtil;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.healthmanage.R;
+import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.utils.ToastUtil;
 import com.hjq.toast.ToastUtils;
+import com.tencent.imsdk.v2.V2TIMManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -232,6 +234,8 @@ public class SettingsFragment extends BaseFragment<PersonalDataPersenter> implem
     public void logoutAcountSuccess() {
         getActivity().runOnUiThread(() -> {
             ToastUtil.toastShortMessage("退出成功");
+            TUIKit.unInit();
+            V2TIMManager.getInstance().unInitSDK();
             startLoginActivity(false);
         });
 

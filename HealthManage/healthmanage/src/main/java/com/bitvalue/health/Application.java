@@ -49,7 +49,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.scwang.smart.refresh.header.MaterialHeader;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
-import com.tencent.bugly.crashreport.CrashReport;
+//import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.liteav.debug.GenerateTestUserSig;
 
 import org.xutils.x;
@@ -136,7 +136,7 @@ public final class Application extends android.app.Application {
         //UmengClient.init(application);
 
         // Bugly 异常捕捉
-        CrashReport.initCrashReport(application, AppConfig.getBuglyId(), AppConfig.isDebug());
+//        CrashReport.initCrashReport(application, AppConfig.getBuglyId(), AppConfig.isDebug());
 
         // 设置全局的 Header 构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) ->
@@ -196,7 +196,6 @@ public final class Application extends android.app.Application {
         ToastUtils.init(instance);
 
         iniEasyHttp(); // 暂时顶用一下，后面改成Retrofit
-        initTencentIM(instance());
         x.Ext.init(this);  //初始化 xUtils 框架
         CrashHandler.getInstance().init(this);
 
@@ -223,20 +222,6 @@ public final class Application extends android.app.Application {
                 .setRetryCount(1)
                 .into();
     }
-
-
-    private void initTencentIM(Application application){
-        TUIKit.init(application, GenerateTestUserSig.SDKAPPID, new ConfigHelper().getConfigs(application));
-        registerCustomListeners();
-    }
-
-    private  void registerCustomListeners() {
-        TUIKitListenerManager.getInstance().addChatListener(new HelloChatController());
-        TUIKitListenerManager.getInstance().addConversationListener(new HelloChatController.HelloConversationController());
-    }
-
-
-
 
     private void initWidthAndHeight() {
         /**

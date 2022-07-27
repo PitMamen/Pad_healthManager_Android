@@ -94,8 +94,8 @@ public class ConversationListAdapter extends IConversationAdapter {
         ConversationBaseHolder baseHolder = null;
         if (conversationInfo != null) {
             baseHolder = (ConversationBaseHolder) holder;
+            Log.e("TAG", "标题: "+conversationInfo.getTitle() );
         }
-
         switch (getItemViewType(position)) {
             case ConversationInfo.TYPE_CUSTOM:
                 break;

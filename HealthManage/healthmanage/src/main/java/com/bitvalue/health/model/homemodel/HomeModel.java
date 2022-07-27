@@ -9,6 +9,7 @@ import com.bitvalue.health.contract.homecontract.HomeContract;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.sdk.collab.TUIKit;
 import com.bitvalue.sdk.collab.base.IUIKitCallBack;
+import com.tencent.imsdk.v2.V2TIMManager;
 
 import io.reactivex.schedulers.Schedulers;
 

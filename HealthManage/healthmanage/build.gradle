@@ -62,9 +62,9 @@ android {
       // 测试包下的 BuglyId
       buildConfigField('String', 'BUGLY_ID', '"811f8ffd4f"')
       // 测试服务器的主机地址
-//      buildConfigField('String', 'HOST_URL', '"https://develop.mclouds.org.cn"')//测试环境    //http://192.168.1.122
-            buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
-//            buildConfigField('String', 'HOST_URL', '"http://ys.mclouds.org.cn:8088"')//演示环境
+      buildConfigField('String', 'HOST_URL', '"https://develop.mclouds.org.cn"')//测试环境    //http://192.168.1.122
+//            buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
+//            buildConfigField('String', 'HOST_URL', '"https://ys.mclouds.org.cn/"')//演示环境
 
       // 设置清单占位符
       manifestPlaceholders = ['app_name': '病友服务']
@@ -215,8 +215,8 @@ dependencies {
   implementation 'com.github.chrisbanes:PhotoView:2.3.0'
 
   // Bugly 异常捕捉：https://bugly.qq.com/docs/user-guide/instruction-manual-android/?v=20190418140644
-  implementation 'com.tencent.bugly:crashreport:latest.release'    //com.tencent.bugly:crashreport:latest.release
-  implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+//  implementation 'com.tencent.bugly:crashreport:latest.release'    //com.tencent.bugly:crashreport:latest.release
+//  implementation 'com.tencent.bugly:nativecrashreport:latest.release'
 
   // 动画解析库：https://github.com/airbnb/lottie-android
   // 动画资源：https://lottiefiles.com、https://icons8.com/animated-icons

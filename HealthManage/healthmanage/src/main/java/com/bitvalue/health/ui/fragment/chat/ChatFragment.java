@@ -589,7 +589,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
      * 聊天面板 底部5个小控件
      */
     private void initbootomTipButton(String deptName, boolean isShowdataCollection, boolean isShowSendRemind) {
-        mChatLayout.getInputLayout().tv_datacollection.setVisibility(loginBean.getAccount().roleName.equals("servicer")?GONE:VISIBLE);
+        mChatLayout.getInputLayout().tv_datacollection.setVisibility(loginBean.getAccount().roleName.equals("servicer") ? GONE : VISIBLE);
         mChatLayout.getInputLayout().tv_datacollection.setText(loginBean.getAccount().roleName.equals("casemanager") ? getString(R.string.pre_diagnosis_collection) : getString(R.string.pre_diagnosis_data));
         mChatLayout.getInputLayout().tv_medicalfolder.setVisibility(loginBean.getAccount().roleName.equals("doctor") ? VISIBLE : GONE);
         mChatLayout.getInputLayout().tv_datacollection.setVisibility(isShowdataCollection ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示预诊收集信息控件
@@ -977,10 +977,10 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             if (listData != null && listData.size() > 0) {
                 String alreadySendCount = listData.get(0).getDealResult();  // 已经使用的条数
                 if (listData.get(0).getDealType().equals(QUERY_DEALTPE_OF_TEXTNUM)) {
-                    if (textNumLimit!=null){
+                    if (textNumLimit != null) {
                         int textAlreadSendCount = Integer.parseInt(textNumLimit) - Integer.parseInt(alreadySendCount);  //总条数 -  已发送的
                         TemptextAlreadSendCount = textAlreadSendCount;
-//                    Log.e(TAG, "剩余条数: " + TemptextAlreadSendCount + " 总条数：" + textNumLimit+"  已使用条数："+alreadySendCount);
+//                        Log.e(TAG, "剩余条数: " + TemptextAlreadSendCount + " 总条数：" + textNumLimit + "  已使用条数：" + alreadySendCount);
                         if (textAlreadSendCount <= 0) {
                             textAlreadSendCount = 0;
                         }
@@ -1004,10 +1004,11 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             } else {
                 // TODO: 2022/5/17  返回是空的 可能是 还未使用该权益
                 if (rightName.contains("图文")) {
-                    if (!EmptyUtil.isEmpty(textNumLimit)){
+                    if (!EmptyUtil.isEmpty(textNumLimit)) {
                         tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + textNumLimit + " 条");
+                    }else {
+                        tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + 0 + " 条");
                     }
-                    tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + 0 + " 条");
                 } else {
                     gettv_duration.setText("剩余通话时长 " + timeLimit + " 分钟");
                     SharedPreManager.putInt(VIDEO_SURPLUS_TIME, Integer.valueOf(timeLimit) * 60, homeActivity); //剩余时长 保存下来
@@ -1219,9 +1220,9 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         mChatInfo.setChatName(mChatInfo.getChatName());
         mChatLayout.getFlayout_tipmessage().setVisibility(patientinfo.isConsultation ? VISIBLE : GONE);  //如果是 问诊 顶部显示 “您已进入...” 字样  反之不显示
         mChatLayout.getInputLayout().ll_shortCutlayout.setVisibility(mChatInfo.isShowShortCut ? VISIBLE : GONE); //底部快捷回复布局
-        if (!loginBean.getAccount().roleName.equals("servicer")){
-            mChatLayout.getInputLayout().setShowCallButton(!loginBean.getAccount().roleName.equals("casemanager") && (taskDeatailBean.getTaskDetail()!=null&&taskDeatailBean.getTaskDetail().getRightsType().equals("telNum"))); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
-            mChatLayout.getInputLayout().setShowVedioButton(!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean.getTaskDetail()!=null&&taskDeatailBean.getTaskDetail().getRightsType().equals("videoNum")); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
+        if (!loginBean.getAccount().roleName.equals("servicer")) {
+            mChatLayout.getInputLayout().setShowCallButton(!loginBean.getAccount().roleName.equals("casemanager") && (taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getRightsType().equals("telNum"))); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
+            mChatLayout.getInputLayout().setShowVedioButton(!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getRightsType().equals("videoNum")); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
             tv_numberofarticles = mChatLayout.gettv_numberofarticles();
             gettv_duration = mChatLayout.gettv_duration();
             if (!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean != null && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo() != null) {
@@ -1324,7 +1325,6 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         }
 
 
-
     }
 
     //查询 患者已发送的条数
@@ -1338,7 +1338,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         @Override
         public void onNewMessage(V2TIMMessage v2TIMMessage) {
             super.onNewMessage(v2TIMMessage);
-            if (!loginBean.getAccount().roleName.equals("servicer")){
+            if (!loginBean.getAccount().roleName.equals("servicer")) {
                 if (rightName.contains("图文")) {
                     qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 一进来首先调用一次 患者发送的条数
                 } else {

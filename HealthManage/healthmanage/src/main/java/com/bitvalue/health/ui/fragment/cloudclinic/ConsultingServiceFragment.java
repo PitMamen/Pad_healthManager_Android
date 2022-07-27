@@ -128,6 +128,18 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
         }
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            if (loginBean != null) {
+                if (loginBean.getAccount().roleName.equals("servicer")) {
+                    initConversation();
+                }
+            }
+        }
+    }
+
     private void initConversation() {
         requestNewLeaveBean.pageNo = pageNo;
         requestNewLeaveBean.pageSize = pageSize;
