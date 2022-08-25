@@ -225,7 +225,9 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
         tv_phone.setText(taskDeatailBean.getTaskDetail().getUserInfo().getPhone());
         tv_sex.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex());
         tv_age.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
-        img_icon.setImageDrawable(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+        if (!EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex())){
+            img_icon.setImageDrawable(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+        }
     }
 
     private void initList() {

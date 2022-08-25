@@ -295,14 +295,16 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
      * 分配计划
      * @param packegeID 套餐ID    pakecgeName 套餐名称   UserID 患者ID
      */
-    private void mealOrderPackege(String packegeID, String UserID) {
+    private void mealOrderPackege(String packegeID, String UserID,String regNo) {
         MealCreateOrderApi orderApi = new MealCreateOrderApi();
         LoginBean loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, Application.instance());
         if (loginBean == null) {
             return;
         }
         int docId = loginBean.getAccount().user.userId;
+
         orderApi.patientId = UserID;
+        orderApi.regNo = regNo; //新增就诊流水号参数
         orderApi.doctorId = String.valueOf(docId);
         orderApi.templateId = String.valueOf(packegeID);
         orderApi.beginTime = TimeUtils.getCurrenTimeYMDHMS() + " 05:00:00";
@@ -364,7 +366,7 @@ public class FollowUpPlanFragment extends BaseFragment implements OnHttpListener
                 }
 
                 for (int i = 0; i < selectPatientList.size(); i++) {
-                    mealOrderPackege(String.valueOf(selectPlanBean.getTemplateId()), selectPatientList.get(i).getUserId());
+                    mealOrderPackege(String.valueOf(selectPlanBean.getTemplateId()), selectPatientList.get(i).getUserId(),selectPatientList.get(i).getJzlsh());
                 }
                 break;
 

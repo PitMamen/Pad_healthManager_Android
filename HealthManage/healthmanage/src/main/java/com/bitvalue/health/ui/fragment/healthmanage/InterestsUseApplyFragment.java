@@ -311,7 +311,9 @@ public class InterestsUseApplyFragment extends BaseFragment<RightApplyUsePresent
         btn_processing_complete.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.GONE : View.VISIBLE); //如果是已办 则不显示处理完成按钮shape_cancel_
         btn_processing_complete.setBackground((taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) ? homeActivity.getDrawable(R.drawable.shape_cancel_) : homeActivity.getDrawable(R.drawable.shape_comfirm_sele)); //@drawable/shape_cancel_
         tv_goChat.setVisibility(taskDeatailBean.getExecFlag() == 1 ? View.INVISIBLE : View.VISIBLE); //如果是已办 则不显示进入聊天按钮
-        iv_icon.setImageDrawable(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+        if (taskDeatailBean.getTaskDetail().getUserInfo().getUserSex()!=null){
+            iv_icon.setImageDrawable(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
+        }
         tv_sex.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserSex());
         tv_name.setText(taskDeatailBean.getTaskDetail().getUserInfo().getUserName());
 //        tv_data_review.setVisibility((taskDeatailBean.getTaskDetail().getRightsType().equalsIgnoreCase(Constants.RIGTH_TYPE) && taskDeatailBean.getTaskDetail().getUploadDocFlag() == 1) ? View.VISIBLE : View.INVISIBLE); //如果是重症科，并且需要审核资料则 显示资料审核

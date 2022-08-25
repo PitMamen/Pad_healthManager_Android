@@ -13,6 +13,7 @@ public class MealCreateOrderApi implements IRequestApi {
     public String doctorId;
     public String patientId;
     public String templateId;
+    public String regNo;
 
     @Override
     public String getApi() {

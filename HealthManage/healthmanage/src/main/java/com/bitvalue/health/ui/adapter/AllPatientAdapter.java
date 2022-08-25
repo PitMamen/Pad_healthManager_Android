@@ -81,7 +81,7 @@ public class AllPatientAdapter extends BaseQuickAdapter<NewLeaveBean.RowsDTO, Ba
 //                    .into(img_head);
 //        } else {
 //        }
-        if (!EmptyUtil.isEmpty(videoClientsResultBean.getSex())){
+        if (!EmptyUtil.isEmpty(videoClientsResultBean.getSex())&&videoClientsResultBean.getSex()!=null){
             img_head.setImageDrawable(videoClientsResultBean.getSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         }else {
             holder.setVisible(R.id.view_line,false);

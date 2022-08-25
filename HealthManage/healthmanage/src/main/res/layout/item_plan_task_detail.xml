@@ -9,6 +9,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rr_layout_title"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/qb_px_15"

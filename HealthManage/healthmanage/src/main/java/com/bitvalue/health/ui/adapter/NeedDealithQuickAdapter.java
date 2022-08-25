@@ -36,7 +36,7 @@ public class NeedDealithQuickAdapter extends BaseQuickAdapter<TaskDeatailBean, B
             return;
         }
         ImageView img_head = holder.getView(R.id.img_head);
-        if (!EmptyUtil.isEmpty((taskdeatailBean.getTaskDetail().getUserInfo()))) {
+        if (!EmptyUtil.isEmpty((taskdeatailBean.getTaskDetail().getUserInfo()))&&taskdeatailBean.getTaskDetail().getUserInfo().getUserSex()!=null) {
             img_head.setImageDrawable(taskdeatailBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         }
 

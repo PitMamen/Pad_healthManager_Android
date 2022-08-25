@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.responsebean.ClientsResultBean;
+import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.healthmanage.R;
 import com.bumptech.glide.Glide;
@@ -195,6 +196,7 @@ public class ClientsRecyclerAdapter extends ExpandableRecyclerViewAdapter<Client
                                 20, Application.instance().getResources().getDisplayMetrics())))
                         .into(img_head);
             } else {
+                if (!EmptyUtil.isEmpty(child.userSex))
                 img_head.setImageDrawable(child.userSex.equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
             }
 

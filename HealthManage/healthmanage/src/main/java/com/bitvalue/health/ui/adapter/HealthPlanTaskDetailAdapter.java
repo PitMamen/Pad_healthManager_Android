@@ -12,6 +12,7 @@ import com.bitvalue.health.util.TypeConstants;
 import com.bitvalue.healthmanage.R;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.hjq.toast.ToastUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -69,13 +70,17 @@ public class HealthPlanTaskDetailAdapter extends BaseQuickAdapter<PlanTaskDetail
 
 
         //点击 查看计划详情内容 问卷 问诊 检查 检验 图片等
-        helper.getView(R.id.tv_title).setOnClickListener(v -> {
+        helper.getView(R.id.rr_layout_title).setOnClickListener(v -> {
             QueryPlanDetailApi questbean = new QueryPlanDetailApi();
             questbean.contentId = task.contentId;
             questbean.planType = task.planType;;
             questbean.userId = task.contentInfo.userId;
             switch (task.getPlanType()){
                 case TypeConstants.Quest:
+                    if (task.execFlag==0){
+                        ToastUtils.show("该计划未完成,不可查看");
+                        return;
+                    }
                     Application.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_QUESTION_DETAIL,questbean);
                     break;
                 case TypeConstants.Knowledge:
@@ -86,9 +91,7 @@ public class HealthPlanTaskDetailAdapter extends BaseQuickAdapter<PlanTaskDetail
                     Application.instance().getHomeActivity().switchSecondFragment(Constants.FRAGMENT_MORE_DATA,questbean);
                     break;
             }
-
-
-            Log.e(TAG, "随访任务点击了: "+ task.getPlanType()+" contentID: "+task.contentId+"  planType: "+task.planType+" userID: "+task.getContentInfo().userId);
+//            Log.e(TAG, "随访任务点击了: "+ task.getPlanType()+" contentID: "+task.contentId+"  planType: "+task.planType+" userID: "+task.getContentInfo().userId);
         });
 
 //            if (task.getContentInfo()!=null && task.getContentInfo().getHealthImages()!=null && task.getContentInfo().getHealthImages().size()>0){
