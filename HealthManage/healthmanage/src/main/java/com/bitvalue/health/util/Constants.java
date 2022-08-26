@@ -10,7 +10,8 @@ public class Constants {
     public static final String USER_ID = "user_id";
     public static final String IDCARD_NUMBER = "idcard_number";
     public static final String NEED_TOAST = "need_toast";
-    public static final String HOST_URL = "https://develop.mclouds.org.cn";    //http://192.168.1.122/  测试环境
+//    public static final String HOST_URL = "https://develop.mclouds.org.cn";    //http://192.168.1.122/  测试环境
+    public static final String HOST_URL = "http://develop.mclouds.org.cn:8009";    //http://192.168.1.122/  重构验证环境
 //        public static final String HOST_URL = "http://hmg.mclouds.org.cn";       //正式环境
 //        public static final String HOST_URL = "https://ys.mclouds.org.cn";       //演示环境  https://ys.mclouds.org.cn/
     public static int screenWidth, screenHeight;
@@ -61,6 +62,7 @@ public class Constants {
     public static final String FRAGEMNT_CONDITONOVERVIEW = "fragemnt_conditonoverview";
 
     public static final String API_ACCOUNT = "/account-api";
+    public static final String INFO_API = "/info-api";
     public static final String API_HEALTH = "/health-api";
     public static final String API_CONTENT = "/content-api";
     public static final String API_TDUCK = "/questionnaire-api";

@@ -1,6 +1,7 @@
 package com.bitvalue.health.model.planmodel;
 
 import static com.bitvalue.health.util.Constants.API_ACCOUNT;
+import static com.bitvalue.health.util.Constants.INFO_API;
 
 import com.hjq.http.config.IRequestApi;
 
@@ -12,6 +13,6 @@ public class getDepartmentListApi implements IRequestApi {
 
     @Override
     public String getApi() {
-        return API_ACCOUNT+"/businessManagement/getDepartmentList";
+        return INFO_API+"/departments/getDepartmentList";
     }
 }

@@ -118,7 +118,7 @@ public interface CommonService {
      *
      * @return
      */
-    @GET("/account-api/individualInfo/getDoctorInfo")
+    @GET("/info-api/doctors/getLoginDoctorInfo")
     Observable<ApiResult<PersonalDataBean>> getDocPersonalDetail();
 
 
@@ -294,13 +294,13 @@ public interface CommonService {
     /**
      * 病区接口
      */
-    @GET("/account-api/businessManagement/getInpatientAreaList")
+    @GET("/info-api/wards/getInpatientAreaList")
     Observable<ApiResult<List<InpatientBean>>> getInpatientAreaList(@Query("departmentId") String departmentId);
 
     /**
      * 科室接口
      */
-    @GET("/account-api/businessManagement/getDepartmentList")
+    @GET("/info-api/departments/getDepartmentList")
     Observable<ApiResult<List<DepartmentResponeBean>>> getDepartmentList();
 
 
@@ -352,7 +352,7 @@ public interface CommonService {
     /**
      * 根据科室ID查询 该科室下的所有医师
      */
-    @GET("account-api/businessManagement/getDoctorList")
+    @GET("info-api/doctors/getDoctorList")
     Observable<ApiResult<List<DocListBean>>> getDoctorList(@Query("departmentId") String departmentId,@Query("userType")String userType);
 
     /**
