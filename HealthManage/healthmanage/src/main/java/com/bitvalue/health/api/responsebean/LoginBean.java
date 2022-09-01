@@ -47,4 +47,13 @@ public final class LoginBean {
     public String getToken() {
         return jwt;
     }
+
+    @Override
+    public String toString() {
+        return "LoginBean{" +
+                "jwt='" + jwt + '\'' +
+                ", userSig='" + userSig + '\'' +
+                ", account=" + account +
+                '}';
+    }
 }

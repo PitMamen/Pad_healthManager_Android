@@ -33,6 +33,7 @@ public class HomeModel extends BaseModel implements HomeContract.TUIKitModel {
 
                  @Override
                  public void onError(String module, int errCode, String errMsg) {
+                     Log.e(TAG, "IMlogin error: "+module+"====:"+errMsg+" code:"+errCode );
                      callback.IMloginFail(module,errCode,errMsg);
                  }
              });

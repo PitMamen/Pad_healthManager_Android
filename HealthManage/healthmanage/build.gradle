@@ -62,8 +62,9 @@ android {
       // 测试包下的 BuglyId
       buildConfigField('String', 'BUGLY_ID', '"811f8ffd4f"')
       // 测试服务器的主机地址
-      buildConfigField('String', 'HOST_URL', '"https://develop.mclouds.org.cn"')//测试环境    //http://192.168.1.122
-//            buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
+//      buildConfigField('String', 'HOST_URL', '"https://develop.mclouds.org.cn"')//测试环境    //http://192.168.1.122
+//      buildConfigField('String', 'HOST_URL', '"http://develop.mclouds.org.cn:8009"')//接口重构测试环境    //http://192.168.1.122
+            buildConfigField('String', 'HOST_URL', '"http://hmg.mclouds.org.cn"')//正式环境
 //            buildConfigField('String', 'HOST_URL', '"https://ys.mclouds.org.cn/"')//演示环境
 
       // 设置清单占位符

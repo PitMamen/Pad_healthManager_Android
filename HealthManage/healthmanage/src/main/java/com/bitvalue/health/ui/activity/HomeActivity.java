@@ -271,6 +271,7 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             ll_need_deallayout.setVisibility(View.GONE);
         }
         initTencentIM(this);  //先初始化 IM SDK  再Login
+//        Log.e(TAG, "initView: "+loginBean.getAccount().toString() );
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig); // Login
         if (loginBean.getAccount().roleName.equals("casemanager")) {
             initFragments(PATIENT_REPORT);  //如果是个案师账号默认首页待办工作台界面

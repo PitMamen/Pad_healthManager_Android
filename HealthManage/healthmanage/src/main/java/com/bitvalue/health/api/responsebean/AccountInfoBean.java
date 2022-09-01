@@ -16,6 +16,20 @@ public final class AccountInfoBean {
 
     public UserInfo user;
 
+
+    @Override
+    public String toString() {
+        return "AccountInfoBean{" +
+                "accountId=" + accountId +
+                ", userName='" + userName + '\'' +
+                ", phone='" + phone + '\'' +
+                ", roleName='" + roleName + '\'' +
+                ", openId=" + openId +
+                ", imAppId='" + imAppId + '\'' +
+                ", user=" + user +
+                '}';
+    }
+
     public static class UserInfo {
         public int accountId;
         public int userId;
