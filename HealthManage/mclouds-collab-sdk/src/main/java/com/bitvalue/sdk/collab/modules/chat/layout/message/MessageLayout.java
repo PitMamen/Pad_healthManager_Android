@@ -159,6 +159,20 @@ public class MessageLayout extends MessageLayoutUI {
         }
 
 
+        //如果消息类型 是文本 并且是 自己发送的 新增一个PopMenuAction "提醒患者"      自己添加 非腾讯自带的
+        if (msg.getMsgType() == MessageInfo.MSG_TYPE_TEXT && msg.isSelf()) {
+            PopMenuAction action = new PopMenuAction();
+            action.setActionName(getContext().getString(R.string.add_to_remind));
+            action.setActionClickListener(new PopActionClickListener() {
+                @Override
+                public void onActionClick(int position, Object data) {
+                    mOnPopActionClickListener.sendRemind(msg);
+                }
+            });
+            actions.add(action);
+        }
+
+
         PopMenuAction action = new PopMenuAction();
         if (msg.getMsgType() == MessageInfo.MSG_TYPE_TEXT) {
             action.setActionName(getContext().getString(R.string.copy_action));
@@ -341,6 +355,8 @@ public class MessageLayout extends MessageLayoutUI {
     public interface OnPopActionClickListener {
 
         void addToQuickwords(MessageInfo msg);
+
+        void sendRemind(MessageInfo msg);
 
         void onCopyClick(int position, MessageInfo msg);
 

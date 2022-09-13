@@ -195,6 +195,7 @@
     <string name="revoke_action">撤回</string>
     <string name="resend_action">重发</string>
     <string name="add_to_quickreply">添加至快捷用语</string>
+    <string name="add_to_remind">提醒患者</string>
     <string name="voice_play_tip">语音文件还未下载完成</string>
     <string name="custom_msg">[自定义消息]</string>
     <string name="no_support_custom_msg">[不支持的自定义消息]</string>

@@ -90,6 +90,7 @@ import com.bitvalue.sdk.collab.component.TitleBarLayout;
 import com.bitvalue.sdk.collab.helper.ChatLayoutHelper;
 import com.bitvalue.sdk.collab.helper.CustomMessage;
 import com.bitvalue.sdk.collab.helper.CustomVideoCallMessage;
+import com.bitvalue.sdk.collab.modules.chat.base.AbsChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.ChatLayout;
 import com.bitvalue.sdk.collab.modules.chat.layout.input.InputLayout;
@@ -795,13 +796,14 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     //发送通知
     private void sendSystemRemind(String jsonString) {
         SystemRemindObj systemRemindObj = new SystemRemindObj();
-        systemRemindObj.remindType = "videoRemind";
+        systemRemindObj.remindType = eventType == 2 ? "taskRemind" : "videoRemind";
         systemRemindObj.userId = planId;
         systemRemindObj.eventType = eventType;
         systemRemindObj.infoDetail = jsonString;
         EasyHttp.post(homeActivity).api(systemRemindObj).request(new OnHttpListener<ApiResult<String>>() {
             @Override
             public void onSucceed(ApiResult<String> result) {
+                ToastUtils.show(result.message);
 //                Log.e(TAG, "通知请求: " + result.getMessage());
             }
 
@@ -1006,7 +1008,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
                 if (rightName.contains("图文")) {
                     if (!EmptyUtil.isEmpty(textNumLimit)) {
                         tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + textNumLimit + " 条");
-                    }else {
+                    } else {
                         tv_numberofarticles.setText(taskDeatailBean.getTaskDetail().getRightsName() + ":当前剩余图文条数 " + 0 + " 条");
                     }
                 } else {
@@ -1250,14 +1252,30 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 
             }
             //长按信息 添加信息 至快捷用语 回调  拿到需添加的信息后  请求接口
-            mChatLayout.setAddQuickwordsListener(message -> {
-                QuickReplyRequest request = new QuickReplyRequest();
-                if (message.length() <= 70) {
-                    request.content = message;
-                    request.userId = String.valueOf(loginBean.getUser().user.userId);
-                    mPresenter.saveCaseCommonWords(request);
-                } else {
-                    ToastUtils.show("操作失败!超出字数限制");
+            mChatLayout.setAddQuickwordsListener(new AbsChatLayout.onaddToQuickwordsListenner() {
+                //添加至快捷用语
+                @Override
+                public void onAddStringToQuickword(String message) {
+                    QuickReplyRequest request = new QuickReplyRequest();
+                    if (message.length() <= 70) {
+                        request.content = message;
+                        request.userId = String.valueOf(loginBean.getUser().user.userId);
+                        mPresenter.saveCaseCommonWords(request);
+                    } else {
+                        ToastUtils.show("操作失败!超出字数限制");
+                    }
+                }
+
+                //发送提醒
+                @Override
+                public void onSendRemindTiPatient() {
+                    eventType = 2;
+                    if (!EmptyUtil.isEmpty(taskDeatailBean)&&!EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail())){
+                        String jsonString = GsonUtils.ModelToJson(taskDeatailBean.getTaskDetail());
+                        sendSystemRemind(jsonString);
+                    }else {
+                        ToastUtils.show("套餐权益为空!");
+                    }
                 }
             });
             mChatLayout.setForwardSelectActivityListener((mode, msgIds) -> {

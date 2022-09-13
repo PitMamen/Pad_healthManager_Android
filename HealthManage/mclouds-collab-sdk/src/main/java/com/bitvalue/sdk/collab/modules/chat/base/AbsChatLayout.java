@@ -114,6 +114,19 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
                 Log.e(TAG, "添加快捷用语: " + newQuickString);
             }
 
+            /**
+             * 提醒患者
+             * @param msg
+             */
+            @Override
+            public void sendRemind(MessageInfo msg) {
+                V2TIMTextElem textElem = msg.getTimMessage().getTextElem();
+                if (onaddToQuickwordsListenner!=null){
+                    onaddToQuickwordsListenner.onSendRemindTiPatient();
+                }
+//                Log.e(TAG, "提醒患者: " + newQuickString);
+            }
+
             @Override
             public void onCopyClick(int position, MessageInfo msg) {
                 ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -717,6 +730,8 @@ public abstract class AbsChatLayout extends ChatLayoutUI implements IChatLayout 
 
     public interface onaddToQuickwordsListenner{
         void onAddStringToQuickword(String message);
+
+        void onSendRemindTiPatient();
     }
 
 }

@@ -14,6 +14,6 @@ public class MRDetailRequestApi  implements IRequestApi {
     @Override
     public String getApi() {
 //        return Constants.API_HEALTH + "/health/doctor/getPatientHospitalRecordDetail";
-        return "/ehr/v1/getRecord";
+        return "/ehr-api/ehr/v1/getRecord";
     }
 }

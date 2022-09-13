@@ -80,20 +80,21 @@ public class NetEngine {
                 .build();
     }
 
-    private String HOST_URL_LIST = "http://36.158.225.181:24702/ehr/v1/list";   //获取病历列表  正式
-    private String HOST_URL_LIST_RECORD = "http://36.158.225.181:24702/ehr/v1/getRecord";   //获取病历详情 正式
+//    private String HOST_URL_LIST = "https://hmg.mclouds.org.cn/ehr-api/ehr/v1/list";   //获取病历列表  正式
+//    private String HOST_URL_LIST_RECORD = "https://hmg.mclouds.org.cn/ehr-api/ehr/v1/getRecord";   //获取病历详情 正式
 //
-//    private String HOST_URL_LIST = "http://develop.mclouds.org.cn:24702/ehr/v1/list";   //获取病历列表  测试
-//    private String HOST_URL_LIST_RECORD = "http://develop.mclouds.org.cn:24702/ehr/v1/getRecord";   //获取病历详情 测试
+    private String HOST_URL_LIST = "http://develop.mclouds.org.cn:8009/ehr-api/ehr/v1/list";   //获取病历列表  测试
+    private String HOST_URL_LIST_RECORD = "http://develop.mclouds.org.cn:8009/ehr-api/ehr/v1/getRecord";   //获取病历详情 测试
 
     private Interceptor reInterceptor = chain -> {
         Request request = chain.request();
         Request.Builder builder = request.newBuilder();
         HttpUrl oldHttpUrl = request.url();   //从request中获取原有的HttpUrl实例oldHttpUrl
+//        HttpUrl newBaseUrl = HttpUrl.parse(Constants.HOST_URL);
         HttpUrl newBaseUrl = HttpUrl.parse(Constants.HOST_URL);
-        if (oldHttpUrl.url().toString().contains("/ehr/v1/list")) {
+        if (oldHttpUrl.url().toString().contains("/ehr-api/ehr/v1/list")) {
             newBaseUrl = HttpUrl.parse(HOST_URL_LIST);
-        }else if (oldHttpUrl.url().toString().contains("/ehr/v1/getRecord")){
+        }else if (oldHttpUrl.url().toString().contains("/ehr-api/ehr/v1/getRecord")){
             newBaseUrl = HttpUrl.parse(HOST_URL_LIST_RECORD);
         }
         //重建新的HttpUrl，配置成我们需要的

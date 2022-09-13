@@ -15,7 +15,7 @@ public class GetLogsApi  implements IRequestApi, Serializable {
     //不做分页了
     @Override
     public String getApi() {
-        return "/ehr/v1/list";
+        return "/ehr-api/ehr/v1/list";
     }
 
     public static class LogBean {
