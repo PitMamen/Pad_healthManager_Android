@@ -1,5 +1,6 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
+import static com.bitvalue.health.util.Constants.ACOUNT_CASEMANAGER;
 import static com.bitvalue.health.util.Constants.TASKDETAIL;
 import static com.bitvalue.health.util.Constants.USER_ID;
 
@@ -279,9 +280,9 @@ public class DataReviemFragment extends BaseFragment<MoreDataDetailPresenter> im
         taskDeatailBean = (TaskDeatailBean) getArguments().getSerializable(TASKDETAIL);
         userID = getArguments().getString(Constants.USER_ID);// 如果是只传了 一个userId过来的  是不需要资料审核的
         loginBean = SharedPreManager.getObject(Constants.KYE_USER_BEAN, LoginBean.class, homeActivity);
-        ll_record_reviewListLayout.setVisibility(loginBean.getUser().roleName.equals("casemanager") && taskDeatailBean != null ? View.VISIBLE : View.GONE); //只有个案管理师才显示审核记录 医生的不显示
+        ll_record_reviewListLayout.setVisibility(loginBean.getUser().roleName.equals(ACOUNT_CASEMANAGER) && taskDeatailBean != null ? View.VISIBLE : View.GONE); //只有个案管理师才显示审核记录 医生的不显示
         ll_bottom_button.setVisibility((null != taskDeatailBean && taskDeatailBean.isShowBottomBuntton) ? View.VISIBLE : View.GONE);
-        tv_bingli_detail.setVisibility(!loginBean.getUser().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);//个案师 不让看患者电子病历
+        tv_bingli_detail.setVisibility(!loginBean.getUser().roleName.equals(ACOUNT_CASEMANAGER) ? View.VISIBLE : View.GONE);//个案师 不让看患者电子病历
     }
 
     //保存审核结果

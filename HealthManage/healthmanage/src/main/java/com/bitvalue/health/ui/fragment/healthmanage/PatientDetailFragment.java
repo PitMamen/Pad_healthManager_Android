@@ -1,7 +1,6 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
 import static com.bitvalue.health.util.Constants.FRAGMENT_DETAIL;
-import static com.bitvalue.health.util.Constants.IDCARD_NUMBER;
 import static com.bitvalue.health.util.Constants.USER_ID;
 
 import android.app.Dialog;
@@ -23,9 +22,7 @@ import com.bitvalue.health.Application;
 import com.bitvalue.health.api.requestbean.UserLocalVisitBean;
 import com.bitvalue.health.api.responsebean.NewLeaveBean;
 import com.bitvalue.health.api.responsebean.PatientBaseInfoBean;
-import com.bitvalue.health.api.responsebean.TaskDetailBean;
 import com.bitvalue.health.base.BaseFragment;
-import com.bitvalue.health.base.presenter.BasePresenter;
 import com.bitvalue.health.contract.healthmanagercontract.VisitPlanDetailContract;
 import com.bitvalue.health.presenter.healthmanager.VisitPlanDetailPresenter;
 import com.bitvalue.health.ui.activity.HealthFilesActivity;
@@ -37,9 +34,6 @@ import com.bitvalue.health.util.TimeUtils;
 import com.bitvalue.health.util.customview.WrapRecyclerView;
 import com.bitvalue.healthmanage.R;
 import com.hjq.toast.ToastUtils;
-import com.squareup.picasso.Picasso;
-
-import java.util.EventListener;
 import java.util.List;
 
 import butterknife.BindView;

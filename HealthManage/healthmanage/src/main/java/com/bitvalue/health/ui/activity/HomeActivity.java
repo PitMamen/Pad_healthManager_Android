@@ -1,6 +1,9 @@
 package com.bitvalue.health.ui.activity;
 
 
+import static com.bitvalue.health.util.Constants.ACOUNT_CASEMANAGER;
+import static com.bitvalue.health.util.Constants.ACOUNT_DOCTOR;
+import static com.bitvalue.health.util.Constants.ACOUNT_SERVICE;
 import static com.bitvalue.health.util.Constants.APK_LOCAL_PATH;
 import static com.bitvalue.health.util.Constants.APK_URL;
 import static com.bitvalue.health.util.Constants.DATA_REVIEW;
@@ -108,6 +111,7 @@ import com.bitvalue.sdk.collab.helper.CustomHealthDataMessage;
 import com.bitvalue.sdk.collab.modules.chat.base.ChatInfo;
 import com.bitvalue.sdk.collab.utils.FileUtil;
 import com.hjq.http.listener.OnHttpListener;
+import com.hjq.toast.ToastUtils;
 import com.tencent.imsdk.v2.V2TIMConversation;
 import com.tencent.liteav.debug.GenerateTestUserSig;
 
@@ -258,13 +262,12 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
             Log.e(TAG, "initView  loginBean is null ");
             return;
         }
-        Constants.ROLE_TYPE = loginBean.getAccount().roleName;
         Constants.DEPT_CODE = loginBean.getAccount().user.departmentCode;
         frameLayout_full.setVisibility(View.GONE);
-        layout_group.setVisibility(loginBean.getAccount().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示咨询模块
-        ll_patient_report.setVisibility(loginBean.getAccount().roleName.equals("casemanager") ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示患者报道模块
+        layout_group.setVisibility(loginBean.getAccount().roleName.equals(ACOUNT_CASEMANAGER) ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示咨询模块
+        ll_patient_report.setVisibility(loginBean.getAccount().roleName.equals(ACOUNT_CASEMANAGER) ? View.VISIBLE : View.GONE);   //如果是医生账号 则不显示患者报道模块
 //            layout_group.setVisibility(View.VISIBLE);
-        if (loginBean.getAccount().roleName.equals("servicer")) {
+        if (loginBean.getAccount().roleName.equals(ACOUNT_SERVICE)) {
             layout_group.setVisibility(View.VISIBLE);
             ll_patient_report.setVisibility(View.GONE);
             ll_sfjh_layout.setVisibility(View.GONE);
@@ -273,9 +276,9 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
         initTencentIM(this);  //先初始化 IM SDK  再Login
 //        Log.e(TAG, "initView: "+loginBean.getAccount().toString() );
         mPresenter.IMLogin(loginBean.getAccount().user.userId + "", loginBean.getAccount().user.userSig); // Login
-        if (loginBean.getAccount().roleName.equals("casemanager")) {
+        if (loginBean.getAccount().roleName.equals(ACOUNT_CASEMANAGER)) {
             initFragments(PATIENT_REPORT);  //如果是个案师账号默认首页待办工作台界面
-        } else if (loginBean.getAccount().roleName.equals("doctor")) {
+        } else if (loginBean.getAccount().roleName.equals(ACOUNT_DOCTOR)) {
             initFragments(FOLLOWUP_PLAN);  //如果是个医生账号默认随访工作台界面
         } else {
             initFragments(CONSULTING_SERVICE);  //如果客服案师账号默认咨询工作台界面
@@ -287,8 +290,14 @@ public class HomeActivity extends BaseActivity<HomePersenter> implements HomeCon
 
 
     private void initTencentIM(Context context){
-        TUIKit.init(context, GenerateTestUserSig.SDKAPPID, new ConfigHelper().getConfigs(context));
-        registerCustomListeners();
+       String IM_Appid= SharedPreManager.getString(Constants.IM_IPPID);
+//        Log.e(TAG, "initTencentIM: "+IM_Appid );
+        if (!EmptyUtil.isEmpty(IM_Appid)){
+            TUIKit.init(context,Integer.parseInt(IM_Appid), new ConfigHelper().getConfigs(context));
+            registerCustomListeners();
+        }else {
+            ToastUtils.show("IM_AppId未配置");
+        }
     }
 
     private  void registerCustomListeners() {

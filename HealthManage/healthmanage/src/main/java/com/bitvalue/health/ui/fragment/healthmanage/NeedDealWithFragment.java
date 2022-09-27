@@ -1,5 +1,6 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
+import static com.bitvalue.health.util.Constants.ACOUNT_CASEMANAGER;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY;
 import static com.bitvalue.health.util.Constants.FRAGMENT_INTERESTSUSER_APPLY_BYDOC;
 
@@ -362,7 +363,7 @@ public class NeedDealWithFragment extends BaseFragment<DocFrienPersenter> implem
     public void OnItemClick(TaskDeatailBean taskDeatailBean) {
         // TODO: 2022/2/22 这里要区分 是个案管理师登录的还是医生登录的
         if (loginBean != null) {
-            homeActivity.switchSecondFragment(loginBean.getAccount().roleName.equals("casemanager") ? FRAGMENT_INTERESTSUSER_APPLY : FRAGMENT_INTERESTSUSER_APPLY_BYDOC, taskDeatailBean);  //个案师
+            homeActivity.switchSecondFragment(loginBean.getAccount().roleName.equals(ACOUNT_CASEMANAGER) ? FRAGMENT_INTERESTSUSER_APPLY : FRAGMENT_INTERESTSUSER_APPLY_BYDOC, taskDeatailBean);  //个案师
         }
     }
 

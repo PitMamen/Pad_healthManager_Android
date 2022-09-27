@@ -67,7 +67,6 @@ public class UseEquityDialog extends Dialog {
     private String selectTakeTime;
     private List<DocListBean> listbean;
     private int DocUserId; //医生Userid
-    private String mRoleType = "casemanager";
     private String[] inpatientAreaList = {"请选择医生"};  // 先写死
     private String[] time = {"5分钟", "10分钟", "20分钟", "30分钟", "120分钟"};  //时间 先写死
 
@@ -243,7 +242,6 @@ public class UseEquityDialog extends Dialog {
 
 
     public UseEquityDialog setRoleType(String roleType) {
-        this.mRoleType = roleType;
         return this;
     }
 

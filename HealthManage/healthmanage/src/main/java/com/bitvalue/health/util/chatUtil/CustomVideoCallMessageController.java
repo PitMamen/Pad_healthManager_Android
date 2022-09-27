@@ -82,13 +82,15 @@ public class CustomVideoCallMessageController {
                             Log.e(TAG, "Failed to get login bean.");
                             return;
                         }
+                        String IM_Appid= SharedPreManager.getString(Constants.IM_IPPID);
+                        String user_sig= SharedPreManager.getString(Constants.USER_SIG);
                         MeetingMainActivity.enterRoom(Application.instance().getApplicationContext(),
                                 data.msgDetailId, // room_id
                                 String.valueOf(loginBean.getUser().user.userId),
                                 loginBean.getUser().user.userName,
                                 loginBean.getUser().user.avatarUrl,
-                                GenerateTestUserSig.SDKAPPID,
-                                loginBean.getUserSig(),
+                                Integer.parseInt(IM_Appid),
+                                user_sig,
                                 true, // 是否默认打开摄像头
                                 true, // 是否默认打开麦克风
                                 true); // 是否支持USB摄像头/视频采集盒

@@ -8,17 +8,24 @@ public class Constants {
 
     //公司的  腾讯IM SDKAppID和秘钥
     public static final String USER_ID = "user_id";
-    public static final String IDCARD_NUMBER = "idcard_number";
     public static final String NEED_TOAST = "need_toast";
-//    public static final String HOST_URL = "https://develop.mclouds.org.cn";    //http://192.168.1.122/  测试环境
+    //    public static final String HOST_URL = "https://develop.mclouds.org.cn";    //http://192.168.1.122/  测试环境
     public static final String HOST_URL = "http://develop.mclouds.org.cn:8009";    //http://192.168.1.122/  重构验证环境
 //        public static final String HOST_URL = "http://hmg.mclouds.org.cn";       //正式环境
 //        public static final String HOST_URL = "https://ys.mclouds.org.cn";       //演示环境  https://ys.mclouds.org.cn/
+
+    //电子病历 接口(由于加密处理,病历的两个接口 是单独接口)
+    public static String HOST_URL_LIST = HOST_URL + "/ehr-api/ehr/v1/list";   //获取病历列表  测试
+    public static String HOST_URL_LIST_RECORD = HOST_URL + "/ehr-api/ehr/v1/getRecord";   //获取病历详情 测试
+
+
     public static int screenWidth, screenHeight;
     public static final String KEY_REMEMBER_PSD = "key_remember_psd";
     public static final String KEY_TOKEN = "Authorization";
     public static final String KYE_USER_BEAN = "kye_user_bean";
-    public static String ROLE_TYPE = "casemanager"; //默认角色是个案管理师
+    public static final String IM_IPPID = "im_ippid";
+    public static final String USER_SIG = "userSig";
+    public static final String IM_SECRETKEY = "secretkey";
     public static String DEPT_CODE = "dept_code"; //科室代码
     public static final String KEY_PSD = "key_psd";
     public static final String MESSAGEINFO = "messageinfo";
@@ -60,6 +67,9 @@ public class Constants {
     public static final String MORE_DATA = "more_data";
     public static final String FRAGEMNT_PHONE_CONSULTATION = "fragemnt_phone_consultation";
     public static final String FRAGEMNT_CONDITONOVERVIEW = "fragemnt_conditonoverview";
+    public static final String ACOUNT_SERVICE = "servicer";
+    public static final String ACOUNT_CASEMANAGER = "casemanager";
+    public static final String ACOUNT_DOCTOR = "doctor";
 
     public static final String API_ACCOUNT = "/account-api";
     public static final String INFO_API = "/info-api";
@@ -126,12 +136,9 @@ public class Constants {
     public static final String VIDEO = "video";
 
 
-
     /**
      * Eventbus 消息类型  TYPE = 2  云门诊   TYPE=1  健康管理
      */
-    public static final int EVENT_MES_TYPE_CLOUDCLINC = 2;
-    public static final int EVENTBUS_MES_HEALTHMANAGER = 1;
     public static final String DOC_ID = "docId";
     public static final String INDEX_NAME = "indexName";
     public static final String SERIALNUMBER = "serialNumber";  //流水记录

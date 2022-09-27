@@ -4,11 +4,14 @@ import static com.bitvalue.health.util.Constants.LOCAL_PRIVATER_KEY;
 import static com.bitvalue.health.util.Constants.LOCAL_PUBLIC_KEY;
 
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.bitvalue.health.Application;
 import com.bitvalue.health.api.requestbean.LoginReqBean;
@@ -17,6 +20,7 @@ import com.bitvalue.health.api.responsebean.LoginResBean;
 import com.bitvalue.health.base.BaseActivity;
 import com.bitvalue.health.contract.homecontract.LoginContract;
 import com.bitvalue.health.presenter.homepersenter.LoginPersenter;
+import com.bitvalue.health.util.AESUtil;
 import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.EmptyUtil;
 import com.bitvalue.health.util.RSAEncrypt;
@@ -98,6 +102,7 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
 
 
     //各个子控件的点击事件
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @OnClick({R.id.layout_remember, R.id.btn_login})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -124,7 +129,16 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
                 }
                 showDialog();
                 String publicKey = SharedPreManager.getString(LOCAL_PUBLIC_KEY);
-                mPresenter.login(new LoginReqBean(userId, passWord, 2, publicKey.replaceAll("\r|\n", "")));
+                String encodePassword="";
+                try {
+                     encodePassword = AESUtil.encryptDES(passWord, publicKey);
+//                    Log.e(TAG, "加密密码: " + encodePassword);
+
+                } catch (Exception e) {
+//                    Log.e(TAG, "加密异常: "+e.getMessage() );
+                    e.printStackTrace();
+                }
+                mPresenter.login(new LoginReqBean(userId, encodePassword, 2, publicKey.replaceAll("\r|\n", "")));
                 break;
         }
     }
@@ -144,9 +158,12 @@ public class LoginHealthActivity extends BaseActivity<LoginPersenter> implements
     public void loginSuccess(Object object) {
         runOnUiThread(() -> hideDialog());
         LoginResBean resBean = (LoginResBean) object;
+//        Log.e(TAG, "IMAppId: "+resBean.getUser().imAppId+" IM秘钥："+resBean.getUser().user.userSig );
         EasyConfig.getInstance().addHeader("Authorization", resBean.getToken()); //这里也要给EasyHttp添加Token，其他地方有用到EasyHttp请求
         SharedPreManager.putObject(Constants.KYE_USER_BEAN, resBean);
         SharedPreManager.putString(Constants.KEY_TOKEN, resBean.getToken());
+        SharedPreManager.putString(Constants.IM_IPPID, resBean.getUser().imAppId);
+        SharedPreManager.putString(Constants.USER_SIG, resBean.getUser().user.userSig);
         SharedPreManager.putBoolean(Constants.KEY_IM_AUTO_LOGIN, true, Application.instance());
 //        Log.e(TAG, "loginSuccess: " + SharedPreManager.getString(Constants.KEY_TOKEN));
 //        mPresenter.qryCodeValue(GOODS_SERVICE_TYPE);

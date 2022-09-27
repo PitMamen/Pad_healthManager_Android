@@ -1,5 +1,7 @@
 package com.bitvalue.health.ui.fragment.setting;
 
+import static com.bitvalue.health.util.Constants.ACOUNT_CASEMANAGER;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -106,7 +108,7 @@ public class SettingsFragment extends BaseFragment<PersonalDataPersenter> implem
             tv_name.setText("设置");
         } else {
             tv_name.setText(!EmptyUtil.isEmpty(loginBean.getUser().user.userName)?loginBean.getUser().user.userName:loginBean.getAccount().userName);
-            tv_type.setText(loginBean.getAccount().roleName.equals("casemanager") ? "个案管理师" : "医护");
+            tv_type.setText(loginBean.getAccount().roleName.equals(ACOUNT_CASEMANAGER) ? "个案管理师" : "医护");
         }
         ed_name.setText(!EmptyUtil.isEmpty(loginBean.getUser().user.userName)?loginBean.getUser().user.userName:loginBean.getAccount().userName);
         ed_phoneNumber.setText(loginBean.getUser().user.phone);

@@ -1,6 +1,7 @@
 package com.bitvalue.health.ui.fragment.healthmanage;
 
 import static com.bitvalue.health.util.ClickUtils.isFastClick;
+import static com.bitvalue.health.util.Constants.ACOUNT_CASEMANAGER;
 import static com.bitvalue.health.util.Constants.FRAGMENT_PLAN_LIST;
 
 import android.content.Context;
@@ -211,7 +212,7 @@ public class PatientReportFragment extends BaseFragment<PatientReportPresenter> 
         initSpinnerCon();
         initSearchButton();
         initSearchList();
-        if (loginBean.getAccount().roleName.equals("casemanager")) {
+        if (loginBean.getAccount().roleName.equals(ACOUNT_CASEMANAGER)) {
             homeActivity.switchSecondFragment(FRAGMENT_PLAN_LIST, "");
         }
         ll_unregister.setVisibility(View.GONE);

@@ -3,6 +3,9 @@ package com.bitvalue.health.ui.fragment.chat;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import static com.bitvalue.health.util.Constants.ACOUNT_CASEMANAGER;
+import static com.bitvalue.health.util.Constants.ACOUNT_DOCTOR;
+import static com.bitvalue.health.util.Constants.ACOUNT_SERVICE;
 import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_PAPER;
 import static com.bitvalue.health.util.Constants.FRAGMENT_ADD_QUESTION;
 import static com.bitvalue.health.util.Constants.FRAGMENT_QUICKREPLY;
@@ -199,7 +202,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         }
 
         EventBus.getDefault().register(this);
-        if (!loginBean.getAccount().roleName.equals("casemanager")) {
+        if (!loginBean.getAccount().roleName.equals(ACOUNT_CASEMANAGER)) {
             TUIKit.addIMEventListener(ImNewMessageListenner);   // 只有医生账号 才监听新消息
         }
         //单聊组件的默认UI和交互初始化
@@ -497,7 +500,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
     //如果是个案师账号 这里是预问诊收集   如果是医生账号 就是 预诊信息
     private void getQuestionListByKeyWord(String keyWord, String acountType) {
         //个案管理师 账号   请求问卷列表接口
-        if (acountType.equals("casemanager")) {
+        if (acountType.equals(ACOUNT_CASEMANAGER)) {
             GetQuestionByKeyWordApi questionByKeyWordApi = new GetQuestionByKeyWordApi();
             questionByKeyWordApi.keyWord = keyWord;
             questionByKeyWordApi.start = pagestart;
@@ -590,9 +593,9 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
      * 聊天面板 底部5个小控件
      */
     private void initbootomTipButton(String deptName, boolean isShowdataCollection, boolean isShowSendRemind) {
-        mChatLayout.getInputLayout().tv_datacollection.setVisibility(loginBean.getAccount().roleName.equals("servicer") ? GONE : VISIBLE);
-        mChatLayout.getInputLayout().tv_datacollection.setText(loginBean.getAccount().roleName.equals("casemanager") ? getString(R.string.pre_diagnosis_collection) : getString(R.string.pre_diagnosis_data));
-        mChatLayout.getInputLayout().tv_medicalfolder.setVisibility(loginBean.getAccount().roleName.equals("doctor") ? VISIBLE : GONE);
+        mChatLayout.getInputLayout().tv_datacollection.setVisibility(loginBean.getAccount().roleName.equals(ACOUNT_SERVICE) ? GONE : VISIBLE);
+        mChatLayout.getInputLayout().tv_datacollection.setText(loginBean.getAccount().roleName.equals(ACOUNT_CASEMANAGER) ? getString(R.string.pre_diagnosis_collection) : getString(R.string.pre_diagnosis_data));
+        mChatLayout.getInputLayout().tv_medicalfolder.setVisibility(loginBean.getAccount().roleName.equals(ACOUNT_DOCTOR) ? VISIBLE : GONE);
         mChatLayout.getInputLayout().tv_datacollection.setVisibility(isShowdataCollection ? VISIBLE : GONE); //如果是从咨询界面过来的 不显示预诊收集信息控件
 //        mChatLayout.getInputLayout().btn_lingdang.setVisibility(isShowdataCollection ? VISIBLE : GONE); // 如果是从咨询界面跳转过来的 则不显示铃铛标识
         mChatLayout.getInputLayout().btn_lingdang.setVisibility(GONE); //需求更改  不显示铃铛标识
@@ -799,7 +802,9 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         systemRemindObj.remindType = eventType == 2 ? "taskRemind" : "videoRemind";
         systemRemindObj.userId = planId;
         systemRemindObj.eventType = eventType;
-        systemRemindObj.infoDetail = jsonString;
+        if (eventType != 2) {
+            systemRemindObj.infoDetail = jsonString;
+        }
         EasyHttp.post(homeActivity).api(systemRemindObj).request(new OnHttpListener<ApiResult<String>>() {
             @Override
             public void onSucceed(ApiResult<String> result) {
@@ -1222,12 +1227,12 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         mChatInfo.setChatName(mChatInfo.getChatName());
         mChatLayout.getFlayout_tipmessage().setVisibility(patientinfo.isConsultation ? VISIBLE : GONE);  //如果是 问诊 顶部显示 “您已进入...” 字样  反之不显示
         mChatLayout.getInputLayout().ll_shortCutlayout.setVisibility(mChatInfo.isShowShortCut ? VISIBLE : GONE); //底部快捷回复布局
-        if (!loginBean.getAccount().roleName.equals("servicer")) {
-            mChatLayout.getInputLayout().setShowCallButton(!loginBean.getAccount().roleName.equals("casemanager") && (taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getRightsType().equals("telNum"))); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
-            mChatLayout.getInputLayout().setShowVedioButton(!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getRightsType().equals("videoNum")); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
+        if (!loginBean.getAccount().roleName.equals(ACOUNT_SERVICE)) {
+            mChatLayout.getInputLayout().setShowCallButton(!loginBean.getAccount().roleName.equals(ACOUNT_CASEMANAGER) && (taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getRightsType().equals("telNum"))); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
+            mChatLayout.getInputLayout().setShowVedioButton(!loginBean.getAccount().roleName.equals(ACOUNT_CASEMANAGER) && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getRightsType().equals("videoNum")); //只有医生并且是电话咨询权益才能拨打电话 个案师不显示 底部拨号按钮
             tv_numberofarticles = mChatLayout.gettv_numberofarticles();
             gettv_duration = mChatLayout.gettv_duration();
-            if (!loginBean.getAccount().roleName.equals("casemanager") && taskDeatailBean != null && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo() != null) {
+            if (!loginBean.getAccount().roleName.equals(ACOUNT_CASEMANAGER) && taskDeatailBean != null && taskDeatailBean.getTaskDetail() != null && taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo() != null) {
                 //患者条文限制
                 textNumLimit = taskDeatailBean.getTaskDetail().getUserGoodsAttrInfo().getTextNumLimit();  //如果取的是null   则表示后台没有配置,前端不显示条文限制
                 if (EmptyUtil.isEmpty(textNumLimit)) {
@@ -1251,33 +1256,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
 //            Log.e(TAG, "条文限制: " + textNumLimit + " 通话时长：" + timeLimit + " 时效： " + serviceExpire);
 
             }
-            //长按信息 添加信息 至快捷用语 回调  拿到需添加的信息后  请求接口
-            mChatLayout.setAddQuickwordsListener(new AbsChatLayout.onaddToQuickwordsListenner() {
-                //添加至快捷用语
-                @Override
-                public void onAddStringToQuickword(String message) {
-                    QuickReplyRequest request = new QuickReplyRequest();
-                    if (message.length() <= 70) {
-                        request.content = message;
-                        request.userId = String.valueOf(loginBean.getUser().user.userId);
-                        mPresenter.saveCaseCommonWords(request);
-                    } else {
-                        ToastUtils.show("操作失败!超出字数限制");
-                    }
-                }
 
-                //发送提醒
-                @Override
-                public void onSendRemindTiPatient() {
-                    eventType = 2;
-                    if (!EmptyUtil.isEmpty(taskDeatailBean)&&!EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail())){
-                        String jsonString = GsonUtils.ModelToJson(taskDeatailBean.getTaskDetail());
-                        sendSystemRemind(jsonString);
-                    }else {
-                        ToastUtils.show("套餐权益为空!");
-                    }
-                }
-            });
             mChatLayout.setForwardSelectActivityListener((mode, msgIds) -> {
                 mForwardMode = mode;
                 Intent intent = new Intent(Application.instance(), ForwardSelectActivity.class);
@@ -1342,7 +1321,39 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
             }
         }
 
+        //长按信息 添加信息 至快捷用语 回调  拿到需添加的信息后  请求接口
+        mChatLayout.setAddQuickwordsListener(new AbsChatLayout.onaddToQuickwordsListenner() {
+            //添加至快捷用语
+            @Override
+            public void onAddStringToQuickword(String message) {
+                QuickReplyRequest request = new QuickReplyRequest();
+                if (message.length() <= 70) {
+                    request.content = message;
+                    request.userId = String.valueOf(loginBean.getUser().user.userId);
+                    mPresenter.saveCaseCommonWords(request);
+                } else {
+                    ToastUtils.show("操作失败!超出字数限制");
+                }
+            }
 
+            //发送提醒
+            @Override
+            public void onSendRemindTiPatient() {
+                if (loginBean.getAccount().roleName.equals(ACOUNT_SERVICE)) {
+                    eventType = 2;
+                    sendSystemRemind("jsonString");
+                } else {
+                    eventType = 1;
+                    if (!EmptyUtil.isEmpty(taskDeatailBean) && !EmptyUtil.isEmpty(taskDeatailBean.getTaskDetail())) {
+                        String jsonString = GsonUtils.ModelToJson(taskDeatailBean.getTaskDetail());
+                        sendSystemRemind(jsonString);
+                    } else {
+                        ToastUtils.show("套餐权益为空!");
+                    }
+                }
+
+            }
+        });
     }
 
     //查询 患者已发送的条数
@@ -1356,7 +1367,7 @@ public class ChatFragment extends BaseFragment<InterestsUseApplyByDocPresenter> 
         @Override
         public void onNewMessage(V2TIMMessage v2TIMMessage) {
             super.onNewMessage(v2TIMMessage);
-            if (!loginBean.getAccount().roleName.equals("servicer")) {
+            if (!loginBean.getAccount().roleName.equals(ACOUNT_SERVICE)) {
                 if (rightName.contains("图文")) {
                     qryRightsUserLog(QUERY_DEALTPE_OF_TEXTNUM); // 一进来首先调用一次 患者发送的条数
                 } else {

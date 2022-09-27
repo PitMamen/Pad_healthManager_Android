@@ -1,5 +1,8 @@
 package com.bitvalue.health.net;
 
+import static com.bitvalue.health.util.Constants.HOST_URL_LIST;
+import static com.bitvalue.health.util.Constants.HOST_URL_LIST_RECORD;
+
 import android.util.Log;
 
 import com.bitvalue.health.api.CommonService;
@@ -80,11 +83,7 @@ public class NetEngine {
                 .build();
     }
 
-//    private String HOST_URL_LIST = "https://hmg.mclouds.org.cn/ehr-api/ehr/v1/list";   //获取病历列表  正式
-//    private String HOST_URL_LIST_RECORD = "https://hmg.mclouds.org.cn/ehr-api/ehr/v1/getRecord";   //获取病历详情 正式
-//
-    private String HOST_URL_LIST = "http://develop.mclouds.org.cn:8009/ehr-api/ehr/v1/list";   //获取病历列表  测试
-    private String HOST_URL_LIST_RECORD = "http://develop.mclouds.org.cn:8009/ehr-api/ehr/v1/getRecord";   //获取病历详情 测试
+
 
     private Interceptor reInterceptor = chain -> {
         Request request = chain.request();

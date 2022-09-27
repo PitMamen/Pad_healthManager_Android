@@ -35,6 +35,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bitvalue.health.api.eventbusbean.TimeOutObj;
+import com.bitvalue.health.util.Constants;
 import com.bitvalue.health.util.SharedPreManager;
 import com.bitvalue.uvccamera.UVCCameraCapturer;
 import com.bitvalue.uvccamera.UVCCameraFrameRender;
@@ -148,14 +149,11 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
                                  final boolean openCamera,
                                  final boolean openAudio,
                                  final boolean enableUVCCamera) {
-        Log.d(TAG, "User " + userId + " is entering room " + roomId +
-                " with camera " + (openCamera ? "on" : "off") + ", audio " + (openAudio ? "on" : "off") +
-                ", and enableUVCCamera " + (enableUVCCamera ? "on" : "off"));
 
-        if (StringUtils.isEmpty(userSig)) {
-            Log.w(TAG, "UserSig SHOULD NOT be null or empty. Here just generate one, only for debug. It MUST BE generated from server side.");
-            userSig = GenerateTestUserSig.genTestUserSig(userId);
-        }
+//        if (StringUtils.isEmpty(userSig)) {
+//            Log.w(TAG, "UserSig SHOULD NOT be null or empty. Here just generate one, only for debug. It MUST BE generated from server side.");
+//            userSig = GenerateTestUserSig.genTestUserSig(userId);
+//        }
         UserModel userModel = UserModelManager.getInstance().getUserModel();
         if (TextUtils.isEmpty(userModel.userId)) {
             userModel.userId = userId;
@@ -163,27 +161,23 @@ public class MeetingMainActivity extends AppCompatActivity implements TRTCMeetin
             userModel.userAvatar = userAvatar;
             UserModelManager.getInstance().setUserModel(userModel);
         }
-
-        TRTCMeeting.sharedInstance(context).login(sdkAppId, userId, userSig, new TRTCMeetingCallback.ActionCallback() {
-            @Override
-            public void onCallback(int code, String msg) {
-                if (code == 0) {
-                    Log.d(TAG, "Login successfully.");
-                    Intent starter = new Intent(context, MeetingMainActivity.class);
-                    starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    starter.putExtra(KEY_ROOM_ID, roomId);
-                    starter.putExtra(KEY_USER_ID, userId);
-                    starter.putExtra(KEY_USER_NAME, userName);
-                    starter.putExtra(KEY_USER_AVATAR, userAvatar);
-                    starter.putExtra(KEY_OPEN_CAMERA, openCamera);
-                    starter.putExtra(KEY_OPEN_AUDIO, openAudio);
-                    starter.putExtra(KEY_ENABLE_UVC_CAMERA, enableUVCCamera);
-                    starter.putExtra(KEY_AUDIO_QUALITY, TRTC_AUDIO_QUALITY_SPEECH);
-                    starter.putExtra(KEY_VIDEO_QUALITY, VIDEO_QUALITY_HD);
-                    context.startActivity(starter);
-                } else {
-                    Log.d(TAG, "Login failed, code = " + code + ", msg = " + msg);
-                }
+        TRTCMeeting.sharedInstance(context).login(sdkAppId, userId, userSig, (code, msg) -> {
+            if (code == 0) {
+                Log.d(TAG, "Login successfully.");
+                Intent starter = new Intent(context, MeetingMainActivity.class);
+                starter.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                starter.putExtra(KEY_ROOM_ID, roomId);
+                starter.putExtra(KEY_USER_ID, userId);
+                starter.putExtra(KEY_USER_NAME, userName);
+                starter.putExtra(KEY_USER_AVATAR, userAvatar);
+                starter.putExtra(KEY_OPEN_CAMERA, openCamera);
+                starter.putExtra(KEY_OPEN_AUDIO, openAudio);
+                starter.putExtra(KEY_ENABLE_UVC_CAMERA, enableUVCCamera);
+                starter.putExtra(KEY_AUDIO_QUALITY, TRTC_AUDIO_QUALITY_SPEECH);
+                starter.putExtra(KEY_VIDEO_QUALITY, VIDEO_QUALITY_HD);
+                context.startActivity(starter);
+            } else {
+                Log.d(TAG, "Login failed, code = " + code + ", msg = " + msg);
             }
         });
     }

@@ -53,9 +53,11 @@ public class AlreadyDealithAdapter extends BaseQuickAdapter<TaskDeatailBean, Bas
             img_head.setImageDrawable(videoClientsResultBean.getTaskDetail().getUserInfo().getUserSex().equals("男") ? Application.instance().getResources().getDrawable(R.drawable.head_male) : Application.instance().getResources().getDrawable(R.drawable.head_female));
         }
         holder.setText(R.id.tv_video_visit, videoClientsResultBean.getTaskDetail().getRightsName());
-        holder.setText(R.id.tv_name, videoClientsResultBean.getTaskDetail().getUserInfo().getUserName());
-        holder.setText(R.id.tv_patient_sex, videoClientsResultBean.getTaskDetail().getUserInfo().getUserSex());
-        holder.setText(R.id.tv_patient_age, videoClientsResultBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
+        if (!EmptyUtil.isEmpty(videoClientsResultBean.getTaskDetail().getUserInfo())){
+            holder.setText(R.id.tv_name, videoClientsResultBean.getTaskDetail().getUserInfo().getUserName());
+            holder.setText(R.id.tv_patient_sex, videoClientsResultBean.getTaskDetail().getUserInfo().getUserSex());
+            holder.setText(R.id.tv_patient_age, videoClientsResultBean.getTaskDetail().getUserInfo().getUserAge() + "岁");
+        }
         holder.setText(R.id.tv_equity_use, "已结束");
         holder.setText(R.id.tv_time, TimeUtils.getTime_(videoClientsResultBean.getExecTime()));
         holder.getView(R.id.tv_remind).setVisibility(View.GONE);  //隐藏 提醒上线通知

@@ -1,5 +1,6 @@
 package com.bitvalue.health.ui.fragment.cloudclinic;
 
+import static com.bitvalue.health.util.Constants.ACOUNT_SERVICE;
 import static com.bitvalue.health.util.Constants.GET_CONVERSATION_COUNT;
 
 import android.content.Context;
@@ -122,7 +123,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
     public void onResume() {
         super.onResume();
         if (loginBean != null) {
-            if (loginBean.getAccount().roleName.equals("servicer")) {
+            if (loginBean.getAccount().roleName.equals(ACOUNT_SERVICE)) {
                 initConversation();
             }
         }
@@ -133,7 +134,7 @@ public class ConsultingServiceFragment extends BaseFragment<CloudClinicPersenter
         super.onHiddenChanged(hidden);
         if (!hidden){
             if (loginBean != null) {
-                if (loginBean.getAccount().roleName.equals("servicer")) {
+                if (loginBean.getAccount().roleName.equals(ACOUNT_SERVICE)) {
                     initConversation();
                 }
             }
