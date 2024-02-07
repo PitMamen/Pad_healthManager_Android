@@ -9,10 +9,10 @@ public class Constants {
     //公司的  腾讯IM SDKAppID和秘钥
     public static final String USER_ID = "user_id";
     public static final String NEED_TOAST = "need_toast";
-    //    public static final String HOST_URL = "https://develop.mclouds.org.cn";    //http://192.168.1.122/  测试环境
-    public static final String HOST_URL = "http://develop.mclouds.org.cn:8009";    //http://192.168.1.122/  重构验证环境
+//        public static final String HOST_URL = "https://develop.mclouds.org.cn";    //http://192.168.1.122/  测试环境
+//    public static final String HOST_URL = "http://develop.mclouds.org.cn:8009";    //http://192.168.1.122/  重构验证环境
 //        public static final String HOST_URL = "http://hmg.mclouds.org.cn";       //正式环境
-//        public static final String HOST_URL = "https://ys.mclouds.org.cn";       //演示环境  https://ys.mclouds.org.cn/
+        public static final String HOST_URL = "https://ys.mclouds.org.cn";       //演示环境  https://ys.mclouds.org.cn/
 
     //电子病历 接口(由于加密处理,病历的两个接口 是单独接口)
     public static String HOST_URL_LIST = HOST_URL + "/ehr-api/ehr/v1/list";   //获取病历列表  测试
